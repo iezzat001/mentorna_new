@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -58,9 +59,9 @@ All colors MUST be HSL.
     --shadow-lg: 0 16px 40px -12px hsl(0 0% 0% / 0.15);
     --shadow-glow: 0 0 32px hsl(14 90% 65% / 0.3);
 
-    /* Typography scale */
-    --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    /* Typography scale - Plus Jakarta Sans */
+    --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
     --sidebar-background: 0 0% 98%;
 
@@ -125,5 +126,6 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body);
   }
 }
