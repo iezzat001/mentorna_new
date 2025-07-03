@@ -39,7 +39,7 @@ export const useWeeksData = () => {
       }));
     },
     staleTime: 0, // Force fresh data
-    cacheTime: 0  // Don't cache the data
+    gcTime: 0  // Don't cache the data (updated from cacheTime)
   });
 };
 
@@ -92,7 +92,7 @@ export const useWeekDetails = (weekNumber: number) => {
       };
     },
     staleTime: 0, // Force fresh data
-    cacheTime: 0, // Don't cache the data
+    gcTime: 0, // Don't cache the data (updated from cacheTime)
     refetchOnWindowFocus: true,
     refetchOnMount: true
   });
