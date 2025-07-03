@@ -14,7 +14,7 @@ const SuccessStories = () => {
       icon: Award,
       videoUrl: "https://d2mp3ttz3u5gci.cloudfront.net/mariam.MOV",
       thumbnailUrl: "https://d2mp3ttz3u5gci.cloudfront.net/mariam_thumbnail.png",
-      description: "Through our mentorship program, Mariam secured a scholarship to study abroad at a top university. Her success story demonstrates the transformative power of future-focused education."
+      description: "Through our mentorship program, Mariam secured a scholarship to study in Ludwig Maximilian University of Munich(LMU) placed at 27th globally, 8th in Europe, and 2nd in Germany. Her success story demonstrates the transformative power of future-focused education."
     },
     {
       name: "OMAR MOSA",
