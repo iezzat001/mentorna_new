@@ -1,5 +1,4 @@
-
-import { BookOpen, Users, LogOut, Home, UserPlus } from 'lucide-react';
+import { BookOpen, Users, LogOut, Home, UserPlus, Mail } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   Sidebar,
@@ -40,6 +39,11 @@ const menuItems = [
     title: 'Waiting List',
     icon: UserPlus,
     id: 'waiting-list',
+  },
+  {
+    title: 'Newsletter',
+    icon: Mail,
+    id: 'newsletter',
   },
 ];
 

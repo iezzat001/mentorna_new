@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AppSidebar } from '@/components/AppSidebar';
@@ -19,6 +18,7 @@ import {
 import CourseContentManager from '@/components/dashboard/CourseContentManager';
 import FoundersManager from '@/components/dashboard/FoundersManager';
 import WaitingListManager from '@/components/dashboard/WaitingListManager';
+import NewsletterManager from '@/components/dashboard/NewsletterManager';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -31,6 +31,8 @@ const Dashboard = () => {
         return 'Founders Management';
       case 'waiting-list':
         return 'Waiting List Management';
+      case 'newsletter':
+        return 'Newsletter Management';
       default:
         return 'Dashboard Overview';
     }
@@ -44,6 +46,8 @@ const Dashboard = () => {
         return <FoundersManager />;
       case 'waiting-list':
         return <WaitingListManager />;
+      case 'newsletter':
+        return <NewsletterManager />;
       default:
         return (
           <div className="space-y-6">
