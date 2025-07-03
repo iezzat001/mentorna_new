@@ -19,7 +19,7 @@ const MobileWeekButton = ({ week }: MobileWeekButtonProps) => (
       className="
         w-full 
         h-auto 
-        p-2
+        p-3
         border-2 
         border-foreground 
         shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
@@ -33,17 +33,17 @@ const MobileWeekButton = ({ week }: MobileWeekButtonProps) => (
         flex
         flex-col
         items-start
-        gap-0.5
+        gap-1
         overflow-hidden
       "
     >
-      <div className="font-black text-[10px] uppercase leading-tight break-words">
+      <div className="font-black text-xs uppercase leading-tight break-words">
         WEEK {week.week}
       </div>
-      <div className="font-black text-[10px] uppercase leading-tight text-foreground/90 break-words text-wrap">
+      <div className="font-black text-xs uppercase leading-tight text-foreground/90 break-words text-wrap">
         {week.title}
       </div>
-      <div className="font-body text-[9px] text-foreground/70 leading-tight break-words text-wrap">
+      <div className="font-body text-xs text-foreground/70 leading-tight break-words text-wrap">
         {week.description}
       </div>
     </Button>
