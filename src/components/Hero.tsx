@@ -49,7 +49,7 @@ const Hero = () => {
               font-heading
               font-medium
             ">
-            Watch Trailer
+            Join the waiting list
           </Button>
         </WaitingListDialog>
       </nav>
