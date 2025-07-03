@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { isOnDashboardSubdomain } from "@/utils/subdomain";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
@@ -16,28 +18,44 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {isDashboardSubdomain ? (
-              // Dashboard subdomain routes
-              <>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </>
-            ) : (
-              // Main domain routes
-              <>
-                <Route path="/" element={<Index />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="*" element={<NotFound />} />
-              </>
-            )}
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {isDashboardSubdomain ? (
+                // Dashboard subdomain routes - require admin access
+                <>
+                  <Route 
+                    path="/" 
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </>
+              ) : (
+                // Main domain routes
+                <>
+                  <Route path="/" element={<Index />} />
+                  <Route 
+                    path="/dashboard" 
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </>
+              )}
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 };

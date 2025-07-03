@@ -54,6 +54,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       week_activities: {
         Row: {
           activity_type: Database["public"]["Enums"]["activity_type"]
@@ -197,10 +218,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _user_id: string
+          _role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: boolean
+      }
+      is_admin: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       activity_type: "assignment" | "workshop" | "seminar" | "project"
+      app_role: "super_admin" | "admin" | "moderator"
       phase_type: "Foundation Building" | "Advanced Implementation"
     }
     CompositeTypes: {
@@ -318,6 +350,7 @@ export const Constants = {
   public: {
     Enums: {
       activity_type: ["assignment", "workshop", "seminar", "project"],
+      app_role: ["super_admin", "admin", "moderator"],
       phase_type: ["Foundation Building", "Advanced Implementation"],
     },
   },
