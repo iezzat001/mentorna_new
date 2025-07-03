@@ -15,28 +15,30 @@ import {
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 
+interface AppSidebarProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+}
+
 const menuItems = [
   {
     title: 'Dashboard',
     icon: Home,
     id: 'dashboard',
-    isActive: true,
   },
   {
     title: 'Course Content',
     icon: BookOpen,
     id: 'course-content',
-    isActive: false,
   },
   {
     title: 'Founders',
     icon: Users,
     id: 'founders',
-    isActive: false,
   },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   const { user, signOut } = useAuth();
 
   const handleSignOut = async () => {
@@ -66,7 +68,8 @@ export function AppSidebar() {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
-                    isActive={item.isActive}
+                    isActive={activeTab === item.id}
+                    onClick={() => onTabChange(item.id)}
                     className="
                       font-bold
                       data-[active=true]:bg-primary 
