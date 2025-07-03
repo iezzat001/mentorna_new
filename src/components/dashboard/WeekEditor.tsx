@@ -9,6 +9,7 @@ import BasicInfoForm from './BasicInfoForm';
 import OutcomeEditor from './OutcomeEditor';
 import ActivitiesManager from './ActivitiesManager';
 import SkillsManager from './SkillsManager';
+import { weekDetailsData } from '@/data/weekDetailsData';
 
 interface WeekEditorProps {
   weekNumber: number;
@@ -45,11 +46,33 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
           .single()
       ]);
 
+      // Use static data as fallback if database is empty
+      const staticData = weekDetailsData[weekNumber];
+      
       return {
         week,
-        activities: activitiesRes.data || [],
-        skills: skillsRes.data || [],
-        outcome: outcomesRes.data
+        activities: activitiesRes.data?.length > 0 ? activitiesRes.data : 
+          staticData?.activities.map((activity, index) => ({
+            id: `static-${index}`,
+            week_id: week.id,
+            activity_type: activity.type,
+            title: activity.title,
+            description: activity.description,
+            duration: activity.duration,
+            order_index: index
+          })) || [],
+        skills: skillsRes.data?.length > 0 ? skillsRes.data :
+          staticData?.skills.map((skill, index) => ({
+            id: `static-${index}`,
+            week_id: week.id,
+            skill_name: skill,
+            order_index: index
+          })) || [],
+        outcome: outcomesRes.data || (staticData ? {
+          id: 'static-outcome',
+          week_id: week.id,
+          outcome_text: staticData.outcome
+        } : null)
       };
     }
   });
