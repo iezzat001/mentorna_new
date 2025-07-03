@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LucideIcon } from 'lucide-react';
 import VideoPlayer from './VideoPlayer';
+import WaitingListDialog from './WaitingListDialog';
 
 interface SuccessStoryCardProps {
   name: string;
@@ -80,20 +81,22 @@ const SuccessStoryCard = ({
           {description}
         </p>
         
-        <Button className="
-          bg-primary 
-          border-4 
-          border-foreground 
-          shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
-          font-black 
-          uppercase 
-          hover:translate-x-1 
-          hover:translate-y-1 
-          hover:shadow-none 
-          transition-all
-        ">
-          WATCH STORY
-        </Button>
+        <WaitingListDialog>
+          <Button className="
+            bg-primary 
+            border-4 
+            border-foreground 
+            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
+            font-black 
+            uppercase 
+            hover:translate-x-1 
+            hover:translate-y-1 
+            hover:shadow-none 
+            transition-all
+          ">
+            WATCH STORY
+          </Button>
+        </WaitingListDialog>
       </CardContent>
     </Card>
   );

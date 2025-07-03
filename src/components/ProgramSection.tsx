@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Calendar, Target, Users, Presentation } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import WeekDetailsDialog from '@/components/WeekDetailsDialog';
+import WaitingListDialog from './WaitingListDialog';
 
 const ProgramSection = () => {
   const phaseOneWeeks = [
@@ -171,24 +171,26 @@ const ProgramSection = () => {
 
         {/* Call to Action */}
         <div className="text-center mt-12">
-          <Button className="
-            bg-primary 
-            hover:bg-primary-hover
-            border-4 
-            border-foreground 
-            shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
-            font-black 
-            text-lg 
-            px-8 
-            py-4
-            uppercase
-            hover:translate-x-1 
-            hover:translate-y-1 
-            hover:shadow-none 
-            transition-all
-          ">
-            START YOUR JOURNEY TODAY!
-          </Button>
+          <WaitingListDialog>
+            <Button className="
+              bg-primary 
+              hover:bg-primary-hover
+              border-4 
+              border-foreground 
+              shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
+              font-black 
+              text-lg 
+              px-8 
+              py-4
+              uppercase
+              hover:translate-x-1 
+              hover:translate-y-1 
+              hover:shadow-none 
+              transition-all
+            ">
+              START YOUR JOURNEY TODAY!
+            </Button>
+          </WaitingListDialog>
         </div>
       </div>
     </section>

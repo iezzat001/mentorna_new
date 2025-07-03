@@ -1,7 +1,11 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import WaitingListDialog from './WaitingListDialog';
+
 const Hero = () => {
-  return <div className="relative min-h-screen overflow-hidden">
+  return (
+    <div className="relative min-h-screen overflow-hidden">
       {/* Video Background */}
       <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0">
         <source src="https://d2mp3ttz3u5gci.cloudfront.net/0703.mp4" type="video/mp4" />
@@ -31,21 +35,23 @@ const Hero = () => {
         </div>
         
         {/* CTA Button */}
-        <Button variant="outline" className="
-            rounded-full 
-            border-white/30 
-            bg-transparent 
-            text-white/80 
-            hover:border-white/50 
-            hover:text-white 
-            hover:bg-white/10
-            transition-all 
-            duration-300
-            font-heading
-            font-medium
-          ">
-          Watch Trailer
-        </Button>
+        <WaitingListDialog>
+          <Button variant="outline" className="
+              rounded-full 
+              border-white/30 
+              bg-transparent 
+              text-white/80 
+              hover:border-white/50 
+              hover:text-white 
+              hover:bg-white/10
+              transition-all 
+              duration-300
+              font-heading
+              font-medium
+            ">
+            Watch Trailer
+          </Button>
+        </WaitingListDialog>
       </nav>
       
       {/* Main Content */}
@@ -74,6 +80,8 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Hero;

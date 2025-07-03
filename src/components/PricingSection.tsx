@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Check, Gift, Users, BookOpen, Award, Lock, Download } from 'lucide-react';
+import WaitingListDialog from './WaitingListDialog';
 
 const PricingSection = () => {
   const features = [
@@ -143,25 +144,27 @@ const PricingSection = () => {
 
               {/* Call to Action */}
               <div className="mt-8 text-center">
-                <Button className="
-                  w-full
-                  bg-primary 
-                  hover:bg-primary-hover
-                  border-4 
-                  border-foreground 
-                  shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
-                  font-black 
-                  text-lg 
-                  px-8 
-                  py-6
-                  uppercase
-                  hover:translate-x-1 
-                  hover:translate-y-1 
-                  hover:shadow-none 
-                  transition-all
-                ">
-                  SECURE YOUR SPOT NOW!
-                </Button>
+                <WaitingListDialog>
+                  <Button className="
+                    w-full
+                    bg-primary 
+                    hover:bg-primary-hover
+                    border-4 
+                    border-foreground 
+                    shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
+                    font-black 
+                    text-lg 
+                    px-8 
+                    py-6
+                    uppercase
+                    hover:translate-x-1 
+                    hover:translate-y-1 
+                    hover:shadow-none 
+                    transition-all
+                  ">
+                    SECURE YOUR SPOT NOW!
+                  </Button>
+                </WaitingListDialog>
                 
                 <p className="font-body text-sm font-semibold text-foreground/70 mt-4">
                   Limited Time • First 30 Families Only
