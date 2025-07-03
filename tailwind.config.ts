@@ -26,7 +26,8 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					hover: 'hsl(var(--primary-hover))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -42,7 +43,11 @@ export default {
 				},
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					foreground: 'hsl(var(--accent-foreground))',
+					purple: 'hsl(var(--accent-purple))',
+					yellow: 'hsl(var(--accent-yellow))',
+					blue: 'hsl(var(--accent-blue))',
+					green: 'hsl(var(--accent-green))'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -66,7 +71,24 @@ export default {
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				xl: '16px',
+				'2xl': '20px'
+			},
+			fontFamily: {
+				heading: 'var(--font-heading)',
+				body: 'var(--font-body)'
+			},
+			boxShadow: {
+				'design-sm': 'var(--shadow-sm)',
+				'design-md': 'var(--shadow-md)',
+				'design-lg': 'var(--shadow-lg)',
+				'design-glow': 'var(--shadow-glow)'
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-purple': 'var(--gradient-purple)',
+				'gradient-warm': 'var(--gradient-warm)'
 			},
 			keyframes: {
 				'accordion-down': {

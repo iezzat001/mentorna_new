@@ -2,41 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Mental Health Platform Design System - Inspired by vibrant, accessible design
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 98%;
+    --foreground: 0 0% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Warm coral/orange inspired by the screenshot */
+    --primary: 14 90% 65%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 14 85% 58%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Soft purple accent */
+    --secondary: 260 25% 88%;
+    --secondary-foreground: 260 30% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Accent colors from the design */
+    --accent-purple: 260 50% 75%;
+    --accent-yellow: 45 95% 65%;
+    --accent-blue: 210 75% 70%;
+    --accent-green: 140 50% 60%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 8% 45%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --accent: 260 25% 88%;
+    --accent-foreground: 260 30% 25%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --destructive: 0 75% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --border: 220 15% 90%;
+    --input: 220 15% 95%;
+    --ring: 14 90% 65%;
+
+    --radius: 12px;
+
+    /* Design system gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(14 90% 65%), hsl(25 95% 70%));
+    --gradient-purple: linear-gradient(135deg, hsl(260 50% 75%), hsl(280 60% 80%));
+    --gradient-warm: linear-gradient(135deg, hsl(45 95% 65%), hsl(35 90% 70%));
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px -2px hsl(0 0% 0% / 0.08);
+    --shadow-md: 0 8px 25px -8px hsl(0 0% 0% / 0.12);
+    --shadow-lg: 0 16px 40px -12px hsl(0 0% 0% / 0.15);
+    --shadow-glow: 0 0 32px hsl(14 90% 65% / 0.3);
+
+    /* Typography scale */
+    --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
     --sidebar-background: 0 0% 98%;
 
