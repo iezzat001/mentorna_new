@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +26,120 @@ const DesignShowcase = () => {
             Inspired by modern mental health platforms - vibrant, accessible, and user-friendly components
           </p>
         </div>
+
+        {/* Typography Section */}
+        <section className="space-y-6">
+          <h2 className="font-heading text-3xl font-semibold">Typography Options</h2>
+          <p className="text-muted-foreground text-lg">Choose the perfect font that conveys professionalism, warmth, and innovation for your AI education platform</p>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Option 1: Inter (Modern & Clean) */}
+            <Card className="hover:scale-[1.02] transition-transform">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle style={{ fontFamily: 'Inter, sans-serif' }}>Option 1: Inter</CardTitle>
+                  <Badge className="bg-accent-blue text-foreground">Modern</Badge>
+                </div>
+                <CardDescription>Clean, professional, and highly readable</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4" style={{ fontFamily: 'Inter, sans-serif' }}>
+                <h3 className="text-2xl font-bold text-primary">Empower Your Child's Future with AI</h3>
+                <p className="text-muted-foreground">
+                  Our cutting-edge curriculum combines creativity with technology, 
+                  giving your child the skills they need to thrive in tomorrow's world.
+                </p>
+                <div className="text-sm font-medium">Perfect for: Professional communication, clear readability</div>
+              </CardContent>
+            </Card>
+
+            {/* Option 2: Poppins (Friendly & Approachable) */}
+            <Card className="hover:scale-[1.02] transition-transform">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle style={{ fontFamily: 'Poppins, sans-serif' }}>Option 2: Poppins</CardTitle>
+                  <Badge className="bg-accent-green text-foreground">Friendly</Badge>
+                </div>
+                <CardDescription>Warm, approachable, and contemporary</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                <h3 className="text-2xl font-bold text-primary">Empower Your Child's Future with AI</h3>
+                <p className="text-muted-foreground">
+                  Our cutting-edge curriculum combines creativity with technology, 
+                  giving your child the skills they need to thrive in tomorrow's world.
+                </p>
+                <div className="text-sm font-medium">Perfect for: Parent-friendly communication, warm feeling</div>
+              </CardContent>
+            </Card>
+
+            {/* Option 3: Space Grotesk (Futuristic & Tech) */}
+            <Card className="hover:scale-[1.02] transition-transform">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle style={{ fontFamily: 'Space Grotesk, sans-serif' }}>Option 3: Space Grotesk</CardTitle>
+                  <Badge className="bg-accent-purple text-foreground">Futuristic</Badge>
+                </div>
+                <CardDescription>Tech-forward, distinctive, and innovative</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+                <h3 className="text-2xl font-bold text-primary">Empower Your Child's Future with AI</h3>
+                <p className="text-muted-foreground">
+                  Our cutting-edge curriculum combines creativity with technology, 
+                  giving your child the skills they need to thrive in tomorrow's world.
+                </p>
+                <div className="text-sm font-medium">Perfect for: Tech branding, futuristic appeal</div>
+              </CardContent>
+            </Card>
+
+            {/* Option 4: Plus Jakarta Sans (Elegant & Versatile) */}
+            <Card className="hover:scale-[1.02] transition-transform">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Option 4: Plus Jakarta Sans</CardTitle>
+                  <Badge className="bg-accent-yellow text-foreground">Elegant</Badge>
+                </div>
+                <CardDescription>Sophisticated, versatile, and premium feel</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                <h3 className="text-2xl font-bold text-primary">Empower Your Child's Future with AI</h3>
+                <p className="text-muted-foreground">
+                  Our cutting-edge curriculum combines creativity with technology, 
+                  giving your child the skills they need to thrive in tomorrow's world.
+                </p>
+                <div className="text-sm font-medium">Perfect for: Premium positioning, elegant branding</div>
+              </CardContent>
+            </Card>
+
+            {/* Option 5: Outfit (Bold & Contemporary) */}
+            <Card className="hover:scale-[1.02] transition-transform">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle style={{ fontFamily: 'Outfit, sans-serif' }}>Option 5: Outfit</CardTitle>
+                  <Badge className="bg-gradient-primary text-white">Bold</Badge>
+                </div>
+                <CardDescription>Strong, confident, and attention-grabbing</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                <h3 className="text-2xl font-bold text-primary">Empower Your Child's Future with AI</h3>
+                <p className="text-muted-foreground">
+                  Our cutting-edge curriculum combines creativity with technology, 
+                  giving your child the skills they need to thrive in tomorrow's world.
+                </p>
+                <div className="text-sm font-medium">Perfect for: Strong brand presence, confident messaging</div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="bg-gradient-to-r from-primary/5 to-accent-purple/5 border-primary/20">
+            <CardContent className="p-6">
+              <h3 className="font-heading text-xl font-semibold mb-3 text-primary">Typography Recommendation</h3>
+              <p className="text-muted-foreground">
+                For an AI education platform targeting parents, I recommend <strong>Poppins</strong> or <strong>Plus Jakarta Sans</strong>. 
+                Both convey professionalism while maintaining warmth and approachability - essential for building trust with parents 
+                who want the best for their children's future in technology.
+              </p>
+            </CardContent>
+          </Card>
+        </section>
 
         {/* Buttons Section */}
         <section className="space-y-6">
