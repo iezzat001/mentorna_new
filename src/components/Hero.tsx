@@ -1,22 +1,10 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
-
 const Hero = () => {
-  return (
-    <div className="relative min-h-screen overflow-hidden">
+  return <div className="relative min-h-screen overflow-hidden">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      >
-        <source 
-          src="https://d2mp3ttz3u5gci.cloudfront.net/0703.mp4" 
-          type="video/mp4" 
-        />
+      <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0">
+        <source src="https://d2mp3ttz3u5gci.cloudfront.net/0703.mp4" type="video/mp4" />
       </video>
       
       {/* Dark Overlay */}
@@ -31,30 +19,19 @@ const Hero = () => {
         
         {/* Navigation Links */}
         <div className="hidden md:flex items-center space-x-8">
-          <a 
-            href="#mission" 
-            className="text-white/80 hover:text-white transition-colors duration-300 font-heading font-medium"
-          >
+          <a href="#mission" className="text-white/80 hover:text-white transition-colors duration-300 font-heading font-medium">
             Mission
           </a>
-          <a 
-            href="#chapter" 
-            className="text-white/80 hover:text-white transition-colors duration-300 font-heading font-medium"
-          >
+          <a href="#chapter" className="text-white/80 hover:text-white transition-colors duration-300 font-heading font-medium">
             Chapter
           </a>
-          <a 
-            href="#about" 
-            className="text-white/80 hover:text-white transition-colors duration-300 font-heading font-medium"
-          >
+          <a href="#about" className="text-white/80 hover:text-white transition-colors duration-300 font-heading font-medium">
             About
           </a>
         </div>
         
         {/* CTA Button */}
-        <Button 
-          variant="outline"
-          className="
+        <Button variant="outline" className="
             rounded-full 
             border-white/30 
             bg-transparent 
@@ -66,14 +43,13 @@ const Hero = () => {
             duration-300
             font-heading
             font-medium
-          "
-        >
+          ">
           Watch Trailer
         </Button>
       </nav>
       
       {/* Main Content */}
-      <div className="relative z-20 flex flex-col h-full min-h-screen">
+      <div className="relative z-20 flex flex-col h-full min-h-screen my-0 py-[100px]">
         <div className="flex-1" />
         
         <div className="pb-8 px-8 lg:pb-12 lg:px-12 mt-24">
@@ -98,8 +74,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Hero;
