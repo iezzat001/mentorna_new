@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/sidebar';
 import CourseContentManager from '@/components/dashboard/CourseContentManager';
 import FoundersManager from '@/components/dashboard/FoundersManager';
+import WaitingListManager from '@/components/dashboard/WaitingListManager';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -28,6 +29,8 @@ const Dashboard = () => {
         return 'Course Content Management';
       case 'founders':
         return 'Founders Management';
+      case 'waiting-list':
+        return 'Waiting List Management';
       default:
         return 'Dashboard Overview';
     }
@@ -39,6 +42,8 @@ const Dashboard = () => {
         return <CourseContentManager />;
       case 'founders':
         return <FoundersManager />;
+      case 'waiting-list':
+        return <WaitingListManager />;
       default:
         return (
           <div className="space-y-6">

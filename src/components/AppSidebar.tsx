@@ -1,5 +1,5 @@
 
-import { BookOpen, Users, LogOut, Home } from 'lucide-react';
+import { BookOpen, Users, LogOut, Home, UserPlus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   Sidebar,
@@ -35,6 +35,11 @@ const menuItems = [
     title: 'Founders',
     icon: Users,
     id: 'founders',
+  },
+  {
+    title: 'Waiting List',
+    icon: UserPlus,
+    id: 'waiting-list',
   },
 ];
 
