@@ -88,7 +88,7 @@ const Hero = () => {
               Your 8-Week Transformation Journey
             </div>
             <div className="text-white/90 text-2xl md:text-3xl lg:text-4xl xl:text-5xl mt-4 leading-tight">
-              The iLab transforms screen-addicted teens into empire-building creators—launching real products, solving real problems, leading real change.
+              Launch real products, solve real problems, lead real change.
             </div>
           </div>
           
