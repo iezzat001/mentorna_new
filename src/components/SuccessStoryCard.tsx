@@ -31,8 +31,8 @@ const SuccessStoryCard = ({
 }: SuccessStoryCardProps) => {
   return (
     <Card className="
-      w-screen md:w-auto
-      -mx-6 md:mx-0
+      w-full md:w-auto
+      mx-4 md:mx-0
       border-2 md:border-4 
       border-foreground 
       shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
@@ -43,7 +43,7 @@ const SuccessStoryCard = ({
       hover:scale-[1.01] md:hover:scale-[1.02] 
       transition-all 
       duration-200
-      rounded-none md:rounded-xl
+      rounded-xl
     ">
       <CardHeader className={`${headerColor} border-b-2 md:border-b-4 border-foreground p-6`}>
         <div className="flex items-center gap-4 mb-4">

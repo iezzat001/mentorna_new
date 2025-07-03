@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Award, Lightbulb } from 'lucide-react';
 import SuccessStoryCard from './SuccessStoryCard';
@@ -30,10 +29,10 @@ const SuccessStories = () => {
   ];
 
   return (
-    <section className="bg-accent-yellow border-b-4 border-foreground py-16 px-6">
-      <div className="container mx-auto max-w-6xl">
+    <section className="bg-accent-yellow border-b-4 border-foreground py-16 px-0 md:px-6">
+      <div className="container mx-auto max-w-6xl px-4 md:px-0">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 px-4 md:px-0">
           <h2 className="
             font-heading 
             text-4xl md:text-5xl lg:text-6xl 
