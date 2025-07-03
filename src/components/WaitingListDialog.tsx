@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Users, Phone, Mail, User, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -123,13 +124,15 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
       
       <DialogContent className="
         max-w-2xl 
-        max-h-[85vh] 
+        max-h-[90vh] 
+        h-[90vh]
         border-4 
         border-foreground 
         shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
         bg-white
         p-0
-        overflow-hidden
+        flex
+        flex-col
       ">
         <DialogHeader className="bg-primary border-b-4 border-foreground p-6 flex-shrink-0">
           <DialogTitle className="font-black text-2xl uppercase text-primary-foreground text-center">
@@ -140,7 +143,7 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
           </p>
         </DialogHeader>
 
-        <div className="overflow-y-auto flex-1 p-6">
+        <ScrollArea className="flex-1 p-6">
           {isSuccess ? (
             <div className="text-center py-8">
               <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-6" />
@@ -337,38 +340,40 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
               </Card>
 
               {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="
-                  w-full
-                  bg-primary 
-                  hover:bg-primary-hover
-                  border-4 
-                  border-foreground 
-                  shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
-                  font-black 
-                  text-lg 
-                  px-8 
-                  py-6
-                  uppercase
-                  hover:translate-x-1 
-                  hover:translate-y-1 
-                  hover:shadow-none 
-                  transition-all
-                  disabled:opacity-50
-                  disabled:cursor-not-allowed
-                "
-              >
-                {isSubmitting ? 'REGISTERING...' : '🚀 JOIN WAITING LIST NOW!'}
-              </Button>
+              <div className="pb-4">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="
+                    w-full
+                    bg-primary 
+                    hover:bg-primary-hover
+                    border-4 
+                    border-foreground 
+                    shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
+                    font-black 
+                    text-lg 
+                    px-8 
+                    py-6
+                    uppercase
+                    hover:translate-x-1 
+                    hover:translate-y-1 
+                    hover:shadow-none 
+                    transition-all
+                    disabled:opacity-50
+                    disabled:cursor-not-allowed
+                  "
+                >
+                  {isSubmitting ? 'REGISTERING...' : '🚀 JOIN WAITING LIST NOW!'}
+                </Button>
 
-              <p className="text-center font-body text-sm font-semibold text-foreground/70">
-                We'll contact you within 24 hours with next steps!
-              </p>
+                <p className="text-center font-body text-sm font-semibold text-foreground/70 mt-4">
+                  We'll contact you within 24 hours with next steps!
+                </p>
+              </div>
             </form>
           )}
-        </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
