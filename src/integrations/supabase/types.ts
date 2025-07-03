@@ -75,6 +75,39 @@ export type Database = {
         }
         Relationships: []
       }
+      waiting_list: {
+        Row: {
+          age_groups: string[]
+          children_count: string
+          coding_experience: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          whatsapp: string
+        }
+        Insert: {
+          age_groups: string[]
+          children_count: string
+          coding_experience: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          whatsapp: string
+        }
+        Update: {
+          age_groups?: string[]
+          children_count?: string
+          coding_experience?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          whatsapp?: string
+        }
+        Relationships: []
+      }
       week_activities: {
         Row: {
           activity_type: Database["public"]["Enums"]["activity_type"]
