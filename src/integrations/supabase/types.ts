@@ -9,6 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      founders: {
+        Row: {
+          created_at: string
+          extended_bio: string
+          id: string
+          image_url: string
+          is_active: boolean
+          linkedin_url: string | null
+          name: string
+          order_index: number
+          short_bio: string
+          title: string
+          twitter_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          extended_bio: string
+          id?: string
+          image_url: string
+          is_active?: boolean
+          linkedin_url?: string | null
+          name: string
+          order_index?: number
+          short_bio: string
+          title: string
+          twitter_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          extended_bio?: string
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          linkedin_url?: string | null
+          name?: string
+          order_index?: number
+          short_bio?: string
+          title?: string
+          twitter_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       week_activities: {
         Row: {
           activity_type: Database["public"]["Enums"]["activity_type"]

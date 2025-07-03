@@ -1,9 +1,51 @@
 
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import FounderCard from './FounderCard';
-import { foundersData } from '@/data/foundersData';
+
+interface Founder {
+  id: string;
+  name: string;
+  title: string;
+  short_bio: string;
+  extended_bio: string;
+  image_url: string;
+  linkedin_url: string;
+  twitter_url: string;
+  order_index: number;
+  is_active: boolean;
+}
 
 const FoundersSection = () => {
+  const { data: founders } = useQuery({
+    queryKey: ['founders-public'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('founders')
+        .select('*')
+        .eq('is_active', true)
+        .order('order_index');
+      
+      if (error) throw error;
+      return data as Founder[];
+    }
+  });
+
+  // Convert database founder to the format expected by FounderCard
+  const convertFounder = (founder: Founder) => ({
+    id: parseInt(founder.id.slice(-8), 16), // Convert UUID to number for compatibility
+    name: founder.name,
+    title: founder.title,
+    shortBio: founder.short_bio,
+    extendedBio: founder.extended_bio,
+    image: founder.image_url,
+    socialMedia: {
+      linkedin: founder.linkedin_url,
+      twitter: founder.twitter_url
+    }
+  });
+
   return (
     <section className="bg-accent-purple border-b-4 border-foreground py-16 px-6">
       <div className="container mx-auto max-w-6xl">
@@ -38,8 +80,8 @@ const FoundersSection = () => {
 
         {/* Founders Grid */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {foundersData.map((founder) => (
-            <FounderCard key={founder.id} founder={founder} />
+          {founders?.map((founder) => (
+            <FounderCard key={founder.id} founder={convertFounder(founder)} />
           ))}
         </div>
 
