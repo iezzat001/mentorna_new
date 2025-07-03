@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -77,34 +76,50 @@ const FoundersSection = () => {
                   hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
                   hover:scale-[1.02] 
                   transition-all
-                  duration-200
+                  duration-300
+                  overflow-hidden
+                  h-80
+                  relative
+                  group
                 ">
-                  <CardContent className="p-8">
-                    <div className="text-center">
-                      <div className="
-                        w-32 
-                        h-32 
-                        mx-auto 
-                        mb-6 
-                        border-4 
-                        border-foreground 
-                        shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-                        overflow-hidden
-                        bg-accent-yellow
-                      ">
-                        <img 
-                          src={founder.image} 
-                          alt={founder.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      
+                  <CardContent className="p-0 h-full relative">
+                    {/* Background Image */}
+                    <div className="
+                      absolute 
+                      inset-0 
+                      w-full 
+                      h-full
+                    ">
+                      <img 
+                        src={founder.image} 
+                        alt={founder.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    {/* Sliding Text Overlay */}
+                    <div className="
+                      absolute 
+                      inset-x-0 
+                      bottom-0 
+                      bg-gradient-to-t 
+                      from-foreground 
+                      via-foreground/90 
+                      to-transparent 
+                      text-background 
+                      p-6 
+                      transform 
+                      translate-y-full 
+                      group-hover:translate-y-0 
+                      transition-transform 
+                      duration-500 
+                      ease-out
+                    ">
                       <h3 className="
                         font-heading 
                         text-2xl 
                         font-black 
                         uppercase 
-                        text-foreground 
                         mb-2
                       ">
                         {founder.name}
@@ -118,7 +133,7 @@ const FoundersSection = () => {
                         px-4 
                         py-2 
                         border-2 
-                        border-foreground 
+                        border-background 
                         inline-block 
                         mb-4
                       ">
@@ -128,15 +143,14 @@ const FoundersSection = () => {
                       <p className="
                         font-body 
                         text-base 
-                        font-semibold 
-                        text-foreground 
+                        font-medium 
                         leading-relaxed
+                        mb-4
                       ">
                         "{founder.shortBio}"
                       </p>
                       
                       <div className="
-                        mt-6 
                         bg-primary 
                         text-primary-foreground 
                         font-black 
@@ -145,12 +159,31 @@ const FoundersSection = () => {
                         py-2 
                         text-sm 
                         border-2 
-                        border-foreground 
+                        border-background 
                         inline-block
-                        shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                        shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)]
                       ">
                         CLICK TO LEARN MORE
                       </div>
+                    </div>
+
+                    {/* Name overlay that's always visible */}
+                    <div className="
+                      absolute 
+                      bottom-4 
+                      left-4 
+                      bg-foreground/80 
+                      text-background 
+                      px-3 
+                      py-1 
+                      font-black 
+                      uppercase 
+                      text-sm
+                      group-hover:opacity-0
+                      transition-opacity
+                      duration-300
+                    ">
+                      {founder.name}
                     </div>
                   </CardContent>
                 </Card>
