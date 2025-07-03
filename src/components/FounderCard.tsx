@@ -51,7 +51,7 @@ const FounderCard = ({ founder }: FounderCardProps) => {
               <img 
                 src={founder.image} 
                 alt={founder.name}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-contain object-center bg-accent-yellow"
               />
             </div>
             
