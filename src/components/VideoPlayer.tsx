@@ -3,10 +3,11 @@ import React from 'react';
 
 interface VideoPlayerProps {
   videoUrl: string;
+  thumbnailUrl?: string;
   className?: string;
 }
 
-const VideoPlayer = ({ videoUrl, className = "" }: VideoPlayerProps) => {
+const VideoPlayer = ({ videoUrl, thumbnailUrl, className = "" }: VideoPlayerProps) => {
   return (
     <div className={`
       border-4 
@@ -19,7 +20,7 @@ const VideoPlayer = ({ videoUrl, className = "" }: VideoPlayerProps) => {
       <video 
         controls 
         className="w-full h-48 object-cover"
-        poster="/placeholder.svg"
+        poster={thumbnailUrl || "/placeholder.svg"}
       >
         <source src={videoUrl} type="video/quicktime" />
         <source src={videoUrl} type="video/mp4" />

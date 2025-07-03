@@ -13,6 +13,7 @@ interface SuccessStoryCardProps {
   headerColor: string;
   icon: LucideIcon;
   videoUrl: string;
+  thumbnailUrl?: string;
   description: string;
 }
 
@@ -24,6 +25,7 @@ const SuccessStoryCard = ({
   headerColor,
   icon: Icon,
   videoUrl,
+  thumbnailUrl,
   description
 }: SuccessStoryCardProps) => {
   return (
@@ -72,7 +74,7 @@ const SuccessStoryCard = ({
       </CardHeader>
       
       <CardContent className="p-6">
-        <VideoPlayer videoUrl={videoUrl} />
+        <VideoPlayer videoUrl={videoUrl} thumbnailUrl={thumbnailUrl} />
         
         <p className="font-body text-base font-semibold mb-6 leading-relaxed">
           {description}
