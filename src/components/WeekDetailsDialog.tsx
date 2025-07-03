@@ -54,7 +54,7 @@ const WeekDetailsDialog = ({ week, children }: WeekDetailsDialogProps) => {
         {children}
       </DialogTrigger>
       <DialogContent className="
-        w-[95vw] 
+        w-[calc(95vw-24px)] 
         max-w-4xl 
         max-h-[90vh] 
         overflow-y-auto
