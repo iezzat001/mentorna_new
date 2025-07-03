@@ -9,7 +9,144 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      week_activities: {
+        Row: {
+          activity_type: Database["public"]["Enums"]["activity_type"]
+          created_at: string
+          description: string
+          duration: string
+          id: string
+          order_index: number
+          title: string
+          updated_at: string
+          week_id: string
+        }
+        Insert: {
+          activity_type: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          description: string
+          duration: string
+          id?: string
+          order_index?: number
+          title: string
+          updated_at?: string
+          week_id: string
+        }
+        Update: {
+          activity_type?: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          description?: string
+          duration?: string
+          id?: string
+          order_index?: number
+          title?: string
+          updated_at?: string
+          week_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "week_activities_week_id_fkey"
+            columns: ["week_id"]
+            isOneToOne: false
+            referencedRelation: "weeks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      week_outcomes: {
+        Row: {
+          created_at: string
+          id: string
+          outcome_text: string
+          updated_at: string
+          week_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          outcome_text: string
+          updated_at?: string
+          week_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          outcome_text?: string
+          updated_at?: string
+          week_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "week_outcomes_week_id_fkey"
+            columns: ["week_id"]
+            isOneToOne: false
+            referencedRelation: "weeks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      week_skills: {
+        Row: {
+          created_at: string
+          id: string
+          order_index: number
+          skill_name: string
+          week_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          skill_name: string
+          week_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          skill_name?: string
+          week_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "week_skills_week_id_fkey"
+            columns: ["week_id"]
+            isOneToOne: false
+            referencedRelation: "weeks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      weeks: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          phase: Database["public"]["Enums"]["phase_type"]
+          title: string
+          updated_at: string
+          week_number: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          phase: Database["public"]["Enums"]["phase_type"]
+          title: string
+          updated_at?: string
+          week_number: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          phase?: Database["public"]["Enums"]["phase_type"]
+          title?: string
+          updated_at?: string
+          week_number?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +155,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      activity_type: "assignment" | "workshop" | "seminar" | "project"
+      phase_type: "Foundation Building" | "Advanced Implementation"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +271,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      activity_type: ["assignment", "workshop", "seminar", "project"],
+      phase_type: ["Foundation Building", "Advanced Implementation"],
+    },
   },
 } as const

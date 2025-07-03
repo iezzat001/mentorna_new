@@ -3,61 +3,44 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import PhaseCard from '@/components/PhaseCard';
 import WaitingListDialog from './WaitingListDialog';
+import { useWeeksData } from '@/hooks/useWeeksData';
+import { Loader2 } from 'lucide-react';
 
 const ProgramSection = () => {
-  const phaseOneWeeks = [
-    {
-      week: 1,
-      title: "The Entrepreneurial Mindset",
-      description: "Learn to think like a founder and spot problems that become business ideas.",
-      phase: "Foundation Building"
-    },
-    {
-      week: 2,
-      title: "From Idea to Digital Blueprint",
-      description: "Turn ideas into clear plans using AI tools for brainstorming and structure.",
-      phase: "Foundation Building"
-    },
-    {
-      week: 3,
-      title: "Build a Real App or Website",
-      description: "Build a working app or website with drag-and-drop tools. No coding required.",
-      phase: "Foundation Building"
-    },
-    {
-      week: 4,
-      title: "Talk to Customers",
-      description: "Validate ideas by asking the right questions and listening to real feedback.",
-      phase: "Foundation Building"
-    }
-  ];
+  const { data: weeks, isLoading, error } = useWeeksData();
 
-  const phaseTwoWeeks = [
-    {
-      week: 5,
-      title: "Improve It with AI",
-      description: "Enhance apps with smart design and features using AI tools.",
-      phase: "Advanced Implementation"
-    },
-    {
-      week: 6,
-      title: "Test & Get Feedback",
-      description: "Test products with real users and learn to iterate based on feedback.",
-      phase: "Advanced Implementation"
-    },
-    {
-      week: 7,
-      title: "Pitch Like a CEO",
-      description: "Master storytelling and confidence to present like a young entrepreneur.",
-      phase: "Advanced Implementation"
-    },
-    {
-      week: 8,
-      title: "Launch Day",
-      description: "Showcase products in a final demo and celebrate the journey from idea to business.",
-      phase: "Advanced Implementation"
-    }
-  ];
+  if (isLoading) {
+    return (
+      <section className="bg-background border-b-2 sm:border-b-4 border-foreground py-8 sm:py-12 lg:py-16 px-4 sm:px-6">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Loader2 className="h-6 w-6 animate-spin" />
+              <span className="font-semibold">Loading course content...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="bg-background border-b-2 sm:border-b-4 border-foreground py-8 sm:py-12 lg:py-16 px-4 sm:px-6">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center">
+            <div className="bg-red-100 border-4 border-red-500 p-4 rounded">
+              <p className="font-bold text-red-700">Failed to load course content</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Separate weeks by phase
+  const phaseOneWeeks = weeks?.filter(week => week.phase === 'Foundation Building') || [];
+  const phaseTwoWeeks = weeks?.filter(week => week.phase === 'Advanced Implementation') || [];
 
   return (
     <section className="bg-background border-b-2 sm:border-b-4 border-foreground py-8 sm:py-12 lg:py-16 px-4 sm:px-6">
