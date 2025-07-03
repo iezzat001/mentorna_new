@@ -37,7 +37,9 @@ export const useWeeksData = () => {
         description: week.description,
         phase: week.phase
       }));
-    }
+    },
+    staleTime: 0, // Force fresh data
+    cacheTime: 0  // Don't cache the data
   });
 };
 
@@ -88,6 +90,10 @@ export const useWeekDetails = (weekNumber: number) => {
         })) || [],
         skills: skillsRes.data?.map(skill => skill.skill_name) || []
       };
-    }
+    },
+    staleTime: 0, // Force fresh data
+    cacheTime: 0, // Don't cache the data
+    refetchOnWindowFocus: true,
+    refetchOnMount: true
   });
 };

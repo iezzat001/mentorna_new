@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, Target, Users, Presentation, CheckCircle, Clock, BookOpen, Lightbulb, Loader2 } from 'lucide-react';
 import { useWeekDetails } from '@/hooks/useWeeksData';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface WeekDetailsDialogProps {
   week: {
@@ -17,11 +18,18 @@ interface WeekDetailsDialogProps {
 }
 
 const WeekDetailsDialog = ({ week, children }: WeekDetailsDialogProps) => {
-  const { data: weekData, isLoading, error } = useWeekDetails(week.week);
+  const queryClient = useQueryClient();
+  const { data: weekData, isLoading, error, refetch } = useWeekDetails(week.week);
+
+  const handleDialogOpen = () => {
+    // Invalidate and refetch the query when dialog opens
+    queryClient.invalidateQueries({ queryKey: ['week-details-data', week.week] });
+    refetch();
+  };
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild onClick={handleDialogOpen}>
         {children}
       </DialogTrigger>
       <DialogContent className="
