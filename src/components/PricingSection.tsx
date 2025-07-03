@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -47,8 +46,8 @@ const PricingSection = () => {
             hover:scale-[1.02] 
             transition-all
             duration-200
-            max-w-lg
             w-full
+            sm:max-w-lg
           ">
             <CardHeader className="bg-primary border-b-4 border-foreground text-center">
               <div className="space-y-4">
