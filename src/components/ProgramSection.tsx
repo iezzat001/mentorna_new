@@ -1,7 +1,10 @@
 
 import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import PhaseCard from '@/components/PhaseCard';
+import { ArrowRight, Calendar, Target, Users, Presentation } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import WeekDetailsDialog from '@/components/WeekDetailsDialog';
 import WaitingListDialog from './WaitingListDialog';
 
 const ProgramSection = () => {
@@ -59,18 +62,79 @@ const ProgramSection = () => {
     }
   ];
 
+  const PhaseCard = ({ weeks, phaseTitle, phaseSubtitle, phaseColor }) => (
+    <Card className="
+      border-2 sm:border-4 
+      border-foreground 
+      shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
+      sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
+      bg-white
+      hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
+      sm:hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
+      hover:scale-[1.01] sm:hover:scale-[1.02] 
+      transition-all
+      duration-200
+    ">
+      <CardHeader className={`${phaseColor} border-b-2 sm:border-b-4 border-foreground p-4 sm:p-6`}>
+        <CardTitle className="font-black text-lg sm:text-xl lg:text-2xl uppercase text-foreground leading-tight">
+          {phaseTitle}
+        </CardTitle>
+        <p className="font-body text-xs sm:text-sm font-semibold text-foreground/80 mt-1">
+          {phaseSubtitle}
+        </p>
+      </CardHeader>
+      
+      <CardContent className="p-3 sm:p-6">
+        <div className="grid gap-2 sm:gap-4">
+          {weeks.map((week) => (
+            <WeekDetailsDialog key={week.week} week={week}>
+              <Button
+                variant="outline"
+                className="
+                  w-full 
+                  justify-between 
+                  h-auto 
+                  p-3 sm:p-4 
+                  border-2 sm:border-4 
+                  border-foreground 
+                  shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
+                  hover:translate-x-1 
+                  hover:translate-y-1 
+                  hover:shadow-none 
+                  transition-all
+                  bg-white
+                  hover:bg-accent-yellow/20
+                "
+              >
+                <div className="text-left flex-1">
+                  <div className="font-black text-xs sm:text-sm uppercase mb-1 leading-tight">
+                    WEEK {week.week}: {week.title}
+                  </div>
+                  <div className="font-body text-xs text-foreground/70 leading-tight">
+                    {week.description}
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 flex-shrink-0" />
+              </Button>
+            </WeekDetailsDialog>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
-    <section className="bg-background border-b-2 sm:border-b-4 border-foreground py-6 sm:py-8 lg:py-12 xl:py-16 px-3 sm:px-4 lg:px-6">
+    <section className="bg-background border-b-2 sm:border-b-4 border-foreground py-8 sm:py-12 lg:py-16 px-4 sm:px-6">
       <div className="container mx-auto max-w-6xl">
         {/* Section Header */}
-        <div className="text-center mb-6 sm:mb-8 lg:mb-12 xl:mb-16">
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h2 className="
             font-heading 
-            text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 
+            text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 
             font-black 
             uppercase 
             text-foreground 
-            mb-3 sm:mb-4 lg:mb-6
+            mb-4 sm:mb-6
             leading-tight
             px-2
           ">
@@ -81,7 +145,7 @@ const ProgramSection = () => {
             text-primary-foreground 
             font-black 
             uppercase 
-            px-3 sm:px-4 lg:px-6 
+            px-4 sm:px-6 
             py-2 
             text-xs sm:text-sm 
             border-2 sm:border-4 
@@ -89,14 +153,13 @@ const ProgramSection = () => {
             inline-block
             shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
             sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-            mx-2
           ">
             TWO INTENSIVE PHASES
           </div>
         </div>
 
         {/* Two Phase Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 xl:gap-8 mb-6 sm:mb-8 lg:mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           <PhaseCard 
             weeks={phaseOneWeeks}
             phaseTitle="PHASE I: FOUNDATION"
@@ -113,7 +176,7 @@ const ProgramSection = () => {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center px-2">
+        <div className="text-center mt-8 sm:mt-12 px-4">
           <WaitingListDialog>
             <Button className="
               bg-primary 
@@ -124,7 +187,7 @@ const ProgramSection = () => {
               sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
               font-black 
               text-sm sm:text-base lg:text-lg 
-              px-4 sm:px-6 lg:px-8 
+              px-6 sm:px-8 
               py-3 sm:py-4
               uppercase
               hover:translate-x-1 
@@ -132,7 +195,6 @@ const ProgramSection = () => {
               hover:shadow-none 
               transition-all
               w-full sm:w-auto
-              max-w-sm sm:max-w-none
             ">
               START YOUR JOURNEY TODAY!
             </Button>
