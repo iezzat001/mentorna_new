@@ -4,6 +4,7 @@ import SuccessStories from "@/components/SuccessStories";
 import ProgramSection from "@/components/ProgramSection";
 import PricingSection from "@/components/PricingSection";
 import FoundersSection from "@/components/FoundersSection";
+import ComingSoon from "@/components/ComingSoon";
 import SecondarySection from "@/components/SecondarySection";
 
 const Index = () => {
@@ -14,6 +15,7 @@ const Index = () => {
       <ProgramSection />
       <PricingSection />
       <FoundersSection />
+      <ComingSoon />
       <SecondarySection />
     </div>
   );
