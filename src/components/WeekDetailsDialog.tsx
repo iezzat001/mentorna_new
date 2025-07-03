@@ -54,6 +54,7 @@ const WeekDetailsDialog = ({ week, children }: WeekDetailsDialogProps) => {
         {children}
       </DialogTrigger>
       <DialogContent className="
+        w-[95vw] 
         max-w-4xl 
         max-h-[90vh] 
         overflow-y-auto
@@ -62,6 +63,7 @@ const WeekDetailsDialog = ({ week, children }: WeekDetailsDialogProps) => {
         shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]
         bg-white
         p-0
+        mx-auto
       ">
         <DialogHeader className="p-6 border-b-4 border-foreground bg-accent-yellow">
           <div className="flex items-center gap-4">
