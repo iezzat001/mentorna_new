@@ -31,16 +31,21 @@ const SuccessStoryCard = ({
 }: SuccessStoryCardProps) => {
   return (
     <Card className="
-      border-4 
+      w-screen md:w-auto
+      -mx-6 md:mx-0
+      border-2 md:border-4 
       border-foreground 
-      shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
+      shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
+      md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
       bg-white 
-      hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
-      hover:scale-[1.02] 
+      hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
+      md:hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
+      hover:scale-[1.01] md:hover:scale-[1.02] 
       transition-all 
       duration-200
+      rounded-none md:rounded-xl
     ">
-      <CardHeader className={`${headerColor} border-b-4 border-foreground p-6`}>
+      <CardHeader className={`${headerColor} border-b-2 md:border-b-4 border-foreground p-6`}>
         <div className="flex items-center gap-4 mb-4">
           <div className="
             bg-foreground 
@@ -52,7 +57,7 @@ const SuccessStoryCard = ({
             <Icon className="w-6 h-6" />
           </div>
           <div>
-            <CardTitle className="font-black text-2xl uppercase text-foreground">
+            <CardTitle className="font-black text-xl md:text-2xl uppercase text-foreground">
               {emoji} {name}
             </CardTitle>
             <div className={`
