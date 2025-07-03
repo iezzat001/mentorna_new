@@ -31,7 +31,7 @@ export const foundersData: Founder[] = [
     title: "Tech Entrepreneur, & 40 under 40 by HBJ",
     shortBio: "I believe our children have the brilliance to not just adapt, but to lead.",
     extendedBio: "I believe our children have the brilliance to not just adapt, but to lead. My role is to help spark that.",
-    image: "https://d2mp3ttz3u5gci.cloudfront.net/islam_entrepreneur .png",
+    image: "https://d2mp3ttz3u5gci.cloudfront.net/islam_entrepreneur.png",
     socialMedia: {
       linkedin: "#",
       twitter: "#"
