@@ -4,19 +4,27 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Check, Gift, Users, BookOpen, Award, Lock, Download } from 'lucide-react';
 import WaitingListDialog from './WaitingListDialog';
-
 const PricingSection = () => {
-  const features = [
-    { icon: <BookOpen className="h-5 w-5" />, text: "4 Live Expert Masterclasses" },
-    { icon: <Users className="h-5 w-5" />, text: "8 Weekly Parent & Kid Packages" },
-    { icon: <Award className="h-5 w-5" />, text: "AI Innovators Challenge Entry" },
-    { icon: <Users className="h-5 w-5" />, text: "Private Parents Community Access" },
-    { icon: <Lock className="h-5 w-5" />, text: "Lifetime Access to All Materials" },
-    { icon: <Download className="h-5 w-5" />, text: "Digital AI Toolkit (First 30 only)" }
-  ];
-
-  return (
-    <section className="bg-accent-yellow border-b-4 border-foreground py-16 px-6">
+  const features = [{
+    icon: <BookOpen className="h-5 w-5" />,
+    text: "4 Live Expert Masterclasses"
+  }, {
+    icon: <Users className="h-5 w-5" />,
+    text: "8 Weekly Parent & Kid Packages"
+  }, {
+    icon: <Award className="h-5 w-5" />,
+    text: "AI Innovators Challenge Entry"
+  }, {
+    icon: <Users className="h-5 w-5" />,
+    text: "Private Parents Community Access"
+  }, {
+    icon: <Lock className="h-5 w-5" />,
+    text: "Lifetime Access to All Materials"
+  }, {
+    icon: <Download className="h-5 w-5" />,
+    text: "Digital AI Toolkit (First 30 only)"
+  }];
+  return <section className="bg-accent-yellow border-b-4 border-foreground px-0 py-0">
       <div className="container mx-auto max-w-4xl">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -46,8 +54,8 @@ const PricingSection = () => {
             hover:scale-[1.02] 
             transition-all
             duration-200
+            max-w-lg
             w-full
-            sm:max-w-lg
           ">
             <CardHeader className="bg-primary border-b-4 border-foreground text-center">
               <div className="space-y-4">
@@ -113,8 +121,7 @@ const PricingSection = () => {
                 </div>
                 
                 <div className="space-y-4">
-                  {features.map((feature, index) => (
-                    <div key={index} className="
+                  {features.map((feature, index) => <div key={index} className="
                       flex 
                       items-center 
                       gap-4 
@@ -136,8 +143,7 @@ const PricingSection = () => {
                       <span className="font-body text-base font-semibold text-foreground">
                         ✓ {feature.text}
                       </span>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
               </div>
 
@@ -173,8 +179,6 @@ const PricingSection = () => {
           </Card>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default PricingSection;
