@@ -20,6 +20,11 @@ interface WeekEditorProps {
 const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
   const queryClient = useQueryClient();
   const [isSaving, setIsSaving] = useState(false);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    phase: 'Foundation Building' as 'Foundation Building' | 'Advanced Implementation'
+  });
 
   // Fetch week data with all related content
   const { data: weekData, isLoading } = useQuery({
@@ -51,6 +56,13 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
           .single()
       ]);
 
+      // Set form data when week data is loaded
+      setFormData({
+        title: week.title,
+        description: week.description,
+        phase: week.phase as 'Foundation Building' | 'Advanced Implementation'
+      });
+
       return {
         week,
         activities: activitiesRes.data || [],
@@ -62,7 +74,7 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
 
   // Update week basic info
   const updateWeekMutation = useMutation({
-    mutationFn: async (updates: { title: string; description: string; phase: string }) => {
+    mutationFn: async (updates: { title: string; description: string; phase: 'Foundation Building' | 'Advanced Implementation' }) => {
       const { error } = await supabase
         .from('weeks')
         .update(updates)
@@ -141,13 +153,14 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
     }
   });
 
-  const handleSaveWeek = async (formData: FormData) => {
+  const handleSaveWeek = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSaving(true);
     try {
       await updateWeekMutation.mutateAsync({
-        title: formData.get('title') as string,
-        description: formData.get('description') as string,
-        phase: formData.get('phase') as string,
+        title: formData.title,
+        description: formData.description,
+        phase: formData.phase,
       });
     } finally {
       setIsSaving(false);
@@ -184,12 +197,12 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
 
           {/* Basic Info Tab */}
           <TabsContent value="basic" className="space-y-4">
-            <form action={handleSaveWeek} className="space-y-4">
+            <form onSubmit={handleSaveWeek} className="space-y-4">
               <div>
                 <Label className="font-bold text-sm uppercase mb-2 block">Week Title</Label>
                 <Input
-                  name="title"
-                  defaultValue={weekData?.week.title}
+                  value={formData.title}
+                  onChange={(e) => setFormData({...formData, title: e.target.value})}
                   className="border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-semibold"
                 />
               </div>
@@ -197,15 +210,15 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
               <div>
                 <Label className="font-bold text-sm uppercase mb-2 block">Description</Label>
                 <Textarea
-                  name="description"
-                  defaultValue={weekData?.week.description}
+                  value={formData.description}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
                   className="border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-semibold min-h-[100px]"
                 />
               </div>
               
               <div>
                 <Label className="font-bold text-sm uppercase mb-2 block">Phase</Label>
-                <Select name="phase" defaultValue={weekData?.week.phase}>
+                <Select value={formData.phase} onValueChange={(value: 'Foundation Building' | 'Advanced Implementation') => setFormData({...formData, phase: value})}>
                   <SelectTrigger className="border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-semibold">
                     <SelectValue />
                   </SelectTrigger>
