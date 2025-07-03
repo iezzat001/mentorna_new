@@ -1,10 +1,7 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Calendar, Target, Users, Presentation } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import WeekDetailsDialog from '@/components/WeekDetailsDialog';
+import PhaseCard from '@/components/PhaseCard';
 import WaitingListDialog from './WaitingListDialog';
 
 const ProgramSection = () => {
@@ -61,121 +58,6 @@ const ProgramSection = () => {
       phase: "Advanced Implementation"
     }
   ];
-
-  // Mobile Week Button Component
-  const MobileWeekButton = ({ week }) => (
-    <WeekDetailsDialog week={week}>
-      <Button
-        variant="outline"
-        className="
-          w-full 
-          h-auto 
-          p-2
-          border-2 
-          border-foreground 
-          shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
-          hover:translate-x-1 
-          hover:translate-y-1 
-          hover:shadow-none 
-          transition-all
-          bg-white
-          hover:bg-accent-yellow/20
-          text-left
-          flex
-          flex-col
-          items-start
-          gap-0.5
-          overflow-hidden
-        "
-      >
-        <div className="font-black text-[10px] uppercase leading-tight break-words">
-          WEEK {week.week}
-        </div>
-        <div className="font-black text-[10px] uppercase leading-tight text-foreground/90 break-words text-wrap">
-          {week.title}
-        </div>
-        <div className="font-body text-[9px] text-foreground/70 leading-tight break-words text-wrap">
-          {week.description}
-        </div>
-      </Button>
-    </WeekDetailsDialog>
-  );
-
-  // Desktop Week Button Component  
-  const DesktopWeekButton = ({ week }) => (
-    <WeekDetailsDialog week={week}>
-      <Button
-        variant="outline"
-        className="
-          w-full 
-          justify-between 
-          h-auto 
-          p-3 sm:p-4 
-          border-2 sm:border-4 
-          border-foreground 
-          shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
-          hover:translate-x-1 
-          hover:translate-y-1 
-          hover:shadow-none 
-          transition-all
-          bg-white
-          hover:bg-accent-yellow/20
-        "
-      >
-        <div className="text-left flex-1">
-          <div className="font-black text-xs sm:text-sm uppercase mb-1 leading-tight">
-            WEEK {week.week}: {week.title}
-          </div>
-          <div className="font-body text-xs text-foreground/70 leading-tight">
-            {week.description}
-          </div>
-        </div>
-        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 flex-shrink-0" />
-      </Button>
-    </WeekDetailsDialog>
-  );
-
-  const PhaseCard = ({ weeks, phaseTitle, phaseSubtitle, phaseColor }) => (
-    <Card className="
-      border-2 sm:border-4 
-      border-foreground 
-      shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
-      sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
-      bg-white
-      hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
-      sm:hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
-      hover:scale-[1.01] sm:hover:scale-[1.02] 
-      transition-all
-      duration-200
-    ">
-      <CardHeader className={`${phaseColor} border-b-2 sm:border-b-4 border-foreground p-4 sm:p-6`}>
-        <CardTitle className="font-black text-lg sm:text-xl lg:text-2xl uppercase text-foreground leading-tight">
-          {phaseTitle}
-        </CardTitle>
-        <p className="font-body text-xs sm:text-sm font-semibold text-foreground/80 mt-1">
-          {phaseSubtitle}
-        </p>
-      </CardHeader>
-      
-      <CardContent className="p-3 sm:p-6">
-        <div className="grid gap-2 sm:gap-4">
-          {weeks.map((week) => (
-            <div key={week.week}>
-              {/* Mobile Layout */}
-              <div className="block sm:hidden">
-                <MobileWeekButton week={week} />
-              </div>
-              
-              {/* Desktop Layout */}
-              <div className="hidden sm:block">
-                <DesktopWeekButton week={week} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
 
   return (
     <section className="bg-background border-b-2 sm:border-b-4 border-foreground py-8 sm:py-12 lg:py-16 px-4 sm:px-6">
