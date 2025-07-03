@@ -187,8 +187,6 @@ const SuccessStories = () => {
                   <source src="https://d2mp3ttz3u5gci.cloudfront.net/omar.MOV" type="video/quicktime" />
                   <source src="https://d2mp3ttz3u5gci.cloudfront.net/omar.MOV" type="video/mp4" />
                   Your browser does not support the video tag.
-                </source>
-                  Your browser does not support the video tag.
                 </video>
               </div>
               
