@@ -30,18 +30,19 @@ const PhaseCard = ({ weeks, phaseTitle, phaseSubtitle, phaseColor }: PhaseCardPr
       hover:scale-[1.01] sm:hover:scale-[1.02] 
       transition-all
       duration-200
+      overflow-hidden
     ">
-      <CardHeader className={`${phaseColor} border-b-2 sm:border-b-4 border-foreground p-4 sm:p-6`}>
-        <CardTitle className="font-black text-lg sm:text-xl lg:text-2xl uppercase text-foreground leading-tight">
+      <CardHeader className={`${phaseColor} border-b-2 sm:border-b-4 border-foreground p-3 sm:p-4 lg:p-6`}>
+        <CardTitle className="font-black text-base sm:text-lg lg:text-xl xl:text-2xl uppercase text-foreground leading-tight">
           {phaseTitle}
         </CardTitle>
-        <p className="font-body text-xs sm:text-sm font-semibold text-foreground/80 mt-1">
+        <p className="font-body text-xs sm:text-sm font-semibold text-foreground/80 mt-1 leading-tight">
           {phaseSubtitle}
         </p>
       </CardHeader>
       
-      <CardContent className="p-3 sm:p-6">
-        <div className="grid gap-2 sm:gap-4">
+      <CardContent className="p-2 sm:p-4 lg:p-6">
+        <div className="grid gap-2 sm:gap-3">
           {weeks.map((week) => (
             <WeekButton key={week.week} week={week} />
           ))}

@@ -16,13 +16,21 @@ interface WeekButtonProps {
 }
 
 const WeekButton = ({ week }: WeekButtonProps) => {
+  // Create a shorter mobile-friendly description
+  const getMobileDescription = (description: string) => {
+    const words = description.split(' ');
+    if (words.length > 8) {
+      return words.slice(0, 8).join(' ') + '...';
+    }
+    return description;
+  };
+
   return (
     <WeekDetailsDialog week={week}>
       <Button
         variant="outline"
         className="
           w-full 
-          justify-between 
           h-auto 
           p-3 sm:p-4 
           border-2 sm:border-4 
@@ -34,17 +42,48 @@ const WeekButton = ({ week }: WeekButtonProps) => {
           transition-all
           bg-white
           hover:bg-accent-yellow/20
+          text-left
+          flex
+          items-start
+          gap-2 sm:gap-3
         "
       >
-        <div className="text-left flex-1">
-          <div className="font-black text-xs sm:text-sm uppercase mb-1 leading-tight">
-            WEEK {week.week}: {week.title}
+        {/* Week number circle - more prominent on mobile */}
+        <div className="
+          flex-shrink-0
+          w-8 h-8 sm:w-10 sm:h-10
+          bg-foreground
+          text-background
+          rounded-full
+          flex
+          items-center
+          justify-center
+          font-black
+          text-xs sm:text-sm
+          mt-1
+        ">
+          {week.week}
+        </div>
+        
+        {/* Content section */}
+        <div className="flex-1 min-w-0 pr-2">
+          <div className="font-black text-sm sm:text-base uppercase mb-1 leading-tight">
+            {week.title}
           </div>
-          <div className="font-body text-xs text-foreground/70 leading-tight">
+          
+          {/* Mobile description - shorter and hidden on very small screens */}
+          <div className="hidden xs:block sm:hidden font-body text-xs text-foreground/70 leading-tight">
+            {getMobileDescription(week.description)}
+          </div>
+          
+          {/* Desktop description */}
+          <div className="hidden sm:block font-body text-sm text-foreground/70 leading-tight">
             {week.description}
           </div>
         </div>
-        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 flex-shrink-0" />
+        
+        {/* Arrow */}
+        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 mt-2" />
       </Button>
     </WeekDetailsDialog>
   );
