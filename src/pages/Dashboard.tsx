@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { AppSidebar } from '@/components/AppSidebar';
 import {
   Breadcrumb,
@@ -19,9 +20,28 @@ import CourseContentManager from '@/components/dashboard/CourseContentManager';
 import FoundersManager from '@/components/dashboard/FoundersManager';
 import WaitingListManager from '@/components/dashboard/WaitingListManager';
 import NewsletterManager from '@/components/dashboard/NewsletterManager';
+import { migrateWeekData } from '@/utils/migrateWeekData';
+import { toast } from 'sonner';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [isMigrating, setIsMigrating] = useState(false);
+
+  const handleMigrateWeekData = async () => {
+    setIsMigrating(true);
+    try {
+      const success = await migrateWeekData();
+      if (success) {
+        toast.success('Week data migrated successfully! All detailed content has been restored.');
+      } else {
+        toast.error('Migration failed. Please check the console for details.');
+      }
+    } catch (error) {
+      toast.error('Migration failed: ' + (error as Error).message);
+    } finally {
+      setIsMigrating(false);
+    }
+  };
 
   const getBreadcrumbTitle = () => {
     switch (activeTab) {
@@ -68,9 +88,24 @@ const Dashboard = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <p className="font-body text-lg font-semibold">
-                    Use the sidebar to navigate between different management sections.
-                  </p>
+                  <div className="space-y-4">
+                    <p className="font-body text-lg font-semibold">
+                      Use the sidebar to navigate between different management sections.
+                    </p>
+                    <div className="pt-4 border-t-2 border-foreground">
+                      <h4 className="font-black text-sm uppercase mb-2">Data Management</h4>
+                      <Button
+                        onClick={handleMigrateWeekData}
+                        disabled={isMigrating}
+                        className="w-full bg-accent-green hover:bg-accent-green/90 text-foreground font-black uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                      >
+                        {isMigrating ? 'Migrating...' : 'Restore Detailed Week Content'}
+                      </Button>
+                      <p className="text-xs font-semibold text-foreground/70 mt-2">
+                        This will restore all detailed weekly activities, outcomes, and skills from the original content.
+                      </p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
               

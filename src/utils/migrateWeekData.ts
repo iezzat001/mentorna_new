@@ -20,6 +20,10 @@ export const migrateWeekData = async () => {
       
       console.log(`Migrating data for week ${week.week_number}...`);
       
+      // Clear existing data first to avoid conflicts
+      await supabase.from('week_activities').delete().eq('week_id', week.id);
+      await supabase.from('week_skills').delete().eq('week_id', week.id);
+      
       // Insert or update outcome
       const { error: outcomeError } = await supabase
         .from('week_outcomes')
