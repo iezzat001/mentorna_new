@@ -1,5 +1,6 @@
 
 import React from 'react';
+import SimpleNewsletterForm from './SimpleNewsletterForm';
 
 const SecondarySection = () => {
   return (
@@ -18,6 +19,11 @@ const SecondarySection = () => {
           <p className="text-xl md:text-2xl text-white/80 font-semibold leading-relaxed font-body max-w-3xl mx-auto">
             Stay Ahead of the AI Revolution
           </p>
+        </div>
+        
+        {/* Newsletter Subscription Form */}
+        <div className="pt-8">
+          <SimpleNewsletterForm />
         </div>
       </div>
     </section>
