@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Users, Mail, UserPlus, Eye, TrendingUp, Globe, Monitor, Smartphone, Tablet } from 'lucide-react';
+import { Users, Mail, UserPlus, Eye, TrendingUp, Globe, Monitor, Smartphone, Tablet, RefreshCw } from 'lucide-react';
 
 interface AnalyticsData {
   liveVisitors: number;
@@ -34,10 +34,11 @@ const DashboardAnalytics = () => {
   });
   const [timeRange, setTimeRange] = useState<TimeRange>('day');
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchAnalytics = async () => {
     try {
-      setLoading(true);
+      setRefreshing(true);
 
       // Fetch live visitors (sessions active in last 5 minutes)
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
@@ -129,6 +130,7 @@ const DashboardAnalytics = () => {
       console.error('Error fetching analytics:', error);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -248,22 +250,40 @@ const DashboardAnalytics = () => {
   useEffect(() => {
     fetchAnalytics();
     
-    // Set up real-time subscription for live visitors
+    // Set up real-time subscription for live visitors only
     const channel = supabase
       .channel('visitor-analytics')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'visitor_analytics' }, () => {
-        fetchAnalytics();
+        // Only refresh live visitors count, not the entire analytics
+        fetchLiveVisitors();
       })
       .subscribe();
 
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchAnalytics, 30000);
-
     return () => {
       supabase.removeChannel(channel);
-      clearInterval(interval);
     };
   }, []);
+
+  const fetchLiveVisitors = async () => {
+    try {
+      const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+      const { data: liveData } = await supabase
+        .from('visitor_analytics')
+        .select('session_id')
+        .gte('created_at', fiveMinutesAgo);
+
+      const uniqueSessions = new Set(liveData?.map(d => d.session_id) || []);
+      const liveVisitors = uniqueSessions.size;
+
+      setAnalytics(prev => ({ ...prev, liveVisitors }));
+    } catch (error) {
+      console.error('Error fetching live visitors:', error);
+    }
+  };
+
+  const handleManualRefresh = () => {
+    fetchAnalytics();
+  };
 
   const getVisitorData = () => {
     switch (timeRange) {
@@ -314,6 +334,18 @@ const DashboardAnalytics = () => {
 
   return (
     <div className="space-y-6">
+      {/* Manual Refresh Button */}
+      <div className="flex justify-end">
+        <Button
+          onClick={handleManualRefresh}
+          disabled={refreshing}
+          className="bg-primary border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-black uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+        >
+          <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+          {refreshing ? 'REFRESHING...' : 'REFRESH DATA'}
+        </Button>
+      </div>
+
       {/* Quick Stats Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card className="border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
