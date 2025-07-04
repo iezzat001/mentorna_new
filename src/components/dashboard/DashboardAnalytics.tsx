@@ -41,7 +41,7 @@ const DashboardAnalytics = () => {
     }
   };
 
-  const getTotalVisitors = () => {
+  const getUniqueVisitors = () => {
     return getVisitorData().reduce((sum, item) => sum + item.visitors, 0);
   };
 
@@ -78,7 +78,7 @@ const DashboardAnalytics = () => {
         liveVisitors={analytics.liveVisitors}
         newsletterCount={analytics.newsletterCount}
         waitingListCount={analytics.waitingListCount}
-        totalVisitors={getTotalVisitors()}
+        uniqueVisitors={getUniqueVisitors()}
         timeRangeLabel={getTimeRangeLabel()}
       />
 

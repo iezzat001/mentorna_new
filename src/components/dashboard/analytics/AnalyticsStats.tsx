@@ -1,13 +1,13 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Eye, Mail, UserPlus, TrendingUp } from 'lucide-react';
+import { Eye, Mail, UserPlus, Users } from 'lucide-react';
 
 interface AnalyticsStatsProps {
   liveVisitors: number;
   newsletterCount: number;
   waitingListCount: number;
-  totalVisitors: number;
+  uniqueVisitors: number;
   timeRangeLabel: string;
 }
 
@@ -15,7 +15,7 @@ const AnalyticsStats: React.FC<AnalyticsStatsProps> = ({
   liveVisitors,
   newsletterCount,
   waitingListCount,
-  totalVisitors,
+  uniqueVisitors,
   timeRangeLabel
 }) => {
   return (
@@ -62,12 +62,12 @@ const AnalyticsStats: React.FC<AnalyticsStatsProps> = ({
       <Card className="border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <CardHeader className="bg-accent-yellow border-b-4 border-foreground pb-2">
           <CardTitle className="font-black text-sm uppercase flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
-            Total Visitors
+            <Users className="h-4 w-4" />
+            Unique Visitors
           </CardTitle>
         </CardHeader>
         <CardContent className="p-4">
-          <div className="text-3xl font-black text-foreground">{totalVisitors}</div>
+          <div className="text-3xl font-black text-foreground">{uniqueVisitors}</div>
           <p className="text-xs font-semibold text-foreground/70">{timeRangeLabel}</p>
         </CardContent>
       </Card>
