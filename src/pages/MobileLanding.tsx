@@ -2,7 +2,8 @@
 import React from 'react';
 import MobileHero from '@/components/mobile/MobileHero';
 import MobileStorySection from '@/components/mobile/MobileStorySection';
-import { Award, Lightbulb } from 'lucide-react';
+import MobilePhasesSection from '@/components/mobile/MobilePhasesSection';
+import { Award, Lightbulb, Rocket } from 'lucide-react';
 
 const MobileLanding = () => {
   const stories = [
@@ -38,6 +39,67 @@ const MobileLanding = () => {
     }
   ];
 
+  const phases = [
+    {
+      phase: "PHASE I",
+      title: "Foundation Building",
+      description: "Master the fundamentals of AI, coding, and entrepreneurial thinking through hands-on projects and real-world applications.",
+      color: "bg-accent-purple",
+      icon: Lightbulb,
+      weeks: [
+        {
+          week: 1,
+          title: "AI Fundamentals & Python Basics",
+          description: "Introduction to artificial intelligence concepts and Python programming"
+        },
+        {
+          week: 2,
+          title: "Data Science & Machine Learning",
+          description: "Learn data analysis and basic machine learning algorithms"
+        },
+        {
+          week: 3,
+          title: "Web Development Foundations",
+          description: "HTML, CSS, JavaScript and modern web development"
+        },
+        {
+          week: 4,
+          title: "Entrepreneurship & Business Models",
+          description: "Business fundamentals and startup methodology"
+        }
+      ]
+    },
+    {
+      phase: "PHASE II",
+      title: "Advanced Implementation",
+      description: "Build real products, launch your startup, and compete for €5,000 prize while developing advanced technical and business skills.",
+      color: "bg-accent-blue",
+      icon: Rocket,
+      weeks: [
+        {
+          week: 5,
+          title: "Advanced AI & APIs",
+          description: "Deep learning, AI APIs, and advanced programming concepts"
+        },
+        {
+          week: 6,
+          title: "Product Development & MVP",
+          description: "Build your minimum viable product and test with users"
+        },
+        {
+          week: 7,
+          title: "Business Launch & Marketing",
+          description: "Launch strategies, digital marketing, and customer acquisition"
+        },
+        {
+          week: 8,
+          title: "Pitch & Competition",
+          description: "Final presentations and compete for €5,000 prize"
+        }
+      ]
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-black overflow-y-scroll snap-y snap-mandatory">
       {/* Hero Section */}
@@ -46,6 +108,11 @@ const MobileLanding = () => {
       {/* Success Stories Sections */}
       {stories.map((story, index) => (
         <MobileStorySection key={index} story={story} />
+      ))}
+
+      {/* Phases Sections */}
+      {phases.map((phase, index) => (
+        <MobilePhasesSection key={index} phase={phase} />
       ))}
     </div>
   );
