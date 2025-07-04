@@ -43,7 +43,7 @@ const ComingSoon = () => {
   ];
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section className="relative overflow-hidden">
       <ComingSoonBackground />
 
       <div className="relative z-10 container mx-auto px-8 py-20 lg:py-32">

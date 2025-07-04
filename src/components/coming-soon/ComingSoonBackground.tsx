@@ -25,9 +25,6 @@ const ComingSoonBackground = () => {
           <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-accent-blue rounded-full" />
         </div>
       </div>
-
-      {/* Smooth gradient transition to next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background/80 via-background/40 to-transparent" />
     </>
   );
 };
