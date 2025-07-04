@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, VolumeX, Volume2 } from 'lucide-react';
@@ -26,6 +27,7 @@ interface MobileStorySectionProps {
 
 const MobileStorySection = ({ story }: MobileStorySectionProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [likes, setLikes] = useState(parseInt(story.likes.replace('K', '')) * 1000);
@@ -35,7 +37,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
   const isYouTubeVideo = story.videoUrl.includes('youtube.com') || story.videoUrl.includes('youtu.be');
 
   // Extract YouTube video ID and convert to embeddable URL
-  const getYouTubeEmbedUrl = (url: string) => {
+  const getYouTubeEmbedUrl = (url: string, muted: boolean = true) => {
     let videoId = '';
     
     if (url.includes('youtube.com/watch?v=')) {
@@ -50,7 +52,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
     const timeMatch = url.match(/[&?]t=(\d+)/);
     const startTime = timeMatch ? `&start=${timeMatch[1]}` : '';
     
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}${startTime}`;
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}${startTime}&enablejsapi=1`;
   };
 
   useEffect(() => {
@@ -108,11 +110,17 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
   };
 
   const toggleMute = () => {
-    const video = videoRef.current;
-    if (!video) return;
+    if (isYouTubeVideo) {
+      // For YouTube videos, we need to reload the iframe with new mute parameter
+      setIsMuted(!isMuted);
+      // The iframe will be re-rendered with the new muted state
+    } else {
+      const video = videoRef.current;
+      if (!video) return;
 
-    video.muted = !video.muted;
-    setIsMuted(video.muted);
+      video.muted = !video.muted;
+      setIsMuted(video.muted);
+    }
   };
 
   const handleLike = () => {
@@ -136,12 +144,14 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
         {isYouTubeVideo ? (
           // YouTube iframe embed
           <iframe
-            src={getYouTubeEmbedUrl(story.videoUrl)}
+            ref={iframeRef}
+            src={getYouTubeEmbedUrl(story.videoUrl, isMuted)}
             className="absolute inset-0 w-full h-full object-cover"
             frameBorder="0"
             allow="autoplay; encrypted-media"
             allowFullScreen
             title={`${story.name} Success Story`}
+            key={isMuted ? 'muted' : 'unmuted'} // Force re-render when mute state changes
           />
         ) : (
           <video 
@@ -228,21 +238,19 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
         
         {/* Right side - Action Bar */}
         <div className="w-16 flex flex-col items-center justify-end pb-32 pr-2">
-          {/* Speaker/Mute Button - Only show for regular videos, not YouTube */}
-          {!isYouTubeVideo && (
-            <div className="flex flex-col items-center mb-6">
-              <button 
-                onClick={toggleMute}
-                className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform"
-              >
-                {isMuted ? (
-                  <VolumeX className="w-6 h-6 text-white" />
-                ) : (
-                  <Volume2 className="w-6 h-6 text-white" />
-                )}
-              </button>
-            </div>
-          )}
+          {/* Speaker/Mute Button - Show for all videos */}
+          <div className="flex flex-col items-center mb-6">
+            <button 
+              onClick={toggleMute}
+              className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform"
+            >
+              {isMuted ? (
+                <VolumeX className="w-6 h-6 text-white" />
+              ) : (
+                <Volume2 className="w-6 h-6 text-white" />
+              )}
+            </button>
+          </div>
           
           {/* Like Button */}
           <div className="flex flex-col items-center mb-6">
