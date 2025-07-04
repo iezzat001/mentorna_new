@@ -7,6 +7,19 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+// Simple IP geolocation function (you can enhance this with a proper service)
+const getCountryFromIP = async (ip: string): Promise<string | null> => {
+  try {
+    // Using a free IP geolocation service
+    const response = await fetch(`http://ip-api.com/json/${ip}?fields=country`);
+    const data = await response.json();
+    return data.country || null;
+  } catch (error) {
+    console.error('Geolocation error:', error);
+    return null;
+  }
+};
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -19,13 +32,21 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     )
 
-    const { sessionId, pagePath, referrer, userAgent } = await req.json()
+    const { sessionId, pagePath, referrer, userAgent, deviceType } = await req.json()
 
-    // Hash IP for privacy (basic implementation)
-    const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown'
+    // Get client IP
+    const clientIP = req.headers.get('x-forwarded-for') || 
+                    req.headers.get('cf-connecting-ip') || 
+                    req.headers.get('x-real-ip') || 
+                    'unknown'
+
+    // Hash IP for privacy
     const ipHash = clientIP !== 'unknown' ? await crypto.subtle.digest('SHA-256', new TextEncoder().encode(clientIP)).then(
       buffer => Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('')
     ) : null
+
+    // Get country information
+    const country = clientIP !== 'unknown' ? await getCountryFromIP(clientIP.split(',')[0].trim()) : null;
 
     // Insert visitor data
     const { error } = await supabase
@@ -35,8 +56,9 @@ serve(async (req) => {
         page_path: pagePath,
         referrer: referrer || null,
         user_agent: userAgent || null,
+        device_type: deviceType || null,
         ip_hash: ipHash,
-        country: null // Could be enhanced with IP geolocation service
+        country: country
       })
 
     if (error) {

@@ -12,6 +12,20 @@ const getSessionId = () => {
   return sessionId;
 };
 
+// Detect device type based on user agent and screen size
+const getDeviceType = () => {
+  const userAgent = navigator.userAgent;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+  const isTablet = /iPad|Android(?!.*Mobile)/i.test(userAgent);
+  
+  // Also check screen size as backup
+  const screenWidth = window.screen.width;
+  
+  if (isMobile && !isTablet) return 'Mobile';
+  if (isTablet || (screenWidth >= 768 && screenWidth <= 1024)) return 'Tablet';
+  return 'Desktop';
+};
+
 export const useVisitorTracking = () => {
   useEffect(() => {
     const trackVisitor = async () => {
@@ -20,13 +34,15 @@ export const useVisitorTracking = () => {
         const pagePath = window.location.pathname;
         const referrer = document.referrer;
         const userAgent = navigator.userAgent;
+        const deviceType = getDeviceType();
 
         await supabase.functions.invoke('track-visitor', {
           body: {
             sessionId,
             pagePath,
             referrer,
-            userAgent
+            userAgent,
+            deviceType
           }
         });
       } catch (error) {

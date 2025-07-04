@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Users, Mail, UserPlus, Eye, TrendingUp, Globe } from 'lucide-react';
+import { Users, Mail, UserPlus, Eye, TrendingUp, Globe, Monitor, Smartphone } from 'lucide-react';
 
 interface AnalyticsData {
   liveVisitors: number;
@@ -15,6 +14,8 @@ interface AnalyticsData {
   newsletterCount: number;
   waitingListCount: number;
   topReferrers: { referrer: string; count: number }[];
+  deviceBreakdown: { device: string; count: number }[];
+  locationBreakdown: { country: string; count: number }[];
 }
 
 type TimeRange = 'day' | 'week' | 'month';
@@ -27,7 +28,9 @@ const DashboardAnalytics = () => {
     monthlyVisitors: [],
     newsletterCount: 0,
     waitingListCount: 0,
-    topReferrers: []
+    topReferrers: [],
+    deviceBreakdown: [],
+    locationBreakdown: []
   });
   const [timeRange, setTimeRange] = useState<TimeRange>('day');
   const [loading, setLoading] = useState(true);
@@ -92,6 +95,24 @@ const DashboardAnalytics = () => {
 
       const topReferrers = processReferrerData(referrerData || []);
 
+      // Fetch device breakdown
+      const { data: deviceData } = await supabase
+        .from('visitor_analytics')
+        .select('device_type')
+        .not('device_type', 'is', null)
+        .gte('created_at', sevenDaysAgo);
+
+      const deviceBreakdown = processDeviceData(deviceData || []);
+
+      // Fetch location breakdown
+      const { data: locationData } = await supabase
+        .from('visitor_analytics')
+        .select('country')
+        .not('country', 'is', null)
+        .gte('created_at', sevenDaysAgo);
+
+      const locationBreakdown = processLocationData(locationData || []);
+
       setAnalytics({
         liveVisitors,
         dailyVisitors,
@@ -99,7 +120,9 @@ const DashboardAnalytics = () => {
         monthlyVisitors,
         newsletterCount: newsletterCount || 0,
         waitingListCount: waitingListCount || 0,
-        topReferrers
+        topReferrers,
+        deviceBreakdown,
+        locationBreakdown
       });
 
     } catch (error) {
@@ -181,6 +204,35 @@ const DashboardAnalytics = () => {
       .slice(0, 5);
   };
 
+  const processDeviceData = (data: any[]) => {
+    const deviceMap = new Map<string, number>();
+    
+    data.forEach(item => {
+      if (item.device_type) {
+        deviceMap.set(item.device_type, (deviceMap.get(item.device_type) || 0) + 1);
+      }
+    });
+
+    return Array.from(deviceMap.entries())
+      .map(([device, count]) => ({ device, count }))
+      .sort((a, b) => b.count - a.count);
+  };
+
+  const processLocationData = (data: any[]) => {
+    const locationMap = new Map<string, number>();
+    
+    data.forEach(item => {
+      if (item.country) {
+        locationMap.set(item.country, (locationMap.get(item.country) || 0) + 1);
+      }
+    });
+
+    return Array.from(locationMap.entries())
+      .map(([country, count]) => ({ country, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+  };
+
   useEffect(() => {
     fetchAnalytics();
     
@@ -219,7 +271,7 @@ const DashboardAnalytics = () => {
     },
   };
 
-  const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57'];
+  const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#A8E6CF', '#FFD93D', '#6C5CE7'];
 
   if (loading) {
     return (
@@ -349,9 +401,103 @@ const DashboardAnalytics = () => {
         </CardContent>
       </Card>
 
+      {/* Device & Location Analytics */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Device Breakdown */}
+        <Card className="border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <CardHeader className="bg-accent-blue border-b-4 border-foreground">
+            <CardTitle className="font-black text-xl uppercase flex items-center gap-2">
+              <Monitor className="h-5 w-5" />
+              Device Types
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            {analytics.deviceBreakdown.length > 0 ? (
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  {analytics.deviceBreakdown.map((device, index) => (
+                    <div key={device.device} className="flex justify-between items-center p-3 bg-accent-blue/20 border-2 border-foreground">
+                      <div className="flex items-center gap-3">
+                        <div 
+                          className="w-4 h-4 border-2 border-foreground"
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        />
+                        <div className="flex items-center gap-2">
+                          {device.device === 'Mobile' ? <Smartphone className="h-4 w-4" /> : <Monitor className="h-4 w-4" />}
+                          <span className="font-bold text-sm">{device.device}</span>
+                        </div>
+                      </div>
+                      <span className="font-black text-lg">{device.count}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-center items-center">
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <Pie
+                        data={analytics.deviceBreakdown}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={70}
+                        fill="#8884d8"
+                        dataKey="count"
+                      >
+                        {analytics.deviceBreakdown.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="font-semibold text-foreground/70">No device data available yet.</p>
+                <p className="text-sm font-medium text-foreground/50">Data will appear as visitors use different devices.</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Location Breakdown */}
+        <Card className="border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <CardHeader className="bg-accent-green border-b-4 border-foreground">
+            <CardTitle className="font-black text-xl uppercase flex items-center gap-2">
+              <Globe className="h-5 w-5" />
+              Visitor Locations
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            {analytics.locationBreakdown.length > 0 ? (
+              <div className="space-y-3">
+                {analytics.locationBreakdown.map((location, index) => (
+                  <div key={location.country} className="flex justify-between items-center p-3 bg-accent-green/20 border-2 border-foreground">
+                    <div className="flex items-center gap-3">
+                      <div 
+                        className="w-4 h-4 border-2 border-foreground"
+                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                      />
+                      <span className="font-bold text-sm">{location.country}</span>
+                    </div>
+                    <span className="font-black text-lg">{location.count}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="font-semibold text-foreground/70">No location data available yet.</p>
+                <p className="text-sm font-medium text-foreground/50">Location data will appear as visitors arrive from different countries.</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Traffic Sources */}
       <Card className="border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <CardHeader className="bg-accent-green border-b-4 border-foreground">
+        <CardHeader className="bg-accent-yellow border-b-4 border-foreground">
           <CardTitle className="font-black text-xl uppercase flex items-center gap-2">
             <Globe className="h-5 w-5" />
             Traffic Sources
