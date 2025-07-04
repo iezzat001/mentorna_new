@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +8,7 @@ import { isOnDashboardSubdomain } from "@/utils/subdomain";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
+import MobileLanding from "./pages/MobileLanding";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
@@ -46,6 +48,7 @@ const App = () => {
                 // Main domain routes
                 <>
                   <Route path="/" element={<Index />} />
+                  <Route path="/mobile" element={<MobileLanding />} />
                   <Route 
                     path="/dashboard" 
                     element={
