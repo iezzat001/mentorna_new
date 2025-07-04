@@ -1,6 +1,7 @@
+
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart } from 'lucide-react';
+import { Heart, VolumeX, Volume2 } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
 
@@ -30,6 +31,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [likes, setLikes] = useState(parseInt(story.likes.replace('K', '')) * 1000);
   const [isLiked, setIsLiked] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -81,6 +83,14 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
     } else {
       video.play();
     }
+  };
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
   };
 
   const handleLike = () => {
@@ -197,6 +207,22 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
         
         {/* Right side - Action Bar */}
         <div className="w-16 flex flex-col items-center justify-end pb-32 pr-2">
+          {/* Speaker/Mute Button */}
+          {!story.videoUrl.includes('youtube') && (
+            <div className="flex flex-col items-center mb-6">
+              <button 
+                onClick={toggleMute}
+                className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform"
+              >
+                {isMuted ? (
+                  <VolumeX className="w-6 h-6 text-white" />
+                ) : (
+                  <Volume2 className="w-6 h-6 text-white" />
+                )}
+              </button>
+            </div>
+          )}
+          
           {/* Like Button */}
           <div className="flex flex-col items-center mb-6">
             <button 
