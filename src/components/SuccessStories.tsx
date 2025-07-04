@@ -22,7 +22,7 @@ const SuccessStories = () => {
       badgeColor: "bg-accent-yellow",
       headerColor: "bg-accent-blue",
       icon: Lightbulb,
-      videoUrl: "https://d2mp3ttz3u5gci.cloudfront.net/omar.MOV",
+      videoUrl: "https://www.youtube.com/live/y4RMA94rLQ4?feature=shared&t=3927",
       thumbnailUrl: "https://d2mp3ttz3u5gci.cloudfront.net/omar_thumbnail.png",
       description: "Omar learned how to come up with innovative ideas and created Omar Waters, the first subscription delivery service for bottled water in Tanta. Through our program, he discovered how to test the validity of his idea and assess market potential using AI while building his mobile app and getting ready to launch his business."
     }
