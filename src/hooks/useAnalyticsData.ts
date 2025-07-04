@@ -90,8 +90,13 @@ export const useAnalyticsData = () => {
     
     data.forEach(item => {
       if (item.referrer) {
-        const domain = new URL(item.referrer).hostname.replace('www.', '') || item.referrer;
-        referrerMap.set(domain, (referrerMap.get(domain) || 0) + 1);
+        try {
+          const domain = new URL(item.referrer).hostname.replace('www.', '') || item.referrer;
+          referrerMap.set(domain, (referrerMap.get(domain) || 0) + 1);
+        } catch (error) {
+          // If URL parsing fails, use the referrer as-is
+          referrerMap.set(item.referrer, (referrerMap.get(item.referrer) || 0) + 1);
+        }
       }
     });
 
@@ -146,77 +151,121 @@ export const useAnalyticsData = () => {
     try {
       setRefreshing(true);
 
+      // Wait for auth to be ready before making requests
+      const { data: { session }, error: authError } = await supabase.auth.getSession();
+      
+      if (authError) {
+        console.error('Auth error:', authError);
+        return;
+      }
+
       // Fetch live visitors (sessions active in last 5 minutes)
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-      const { data: liveData } = await supabase
+      const { data: liveData, error: liveError } = await supabase
         .from('visitor_analytics')
         .select('session_id')
         .gte('created_at', fiveMinutesAgo);
+
+      if (liveError) {
+        console.error('Error fetching live visitors:', liveError);
+      }
 
       const uniqueSessions = new Set(liveData?.map(d => d.session_id) || []);
       const liveVisitors = uniqueSessions.size;
 
       // Fetch daily visitors (last 7 days)
       const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-      const { data: dailyData } = await supabase
+      const { data: dailyData, error: dailyError } = await supabase
         .from('visitor_analytics')
         .select('created_at, session_id')
         .gte('created_at', sevenDaysAgo);
+
+      if (dailyError) {
+        console.error('Error fetching daily visitors:', dailyError);
+      }
 
       const dailyVisitors = processDailyData(dailyData || []);
 
       // Fetch weekly visitors (last 4 weeks)
       const fourWeeksAgo = new Date(Date.now() - 4 * 7 * 24 * 60 * 60 * 1000).toISOString();
-      const { data: weeklyData } = await supabase
+      const { data: weeklyData, error: weeklyError } = await supabase
         .from('visitor_analytics')
         .select('created_at, session_id')
         .gte('created_at', fourWeeksAgo);
+
+      if (weeklyError) {
+        console.error('Error fetching weekly visitors:', weeklyError);
+      }
 
       const weeklyVisitors = processWeeklyData(weeklyData || []);
 
       // Fetch monthly visitors (last 6 months)
       const sixMonthsAgo = new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000).toISOString();
-      const { data: monthlyData } = await supabase
+      const { data: monthlyData, error: monthlyError } = await supabase
         .from('visitor_analytics')
         .select('created_at, session_id')
         .gte('created_at', sixMonthsAgo);
 
+      if (monthlyError) {
+        console.error('Error fetching monthly visitors:', monthlyError);
+      }
+
       const monthlyVisitors = processMonthlyData(monthlyData || []);
 
       // Fetch newsletter count
-      const { count: newsletterCount } = await supabase
+      const { count: newsletterCount, error: newsletterError } = await supabase
         .from('newsletter_subscribers')
         .select('*', { count: 'exact', head: true });
 
+      if (newsletterError) {
+        console.error('Error fetching newsletter count:', newsletterError);
+      }
+
       // Fetch waiting list count
-      const { count: waitingListCount } = await supabase
+      const { count: waitingListCount, error: waitingListError } = await supabase
         .from('waiting_list')
         .select('*', { count: 'exact', head: true });
 
+      if (waitingListError) {
+        console.error('Error fetching waiting list count:', waitingListError);
+      }
+
       // Fetch top referrers
-      const { data: referrerData } = await supabase
+      const { data: referrerData, error: referrerError } = await supabase
         .from('visitor_analytics')
         .select('referrer')
         .not('referrer', 'is', null)
         .gte('created_at', sevenDaysAgo);
 
+      if (referrerError) {
+        console.error('Error fetching referrer data:', referrerError);
+      }
+
       const topReferrers = processReferrerData(referrerData || []);
 
       // Fetch device breakdown
-      const { data: deviceData } = await supabase
+      const { data: deviceData, error: deviceError } = await supabase
         .from('visitor_analytics')
         .select('device_type')
         .not('device_type', 'is', null)
         .gte('created_at', sevenDaysAgo);
 
+      if (deviceError) {
+        console.error('Error fetching device data:', deviceError);
+      }
+
       const deviceBreakdown = processDeviceData(deviceData || []);
 
       // Fetch location breakdown
-      const { data: locationData } = await supabase
+      const { data: locationData, error: locationError } = await supabase
         .from('visitor_analytics')
         .select('country')
         .not('country', 'is', null)
         .gte('created_at', sevenDaysAgo);
+
+      if (locationError) {
+        console.error('Error fetching location data:', locationError);
+      }
 
       const locationBreakdown = processLocationData(locationData || []);
 
@@ -243,10 +292,15 @@ export const useAnalyticsData = () => {
   const fetchLiveVisitors = async () => {
     try {
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-      const { data: liveData } = await supabase
+      const { data: liveData, error } = await supabase
         .from('visitor_analytics')
         .select('session_id')
         .gte('created_at', fiveMinutesAgo);
+
+      if (error) {
+        console.error('Error fetching live visitors:', error);
+        return;
+      }
 
       const uniqueSessions = new Set(liveData?.map(d => d.session_id) || []);
       const liveVisitors = uniqueSessions.size;
@@ -258,6 +312,7 @@ export const useAnalyticsData = () => {
   };
 
   useEffect(() => {
+    // Initial fetch
     fetchAnalytics();
     
     // Set up real-time subscription for live visitors only
