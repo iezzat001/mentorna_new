@@ -6,12 +6,10 @@ import { supabase } from '@/integrations/supabase/client';
 const getSessionId = () => {
   let sessionId = sessionStorage.getItem('visitor_session_id');
   if (!sessionId) {
-    // Use a simpler UUID format that's more compatible
-    sessionId = 'xxxx-xxxx-4xxx-yxxx-xxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0;
-      const v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+    // Create a simple alphanumeric ID that's more compatible
+    const timestamp = Date.now().toString(36);
+    const randomPart = Math.random().toString(36).substring(2, 15);
+    sessionId = `sess_${timestamp}_${randomPart}`;
     sessionStorage.setItem('visitor_session_id', sessionId);
   }
   return sessionId;
