@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, VolumeX, Volume2 } from 'lucide-react';
@@ -33,7 +32,30 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
+  const isYouTubeVideo = story.videoUrl.includes('youtube.com') || story.videoUrl.includes('youtu.be');
+
+  // Extract YouTube video ID and convert to embeddable URL
+  const getYouTubeEmbedUrl = (url: string) => {
+    let videoId = '';
+    
+    if (url.includes('youtube.com/watch?v=')) {
+      videoId = url.split('v=')[1].split('&')[0];
+    } else if (url.includes('youtube.com/live/')) {
+      videoId = url.split('live/')[1].split('?')[0];
+    } else if (url.includes('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1].split('?')[0];
+    }
+    
+    // Add timestamp if present in original URL
+    const timeMatch = url.match(/[&?]t=(\d+)/);
+    const startTime = timeMatch ? `&start=${timeMatch[1]}` : '';
+    
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}${startTime}`;
+  };
+
   useEffect(() => {
+    if (isYouTubeVideo) return;
+    
     const video = videoRef.current;
     if (!video) return;
 
@@ -72,7 +94,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('ended', handleEnded);
     };
-  }, []);
+  }, [isYouTubeVideo]);
 
   const togglePlayPause = () => {
     const video = videoRef.current;
@@ -111,17 +133,16 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
     <div className="relative h-screen w-full overflow-hidden snap-start">
       {/* Video Background */}
       <div className="absolute inset-0 bg-black">
-        {story.videoUrl.includes('youtube') ? (
-          // YouTube video placeholder
-          <div className="w-full h-full bg-gradient-to-br from-accent-purple to-accent-blue flex items-center justify-center">
-            <div className="text-center text-white">
-              <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-4 mx-auto">
-                <story.icon className="w-12 h-12" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2">{story.name}</h3>
-              <p className="text-sm opacity-80">Video Story</p>
-            </div>
-          </div>
+        {isYouTubeVideo ? (
+          // YouTube iframe embed
+          <iframe
+            src={getYouTubeEmbedUrl(story.videoUrl)}
+            className="absolute inset-0 w-full h-full object-cover"
+            frameBorder="0"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+            title={`${story.name} Success Story`}
+          />
         ) : (
           <video 
             ref={videoRef}
@@ -207,8 +228,8 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
         
         {/* Right side - Action Bar */}
         <div className="w-16 flex flex-col items-center justify-end pb-32 pr-2">
-          {/* Speaker/Mute Button */}
-          {!story.videoUrl.includes('youtube') && (
+          {/* Speaker/Mute Button - Only show for regular videos, not YouTube */}
+          {!isYouTubeVideo && (
             <div className="flex flex-col items-center mb-6">
               <button 
                 onClick={toggleMute}
@@ -238,13 +259,15 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
         </div>
       </div>
       
-      {/* Progress Bar */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 h-1 bg-white/20">
-        <div 
-          className="h-full bg-white transition-all duration-100 ease-linear" 
-          style={{ width: `${progress}%` }}
-        />
-      </div>
+      {/* Progress Bar - Only show for regular videos, not YouTube */}
+      {!isYouTubeVideo && (
+        <div className="absolute bottom-0 left-0 right-0 z-20 h-1 bg-white/20">
+          <div 
+            className="h-full bg-white transition-all duration-100 ease-linear" 
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      )}
       
       {/* Swipe Indicator */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20">
