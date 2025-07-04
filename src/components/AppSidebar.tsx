@@ -1,4 +1,5 @@
-import { BookOpen, Users, LogOut, Home, UserPlus, Mail } from 'lucide-react';
+
+import { BookOpen, Users, LogOut, Home, UserPlus, Mail, BarChart3 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   Sidebar,
@@ -44,6 +45,11 @@ const menuItems = [
     title: 'Newsletter',
     icon: Mail,
     id: 'newsletter',
+  },
+  {
+    title: 'Tracking & Analysis',
+    icon: BarChart3,
+    id: 'tracking-analysis',
   },
 ];
 

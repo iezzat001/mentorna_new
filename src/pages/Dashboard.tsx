@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,6 +21,7 @@ import CourseContentManager from '@/components/dashboard/CourseContentManager';
 import FoundersManager from '@/components/dashboard/FoundersManager';
 import WaitingListManager from '@/components/dashboard/WaitingListManager';
 import NewsletterManager from '@/components/dashboard/NewsletterManager';
+import TrackingAnalysisManager from '@/components/dashboard/TrackingAnalysisManager';
 import { migrateWeekData } from '@/utils/migrateWeekData';
 import { toast } from 'sonner';
 
@@ -53,6 +55,8 @@ const Dashboard = () => {
         return 'Waiting List Management';
       case 'newsletter':
         return 'Newsletter Management';
+      case 'tracking-analysis':
+        return 'Tracking & Analysis Management';
       default:
         return 'Dashboard Overview';
     }
@@ -68,6 +72,8 @@ const Dashboard = () => {
         return <WaitingListManager />;
       case 'newsletter':
         return <NewsletterManager />;
+      case 'tracking-analysis':
+        return <TrackingAnalysisManager />;
       default:
         return (
           <div className="space-y-6">
