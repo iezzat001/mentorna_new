@@ -1,7 +1,6 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart, MessageCircle, Share, BookOpen, Award, Lightbulb } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
 
@@ -29,6 +28,8 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [likes, setLikes] = useState(parseInt(story.likes.replace('K', '')) * 1000);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -80,6 +81,20 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
     } else {
       video.play();
     }
+  };
+
+  const handleLike = () => {
+    if (!isLiked) {
+      setLikes(prev => prev + 1);
+      setIsLiked(true);
+    }
+  };
+
+  const formatLikes = (count: number) => {
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1) + 'K';
+    }
+    return count.toString();
   };
 
   return (
@@ -138,12 +153,6 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
               <div className="text-white font-semibold text-sm">@{story.name.toLowerCase().replace(' ', '_')}</div>
               <div className="text-white/70 text-xs">Success Story</div>
             </div>
-            <Button 
-              size="sm" 
-              className="ml-3 bg-transparent border border-white/50 text-white text-xs px-3 py-1 h-7"
-            >
-              Follow
-            </Button>
           </div>
           
           {/* Badge */}
@@ -190,36 +199,15 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
         <div className="w-16 flex flex-col items-center justify-end pb-32 pr-2">
           {/* Like Button */}
           <div className="flex flex-col items-center mb-6">
-            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform">
-              <Heart className="w-6 h-6 text-white" />
+            <button 
+              onClick={handleLike}
+              className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform"
+            >
+              <Heart 
+                className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-red-500' : 'text-white'}`} 
+              />
             </button>
-            <span className="text-white text-xs font-semibold">{story.likes}</span>
-          </div>
-          
-          {/* Comment Button */}
-          <div className="flex flex-col items-center mb-6">
-            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform">
-              <MessageCircle className="w-6 h-6 text-white" />
-            </button>
-            <span className="text-white text-xs font-semibold">{story.comments}</span>
-          </div>
-          
-          {/* Share Button */}
-          <div className="flex flex-col items-center mb-6">
-            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform">
-              <Share className="w-6 h-6 text-white" />
-            </button>
-            <span className="text-white text-xs font-semibold">{story.shares}</span>
-          </div>
-          
-          {/* Learn More Button */}
-          <div className="flex flex-col items-center">
-            <WaitingListDialog>
-              <button className="w-12 h-12 rounded-full bg-accent-yellow/80 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform">
-                <BookOpen className="w-6 h-6 text-black" />
-              </button>
-            </WaitingListDialog>
-            <span className="text-white text-xs font-semibold">Apply</span>
+            <span className="text-white text-xs font-semibold">{formatLikes(likes)}</span>
           </div>
         </div>
       </div>

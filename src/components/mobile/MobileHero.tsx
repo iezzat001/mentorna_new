@@ -1,12 +1,13 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart, MessageCircle, Share, BookOpen } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
 
 const MobileHero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [progress, setProgress] = useState(0);
+  const [likes, setLikes] = useState(12400);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -42,6 +43,13 @@ const MobileHero = () => {
       video.removeEventListener('ended', handleEnded);
     };
   }, []);
+
+  const handleLike = () => {
+    if (!isLiked) {
+      setLikes(prev => prev + 1);
+      setIsLiked(true);
+    }
+  };
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
@@ -81,12 +89,6 @@ const MobileHero = () => {
               <div className="text-white font-semibold text-sm">@iLab_Official</div>
               <div className="text-white/70 text-xs">AI Education Platform</div>
             </div>
-            <Button 
-              size="sm" 
-              className="ml-3 bg-transparent border border-white/50 text-white text-xs px-3 py-1 h-7"
-            >
-              Follow
-            </Button>
           </div>
           
           {/* Main Text Content */}
@@ -131,34 +133,15 @@ const MobileHero = () => {
         <div className="w-16 flex flex-col items-center justify-end pb-32 pr-2">
           {/* Like Button */}
           <div className="flex flex-col items-center mb-6">
-            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform">
-              <Heart className="w-6 h-6 text-white" />
+            <button 
+              onClick={handleLike}
+              className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform"
+            >
+              <Heart 
+                className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-red-500' : 'text-white'}`} 
+              />
             </button>
-            <span className="text-white text-xs font-semibold">12.4K</span>
-          </div>
-          
-          {/* Comment Button */}
-          <div className="flex flex-col items-center mb-6">
-            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform">
-              <MessageCircle className="w-6 h-6 text-white" />
-            </button>
-            <span className="text-white text-xs font-semibold">2.1K</span>
-          </div>
-          
-          {/* Share Button */}
-          <div className="flex flex-col items-center mb-6">
-            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform">
-              <Share className="w-6 h-6 text-white" />
-            </button>
-            <span className="text-white text-xs font-semibold">856</span>
-          </div>
-          
-          {/* Learn More Button */}
-          <div className="flex flex-col items-center">
-            <button className="w-12 h-12 rounded-full bg-accent-yellow/80 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform">
-              <BookOpen className="w-6 h-6 text-black" />
-            </button>
-            <span className="text-white text-xs font-semibold">Learn</span>
+            <span className="text-white text-xs font-semibold">{likes.toLocaleString()}</span>
           </div>
         </div>
       </div>
