@@ -1,14 +1,53 @@
 
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, MessageCircle, Share, BookOpen } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
 
 const MobileHero = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const updateProgress = () => {
+      const currentTime = video.currentTime;
+      const duration = video.duration;
+      if (duration > 0) {
+        const progressPercent = (currentTime / duration) * 100;
+        setProgress(progressPercent);
+      }
+    };
+
+    const handleLoadedMetadata = () => {
+      setProgress(0);
+    };
+
+    const handleEnded = () => {
+      setProgress(100);
+      // Auto-replay the video when it ends
+      video.currentTime = 0;
+      video.play();
+    };
+
+    video.addEventListener('timeupdate', updateProgress);
+    video.addEventListener('loadedmetadata', handleLoadedMetadata);
+    video.addEventListener('ended', handleEnded);
+
+    return () => {
+      video.removeEventListener('timeupdate', updateProgress);
+      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, []);
+
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {/* Full-screen Video Background */}
       <video 
+        ref={videoRef}
         autoPlay 
         muted 
         loop 
@@ -124,9 +163,12 @@ const MobileHero = () => {
         </div>
       </div>
       
-      {/* Progress Bar at Bottom */}
+      {/* Real Progress Bar at Bottom */}
       <div className="absolute bottom-0 left-0 right-0 z-20 h-1 bg-white/20">
-        <div className="h-full bg-white w-3/4 transition-all duration-1000" />
+        <div 
+          className="h-full bg-white transition-all duration-100 ease-linear" 
+          style={{ width: `${progress}%` }}
+        />
       </div>
       
       {/* Swipe Indicator */}
