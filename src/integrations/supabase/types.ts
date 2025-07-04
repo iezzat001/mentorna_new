@@ -99,6 +99,42 @@ export type Database = {
         }
         Relationships: []
       }
+      visitor_analytics: {
+        Row: {
+          country: string | null
+          created_at: string
+          id: string
+          ip_hash: string | null
+          page_path: string
+          referrer: string | null
+          session_id: string
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          page_path: string
+          referrer?: string | null
+          session_id: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          page_path?: string
+          referrer?: string | null
+          session_id?: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       waiting_list: {
         Row: {
           age_groups: string[]

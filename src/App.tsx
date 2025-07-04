@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,11 +9,17 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const isDashboardSubdomain = isOnDashboardSubdomain();
+  
+  // Track visitors on the main site (not on dashboard subdomain)
+  if (!isDashboardSubdomain) {
+    useVisitorTracking();
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
