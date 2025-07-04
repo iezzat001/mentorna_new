@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Users, Mail, UserPlus, Eye, TrendingUp, Globe, Monitor, Smartphone } from 'lucide-react';
+import { Users, Mail, UserPlus, Eye, TrendingUp, Globe, Monitor, Smartphone, Tablet } from 'lucide-react';
 
 interface AnalyticsData {
   liveVisitors: number;
@@ -14,8 +14,8 @@ interface AnalyticsData {
   newsletterCount: number;
   waitingListCount: number;
   topReferrers: { referrer: string; count: number }[];
-  deviceBreakdown: { device: string; count: number }[];
-  locationBreakdown: { country: string; count: number }[];
+  deviceBreakdown: { device: string; count: number; percentage: number }[];
+  locationBreakdown: { country: string; count: number; percentage: number }[];
 }
 
 type TimeRange = 'day' | 'week' | 'month';
@@ -213,8 +213,14 @@ const DashboardAnalytics = () => {
       }
     });
 
+    const totalDevices = Array.from(deviceMap.values()).reduce((sum, count) => sum + count, 0);
+
     return Array.from(deviceMap.entries())
-      .map(([device, count]) => ({ device, count }))
+      .map(([device, count]) => ({ 
+        device, 
+        count, 
+        percentage: totalDevices > 0 ? Math.round((count / totalDevices) * 100) : 0 
+      }))
       .sort((a, b) => b.count - a.count);
   };
 
@@ -227,8 +233,14 @@ const DashboardAnalytics = () => {
       }
     });
 
+    const totalLocations = Array.from(locationMap.values()).reduce((sum, count) => sum + count, 0);
+
     return Array.from(locationMap.entries())
-      .map(([country, count]) => ({ country, count }))
+      .map(([country, count]) => ({ 
+        country, 
+        count, 
+        percentage: totalLocations > 0 ? Math.round((count / totalLocations) * 100) : 0 
+      }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
   };
@@ -272,6 +284,17 @@ const DashboardAnalytics = () => {
   };
 
   const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#A8E6CF', '#FFD93D', '#6C5CE7'];
+
+  const getDeviceIcon = (device: string) => {
+    switch (device) {
+      case 'Mobile':
+        return <Smartphone className="h-4 w-4" />;
+      case 'Tablet':
+        return <Tablet className="h-4 w-4" />;
+      default:
+        return <Monitor className="h-4 w-4" />;
+    }
+  };
 
   if (loading) {
     return (
@@ -413,35 +436,50 @@ const DashboardAnalytics = () => {
           </CardHeader>
           <CardContent className="p-6">
             {analytics.deviceBreakdown.length > 0 ? (
-              <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-6">
+                {/* Device List with Percentages */}
                 <div className="space-y-4">
                   {analytics.deviceBreakdown.map((device, index) => (
-                    <div key={device.device} className="flex justify-between items-center p-3 bg-accent-blue/20 border-2 border-foreground">
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-4 h-4 border-2 border-foreground"
-                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                        />
-                        <div className="flex items-center gap-2">
-                          {device.device === 'Mobile' ? <Smartphone className="h-4 w-4" /> : <Monitor className="h-4 w-4" />}
-                          <span className="font-bold text-sm">{device.device}</span>
+                    <div key={device.device} className="p-4 bg-accent-blue/20 border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="flex items-center gap-3">
+                          {getDeviceIcon(device.device)}
+                          <span className="font-black text-lg uppercase">{device.device}</span>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-black text-2xl">{device.count}</div>
+                          <div className="font-bold text-sm text-foreground/70">{device.percentage}%</div>
                         </div>
                       </div>
-                      <span className="font-black text-lg">{device.count}</span>
+                      {/* Progress Bar */}
+                      <div className="w-full bg-foreground/20 h-3 border-2 border-foreground">
+                        <div 
+                          className="h-full border-r-2 border-foreground transition-all duration-300"
+                          style={{ 
+                            width: `${device.percentage}%`,
+                            backgroundColor: COLORS[index % COLORS.length]
+                          }}
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
-                <div className="flex justify-center items-center">
-                  <ResponsiveContainer width="100%" height={200}>
+                
+                {/* Pie Chart */}
+                <div className="flex justify-center">
+                  <ResponsiveContainer width={300} height={300}>
                     <PieChart>
                       <Pie
                         data={analytics.deviceBreakdown}
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        outerRadius={70}
+                        label={({ device, percentage }) => `${device}: ${percentage}%`}
+                        outerRadius={100}
                         fill="#8884d8"
                         dataKey="count"
+                        stroke="#000"
+                        strokeWidth={2}
                       >
                         {analytics.deviceBreakdown.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -454,6 +492,7 @@ const DashboardAnalytics = () => {
               </div>
             ) : (
               <div className="text-center py-8">
+                <Monitor className="h-12 w-12 mx-auto mb-4 text-foreground/30" />
                 <p className="font-semibold text-foreground/70">No device data available yet.</p>
                 <p className="text-sm font-medium text-foreground/50">Data will appear as visitors use different devices.</p>
               </div>
@@ -471,22 +510,38 @@ const DashboardAnalytics = () => {
           </CardHeader>
           <CardContent className="p-6">
             {analytics.locationBreakdown.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {analytics.locationBreakdown.map((location, index) => (
-                  <div key={location.country} className="flex justify-between items-center p-3 bg-accent-green/20 border-2 border-foreground">
-                    <div className="flex items-center gap-3">
-                      <div 
-                        className="w-4 h-4 border-2 border-foreground"
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                      />
-                      <span className="font-bold text-sm">{location.country}</span>
+                  <div key={location.country} className="p-4 bg-accent-green/20 border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="flex items-center gap-3">
+                        <div 
+                          className="w-6 h-6 border-2 border-foreground"
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        />
+                        <span className="font-black text-lg uppercase">{location.country}</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-black text-2xl">{location.count}</div>
+                        <div className="font-bold text-sm text-foreground/70">{location.percentage}%</div>
+                      </div>
                     </div>
-                    <span className="font-black text-lg">{location.count}</span>
+                    {/* Progress Bar */}
+                    <div className="w-full bg-foreground/20 h-3 border-2 border-foreground">
+                      <div 
+                        className="h-full border-r-2 border-foreground transition-all duration-300"
+                        style={{ 
+                          width: `${location.percentage}%`,
+                          backgroundColor: COLORS[index % COLORS.length]
+                        }}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
             ) : (
               <div className="text-center py-8">
+                <Globe className="h-12 w-12 mx-auto mb-4 text-foreground/30" />
                 <p className="font-semibold text-foreground/70">No location data available yet.</p>
                 <p className="text-sm font-medium text-foreground/50">Location data will appear as visitors arrive from different countries.</p>
               </div>
