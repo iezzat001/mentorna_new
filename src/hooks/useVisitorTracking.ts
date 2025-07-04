@@ -6,7 +6,12 @@ import { supabase } from '@/integrations/supabase/client';
 const getSessionId = () => {
   let sessionId = sessionStorage.getItem('visitor_session_id');
   if (!sessionId) {
-    sessionId = crypto.randomUUID();
+    // Use a simpler UUID format that's more compatible
+    sessionId = 'xxxx-xxxx-4xxx-yxxx-xxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
     sessionStorage.setItem('visitor_session_id', sessionId);
   }
   return sessionId;
@@ -35,6 +40,8 @@ export const useVisitorTracking = () => {
         const referrer = document.referrer;
         const userAgent = navigator.userAgent;
         const deviceType = getDeviceType();
+
+        console.log('Tracking visitor with session ID:', sessionId);
 
         await supabase.functions.invoke('track-visitor', {
           body: {
