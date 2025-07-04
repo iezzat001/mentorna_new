@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Lock, TrendingUp, Rocket, Zap } from 'lucide-react';
+import { Lock, TrendingUp, Rocket, Zap, Atom } from 'lucide-react';
 
 const ComingSoon = () => {
   const programs = [
@@ -20,7 +20,7 @@ const ComingSoon = () => {
       description: "Design spacecraft systems, satellite technology, and explore Mars colonization strategies",
       icon: Rocket,
       gradient: "from-accent-blue to-blue-600", 
-      delay: "200ms"
+      delay: "100ms"
     },
     {
       title: "Renewable Energy",
@@ -28,18 +28,44 @@ const ComingSoon = () => {
       description: "Create sustainable solutions with solar tech, wind systems, and revolutionary energy storage",
       icon: Zap,
       gradient: "from-accent-green to-green-600",
-      delay: "400ms"
+      delay: "200ms"
+    },
+    {
+      title: "Quantum Computing",
+      subtitle: "Decode the Quantum Future",
+      description: "Master quantum algorithms, quantum machine learning, and build applications for the next computing revolution",
+      icon: Atom,
+      gradient: "from-orange-500 to-red-600",
+      delay: "300ms"
     }
   ];
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-black to-slate-800">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-accent-purple/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0s' }} />
-        <div className="absolute top-40 right-20 w-96 h-96 bg-accent-blue/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-accent-green/25 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
+    <section className="relative min-h-screen overflow-hidden">
+      {/* Multi-layered Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-black to-slate-800" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent" />
+      
+      {/* Sophisticated Background Elements */}
+      <div className="absolute inset-0">
+        {/* Main gradient orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-accent-purple/30 to-accent-blue/20 rounded-full blur-3xl animate-pulse opacity-40" style={{ animationDelay: '0s', animationDuration: '12s' }} />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-accent-green/25 to-orange-500/20 rounded-full blur-3xl animate-pulse opacity-40" style={{ animationDelay: '6s', animationDuration: '12s' }} />
+        
+        {/* Additional floating elements */}
+        <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-accent-yellow/20 to-accent-purple/15 rounded-full blur-2xl animate-pulse opacity-30" style={{ animationDelay: '3s', animationDuration: '10s' }} />
+        <div className="absolute bottom-32 left-32 w-48 h-48 bg-gradient-to-tr from-accent-blue/25 to-accent-green/15 rounded-full blur-2xl animate-pulse opacity-35" style={{ animationDelay: '9s', animationDuration: '14s' }} />
+        
+        {/* Subtle geometric patterns */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rotate-45" />
+          <div className="absolute bottom-1/3 left-1/4 w-3 h-3 bg-accent-yellow rounded-full" />
+          <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-accent-blue rounded-full" />
+        </div>
       </div>
+
+      {/* Smooth gradient transition to next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background/80 via-background/40 to-transparent" />
 
       <div className="relative z-10 container mx-auto px-8 py-20 lg:py-32">
         {/* Header Section */}
@@ -54,7 +80,9 @@ const ComingSoon = () => {
             px-4 
             py-2 
             mb-6
-            animate-pulse
+            hover:bg-foreground/20
+            transition-colors
+            duration-300
           ">
             <Lock className="w-4 h-4 mr-2" />
             EXCLUSIVE ACCESS
@@ -103,30 +131,39 @@ const ComingSoon = () => {
           </p>
         </div>
 
-        {/* Programs Grid */}
-        <div className="grid md:grid-cols-3 gap-8 lg:gap-12 mb-16">
+        {/* Programs Grid - 2x2 Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16 max-w-6xl mx-auto">
           {programs.map((program, index) => (
             <div
               key={program.title}
               className="
                 group 
                 relative 
-                bg-white/5 
-                backdrop-blur-sm 
+                bg-gradient-to-br from-white/8 to-white/4
+                backdrop-blur-md 
                 border 
-                border-white/10 
-                rounded-2xl 
+                border-white/20 
+                rounded-3xl 
                 p-8 
-                hover:bg-white/10 
-                hover:border-white/20 
+                hover:bg-gradient-to-br hover:from-white/15 hover:to-white/8
+                hover:border-white/40 
                 transition-all 
-                duration-500 
-                hover:scale-105
+                duration-700 
+                hover:scale-[1.03]
+                hover:shadow-2xl
+                hover:shadow-white/20
                 animate-fade-in
+                h-full
+                flex
+                flex-col
+                overflow-hidden
               "
-              style={{ animationDelay: program.delay }}
+              style={{ 
+                animationDelay: program.delay,
+                animationFillMode: 'both'
+              }}
             >
-              {/* Gradient Overlay */}
+              {/* Enhanced Gradient Overlay with blur effect */}
               <div className={`
                 absolute 
                 inset-0 
@@ -134,39 +171,63 @@ const ComingSoon = () => {
                 ${program.gradient} 
                 opacity-0 
                 group-hover:opacity-10 
-                rounded-2xl 
-                transition-opacity 
-                duration-500
+                rounded-3xl 
+                transition-all
+                duration-700
+                blur-sm
               `} />
               
-              {/* Icon */}
-              <div className="relative mb-6">
+              {/* Subtle inner glow */}
+              <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Animated border effect */}
+              <div className={`
+                absolute inset-0 rounded-3xl 
+                bg-gradient-to-r ${program.gradient}
+                opacity-0 group-hover:opacity-20
+                transition-opacity duration-500
+                blur-[1px]
+              `} style={{ clipPath: 'inset(0 round 1.5rem)' }} />
+              
+              {/* Enhanced Icon */}
+              <div className="relative mb-6 z-10">
                 <div className={`
-                  w-16 
-                  h-16 
-                  rounded-full 
+                  w-24 
+                  h-24 
+                  rounded-2xl 
                   bg-gradient-to-br 
                   ${program.gradient} 
                   flex 
                   items-center 
                   justify-center 
                   group-hover:scale-110 
-                  transition-transform 
-                  duration-300
+                  transition-all
+                  duration-500
+                  shadow-xl
+                  shadow-black/20
+                  group-hover:shadow-2xl
+                  relative
+                  overflow-hidden
                 `}>
-                  <program.icon className="w-8 h-8 text-white" />
+                  {/* Icon glow effect */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${program.gradient} opacity-50 blur-md group-hover:opacity-70 transition-opacity duration-500`} />
+                  <program.icon className="w-12 h-12 text-white relative z-10 drop-shadow-lg" />
                 </div>
               </div>
               
-              {/* Content */}
-              <div className="relative">
+              {/* Enhanced Content */}
+              <div className="relative flex-1 flex flex-col z-10">
                 <h3 className="
                   text-2xl 
                   md:text-3xl 
                   font-heading 
-                  font-medium 
+                  font-bold 
                   text-white 
                   mb-3
+                  group-hover:text-white
+                  transition-all
+                  duration-300
+                  leading-tight
                 ">
                   {program.title}
                 </h3>
@@ -174,32 +235,47 @@ const ComingSoon = () => {
                 <p className="
                   text-accent-yellow 
                   font-heading 
-                  font-medium 
+                  font-semibold 
                   text-lg 
-                  mb-4
+                  mb-6
+                  group-hover:text-accent-yellow/90
+                  transition-colors
+                  duration-300
                 ">
                   {program.subtitle}
                 </p>
                 
                 <p className="
-                  text-white/70 
+                  text-white/85 
                   font-body 
-                  font-light 
                   leading-relaxed 
-                  mb-6
+                  mb-8
+                  flex-1
+                  text-base
+                  group-hover:text-white/95
+                  transition-colors
+                  duration-300
                 ">
                   {program.description}
                 </p>
                 
-                {/* Mystery Element */}
+                {/* Enhanced Mystery Element */}
                 <div className="
                   flex 
                   items-center 
-                  text-white/50 
+                  text-white/70 
                   text-sm 
                   font-body
+                  font-medium
+                  pt-6
+                  border-t
+                  border-white/20
+                  group-hover:border-white/30
+                  group-hover:text-white/80
+                  transition-all
+                  duration-300
                 ">
-                  <Lock className="w-4 h-4 mr-2" />
+                  <Lock className="w-4 h-4 mr-3 text-accent-yellow group-hover:animate-pulse" />
                   Details revealed to early subscribers
                 </div>
               </div>
@@ -255,9 +331,6 @@ const ComingSoon = () => {
           </Button>
         </div>
       </div>
-
-      {/* Bottom Gradient Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 };
