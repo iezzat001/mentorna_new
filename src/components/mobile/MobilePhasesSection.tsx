@@ -249,45 +249,45 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-20 h-full flex flex-col p-4 pt-2">
+      <div className="relative z-20 flex flex-col h-[calc(100vh-4rem)] p-4">
         {/* Compact Phase Header */}
-        <div className="text-center mb-4">
-          <div className={`inline-flex items-center gap-3 ${phase.color} border-3 border-foreground font-black uppercase px-4 py-2 text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-lg`}>
-            <phase.icon className="w-5 h-5 text-foreground" />
-            <span className="text-sm">{phase.phase}</span>
+        <div className="text-center mb-3">
+          <div className={`inline-flex items-center gap-2 ${phase.color} border-2 border-foreground font-black uppercase px-3 py-1.5 text-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-lg`}>
+            <phase.icon className="w-4 h-4 text-foreground" />
+            <span className="text-xs">{phase.phase}</span>
           </div>
-          <h2 className="font-black text-lg uppercase text-foreground mt-2">
+          <h2 className="font-black text-base uppercase text-foreground mt-1.5">
             {phase.title}
           </h2>
         </div>
 
         {/* Compact Phase Description */}
-        <div className="bg-white/90 backdrop-blur-sm border-2 border-foreground rounded-xl p-3 mb-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+        <div className="bg-white/90 backdrop-blur-sm border-2 border-foreground rounded-lg p-2.5 mb-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
           <p className="font-body text-xs font-semibold text-foreground/80 text-center leading-tight">
             {phase.description}
           </p>
         </div>
 
-        {/* All 4 Weeks - No Scrolling */}
-        <div className="flex-1 space-y-2">
+        {/* All 4 Weeks - Fixed Height */}
+        <div className="flex-1 space-y-1.5 min-h-0">
           {phase.weeks.map((week) => (
             <WeekCard key={week.week} week={week} />
           ))}
         </div>
 
         {/* Always Visible CTA Button */}
-        <div className="mt-3 mb-6">
+        <div className="pt-3 pb-4">
           <WaitingListDialog>
             <Button className="
               w-full 
               bg-primary 
-              border-3 
+              border-2 
               border-foreground 
-              shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] 
+              shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
               font-black 
               uppercase 
               py-3 
-              text-sm
+              text-xs
               hover:translate-x-1 
               hover:translate-y-1 
               hover:shadow-none 
