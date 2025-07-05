@@ -54,7 +54,7 @@ const MobileLanding = () => {
         },
         {
           week: 2,
-          title: "Data Science & Machine Learning",
+          title: "Data Science & Machine Learning", 
           description: "Learn data analysis and basic machine learning algorithms"
         },
         {
@@ -101,18 +101,30 @@ const MobileLanding = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black overflow-y-scroll snap-y snap-mandatory">
+    <div className="
+      h-screen 
+      overflow-y-scroll 
+      scroll-snap-type-y 
+      scroll-snap-mandatory
+      scrollbar-hide
+    ">
       {/* Hero Section */}
-      <MobileHero />
+      <div className="scroll-snap-start">
+        <MobileHero />
+      </div>
       
       {/* Success Stories Sections */}
       {stories.map((story, index) => (
-        <MobileStorySection key={index} story={story} />
+        <div key={index} className="scroll-snap-start">
+          <MobileStorySection story={story} />
+        </div>
       ))}
 
       {/* Phases Sections */}
       {phases.map((phase, index) => (
-        <MobilePhasesSection key={index} phase={phase} />
+        <div key={index} className="scroll-snap-start">
+          <MobilePhasesSection phase={phase} />
+        </div>
       ))}
     </div>
   );

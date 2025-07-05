@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -89,6 +90,17 @@ export default {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-purple': 'var(--gradient-purple)',
 				'gradient-warm': 'var(--gradient-warm)'
+			},
+			scrollSnapType: {
+				none: 'none',
+				x: 'x var(--tw-scroll-snap-strictness)',
+				y: 'y var(--tw-scroll-snap-strictness)',
+				both: 'both var(--tw-scroll-snap-strictness)',
+			},
+			scrollSnapAlign: {
+				start: 'start',
+				end: 'end',
+				center: 'center',
 			},
 			keyframes: {
 				'accordion-down': {

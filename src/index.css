@@ -106,7 +106,30 @@
     font-family: var(--font-body);
   }
   
-  /* TikTok-style smooth scrolling */
+  /* Scroll Snap Implementation */
+  .scroll-snap-type-y {
+    scroll-snap-type: y mandatory;
+  }
+  
+  .scroll-snap-mandatory {
+    scroll-behavior: smooth;
+  }
+  
+  .scroll-snap-start {
+    scroll-snap-align: start;
+  }
+  
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Legacy TikTok-style smooth scrolling (keep for compatibility) */
   .snap-y {
     scroll-behavior: smooth;
   }
@@ -119,7 +142,7 @@
     scroll-snap-align: start;
   }
   
-  /* Hide scrollbar but keep functionality */
+  /* Hide scrollbar for horizontal scroll */
   .overflow-y-scroll::-webkit-scrollbar {
     display: none;
   }
@@ -127,15 +150,5 @@
   .overflow-y-scroll {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-
-  /* Hide scrollbar for horizontal scroll */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
   }
 }
