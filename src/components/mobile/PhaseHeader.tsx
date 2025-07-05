@@ -1,12 +1,11 @@
 
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
 
 interface PhaseHeaderProps {
   phase: string;
   title: string;
   color: string;
-  icon: LucideIcon;
+  icon: React.ElementType;
 }
 
 const PhaseHeader = ({ phase, title, color, icon: IconComponent }: PhaseHeaderProps) => {
