@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import MobileHero from '@/components/mobile/MobileHero';
 import MobileStorySection from '@/components/mobile/MobileStorySection';
 import MobilePhasesSection from '@/components/mobile/MobilePhasesSection';
@@ -7,7 +9,49 @@ import MobilePricingSection from '@/components/mobile/MobilePricingSection';
 import MobileFounderCard from '@/components/mobile/MobileFounderCard';
 import { Award, Lightbulb, Rocket } from 'lucide-react';
 
+interface Founder {
+  id: string;
+  name: string;
+  title: string;
+  short_bio: string;
+  extended_bio: string;
+  image_url: string;
+  linkedin_url: string;
+  twitter_url: string;
+  order_index: number;
+  is_active: boolean;
+}
+
 const MobileLanding = () => {
+  // Fetch founders from Supabase (same as main landing page)
+  const { data: founders } = useQuery({
+    queryKey: ['founders-public'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('founders')
+        .select('*')
+        .eq('is_active', true)
+        .order('order_index');
+      
+      if (error) throw error;
+      return data as Founder[];
+    }
+  });
+
+  // Convert database founder to the format expected by MobileFounderCard
+  const convertFounder = (founder: Founder) => ({
+    id: parseInt(founder.id.slice(-8), 16), // Convert UUID to number for compatibility
+    name: founder.name,
+    title: founder.title,
+    shortBio: founder.short_bio,
+    extendedBio: founder.extended_bio,
+    image: founder.image_url,
+    socialMedia: {
+      linkedin: founder.linkedin_url,
+      twitter: founder.twitter_url
+    }
+  });
+
   const stories = [
     {
       name: "MARIAM ABDELAZIZ",
@@ -102,47 +146,6 @@ const MobileLanding = () => {
     }
   ];
 
-  const founders = [
-    {
-      name: "Ahmed Hassan",
-      title: "AI & Entrepreneurship Expert",
-      image: "https://d2mp3ttz3u5gci.cloudfront.net/ahmed_founder.jpg",
-      background: "Former Tech Lead at Google & successful startup founder with 15+ years in AI development",
-      experience: "Built 3 AI startups, mentored 200+ entrepreneurs, raised $50M+ in funding",
-      education: "PhD Computer Science, Stanford University",
-      achievements: [
-        "Founded AI startup acquired by Microsoft for $120M",
-        "Published 50+ research papers in top AI conferences",
-        "Forbes 30 Under 30 in Technology",
-        "Mentored unicorn startup founders"
-      ],
-      quote: "Every child has the potential to create the next breakthrough innovation. Our job is to unlock that potential.",
-      linkedin: "https://linkedin.com/in/ahmed-hassan-ai",
-      email: "ahmed@ilab-program.com",
-      color: "bg-accent-purple",
-      location: "San Francisco, CA"
-    },
-    {
-      name: "Sarah Mitchell",
-      title: "Youth Development & Education Specialist",
-      image: "https://d2mp3ttz3u5gci.cloudfront.net/sarah_founder.jpg",
-      background: "Former Director of Education at Khan Academy with expertise in youth development and innovative learning methodologies",
-      experience: "Designed curricula for 10M+ students globally, specialized in STEM education for young minds",
-      education: "EdD Educational Leadership, Harvard University",
-      achievements: [
-        "Led education initiatives reaching 10M+ students",
-        "TEDx speaker on future of education (2M+ views)",
-        "Winner of Global Education Innovation Award",
-        "Advisor to UNESCO on digital learning"
-      ],
-      quote: "The future belongs to young minds who can think creatively and solve problems that don't exist yet.",
-      linkedin: "https://linkedin.com/in/sarah-mitchell-edu",
-      email: "sarah@ilab-program.com",
-      color: "bg-accent-blue",
-      location: "Boston, MA"
-    }
-  ];
-
   return (
     <div className="
       h-screen 
@@ -176,9 +179,9 @@ const MobileLanding = () => {
       </div>
 
       {/* Founders Sections */}
-      {founders.map((founder, index) => (
-        <div key={index} className="scroll-snap-start">
-          <MobileFounderCard founder={founder} />
+      {founders?.map((founder) => (
+        <div key={founder.id} className="scroll-snap-start">
+          <MobileFounderCard founder={convertFounder(founder)} />
         </div>
       ))}
     </div>

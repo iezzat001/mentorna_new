@@ -1,185 +1,204 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Linkedin, Mail, MapPin, GraduationCap, Award, Users, Heart } from 'lucide-react';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { Linkedin, Twitter, Users } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
+import FounderDialog from '../FounderDialog';
 
-interface FounderData {
+interface Founder {
+  id: number;
   name: string;
   title: string;
+  shortBio: string;
+  extendedBio: string;
   image: string;
-  background: string;
-  experience: string;
-  education: string;
-  achievements: string[];
-  quote: string;
-  linkedin: string;
-  email: string;
-  color: string;
-  location: string;
+  socialMedia: {
+    linkedin: string;
+    twitter: string;
+  };
 }
 
 interface MobileFounderCardProps {
-  founder: FounderData;
+  founder: Founder;
 }
 
 const MobileFounderCard = ({ founder }: MobileFounderCardProps) => {
   return (
-    <div className="relative h-screen w-full overflow-hidden snap-start bg-gradient-to-br from-background to-accent-green/20">
+    <div className="relative h-screen w-full overflow-hidden snap-start">
       {/* Header */}
       <div className="relative z-30 flex items-center justify-between p-4 pt-8">
-        <div className="font-heading text-foreground font-light tracking-wide text-lg">
+        <div className="font-heading text-background font-light tracking-wide text-lg drop-shadow-lg">
           iLab® Program
         </div>
         <div className="w-6 h-6 flex items-center justify-center">
-          <div className="w-4 h-4 rounded-full bg-foreground/20 backdrop-blur-sm" />
+          <div className="w-4 h-4 rounded-full bg-background/20 backdrop-blur-sm" />
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-20 flex flex-col h-[calc(100vh-4rem)] p-4">
+      {/* Full Screen Image Background */}
+      <div className="absolute inset-0 w-full h-full">
+        <img 
+          src={founder.image} 
+          alt={founder.name}
+          className="w-full h-full object-cover object-center"
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+      </div>
+
+      {/* Content Overlay */}
+      <div className="relative z-20 flex flex-col h-[calc(100vh-4rem)] justify-between p-4">
         {/* Section Title */}
-        <div className="text-center mb-3">
-          <h2 className="font-black text-lg uppercase text-foreground mb-1.5 leading-tight">
+        <div className="text-center mb-4">
+          <h2 className="font-black text-lg uppercase text-background mb-1.5 leading-tight drop-shadow-lg">
             Meet Your Mentors
           </h2>
-          <p className="font-body text-xs font-semibold text-foreground/80 leading-tight">
+          <p className="font-body text-xs font-semibold text-background/90 leading-tight drop-shadow-md">
             Expert entrepreneurs & AI specialists guiding your journey
           </p>
         </div>
 
-        {/* Founder Card */}
-        <Card className="
+        {/* Spacer to push content to bottom */}
+        <div className="flex-1"></div>
+
+        {/* Founder Info Card - Original Perfect Size */}
+        <div className="
+          bg-background/10 
+          backdrop-blur-md 
           border-2 
-          border-foreground 
-          shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
-          bg-white
-          mb-3
-          flex-1
-          flex
-          flex-col
+          border-background/30 
+          rounded-2xl 
+          p-4 
+          mb-4
+          shadow-[0_8px_32px_rgba(0,0,0,0.3)]
         ">
-          {/* Founder Header */}
-          <CardHeader className={`${founder.color} border-b-2 border-foreground text-center p-3`}>
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <img 
-                  src={founder.image} 
-                  alt={founder.name}
-                  className="w-16 h-16 rounded-full border-3 border-foreground object-cover"
-                />
-                <div className="absolute -bottom-1 -right-1 bg-accent-yellow border-2 border-foreground rounded-full p-1">
-                  <Award className="h-3 w-3 text-foreground" />
-                </div>
-              </div>
-              <div className="flex-1 text-left">
-                <CardTitle className="font-black text-sm uppercase text-foreground leading-tight">
-                  {founder.name}
-                </CardTitle>
-                <p className="font-body text-xs font-semibold text-foreground/80 mt-1 leading-tight">
-                  {founder.title}
-                </p>
-                <div className="flex items-center gap-1 mt-1">
-                  <MapPin className="h-3 w-3 text-foreground/60" />
-                  <span className="font-body text-xs text-foreground/60">
-                    {founder.location}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </CardHeader>
-          
-          <CardContent className="p-3 flex-1 flex flex-col">
-            {/* Quote Section */}
-            <div className="
-              bg-accent-blue/10 
-              border-2 
-              border-accent-blue/30 
-              rounded-lg 
-              p-2.5 
-              mb-3
+          {/* Founder Name & Title */}
+          <div className="text-center mb-3">
+            <h3 className="
+              font-heading 
+              text-2xl 
+              font-black 
+              uppercase 
+              text-background 
+              mb-2
+              drop-shadow-lg
             ">
-              <div className="flex items-start gap-2">
-                <Heart className="h-3 w-3 text-accent-blue mt-0.5 flex-shrink-0" />
-                <p className="font-body text-xs font-semibold text-foreground leading-tight italic">
-                  "{founder.quote}"
-                </p>
-              </div>
+              {founder.name}
+            </h3>
+            
+            <div className="
+              bg-accent-yellow 
+              text-foreground 
+              font-bold 
+              text-sm 
+              px-4 
+              py-2 
+              border-2 
+              border-foreground 
+              inline-block
+              shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]
+            ">
+              {founder.title}
             </div>
+          </div>
+          
+          {/* Short Bio */}
+          <div className="text-center mb-4">
+            <p className="
+              font-body 
+              text-sm 
+              font-medium 
+              leading-relaxed
+              text-background/95
+              drop-shadow-md
+            ">
+              "{founder.shortBio}"
+            </p>
+          </div>
 
-            {/* Background & Experience */}
-            <div className="space-y-2 flex-1">
-              <div className="bg-background/50 border border-foreground/20 rounded-lg p-2">
-                <div className="flex items-center gap-2 mb-1">
-                  <GraduationCap className="h-3 w-3 text-accent-purple" />
-                  <span className="font-black text-xs uppercase text-foreground">Background</span>
-                </div>
-                <p className="font-body text-xs text-foreground/80 leading-tight">
-                  {founder.background}
-                </p>
-              </div>
-
-              <div className="bg-background/50 border border-foreground/20 rounded-lg p-2">
-                <div className="flex items-center gap-2 mb-1">
-                  <Users className="h-3 w-3 text-accent-green" />
-                  <span className="font-black text-xs uppercase text-foreground">Experience</span>
-                </div>
-                <p className="font-body text-xs text-foreground/80 leading-tight">
-                  {founder.experience}
-                </p>
-              </div>
-
-              {/* Key Achievements */}
-              <div className="bg-background/50 border border-foreground/20 rounded-lg p-2">
-                <div className="flex items-center gap-2 mb-1">
-                  <Award className="h-3 w-3 text-accent-yellow" />
-                  <span className="font-black text-xs uppercase text-foreground">Key Achievements</span>
-                </div>
-                <div className="space-y-1">
-                  {founder.achievements.slice(0, 2).map((achievement, index) => (
-                    <div key={index} className="flex items-start gap-1.5">
-                      <div className="w-1.5 h-1.5 bg-accent-yellow rounded-full mt-1.5 flex-shrink-0" />
-                      <span className="font-body text-xs text-foreground/80 leading-tight">
-                        {achievement}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Contact Info */}
-            <div className="flex items-center justify-center gap-3 mt-2 pt-2 border-t border-foreground/20">
+          {/* Social Media Links */}
+          <div className="flex items-center justify-center gap-4 mb-4">
+            {founder.socialMedia.linkedin && (
               <a 
-                href={founder.linkedin} 
+                href={founder.socialMedia.linkedin} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="bg-accent-blue border border-foreground p-1.5 rounded hover:scale-105 transition-transform"
+                className="
+                  bg-background/20 
+                  backdrop-blur-sm 
+                  border-2 
+                  border-background/40 
+                  p-2 
+                  rounded-full 
+                  hover:scale-110 
+                  transition-transform
+                  hover:bg-background/30
+                "
               >
-                <Linkedin className="h-3 w-3 text-foreground" />
+                <Linkedin className="h-5 w-5 text-background" />
               </a>
+            )}
+            {founder.socialMedia.twitter && (
               <a 
-                href={`mailto:${founder.email}`}
-                className="bg-accent-green border border-foreground p-1.5 rounded hover:scale-105 transition-transform"
+                href={founder.socialMedia.twitter} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="
+                  bg-background/20 
+                  backdrop-blur-sm 
+                  border-2 
+                  border-background/40 
+                  p-2 
+                  rounded-full 
+                  hover:scale-110 
+                  transition-transform
+                  hover:bg-background/30
+                "
               >
-                <Mail className="h-3 w-3 text-foreground" />
+                <Twitter className="h-5 w-5 text-background" />
               </a>
-            </div>
-          </CardContent>
-        </Card>
+            )}
+          </div>
 
-        {/* Call to Action */}
+          {/* Learn More Button */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <div className="text-center mb-3">
+                <Button className="
+                  bg-primary 
+                  text-primary-foreground 
+                  font-black 
+                  uppercase 
+                  px-6 
+                  py-3 
+                  text-sm 
+                  border-2 
+                  border-background 
+                  shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)]
+                  hover:scale-105
+                  transition-transform
+                  active:scale-95
+                ">
+                  LEARN MORE ABOUT {founder.name.split(' ')[0].toUpperCase()}
+                </Button>
+              </div>
+            </DialogTrigger>
+            <FounderDialog founder={founder} />
+          </Dialog>
+        </div>
+
+        {/* Call to Action - Always Visible */}
         <div className="pb-4">
           <WaitingListDialog>
             <Button className="
               w-full
-              bg-primary 
+              bg-accent-yellow 
+              text-foreground
               border-2 
               border-foreground 
-              shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
+              shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] 
               font-black 
-              text-xs
+              text-sm
               px-4 
               py-3
               uppercase
@@ -189,13 +208,13 @@ const MobileFounderCard = ({ founder }: MobileFounderCardProps) => {
               transition-all
               active:scale-95
             ">
-              <Users className="h-3 w-3 mr-1.5" />
-              LEARN FROM {founder.name.split(' ')[0].toUpperCase()}
+              <Users className="h-4 w-4 mr-2" />
+              JOIN THE PROGRAM
             </Button>
           </WaitingListDialog>
           
-          <p className="font-body text-xs font-semibold text-foreground/70 mt-1.5 text-center">
-            Join to get mentored by industry experts
+          <p className="font-body text-xs font-semibold text-background/80 mt-1.5 text-center drop-shadow-md">
+            Get mentored by industry experts
           </p>
         </div>
       </div>
