@@ -4,7 +4,6 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Linkedin, Twitter, Users } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
 import FounderDialog from '../FounderDialog';
-
 interface Founder {
   id: number;
   name: string;
@@ -17,14 +16,13 @@ interface Founder {
     twitter: string;
   };
 }
-
 interface MobileFounderCardProps {
   founder: Founder;
 }
-
-const MobileFounderCard = ({ founder }: MobileFounderCardProps) => {
-  return (
-    <div className="relative h-screen w-full overflow-hidden snap-start">
+const MobileFounderCard = ({
+  founder
+}: MobileFounderCardProps) => {
+  return <div className="relative h-screen w-full overflow-hidden snap-start">
       {/* Header */}
       <div className="relative z-30 flex items-center justify-between p-4 pt-8">
         <div className="font-heading text-background font-light tracking-wide text-lg drop-shadow-lg">
@@ -37,11 +35,7 @@ const MobileFounderCard = ({ founder }: MobileFounderCardProps) => {
 
       {/* Full Screen Image Background */}
       <div className="absolute inset-0 w-full h-full">
-        <img 
-          src={founder.image} 
-          alt={founder.name}
-          className="w-full h-full object-cover object-center"
-        />
+        <img src={founder.image} alt={founder.name} className="w-full h-full object-cover object-center" />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
       </div>
@@ -53,9 +47,7 @@ const MobileFounderCard = ({ founder }: MobileFounderCardProps) => {
           <h2 className="font-black text-lg uppercase text-background mb-1.5 leading-tight drop-shadow-lg">
             Meet Your Mentors
           </h2>
-          <p className="font-body text-xs font-semibold text-background/90 leading-tight drop-shadow-md">
-            Expert entrepreneurs & AI specialists guiding your journey
-          </p>
+          
         </div>
 
         {/* Spacer to push content to bottom */}
@@ -118,12 +110,7 @@ const MobileFounderCard = ({ founder }: MobileFounderCardProps) => {
 
           {/* Social Media Links */}
           <div className="flex items-center justify-center gap-4 mb-4">
-            {founder.socialMedia.linkedin && (
-              <a 
-                href={founder.socialMedia.linkedin} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="
+            {founder.socialMedia.linkedin && <a href={founder.socialMedia.linkedin} target="_blank" rel="noopener noreferrer" className="
                   bg-background/20 
                   backdrop-blur-sm 
                   border-2 
@@ -133,17 +120,10 @@ const MobileFounderCard = ({ founder }: MobileFounderCardProps) => {
                   hover:scale-110 
                   transition-transform
                   hover:bg-background/30
-                "
-              >
+                ">
                 <Linkedin className="h-5 w-5 text-background" />
-              </a>
-            )}
-            {founder.socialMedia.twitter && (
-              <a 
-                href={founder.socialMedia.twitter} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="
+              </a>}
+            {founder.socialMedia.twitter && <a href={founder.socialMedia.twitter} target="_blank" rel="noopener noreferrer" className="
                   bg-background/20 
                   backdrop-blur-sm 
                   border-2 
@@ -153,11 +133,9 @@ const MobileFounderCard = ({ founder }: MobileFounderCardProps) => {
                   hover:scale-110 
                   transition-transform
                   hover:bg-background/30
-                "
-              >
+                ">
                 <Twitter className="h-5 w-5 text-background" />
-              </a>
-            )}
+              </a>}
           </div>
 
           {/* Learn More Button */}
@@ -218,8 +196,6 @@ const MobileFounderCard = ({ founder }: MobileFounderCardProps) => {
           </p>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default MobileFounderCard;
