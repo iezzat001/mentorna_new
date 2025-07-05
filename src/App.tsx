@@ -9,6 +9,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import MobileLanding from "./pages/MobileLanding";
+import Member from "./pages/Member";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
@@ -49,6 +50,14 @@ const App = () => {
                 <>
                   <Route path="/" element={<Index />} />
                   <Route path="/mobile" element={<MobileLanding />} />
+                  <Route 
+                    path="/member/*" 
+                    element={
+                      <ProtectedRoute>
+                        <Member />
+                      </ProtectedRoute>
+                    } 
+                  />
                   <Route 
                     path="/dashboard" 
                     element={
