@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Lightbulb, Rocket } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Lightbulb, Rocket, ChevronDown, Calendar, Target, CheckCircle } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
+import { useWeeksData, useWeekDetails } from '@/hooks/useWeeksData';
 
 interface PhaseData {
   phase: string;
@@ -22,8 +24,96 @@ interface MobilePhasesSectionProps {
   phase: PhaseData;
 }
 
+const WeekDetailsExpanded = ({ weekNumber }: { weekNumber: number }) => {
+  const { data: weekDetails, isLoading } = useWeekDetails(weekNumber);
+
+  if (isLoading) {
+    return (
+      <div className="p-4 space-y-3">
+        <div className="animate-pulse">
+          <div className="h-4 bg-foreground/20 rounded mb-2"></div>
+          <div className="h-3 bg-foreground/20 rounded mb-1"></div>
+          <div className="h-3 bg-foreground/20 rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!weekDetails) return null;
+
+  return (
+    <div className="p-4 space-y-4 bg-accent-yellow/10">
+      {/* Learning Outcome */}
+      {weekDetails.outcome && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Target className="h-4 w-4 text-accent-green" />
+            <h4 className="font-black text-sm uppercase text-foreground">Learning Outcome</h4>
+          </div>
+          <p className="font-body text-sm text-foreground/80 leading-relaxed">
+            {weekDetails.outcome}
+          </p>
+        </div>
+      )}
+
+      {/* Activities */}
+      {weekDetails.activities && weekDetails.activities.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-accent-purple" />
+            <h4 className="font-black text-sm uppercase text-foreground">Activities</h4>
+          </div>
+          <div className="space-y-2">
+            {weekDetails.activities.map((activity, index) => (
+              <div key={index} className="bg-white border-2 border-foreground/20 p-3 rounded">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="bg-foreground text-background font-bold uppercase text-xs px-2 py-1 rounded">
+                    {activity.type}
+                  </span>
+                  <span className="text-xs text-foreground/70 font-semibold">{activity.duration}</span>
+                </div>
+                <h5 className="font-bold text-sm text-foreground mb-1">{activity.title}</h5>
+                <p className="text-xs text-foreground/70 leading-relaxed">{activity.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Skills */}
+      {weekDetails.skills && weekDetails.skills.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-4 w-4 text-accent-green" />
+            <h4 className="font-black text-sm uppercase text-foreground">Skills You'll Master</h4>
+          </div>
+          <div className="space-y-1">
+            {weekDetails.skills.map((skill, index) => (
+              <div key={index} className="flex items-center gap-2 text-sm">
+                <CheckCircle className="h-3 w-3 text-accent-green flex-shrink-0" />
+                <span className="font-semibold text-foreground/80">{skill}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
   const IconComponent = phase.icon;
+  const { data: weeksData } = useWeeksData();
+  
+  // Get the actual weeks data from the database that match this phase
+  const phaseWeeks = weeksData?.filter(week => {
+    if (phase.phase === "PHASE I") {
+      return week.phase === "Foundation Building";
+    } else if (phase.phase === "PHASE II") {
+      return week.phase === "Advanced Implementation";
+    }
+    return false;
+  }) || phase.weeks;
   
   return (
     <div className="relative h-screen w-full overflow-hidden snap-start bg-gradient-to-br from-background to-accent-yellow/20">
@@ -37,75 +127,101 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-20 h-full flex flex-col justify-center p-6">
-        {/* Phase Header */}
-        <div className="text-center mb-8">
-          <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full ${phase.color} mb-4 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}>
-            <IconComponent className="w-10 h-10 text-foreground" />
-          </div>
-          
-          <h1 className="font-heading text-4xl font-black uppercase text-foreground mb-2 leading-tight">
-            TECH ENTREPRENEUR
-          </h1>
-          <h2 className="font-heading text-3xl font-black uppercase text-foreground mb-2">
-            IN 8 WEEKS
-          </h2>
-          
-          <div className={`${phase.color} border-4 border-foreground font-black uppercase px-4 py-2 text-foreground inline-block shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
-            {phase.phase}
-          </div>
-        </div>
-
-        {/* Phase Description */}
-        <Card className="border-4 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-white mb-6">
-          <CardHeader className={`${phase.color} border-b-4 border-foreground`}>
-            <CardTitle className="font-black text-lg uppercase text-foreground">
-              {phase.title}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-4">
-            <p className="font-body text-sm font-semibold text-foreground/80 mb-4">
-              {phase.description}
-            </p>
-            
-            {/* Weeks Preview */}
-            <div className="space-y-2">
-              {phase.weeks.map((week) => (
-                <div key={week.week} className="flex items-start space-x-3 p-2 bg-accent-yellow/30 rounded border-2 border-foreground/20">
-                  <div className="font-bold text-xs bg-foreground text-background rounded-full w-6 h-6 flex items-center justify-center">
-                    {week.week}
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-xs text-foreground">{week.title}</h4>
-                    <p className="text-xs text-foreground/70 mt-1">{week.description}</p>
-                  </div>
-                </div>
-              ))}
+      {/* Scrollable Content */}
+      <div className="relative z-20 h-full overflow-y-auto pb-24">
+        <div className="p-6">
+          {/* Phase Header */}
+          <div className="text-center mb-6">
+            <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${phase.color} mb-4 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}>
+              <IconComponent className="w-8 h-8 text-foreground" />
             </div>
-          </CardContent>
-        </Card>
+            
+            <h1 className="font-heading text-3xl font-black uppercase text-foreground mb-2 leading-tight">
+              TECH ENTREPRENEUR
+            </h1>
+            <h2 className="font-heading text-2xl font-black uppercase text-foreground mb-2">
+              IN 8 WEEKS
+            </h2>
+            
+            <div className={`${phase.color} border-4 border-foreground font-black uppercase px-4 py-2 text-foreground inline-block shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
+              {phase.phase}
+            </div>
+          </div>
 
-        {/* CTA Button */}
-        <WaitingListDialog>
-          <Button className="
-            w-full 
-            bg-primary 
-            border-4 
-            border-foreground 
-            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
-            font-black 
-            uppercase 
-            py-4 
-            text-base
-            hover:translate-x-1 
-            hover:translate-y-1 
-            hover:shadow-none 
-            transition-all
-          ">
-            JOIN WAITING LIST 🚀
-          </Button>
-        </WaitingListDialog>
+          {/* Phase Overview */}
+          <Card className="border-4 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-white mb-6">
+            <CardHeader className={`${phase.color} border-b-4 border-foreground`}>
+              <CardTitle className="font-black text-lg uppercase text-foreground">
+                {phase.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-4">
+              <p className="font-body text-sm font-semibold text-foreground/80">
+                {phase.description}
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Expandable Weeks */}
+          <Card className="border-4 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-white mb-6">
+            <CardHeader className="bg-foreground border-b-4 border-foreground">
+              <CardTitle className="font-black text-lg uppercase text-white">
+                WEEKLY BREAKDOWN
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <Accordion type="single" collapsible className="w-full">
+                {phaseWeeks.map((week) => (
+                  <AccordionItem 
+                    key={week.week} 
+                    value={`week-${week.week}`}
+                    className="border-b-2 border-foreground/20 last:border-b-0"
+                  >
+                    <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-accent-yellow/20 transition-colors">
+                      <div className="flex items-center gap-3 text-left">
+                        <div className="bg-foreground text-background font-black text-sm w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+                          {week.week}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-black text-sm uppercase text-foreground leading-tight">
+                            {week.title}
+                          </h3>
+                          <p className="font-body text-xs text-foreground/70 leading-tight mt-1">
+                            {week.description}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <WeekDetailsExpanded weekNumber={week.week} />
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
+
+          {/* CTA Button */}
+          <WaitingListDialog>
+            <Button className="
+              w-full 
+              bg-primary 
+              border-4 
+              border-foreground 
+              shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
+              font-black 
+              uppercase 
+              py-4 
+              text-base
+              hover:translate-x-1 
+              hover:translate-y-1 
+              hover:shadow-none 
+              transition-all
+            ">
+              JOIN WAITING LIST 🚀
+            </Button>
+          </WaitingListDialog>
+        </div>
       </div>
 
       {/* Swipe Indicator */}
