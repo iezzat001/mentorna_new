@@ -136,13 +136,6 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
               <IconComponent className="w-8 h-8 text-foreground" />
             </div>
             
-            <h1 className="font-heading text-3xl font-black uppercase text-foreground mb-2 leading-tight">
-              TECH ENTREPRENEUR
-            </h1>
-            <h2 className="font-heading text-2xl font-black uppercase text-foreground mb-2">
-              IN 8 WEEKS
-            </h2>
-            
             <div className={`${phase.color} border-4 border-foreground font-black uppercase px-4 py-2 text-foreground inline-block shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
               {phase.phase}
             </div>
