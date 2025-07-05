@@ -14,7 +14,7 @@ const UpcomingConsultationCard = () => {
     ">
       <CardHeader className="pb-3">
         <CardTitle className="font-heading text-xl font-black uppercase">
-          UPCOMING CONSULTATION
+          UPCOMING Workshop
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -43,7 +43,7 @@ const UpcomingConsultationCard = () => {
           <div className="flex items-center gap-3">
             <Video className="w-5 h-5 text-primary" />
             <span className="font-body font-semibold">
-              Dr. Sarah Johnson - AI Ethics
+              Dr. Islam Mosa - TEDx Talk Pitching
             </span>
           </div>
         </div>
@@ -60,7 +60,7 @@ const UpcomingConsultationCard = () => {
           hover:translate-y-1 
           hover:shadow-none
         ">
-          JOIN CONSULTATION
+          JOIN Workshop
         </Button>
       </CardContent>
     </Card>
