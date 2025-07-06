@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,27 +9,27 @@ import WaitingListDialog from '../WaitingListDialog';
 const MobilePricingSection = () => {
   const features = [
     {
-      icon: <BookOpen className="h-4 w-4" />,
+      icon: <BookOpen className="h-3 w-3" />,
       text: "4 Live Expert Masterclasses"
     },
     {
-      icon: <Users className="h-4 w-4" />,
+      icon: <Users className="h-3 w-3" />,
       text: "8 Weekly Parent & Kid Packages"
     },
     {
-      icon: <Award className="h-4 w-4" />,
+      icon: <Award className="h-3 w-3" />,
       text: "AI Innovators Challenge Entry"
     },
     {
-      icon: <Users className="h-4 w-4" />,
+      icon: <Users className="h-3 w-3" />,
       text: "Private Parents Community Access"
     },
     {
-      icon: <Lock className="h-4 w-4" />,
+      icon: <Lock className="h-3 w-3" />,
       text: "Lifetime Access to All Materials"
     },
     {
-      icon: <Download className="h-4 w-4" />,
+      icon: <Download className="h-3 w-3" />,
       text: "Digital AI Toolkit (First 30 only)"
     }
   ];
@@ -45,11 +46,11 @@ const MobilePricingSection = () => {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - with better space distribution */}
       <div className="relative z-20 flex flex-col h-[calc(100vh-4rem)] p-4">
-        {/* Section Title */}
-        <div className="text-center mb-3">
-          <h2 className="font-black text-lg uppercase text-foreground mb-1.5 leading-tight">
+        {/* Section Title - more compact */}
+        <div className="text-center mb-2">
+          <h2 className="font-black text-base uppercase text-foreground mb-1 leading-tight">
             Transform Your Child's Future
           </h2>
           <p className="font-body text-xs font-semibold text-foreground/80 leading-tight max-w-sm mx-auto">
@@ -57,37 +58,38 @@ const MobilePricingSection = () => {
           </p>
         </div>
 
-        {/* Pricing Card */}
+        {/* Pricing Card - optimized height */}
         <Card className="
           border-2 
           border-foreground 
           shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
           bg-white
-          mb-3
+          mb-2
           flex-1
           flex
           flex-col
+          min-h-0
         ">
-          {/* Pricing Header */}
-          <CardHeader className="bg-primary border-b-2 border-foreground text-center p-3">
-            <div className="space-y-2">
+          {/* Pricing Header - more compact */}
+          <CardHeader className="bg-primary border-b-2 border-foreground text-center p-2">
+            <div className="space-y-1">
               <Badge className="
                 bg-foreground 
                 text-background 
                 font-black 
                 uppercase 
                 px-2 
-                py-1 
+                py-0.5 
                 text-xs
               ">
                 LAUNCH SPECIAL
               </Badge>
               
-              <div className="space-y-1">
-                <div className="text-sm font-black text-primary-foreground line-through opacity-70">
+              <div className="space-y-0.5">
+                <div className="text-xs font-black text-primary-foreground line-through opacity-70">
                   $500 USD
                 </div>
-                <div className="text-3xl font-black text-primary-foreground">
+                <div className="text-2xl font-black text-primary-foreground">
                   $329
                 </div>
               </div>
@@ -98,20 +100,20 @@ const MobilePricingSection = () => {
             </div>
           </CardHeader>
           
-          <CardContent className="p-3 flex-1 flex flex-col">
-            {/* Bonus Section */}
+          <CardContent className="p-2 flex-1 flex flex-col min-h-0">
+            {/* Bonus Section - more compact */}
             <div className="
               bg-accent-purple 
               border-2 
               border-foreground 
               shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] 
-              p-2 
-              mb-3
+              p-1.5 
+              mb-2
               rounded-lg
             ">
-              <div className="flex items-center gap-2">
-                <Gift className="h-3 w-3 text-foreground" />
-                <div>
+              <div className="flex items-center gap-1.5">
+                <Gift className="h-3 w-3 text-foreground flex-shrink-0" />
+                <div className="min-w-0">
                   <div className="font-black text-xs uppercase text-foreground">
                     💎 BONUS
                   </div>
@@ -122,28 +124,28 @@ const MobilePricingSection = () => {
               </div>
             </div>
 
-            {/* Features Section */}
-            <div className="flex-1 flex flex-col">
-              <div className="text-center mb-2">
+            {/* Features Section - scrollable if needed */}
+            <div className="flex-1 flex flex-col min-h-0">
+              <div className="text-center mb-1.5">
                 <h3 className="font-black text-xs uppercase text-foreground">
                   ✅ Everything You Get:
                 </h3>
               </div>
               
-              <div className="space-y-1.5 flex-1 min-h-0">
+              <div className="space-y-1 flex-1 overflow-y-auto">
                 {features.map((feature, index) => (
                   <div key={index} className="
                     flex 
                     items-center 
-                    gap-2 
-                    p-1.5 
+                    gap-1.5 
+                    p-1 
                     bg-background 
                     border border-foreground/30
                     rounded
                   ">
                     <div className="
                       bg-accent-green 
-                      p-1 
+                      p-0.5 
                       border 
                       border-foreground
                       flex-shrink-0
@@ -161,8 +163,8 @@ const MobilePricingSection = () => {
           </CardContent>
         </Card>
 
-        {/* Call to Action */}
-        <div className="pb-4">
+        {/* Call to Action - always visible at bottom */}
+        <div className="flex-shrink-0">
           <WaitingListDialog>
             <Button className="
               w-full
@@ -173,7 +175,7 @@ const MobilePricingSection = () => {
               font-black 
               text-xs
               px-4 
-              py-3
+              py-2.5
               uppercase
               hover:translate-x-1 
               hover:translate-y-1 
@@ -181,12 +183,12 @@ const MobilePricingSection = () => {
               transition-all
               active:scale-95
             ">
-              <Sparkles className="h-3 w-3 mr-1.5" />
+              <Sparkles className="h-3 w-3 mr-1" />
               SECURE YOUR SPOT NOW!
             </Button>
           </WaitingListDialog>
           
-          <p className="font-body text-xs font-semibold text-foreground/70 mt-1.5 text-center">
+          <p className="font-body text-xs font-semibold text-foreground/70 mt-1 text-center">
             Limited Time • First 30 Families Only
           </p>
         </div>
