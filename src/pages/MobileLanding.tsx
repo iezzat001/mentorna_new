@@ -9,7 +9,7 @@ import MobilePricingSection from '@/components/mobile/MobilePricingSection';
 import MobileFounderCard from '@/components/mobile/MobileFounderCard';
 import MobileComingSoonSection from '@/components/mobile/MobileComingSoonSection';
 import MobileNewsletterSection from '@/components/mobile/MobileNewsletterSection';
-import { Award, Lightbulb, Rocket, TrendingUp, Zap, Atom } from 'lucide-react';
+import { Award, Lightbulb, Rocket, TrendingUp, Zap, Atom, GraduationCap } from 'lucide-react';
 
 interface Founder {
   id: string;
@@ -157,10 +157,10 @@ const MobileLanding = () => {
       gradient: "from-accent-purple to-purple-600"
     },
     {
-      title: "Space Tech", 
-      subtitle: "Engineer the Final Frontier",
-      description: "Design spacecraft systems, satellite technology, and explore Mars colonization strategies",
-      icon: Rocket,
+      title: "Study Abroad", 
+      subtitle: "Master Global Education",
+      description: "Develop a global student mindset, secure scholarships to world's best universities, and get seats in Ivy League institutions",
+      icon: GraduationCap,
       gradient: "from-accent-blue to-blue-600"
     },
     {
