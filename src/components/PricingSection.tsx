@@ -113,39 +113,7 @@ const PricingSection = () => {
               </div>
 
               {/* Features Section */}
-              <div className="space-y-6">
-                <div className="text-center">
-                  <h3 className="font-black text-xl uppercase text-foreground mb-4">
-                    ✅ EVERYTHING YOU GET:
-                  </h3>
-                </div>
-                
-                <div className="space-y-4">
-                  {features.map((feature, index) => <div key={index} className="
-                      flex 
-                      items-center 
-                      gap-4 
-                      p-3 
-                      bg-background 
-                      border-2 
-                      border-foreground
-                      shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
-                    ">
-                      <div className="
-                        bg-accent-green 
-                        p-2 
-                        border-2 
-                        border-foreground
-                        flex-shrink-0
-                      ">
-                        {feature.icon}
-                      </div>
-                      <span className="font-body text-base font-semibold text-foreground">
-                        ✓ {feature.text}
-                      </span>
-                    </div>)}
-                </div>
-              </div>
+              
 
               {/* Call to Action */}
               <div className="mt-8 text-center">
