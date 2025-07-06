@@ -7,7 +7,8 @@ import MobileStorySection from '@/components/mobile/MobileStorySection';
 import MobilePhasesSection from '@/components/mobile/MobilePhasesSection';
 import MobilePricingSection from '@/components/mobile/MobilePricingSection';
 import MobileFounderCard from '@/components/mobile/MobileFounderCard';
-import { Award, Lightbulb, Rocket } from 'lucide-react';
+import MobileComingSoonSection from '@/components/mobile/MobileComingSoonSection';
+import { Award, Lightbulb, Rocket, TrendingUp, Zap, Atom } from 'lucide-react';
 
 interface Founder {
   id: string;
@@ -146,6 +147,37 @@ const MobileLanding = () => {
     }
   ];
 
+  const comingSoonPrograms = [
+    {
+      title: "Economics",
+      subtitle: "Master the Digital Economy",
+      description: "Unlock the secrets of cryptocurrency, blockchain economics, and digital market dynamics",
+      icon: TrendingUp,
+      gradient: "from-accent-purple to-purple-600"
+    },
+    {
+      title: "Space Tech", 
+      subtitle: "Engineer the Final Frontier",
+      description: "Design spacecraft systems, satellite technology, and explore Mars colonization strategies",
+      icon: Rocket,
+      gradient: "from-accent-blue to-blue-600"
+    },
+    {
+      title: "Renewable Energy",
+      subtitle: "Power Tomorrow's World", 
+      description: "Create sustainable solutions with solar tech, wind systems, and revolutionary energy storage",
+      icon: Zap,
+      gradient: "from-accent-green to-green-600"
+    },
+    {
+      title: "Quantum Computing",
+      subtitle: "Decode the Quantum Future",
+      description: "Master quantum algorithms, quantum machine learning, and build applications for the next computing revolution",
+      icon: Atom,
+      gradient: "from-orange-500 to-red-600"
+    }
+  ];
+
   return (
     <div className="
       h-screen 
@@ -176,6 +208,14 @@ const MobileLanding = () => {
       {/* Pricing Section */}
       <div className="scroll-snap-start">
         <MobilePricingSection />
+      </div>
+
+      {/* Coming Soon Sections - 2 programs per slide */}
+      <div className="scroll-snap-start">
+        <MobileComingSoonSection programs={comingSoonPrograms} slideIndex={0} />
+      </div>
+      <div className="scroll-snap-start">
+        <MobileComingSoonSection programs={comingSoonPrograms} slideIndex={1} />
       </div>
 
       {/* Founders Sections */}
