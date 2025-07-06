@@ -13,7 +13,7 @@ const SuccessStories = () => {
       icon: Award,
       videoUrl: "https://d2mp3ttz3u5gci.cloudfront.net/mariam.MOV",
       thumbnailUrl: "https://d2mp3ttz3u5gci.cloudfront.net/mariam_thumbnail.png",
-      description: "Through our mentorship program, Mariam secured a scholarship to study in Ludwig Maximilian University of Munich(LMU) placed at 27th globally, 8th in Europe, and 2nd in Germany. Her success story demonstrates the transformative power of future-focused education."
+      description: "Secured a scholarship to study at Ludwig Maximilian University of Munich (LMU) - ranked 27th globally! 🏆"
     },
     {
       name: "OMAR MOSA",
@@ -24,7 +24,7 @@ const SuccessStories = () => {
       icon: Lightbulb,
       videoUrl: "https://www.youtube.com/live/y4RMA94rLQ4?feature=shared&t=3927",
       thumbnailUrl: "https://d2mp3ttz3u5gci.cloudfront.net/omar_thumbnail.png",
-      description: "Omar learned how to come up with innovative ideas and created Omar Waters, the first subscription delivery service for bottled water in Tanta. Through our program, he discovered how to test the validity of his idea and assess market potential using AI while building his mobile app and getting ready to launch his business."
+      description: "Created Omar Waters - the first subscription delivery service for bottled water in Tanta using AI! 💧"
     }
   ];
 

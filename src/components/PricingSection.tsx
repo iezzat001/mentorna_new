@@ -39,7 +39,7 @@ const PricingSection = () => {
             TRANSFORM YOUR CHILD'S FUTURE
           </h2>
           <p className="font-body text-xl font-semibold text-foreground/80 max-w-2xl mx-auto">
-            For less than the cost of a few traditional tutoring sessions, you're investing in critical future skills, expert guidance, and a transformative learning experience.
+            For less than the cost of a few tutoring sessions
           </p>
         </div>
 
@@ -107,7 +107,7 @@ const PricingSection = () => {
                     💎 BONUS
                   </div>
                   <div className="font-body text-sm font-semibold text-foreground">
-                    The first 30 families get a Digital AI Toolkit for Teens (Value: $49)
+                    First 30 get Digital AI Toolkit ($49 value)
                   </div>
                 </div>
               </div>

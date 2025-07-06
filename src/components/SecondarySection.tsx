@@ -14,10 +14,10 @@ const SecondarySection = () => {
       <div className="text-center max-w-4xl space-y-12 relative z-10">
         <div className="space-y-6">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-heading">
-            Continue Your Journey
+            Join the AI Revolution
           </h2>
           <p className="text-xl md:text-2xl text-white/80 font-semibold leading-relaxed font-body max-w-3xl mx-auto">
-            Stay Ahead of the AI Revolution
+            Get AI insights & early access
           </p>
         </div>
         

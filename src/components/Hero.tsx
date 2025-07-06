@@ -46,11 +46,6 @@ const Hero = () => {
         <div className="flex-1" />
         
         <div className="pb-8 px-8 lg:pb-12 lg:px-12 mt-24">
-          {/* Tagline */}
-          <div className="text-white/60 text-sm font-light tracking-wide mb-6 font-heading">
-            The World Changed. School Didn't.
-          </div>
-          
           {/* Main Headline */}
           <div className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-none mb-8 font-heading">
             <div className="text-white mb-2">
