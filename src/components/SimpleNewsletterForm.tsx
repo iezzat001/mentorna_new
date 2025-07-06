@@ -21,8 +21,17 @@ const SimpleNewsletterForm = () => {
     
     if (!formData.email.trim()) {
       toast({
-        title: "Email Required",
-        description: "Please enter your email address to subscribe.",
+        title: "Email Required ✉️",
+        description: "Please enter your email address to join the revolution!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.email.includes('@')) {
+      toast({
+        title: "Invalid Email 📧",
+        description: "Please enter a valid email address.",
         variant: "destructive",
       });
       return;
@@ -185,12 +194,13 @@ const SimpleNewsletterForm = () => {
         {/* Submit Button */}
         <Button
           type="submit"
-          disabled={isSubmitting || !formData.email.trim()}
+          disabled={isSubmitting}
           className="
             w-full
             h-14
             bg-gradient-to-r from-accent-yellow to-accent-yellow/90
             hover:from-accent-yellow/90 hover:to-accent-yellow/80
+            active:scale-95
             text-black 
             font-bold
             text-lg
@@ -203,6 +213,8 @@ const SimpleNewsletterForm = () => {
             group
             disabled:opacity-50
             disabled:cursor-not-allowed
+            touch-manipulation
+            min-h-[56px]
           "
         >
           {isSubmitting ? (
