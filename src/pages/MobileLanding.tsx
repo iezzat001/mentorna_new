@@ -9,7 +9,7 @@ import MobilePricingSection from '@/components/mobile/MobilePricingSection';
 import MobileFounderCard from '@/components/mobile/MobileFounderCard';
 import MobileComingSoonSection from '@/components/mobile/MobileComingSoonSection';
 import MobileNewsletterSection from '@/components/mobile/MobileNewsletterSection';
-import { Award, Lightbulb, Rocket, TrendingUp, Zap, Atom, GraduationCap } from 'lucide-react';
+import { Award, Lightbulb, Rocket, TrendingUp, GraduationCap } from 'lucide-react';
 
 interface Founder {
   id: string;
@@ -162,20 +162,6 @@ const MobileLanding = () => {
       description: "Develop a global student mindset, secure scholarships to world's best universities, and get seats in Ivy League institutions",
       icon: GraduationCap,
       gradient: "from-accent-blue to-blue-600"
-    },
-    {
-      title: "Renewable Energy",
-      subtitle: "Power Tomorrow's World", 
-      description: "Create sustainable solutions with solar tech, wind systems, and revolutionary energy storage",
-      icon: Zap,
-      gradient: "from-accent-green to-green-600"
-    },
-    {
-      title: "Quantum Computing",
-      subtitle: "Decode the Quantum Future",
-      description: "Master quantum algorithms, quantum machine learning, and build applications for the next computing revolution",
-      icon: Atom,
-      gradient: "from-orange-500 to-red-600"
     }
   ];
 
@@ -211,12 +197,9 @@ const MobileLanding = () => {
         <MobilePricingSection />
       </div>
 
-      {/* Coming Soon Sections - 2 programs per slide */}
+      {/* Coming Soon Section */}
       <div className="scroll-snap-start">
         <MobileComingSoonSection programs={comingSoonPrograms} slideIndex={0} />
-      </div>
-      <div className="scroll-snap-start">
-        <MobileComingSoonSection programs={comingSoonPrograms} slideIndex={1} />
       </div>
 
       {/* Founders Sections */}

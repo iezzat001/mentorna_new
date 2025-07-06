@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { TrendingUp, Rocket, Zap, Atom, LucideIcon } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 import MobileComingSoonCard from './MobileComingSoonCard';
 
 interface Program {
@@ -20,6 +20,7 @@ const MobileComingSoonSection = ({ programs, slideIndex }: MobileComingSoonSecti
   // Get 2 programs for this slide (slideIndex 0 = programs 0,1 and slideIndex 1 = programs 2,3)
   const startIndex = slideIndex * 2;
   const slidePrograms = programs.slice(startIndex, startIndex + 2);
+  const totalSlides = Math.ceil(programs.length / 2);
 
   return (
     <div className="relative h-screen w-full overflow-hidden snap-start">
@@ -85,10 +86,18 @@ const MobileComingSoonSection = ({ programs, slideIndex }: MobileComingSoonSecti
         </div>
 
         {/* Slide indicator */}
-        <div className="flex justify-center gap-2 mt-6">
-          <div className={`w-2 h-2 rounded-full ${slideIndex === 0 ? 'bg-accent-yellow' : 'bg-white/30'}`} />
-          <div className={`w-2 h-2 rounded-full ${slideIndex === 1 ? 'bg-accent-yellow' : 'bg-white/30'}`} />
-        </div>
+        {totalSlides > 1 && (
+          <div className="flex justify-center gap-2 mt-6">
+            {Array.from({ length: totalSlides }, (_, index) => (
+              <div 
+                key={index}
+                className={`w-2 h-2 rounded-full ${
+                  slideIndex === index ? 'bg-accent-yellow' : 'bg-white/30'
+                }`} 
+              />
+            ))}
+          </div>
+        )}
 
         {/* Swipe Indicator */}
         <div className="flex flex-col items-center mt-4">
