@@ -8,6 +8,7 @@ import MobilePhasesSection from '@/components/mobile/MobilePhasesSection';
 import MobilePricingSection from '@/components/mobile/MobilePricingSection';
 import MobileFounderCard from '@/components/mobile/MobileFounderCard';
 import MobileComingSoonSection from '@/components/mobile/MobileComingSoonSection';
+import MobileNewsletterSection from '@/components/mobile/MobileNewsletterSection';
 import { Award, Lightbulb, Rocket, TrendingUp, Zap, Atom } from 'lucide-react';
 
 interface Founder {
@@ -224,6 +225,11 @@ const MobileLanding = () => {
           <MobileFounderCard founder={convertFounder(founder)} />
         </div>
       ))}
+
+      {/* Newsletter Section */}
+      <div className="scroll-snap-start">
+        <MobileNewsletterSection />
+      </div>
     </div>
   );
 };
