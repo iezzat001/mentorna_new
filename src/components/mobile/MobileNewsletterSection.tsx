@@ -15,49 +15,51 @@ const MobileNewsletterSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-20 flex flex-col h-[calc(100vh-6rem)] justify-center px-4 max-w-sm mx-auto text-center">
-        {/* Main Heading */}
-        <div className="mb-8">
-          <h2 className="text-white text-3xl font-black uppercase mb-3 leading-tight">
+      <div className="relative z-20 flex flex-col h-[calc(100vh-8rem)] px-4 max-w-sm mx-auto">
+        {/* Main Heading - More Compact */}
+        <div className="text-center mb-6 pt-8">
+          <h2 className="text-white text-2xl font-black uppercase mb-2 leading-tight">
             Join the AI
             <span className="block text-accent-yellow">Revolution</span>
           </h2>
-          <p className="text-white/80 text-base font-medium leading-relaxed">
-            Get exclusive updates and early access to our programs
+          <p className="text-white/80 text-sm font-medium leading-relaxed">
+            Get exclusive updates and early access
           </p>
         </div>
 
-        {/* Benefits - Simplified */}
-        <div className="mb-8 space-y-3">
+        {/* Benefits - More Compact */}
+        <div className="mb-6 space-y-2">
           <div className="flex items-center justify-center text-white/90 text-sm font-medium">
-            <span className="text-accent-green mr-3 text-base">✓</span>
+            <span className="text-accent-green mr-3">✓</span>
             <span>Weekly AI insights</span>
           </div>
           <div className="flex items-center justify-center text-white/90 text-sm font-medium">
-            <span className="text-accent-green mr-3 text-base">✓</span>
+            <span className="text-accent-green mr-3">✓</span>
             <span>Free webinar access</span>
           </div>
           <div className="flex items-center justify-center text-white/90 text-sm font-medium">
-            <span className="text-accent-green mr-3 text-base">✓</span>
-            <span>Priority program notifications</span>
+            <span className="text-accent-green mr-3">✓</span>
+            <span>Priority notifications</span>
           </div>
         </div>
 
         {/* Newsletter Form */}
-        <div className="mb-6">
+        <div className="flex-1 flex flex-col justify-center">
           <SimpleNewsletterForm />
         </div>
 
-        {/* Simple privacy note */}
-        <p className="text-white/50 text-xs leading-relaxed">
-          No spam. Unsubscribe anytime. 🔒
-        </p>
-      </div>
-
-      {/* End indicator */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-        <div className="w-1 h-6 bg-white/30 rounded-full" />
-        <span className="text-white/50 text-xs mt-1">End</span>
+        {/* Bottom Section with Privacy & End Indicator */}
+        <div className="flex-shrink-0 pb-4">
+          <p className="text-white/50 text-xs text-center mb-4">
+            No spam. Unsubscribe anytime. 🔒
+          </p>
+          
+          {/* End indicator */}
+          <div className="flex flex-col items-center">
+            <div className="w-1 h-4 bg-white/30 rounded-full" />
+            <span className="text-white/50 text-xs mt-1">End</span>
+          </div>
+        </div>
       </div>
     </div>
   );

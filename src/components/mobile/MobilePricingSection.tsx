@@ -53,7 +53,7 @@ const MobilePricingSection = () => {
         <div className="bg-foreground/10 backdrop-blur-sm border-2 border-foreground/30 rounded-2xl p-4 mb-8">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Gift className="h-5 w-5 text-foreground" />
-            <span className="font-black text-sm uppercase text-foreground">💎 BONUS</span>
+            <span className="font-black text-sm uppercase text-foreground">BONUS</span>
           </div>
           <p className="text-foreground font-semibold text-sm leading-tight">
             First 30 get Digital AI Toolkit ($49 value)
@@ -88,9 +88,7 @@ const MobilePricingSection = () => {
             </Button>
           </WaitingListDialog>
           
-          <p className="text-foreground/70 text-xs font-semibold">
-            Limited Time • First 30 Families Only
-          </p>
+          
         </div>
       </div>
     </div>
