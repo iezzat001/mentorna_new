@@ -2,37 +2,10 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Gift, Users, BookOpen, Award, Lock, Download, Sparkles } from 'lucide-react';
+import { Gift, Sparkles } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
 
 const MobilePricingSection = () => {
-  const features = [
-    {
-      icon: <BookOpen className="h-4 w-4" />,
-      text: "4 Live Expert Masterclasses"
-    },
-    {
-      icon: <Users className="h-4 w-4" />,
-      text: "8 Weekly Parent & Kid Packages"
-    },
-    {
-      icon: <Award className="h-4 w-4" />,
-      text: "AI Innovators Challenge Entry"
-    },
-    {
-      icon: <Users className="h-4 w-4" />,
-      text: "Private Parents Community Access"
-    },
-    {
-      icon: <Lock className="h-4 w-4" />,
-      text: "Lifetime Access to All Materials"
-    },
-    {
-      icon: <Download className="h-4 w-4" />,
-      text: "Digital AI Toolkit (First 30 only)"
-    }
-  ];
-
   return (
     <div className="relative h-screen w-full overflow-hidden snap-start bg-gradient-to-br from-accent-yellow via-accent-yellow/80 to-accent-yellow/60">
       {/* Mobile Header */}
@@ -79,9 +52,9 @@ const MobilePricingSection = () => {
           </CardHeader>
           
           {/* Card Content */}
-          <CardContent className="p-4 flex-1 flex flex-col">
+          <CardContent className="p-4 flex-1 flex flex-col justify-center">
             {/* Bonus Section */}
-            <div className="bg-accent-purple border-2 border-foreground shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] p-3 mb-4 rounded-lg">
+            <div className="bg-accent-purple border-2 border-foreground shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] p-3 rounded-lg">
               <div className="flex items-center gap-3">
                 <Gift className="h-5 w-5 text-foreground flex-shrink-0" />
                 <div>
@@ -91,21 +64,6 @@ const MobilePricingSection = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            
-            {/* Features List */}
-            <div className="space-y-3 flex-1">
-              <h3 className="font-black text-sm uppercase text-foreground mb-3">What's Included:</h3>
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-accent-green rounded-full flex items-center justify-center flex-shrink-0">
-                    <Check className="h-3 w-3 text-white" />
-                  </div>
-                  <span className="text-sm font-medium text-foreground leading-tight">
-                    {feature.text}
-                  </span>
-                </div>
-              ))}
             </div>
           </CardContent>
         </Card>
