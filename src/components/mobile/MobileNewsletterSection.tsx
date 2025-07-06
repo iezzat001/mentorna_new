@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, ArrowRight } from 'lucide-react';
+import MobileSwipeIndicator from './MobileSwipeIndicator';
 
 const MobileNewsletterSection = () => {
   const [email, setEmail] = useState('');
@@ -160,14 +161,11 @@ const MobileNewsletterSection = () => {
           <p className="text-white/50 text-xs">
             No spam. Unsubscribe anytime. 🔒
           </p>
-          
-          {/* End indicator */}
-          <div className="flex flex-col items-center pt-2">
-            <div className="w-1 h-4 bg-white/30 rounded-full" />
-            <span className="text-white/50 text-xs mt-1">End</span>
-          </div>
         </div>
       </div>
+
+      {/* End Indicator */}
+      <MobileSwipeIndicator isEnd={true} />
     </div>
   );
 };

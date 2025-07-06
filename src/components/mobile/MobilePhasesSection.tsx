@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from '@/components/ui/badge';
 import WaitingListDialog from '../WaitingListDialog';
 import PhaseHeader from './PhaseHeader';
-import PhaseSwipeIndicator from './PhaseSwipeIndicator';
+import MobileSwipeIndicator from './MobileSwipeIndicator';
 import { ChevronRight, Clock, Target, BookOpen, Users, Presentation, Lightbulb as LightbulbIcon, CheckCircle } from 'lucide-react';
 import { weekDetailsData } from '@/data/weekDetailsData';
 
@@ -301,7 +301,7 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
       </div>
 
       {/* Swipe Indicator */}
-      <PhaseSwipeIndicator />
+      <MobileSwipeIndicator color="dark" />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
+import MobileSwipeIndicator from './MobileSwipeIndicator';
 
 const MobileHero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -155,12 +156,7 @@ const MobileHero = () => {
       </div>
       
       {/* Swipe Indicator */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="flex flex-col items-center">
-          <div className="w-1 h-8 bg-white/50 rounded-full animate-pulse" />
-          <span className="text-white/70 text-xs mt-1">Swipe up</span>
-        </div>
-      </div>
+      <MobileSwipeIndicator />
     </div>
   );
 };

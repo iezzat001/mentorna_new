@@ -1,6 +1,7 @@
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import MobileComingSoonCard from './MobileComingSoonCard';
+import MobileSwipeIndicator from './MobileSwipeIndicator';
 
 interface Program {
   title: string;
@@ -60,13 +61,10 @@ const MobileComingSoonSection = ({ programs, slideIndex }: MobileComingSoonSecti
             />
           ))}
         </div>
-
-        {/* Swipe Indicator */}
-        <div className="flex flex-col items-center">
-          <div className="w-1 h-6 bg-white/50 rounded-full animate-pulse" />
-          <span className="text-white/70 text-xs mt-1">Swipe up</span>
-        </div>
       </div>
+
+      {/* Swipe Indicator */}
+      <MobileSwipeIndicator />
     </div>
   );
 };

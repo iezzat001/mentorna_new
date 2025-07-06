@@ -4,6 +4,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Linkedin, Twitter, Users } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
 import FounderDialog from '../FounderDialog';
+import MobileSwipeIndicator from './MobileSwipeIndicator';
 interface Founder {
   id: number;
   name: string;
@@ -196,6 +197,9 @@ const MobileFounderCard = ({
           </p>
         </div>
       </div>
+
+      {/* Swipe Indicator */}
+      <MobileSwipeIndicator />
     </div>;
 };
 export default MobileFounderCard;

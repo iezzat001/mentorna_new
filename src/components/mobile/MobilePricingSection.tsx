@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Gift, Sparkles } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
+import MobileSwipeIndicator from './MobileSwipeIndicator';
 
 const MobilePricingSection = () => {
   return (
@@ -88,9 +89,14 @@ const MobilePricingSection = () => {
             </Button>
           </WaitingListDialog>
           
-          
+          <p className="text-foreground/70 text-xs font-semibold text-center mt-2">
+            Limited Time • First 30 Families Only
+          </p>
         </div>
       </div>
+
+      {/* Swipe Indicator */}
+      <MobileSwipeIndicator color="dark" />
     </div>
   );
 };
