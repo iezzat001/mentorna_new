@@ -38,17 +38,6 @@ const MobileNewsletterSection = () => {
               AI Revolution
             </span>
           </h2>
-          
-          <p className="
-            text-lg 
-            text-white/80 
-            font-heading 
-            font-light
-            leading-relaxed
-            mb-6
-          ">
-            Join thousands of forward-thinking parents preparing their children for tomorrow's world
-          </p>
         </div>
 
         {/* Enhanced OPT-IN messaging */}
@@ -61,7 +50,7 @@ const MobileNewsletterSection = () => {
           mb-8
           backdrop-blur-sm
         ">
-          <div className="flex items-center justify-center mb-3">
+          <div className="flex items-center justify-center mb-4">
             <div className="
               bg-accent-yellow 
               text-black 
@@ -82,26 +71,26 @@ const MobileNewsletterSection = () => {
             font-heading 
             font-semibold 
             text-lg 
-            mb-3
+            mb-4
           ">
-            What You'll Get (100% FREE):
+            What You'll Get:
           </h3>
           
-          <div className="space-y-2 text-white/90 text-sm font-medium">
+          <div className="space-y-3 text-white/90 text-sm font-medium">
             <div className="flex items-center justify-start">
-              <span className="text-accent-green mr-2">✓</span>
+              <span className="text-accent-green mr-3">✓</span>
               <span>Weekly AI insights & breakthrough updates</span>
             </div>
             <div className="flex items-center justify-start">
-              <span className="text-accent-green mr-2">✓</span>
+              <span className="text-accent-green mr-3">✓</span>
               <span>Early access to FREE webinar sessions</span>
             </div>
             <div className="flex items-center justify-start">
-              <span className="text-accent-green mr-2">✓</span>
+              <span className="text-accent-green mr-3">✓</span>
               <span>Exclusive parent community invitations</span>
             </div>
             <div className="flex items-center justify-start">
-              <span className="text-accent-green mr-2">✓</span>
+              <span className="text-accent-green mr-3">✓</span>
               <span>Priority notifications for program launches</span>
             </div>
           </div>
