@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { TrendingUp, Rocket, Zap, Atom } from 'lucide-react';
+import { TrendingUp, Rocket, Zap, Atom, LucideIcon } from 'lucide-react';
 import MobileComingSoonCard from './MobileComingSoonCard';
 
 interface Program {
   title: string;
   subtitle: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: LucideIcon;
   gradient: string;
 }
 
