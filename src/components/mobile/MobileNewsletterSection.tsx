@@ -79,9 +79,7 @@ const MobileNewsletterSection = () => {
         <div className="font-heading text-white font-light tracking-wide text-xl">
           iLab®
         </div>
-        <div className="w-8 h-8 flex items-center justify-center">
-          <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm" />
-        </div>
+
       </div>
 
       {/* Content */}
