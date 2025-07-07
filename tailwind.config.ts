@@ -89,7 +89,8 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-purple': 'var(--gradient-purple)',
-				'gradient-warm': 'var(--gradient-warm)'
+				'gradient-warm': 'var(--gradient-warm)',
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))'
 			},
 			scrollSnapType: {
 				none: 'none',

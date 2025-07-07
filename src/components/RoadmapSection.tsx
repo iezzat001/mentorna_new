@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Lightbulb, Users, Hammer, RotateCcw, TestTube, Presentation, Rocket } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -63,153 +62,265 @@ const RoadmapSection = () => {
     }
   ];
 
+  // Background images from the cohort
+  const cohortImages = [
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_1.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_2.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_3.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_4.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_5.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_6.jpeg"
+  ];
+
   return (
-    <section className="bg-background border-b-4 border-foreground py-16 px-6 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-10 w-32 h-32 border-4 border-foreground rotate-12" />
-        <div className="absolute bottom-20 right-10 w-24 h-24 border-4 border-foreground -rotate-12" />
-        <div className="absolute top-1/2 left-1/3 w-16 h-16 border-4 border-foreground rotate-45" />
+    <section className="relative min-h-screen border-b-4 border-foreground py-16 px-6 overflow-hidden">
+      {/* Dynamic Background Images Layer */}
+      <div className="absolute inset-0 z-0">
+        {/* Main background image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${cohortImages[0]})`,
+          }}
+        />
+        
+        {/* Additional scattered background images */}
+        <div 
+          className="absolute top-20 right-10 w-80 h-60 bg-cover bg-center rounded-2xl opacity-20 rotate-12 transform scale-75"
+          style={{
+            backgroundImage: `url(${cohortImages[1]})`,
+          }}
+        />
+        
+        <div 
+          className="absolute bottom-32 left-10 w-72 h-56 bg-cover bg-center rounded-2xl opacity-15 -rotate-6 transform scale-90"
+          style={{
+            backgroundImage: `url(${cohortImages[2]})`,
+          }}
+        />
+        
+        <div 
+          className="absolute top-1/3 left-20 w-64 h-48 bg-cover bg-center rounded-2xl opacity-10 rotate-6 transform scale-110"
+          style={{
+            backgroundImage: `url(${cohortImages[3]})`,
+          }}
+        />
+        
+        <div 
+          className="absolute bottom-20 right-32 w-60 h-40 bg-cover bg-center rounded-2xl opacity-12 -rotate-12 transform scale-85"
+          style={{
+            backgroundImage: `url(${cohortImages[4]})`,
+          }}
+        />
       </div>
 
-      <div className="container mx-auto max-w-4xl relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="
-            font-heading 
-            text-4xl md:text-5xl lg:text-6xl 
-            font-black 
-            uppercase 
-            text-foreground 
-            mb-6
-          ">
-            THE TRANSFORMATION JOURNEY
-          </h2>
-          <div className="
-            bg-primary 
-            text-primary-foreground 
-            font-black 
-            uppercase 
-            px-6 
-            py-3 
-            text-sm 
-            border-4 
-            border-foreground 
-            inline-block
-            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-            mb-4
-          ">
-            AN EXCITING PATH FOR YOUR CHILD
+      {/* Dynamic Gradient Overlays */}
+      <div className="absolute inset-0 z-10">
+        {/* Primary dark to light gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-black/70 to-black/40" />
+        
+        {/* Radial gradient for focus */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-black/30 to-black/60" />
+        
+        {/* Accent color gradients */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-primary/20 to-transparent" />
+        <div className="absolute bottom-0 right-0 w-full h-32 bg-gradient-to-t from-accent-yellow/20 to-transparent" />
+      </div>
+
+      {/* Artistic Background Elements */}
+      <div className="absolute inset-0 z-20 opacity-10">
+        <div className="absolute top-20 left-10 w-32 h-32 border-4 border-white rotate-45 animate-pulse" />
+        <div className="absolute bottom-40 right-10 w-24 h-24 border-4 border-accent-yellow -rotate-12" />
+        <div className="absolute top-1/2 right-1/4 w-16 h-16 border-4 border-accent-purple rotate-12" />
+        <div className="absolute bottom-1/3 left-1/4 w-20 h-20 border-4 border-accent-blue -rotate-6" />
+      </div>
+
+      <div className="container mx-auto max-w-5xl relative z-30">
+        {/* Enhanced Section Header */}
+        <div className="text-center mb-20">
+          <div className="relative inline-block">
+            <h2 className="
+              font-heading 
+              text-4xl md:text-6xl lg:text-7xl 
+              font-black 
+              uppercase 
+              text-white 
+              mb-8
+              drop-shadow-2xl
+              relative z-10
+            ">
+              THE PATH TO
+              <span className="block text-accent-yellow text-5xl md:text-7xl lg:text-8xl mt-2">
+                SUCCESS
+              </span>
+            </h2>
+            
+            {/* Glowing effect behind text */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent-yellow/20 to-primary/20 blur-3xl -z-10" />
           </div>
-          <p className="font-body text-xl font-semibold text-foreground/80 max-w-2xl mx-auto">
-            It is an exciting journey for the lead student and their families
+          
+          <div className="
+            bg-gradient-to-r from-primary to-accent-yellow
+            text-white
+            font-black 
+            uppercase 
+            px-8 
+            py-4 
+            text-sm md:text-base
+            border-4 
+            border-white
+            inline-block
+            shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)]
+            mb-6
+            transform hover:scale-105 transition-transform duration-200
+          ">
+            🏆 FROM IDEA TO REAL BUSINESS
+          </div>
+          
+          <p className="font-body text-xl md:text-2xl font-bold text-white/90 max-w-3xl mx-auto drop-shadow-lg">
+            Watch your child transform from curious learner to confident entrepreneur in just 8 weeks
           </p>
         </div>
 
-        {/* Roadmap Steps */}
+        {/* Artistic Roadmap Layout */}
         <div className="relative">
-          {/* Central Path Line */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-foreground transform -translate-x-1/2 hidden md:block" />
+          {/* Curved Path SVG */}
+          <svg 
+            className="absolute inset-0 w-full h-full pointer-events-none hidden lg:block" 
+            viewBox="0 0 800 1400" 
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <defs>
+              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ff6b6b" />
+                <stop offset="50%" stopColor="#ffd93d" />
+                <stop offset="100%" stopColor="#6bcf7f" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M 400 50 Q 600 200 300 350 Q 100 500 500 650 Q 700 800 200 950 Q 50 1100 400 1250"
+              stroke="url(#pathGradient)"
+              strokeWidth="8"
+              fill="none"
+              strokeDasharray="20,10"
+              className="animate-pulse"
+            />
+          </svg>
           
           {roadmapSteps.map((step, index) => (
             <div 
               key={step.number}
               className={`
-                relative mb-12 last:mb-0 
-                ${step.position === 'left' ? 'md:text-right md:pr-8' : 
-                  step.position === 'right' ? 'md:text-left md:pl-8' : 
+                relative mb-16 last:mb-0 
+                ${step.position === 'left' ? 'lg:text-right lg:pr-20' : 
+                  step.position === 'right' ? 'lg:text-left lg:pl-20' : 
                   'text-center'}
+                transform transition-all duration-700 hover:scale-105
               `}
+              style={{
+                animationDelay: `${index * 0.2}s`
+              }}
             >
-              {/* Step Number Circle */}
+              {/* Floating Step Number */}
               <div className={`
                 absolute left-1/2 transform -translate-x-1/2 
-                w-16 h-16 
-                ${step.color}
+                w-20 h-20 
+                bg-gradient-to-br ${step.color.replace('bg-', 'from-')} to-white
                 border-4 
-                border-foreground 
-                shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
+                border-white
+                shadow-[0_0_30px_rgba(0,0,0,0.5)]
                 flex 
                 items-center 
                 justify-center 
                 font-heading 
                 font-black 
-                text-2xl 
+                text-3xl 
                 text-foreground
-                z-20
-                hidden md:flex
+                z-40
+                rounded-full
+                hidden lg:flex
+                animate-bounce
+                hover:animate-none
               `}>
                 {step.number}
               </div>
 
-              {/* Step Card */}
+              {/* Enhanced Step Card */}
               <Card className={`
                 border-4 
-                border-foreground 
-                shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
-                hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
-                hover:scale-[1.02] 
+                border-white/80
+                backdrop-blur-md
+                bg-white/15
+                shadow-[0_20px_40px_rgba(0,0,0,0.3)]
+                hover:shadow-[0_30px_60px_rgba(0,0,0,0.4)] 
+                hover:bg-white/25
                 transition-all
-                duration-200
-                ${step.position === 'left' ? 'md:mr-20' : 
-                  step.position === 'right' ? 'md:ml-20' : 
-                  'mx-auto max-w-lg'}
-                ${step.position === 'center' ? step.color : 'bg-white'}
+                duration-300
+                ${step.position === 'left' ? 'lg:mr-32' : 
+                  step.position === 'right' ? 'lg:ml-32' : 
+                  'mx-auto max-w-2xl'}
+                transform hover:-translate-y-2
               `}>
-                <CardContent className="p-6">
-                  {/* Mobile Step Number */}
+                <CardContent className="p-8">
+                  {/* Mobile Step Number with glow */}
                   <div className={`
-                    md:hidden 
-                    w-12 h-12 
-                    ${step.color}
+                    lg:hidden 
+                    w-16 h-16 
+                    bg-gradient-to-br ${step.color.replace('bg-', 'from-')} to-white
                     border-4 
-                    border-foreground 
-                    shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                    border-white
+                    shadow-[0_0_20px_rgba(0,0,0,0.3)]
                     flex 
                     items-center 
                     justify-center 
                     font-heading 
                     font-black 
-                    text-lg 
+                    text-2xl 
                     text-foreground
-                    mb-4
+                    mb-6
+                    rounded-full
+                    mx-auto
                   `}>
                     {step.number}
                   </div>
 
-                  {/* Icon and Title */}
-                  <div className="flex items-center gap-4 mb-4">
+                  {/* Icon and Title with enhanced styling */}
+                  <div className="flex items-center gap-6 mb-6">
                     <div className={`
-                      w-12 h-12 
-                      ${step.position === 'center' ? 'bg-white' : step.color}
-                      border-2 
-                      border-foreground 
+                      w-16 h-16 
+                      bg-gradient-to-br ${step.color.replace('bg-', 'from-')} to-white
+                      border-3 
+                      border-white
                       flex 
                       items-center 
                       justify-center
-                      shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                      shadow-[0_0_20px_rgba(0,0,0,0.2)]
+                      rounded-xl
+                      transform hover:rotate-12 transition-transform duration-300
                     `}>
-                      <step.icon className="w-6 h-6 text-foreground" />
+                      <step.icon className="w-8 h-8 text-foreground" />
                     </div>
-                    <h3 className={`
+                    <h3 className="
                       font-heading 
-                      text-2xl 
+                      text-2xl md:text-3xl
                       font-black 
                       uppercase 
-                      ${step.position === 'center' ? 'text-white' : 'text-foreground'}
-                    `}>
+                      text-white
+                      drop-shadow-lg
+                    ">
                       {step.title}
                     </h3>
                   </div>
 
-                  {/* Description */}
-                  <p className={`
+                  {/* Enhanced Description */}
+                  <p className="
                     font-body 
-                    text-base 
+                    text-lg
                     font-semibold 
                     leading-relaxed
-                    ${step.position === 'center' ? 'text-white/90' : 'text-foreground/80'}
-                  `}>
+                    text-white/95
+                    drop-shadow-md
+                  ">
                     {step.description}
                   </p>
                 </CardContent>
@@ -218,29 +329,36 @@ const RoadmapSection = () => {
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-16">
+        {/* Enhanced Bottom CTA */}
+        <div className="text-center mt-20">
           <div className="
-            bg-accent-yellow 
+            bg-gradient-to-r from-primary via-accent-yellow to-primary
             border-4 
-            border-foreground 
-            shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
-            p-8 
+            border-white
+            shadow-[0_20px_40px_rgba(0,0,0,0.4)]
+            p-10
             inline-block
-            max-w-2xl
+            max-w-3xl
+            rounded-3xl
+            transform hover:scale-105 transition-all duration-300
+            backdrop-blur-md
           ">
             <h3 className="
               font-heading 
-              text-2xl 
+              text-3xl md:text-4xl
               font-black 
               uppercase 
-              text-foreground 
-              mb-4
+              text-white
+              mb-6
+              drop-shadow-lg
             ">
-              🚀 READY TO START THE JOURNEY?
+              🚀 READY TO LAUNCH SUCCESS?
             </h3>
-            <p className="font-body text-base font-semibold text-foreground/80">
-              Give your child the ultimate advantage in tomorrow's world with our cutting-edge AI education platform.
+            <p className="font-body text-lg md:text-xl font-bold text-white/95 leading-relaxed drop-shadow-md">
+              Join the cohort that turns young minds into tomorrow's business leaders. 
+              <span className="block mt-2 text-accent-yellow">
+                Your child's entrepreneurial journey starts here!
+              </span>
             </p>
           </div>
         </div>
