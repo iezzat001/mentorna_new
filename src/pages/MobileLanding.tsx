@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import MobileHero from '@/components/mobile/MobileHero';
 import MobileStorySection from '@/components/mobile/MobileStorySection';
+import MobileRoadmapSection from '@/components/mobile/MobileRoadmapSection';
 import MobilePhasesSection from '@/components/mobile/MobilePhasesSection';
 import MobilePricingSection from '@/components/mobile/MobilePricingSection';
 import MobileFounderCard from '@/components/mobile/MobileFounderCard';
@@ -184,6 +185,11 @@ const MobileLanding = () => {
           <MobileStorySection story={story} />
         </div>
       ))}
+
+      {/* Roadmap Section */}
+      <div className="scroll-snap-start">
+        <MobileRoadmapSection />
+      </div>
 
       {/* Phases Sections */}
       {phases.map((phase, index) => (
