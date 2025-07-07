@@ -92,17 +92,13 @@ const MobilePricingSection = () => {
         <div className="flex-shrink-0 mt-6 max-w-xs mx-auto w-full">
           <MobileWaitingListDialog>
             <Button className="
-              w-full bg-gradient-to-r from-primary to-accent-purple
-              border-4 border-foreground 
-              shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
-              font-black text-base px-6 py-4 uppercase
-              hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
-              transition-all text-white
-              active:scale-95 touch-manipulation min-h-[52px]
-              rounded-lg
+              w-full bg-white text-black 
+              font-black text-base py-4 
+              rounded-full shadow-lg
+              hover:scale-105 transition-transform duration-200
+              active:scale-95 touch-manipulation min-h-[48px]
             ">
-              <Sparkles className="h-4 w-4 mr-2" />
-              SECURE YOUR SPOT
+              🚀 SECURE YOUR SPOT
             </Button>
           </MobileWaitingListDialog>
           
