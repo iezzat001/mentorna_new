@@ -48,7 +48,7 @@ const Index = () => {
       <RoadmapSection />
       <PricingSection />
       <ComingSoon />
-      <FoundersSection founders={founders || []} />
+      <FoundersSection />
       <SecondarySection />
     </div>
   );
