@@ -4,9 +4,10 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface AnalyticsData {
   liveVisitors: number;
-  dailyVisitors: { date: string; visitors: number }[];
-  weeklyVisitors: { week: string; visitors: number }[];
-  monthlyVisitors: { month: string; visitors: number }[];
+  liveVisitorsByIP: number;
+  dailyVisitors: { date: string; visitors: number; sessions: number }[];
+  weeklyVisitors: { week: string; visitors: number; sessions: number }[];
+  monthlyVisitors: { month: string; visitors: number; sessions: number }[];
   newsletterCount: number;
   waitingListCount: number;
   topReferrers: { referrer: string; count: number }[];
@@ -17,6 +18,7 @@ interface AnalyticsData {
 export const useAnalyticsData = () => {
   const [analytics, setAnalytics] = useState<AnalyticsData>({
     liveVisitors: 0,
+    liveVisitorsByIP: 0,
     dailyVisitors: [],
     weeklyVisitors: [],
     monthlyVisitors: [],
@@ -30,57 +32,106 @@ export const useAnalyticsData = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const processDailyData = (data: any[]) => {
-    const dailyMap = new Map<string, Set<string>>();
+    const dailySessionMap = new Map<string, Set<string>>();
+    const dailyIPMap = new Map<string, Set<string>>();
     
     data.forEach(item => {
       const date = new Date(item.created_at).toLocaleDateString();
-      if (!dailyMap.has(date)) {
-        dailyMap.set(date, new Set());
+      
+      // Track sessions
+      if (!dailySessionMap.has(date)) {
+        dailySessionMap.set(date, new Set());
       }
-      dailyMap.get(date)?.add(item.session_id);
+      dailySessionMap.get(date)?.add(item.session_id);
+      
+      // Track unique IPs (only if ip_hash exists)
+      if (item.ip_hash) {
+        if (!dailyIPMap.has(date)) {
+          dailyIPMap.set(date, new Set());
+        }
+        dailyIPMap.get(date)?.add(item.ip_hash);
+      }
     });
 
-    return Array.from(dailyMap.entries())
-      .map(([date, sessions]) => ({ date, visitors: sessions.size }))
+    const dates = Array.from(new Set([...dailySessionMap.keys(), ...dailyIPMap.keys()])).sort();
+    
+    return dates
+      .map(date => ({
+        date,
+        sessions: dailySessionMap.get(date)?.size || 0,
+        visitors: dailyIPMap.get(date)?.size || 0
+      }))
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       .slice(-7);
   };
 
   const processWeeklyData = (data: any[]) => {
-    const weeklyMap = new Map<string, Set<string>>();
+    const weeklySessionMap = new Map<string, Set<string>>();
+    const weeklyIPMap = new Map<string, Set<string>>();
     
     data.forEach(item => {
       const date = new Date(item.created_at);
       const weekStart = new Date(date.setDate(date.getDate() - date.getDay()));
       const weekKey = weekStart.toLocaleDateString();
       
-      if (!weeklyMap.has(weekKey)) {
-        weeklyMap.set(weekKey, new Set());
+      // Track sessions
+      if (!weeklySessionMap.has(weekKey)) {
+        weeklySessionMap.set(weekKey, new Set());
       }
-      weeklyMap.get(weekKey)?.add(item.session_id);
+      weeklySessionMap.get(weekKey)?.add(item.session_id);
+      
+      // Track unique IPs
+      if (item.ip_hash) {
+        if (!weeklyIPMap.has(weekKey)) {
+          weeklyIPMap.set(weekKey, new Set());
+        }
+        weeklyIPMap.get(weekKey)?.add(item.ip_hash);
+      }
     });
 
-    return Array.from(weeklyMap.entries())
-      .map(([week, sessions]) => ({ week, visitors: sessions.size }))
+    const weeks = Array.from(new Set([...weeklySessionMap.keys(), ...weeklyIPMap.keys()])).sort();
+    
+    return weeks
+      .map(week => ({
+        week,
+        sessions: weeklySessionMap.get(week)?.size || 0,
+        visitors: weeklyIPMap.get(week)?.size || 0
+      }))
       .sort((a, b) => new Date(a.week).getTime() - new Date(b.week).getTime())
       .slice(-4);
   };
 
   const processMonthlyData = (data: any[]) => {
-    const monthlyMap = new Map<string, Set<string>>();
+    const monthlySessionMap = new Map<string, Set<string>>();
+    const monthlyIPMap = new Map<string, Set<string>>();
     
     data.forEach(item => {
       const date = new Date(item.created_at);
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
       
-      if (!monthlyMap.has(monthKey)) {
-        monthlyMap.set(monthKey, new Set());
+      // Track sessions
+      if (!monthlySessionMap.has(monthKey)) {
+        monthlySessionMap.set(monthKey, new Set());
       }
-      monthlyMap.get(monthKey)?.add(item.session_id);
+      monthlySessionMap.get(monthKey)?.add(item.session_id);
+      
+      // Track unique IPs
+      if (item.ip_hash) {
+        if (!monthlyIPMap.has(monthKey)) {
+          monthlyIPMap.set(monthKey, new Set());
+        }
+        monthlyIPMap.get(monthKey)?.add(item.ip_hash);
+      }
     });
 
-    return Array.from(monthlyMap.entries())
-      .map(([month, sessions]) => ({ month, visitors: sessions.size }))
+    const months = Array.from(new Set([...monthlySessionMap.keys(), ...monthlyIPMap.keys()])).sort();
+    
+    return months
+      .map(month => ({
+        month,
+        sessions: monthlySessionMap.get(month)?.size || 0,
+        visitors: monthlyIPMap.get(month)?.size || 0
+      }))
       .sort((a, b) => a.month.localeCompare(b.month))
       .slice(-6);
   };
@@ -94,7 +145,6 @@ export const useAnalyticsData = () => {
           const domain = new URL(item.referrer).hostname.replace('www.', '') || item.referrer;
           referrerMap.set(domain, (referrerMap.get(domain) || 0) + 1);
         } catch (error) {
-          // If URL parsing fails, use the referrer as-is
           referrerMap.set(item.referrer, (referrerMap.get(item.referrer) || 0) + 1);
         }
       }
@@ -151,7 +201,6 @@ export const useAnalyticsData = () => {
     try {
       setRefreshing(true);
 
-      // Wait for auth to be ready before making requests
       const { data: { session }, error: authError } = await supabase.auth.getSession();
       
       if (authError) {
@@ -159,25 +208,28 @@ export const useAnalyticsData = () => {
         return;
       }
 
-      // Fetch live visitors (sessions active in last 5 minutes)
+      // Fetch live data (sessions and unique IPs in last 5 minutes)
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
       const { data: liveData, error: liveError } = await supabase
         .from('visitor_analytics')
-        .select('session_id')
+        .select('session_id, ip_hash')
         .gte('created_at', fiveMinutesAgo);
 
       if (liveError) {
         console.error('Error fetching live visitors:', liveError);
       }
 
-      const uniqueSessions = new Set(liveData?.map(d => d.session_id) || []);
-      const liveVisitors = uniqueSessions.size;
+      const uniqueActiveSessions = new Set(liveData?.map(d => d.session_id) || []);
+      const uniqueActiveIPs = new Set(liveData?.filter(d => d.ip_hash).map(d => d.ip_hash) || []);
+      
+      const liveVisitors = uniqueActiveSessions.size;
+      const liveVisitorsByIP = uniqueActiveIPs.size;
 
       // Fetch daily visitors (last 7 days)
       const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const { data: dailyData, error: dailyError } = await supabase
         .from('visitor_analytics')
-        .select('created_at, session_id')
+        .select('created_at, session_id, ip_hash')
         .gte('created_at', sevenDaysAgo);
 
       if (dailyError) {
@@ -190,7 +242,7 @@ export const useAnalyticsData = () => {
       const fourWeeksAgo = new Date(Date.now() - 4 * 7 * 24 * 60 * 60 * 1000).toISOString();
       const { data: weeklyData, error: weeklyError } = await supabase
         .from('visitor_analytics')
-        .select('created_at, session_id')
+        .select('created_at, session_id, ip_hash')
         .gte('created_at', fourWeeksAgo);
 
       if (weeklyError) {
@@ -203,7 +255,7 @@ export const useAnalyticsData = () => {
       const sixMonthsAgo = new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000).toISOString();
       const { data: monthlyData, error: monthlyError } = await supabase
         .from('visitor_analytics')
-        .select('created_at, session_id')
+        .select('created_at, session_id, ip_hash')
         .gte('created_at', sixMonthsAgo);
 
       if (monthlyError) {
@@ -271,6 +323,7 @@ export const useAnalyticsData = () => {
 
       setAnalytics({
         liveVisitors,
+        liveVisitorsByIP,
         dailyVisitors,
         weeklyVisitors,
         monthlyVisitors,
@@ -294,7 +347,7 @@ export const useAnalyticsData = () => {
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
       const { data: liveData, error } = await supabase
         .from('visitor_analytics')
-        .select('session_id')
+        .select('session_id, ip_hash')
         .gte('created_at', fiveMinutesAgo);
 
       if (error) {
@@ -302,24 +355,24 @@ export const useAnalyticsData = () => {
         return;
       }
 
-      const uniqueSessions = new Set(liveData?.map(d => d.session_id) || []);
-      const liveVisitors = uniqueSessions.size;
+      const uniqueActiveSessions = new Set(liveData?.map(d => d.session_id) || []);
+      const uniqueActiveIPs = new Set(liveData?.filter(d => d.ip_hash).map(d => d.ip_hash) || []);
+      
+      const liveVisitors = uniqueActiveSessions.size;
+      const liveVisitorsByIP = uniqueActiveIPs.size;
 
-      setAnalytics(prev => ({ ...prev, liveVisitors }));
+      setAnalytics(prev => ({ ...prev, liveVisitors, liveVisitorsByIP }));
     } catch (error) {
       console.error('Error fetching live visitors:', error);
     }
   };
 
   useEffect(() => {
-    // Initial fetch
     fetchAnalytics();
     
-    // Set up real-time subscription for live visitors only
     const channel = supabase
       .channel('visitor-analytics')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'visitor_analytics' }, () => {
-        // Only refresh live visitors count, not the entire analytics
         fetchLiveVisitors();
       })
       .subscribe();

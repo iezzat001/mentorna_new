@@ -5,6 +5,7 @@ import { Eye, Mail, UserPlus, Users } from 'lucide-react';
 
 interface AnalyticsStatsProps {
   liveVisitors: number;
+  liveVisitorsByIP: number;
   newsletterCount: number;
   waitingListCount: number;
   uniqueVisitors: number;
@@ -13,6 +14,7 @@ interface AnalyticsStatsProps {
 
 const AnalyticsStats: React.FC<AnalyticsStatsProps> = ({
   liveVisitors,
+  liveVisitorsByIP,
   newsletterCount,
   waitingListCount,
   uniqueVisitors,
@@ -24,12 +26,16 @@ const AnalyticsStats: React.FC<AnalyticsStatsProps> = ({
         <CardHeader className="bg-accent-green border-b-4 border-foreground pb-2">
           <CardTitle className="font-black text-sm uppercase flex items-center gap-2">
             <Eye className="h-4 w-4" />
-            Live Visitors
+            Active Sessions
           </CardTitle>
         </CardHeader>
         <CardContent className="p-4">
           <div className="text-3xl font-black text-foreground">{liveVisitors}</div>
-          <p className="text-xs font-semibold text-foreground/70">Active now</p>
+          <p className="text-xs font-semibold text-foreground/70">Sessions now</p>
+          <div className="mt-2 pt-2 border-t border-foreground/20">
+            <div className="text-sm font-bold text-foreground">{liveVisitorsByIP}</div>
+            <p className="text-xs font-semibold text-foreground/50">Unique IPs</p>
+          </div>
         </CardContent>
       </Card>
 

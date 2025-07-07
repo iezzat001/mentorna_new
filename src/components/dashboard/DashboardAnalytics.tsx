@@ -76,6 +76,7 @@ const DashboardAnalytics = () => {
       {/* Quick Stats Cards */}
       <AnalyticsStats
         liveVisitors={analytics.liveVisitors}
+        liveVisitorsByIP={analytics.liveVisitorsByIP}
         newsletterCount={analytics.newsletterCount}
         waitingListCount={analytics.waitingListCount}
         uniqueVisitors={getUniqueVisitors()}
