@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Lightbulb, Users, Hammer, RotateCcw, TestTube, Presentation, Rocket, Heart, Share, MessageCircle, Play } from 'lucide-react';
+import { Lightbulb, Users, Hammer, RotateCcw, TestTube, Presentation, Rocket, Heart, Share, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import MobileWaitingListDialog from './MobileWaitingListDialog';
 
 const MobileRoadmapSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
 
   // Background images from the cohort
@@ -108,14 +107,12 @@ const MobileRoadmapSection = () => {
 
   // Auto-advance through steps
   useEffect(() => {
-    if (!isPlaying) return;
-    
     const timer = setInterval(() => {
       setCurrentStep((prev) => (prev + 1) % roadmapSteps.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [isPlaying]);
+  }, []);
 
   // Update progress
   useEffect(() => {
@@ -138,10 +135,6 @@ const MobileRoadmapSection = () => {
 
   const currentStepData = roadmapSteps[currentStep];
   const currentImage = cohortImages[currentStep % cohortImages.length];
-
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
 
   const handleStepChange = (direction: 'next' | 'prev') => {
     if (direction === 'next') {
@@ -186,16 +179,7 @@ const MobileRoadmapSection = () => {
         <div className="font-heading text-white font-light tracking-wide text-xl drop-shadow-lg">
           iLab®
         </div>
-        <div className="flex items-center gap-2">
-          <button 
-            onClick={handlePlayPause}
-            className="w-8 h-8 flex items-center justify-center"
-          >
-            <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              {isPlaying ? <div className="w-2 h-2 bg-white rounded-full" /> : <Play className="w-3 h-3 text-white" />}
-            </div>
-          </button>
-        </div>
+
       </div>
 
       {/* Content Layout */}
