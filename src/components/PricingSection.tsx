@@ -117,7 +117,7 @@ const PricingSection = () => {
             
             <CardContent className="p-8 md:p-12 text-center relative z-10">
               {/* Value Proposition */}
-              <div className="space-y-6 mb-8">
+              <div className="space-y-6 mb-12">
                 <div className="bg-gradient-to-r from-accent-green/20 to-accent-blue/20 border-4 border-foreground rounded-2xl p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
                   <div className="flex items-center justify-center gap-3 mb-3">
                     <Zap className="h-6 w-6 text-foreground" />
@@ -127,27 +127,10 @@ const PricingSection = () => {
                     Complete AI entrepreneur transformation including mentorship, tools, and €5,000 competition prize
                   </p>
                 </div>
-                
-                {/* Urgency */}
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-primary/10 border-4 border-primary rounded-2xl p-4">
-                    <div className="font-black text-primary text-2xl mb-2">67% OFF</div>
-                    <div className="font-body text-sm font-bold text-foreground">
-                      Launch Week Only
-                    </div>
-                  </div>
-                  
-                  <div className="bg-accent-purple/10 border-4 border-accent-purple rounded-2xl p-4">
-                    <div className="font-black text-accent-purple text-2xl mb-2">18 Spots</div>
-                    <div className="font-body text-sm font-bold text-foreground">
-                      Remaining
-                    </div>
-                  </div>
-                </div>
               </div>
 
               {/* Call to Action */}
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <WaitingListDialog>
                   <Button className="
                     w-full
@@ -155,22 +138,26 @@ const PricingSection = () => {
                     hover:from-primary-hover hover:to-accent-purple
                     border-4 
                     border-foreground 
-                    shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
+                    shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
+                    hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
                     font-black 
-                    text-xl 
-                    px-8 
-                    py-6
+                    text-2xl 
+                    px-10 
+                    py-8
                     uppercase
                     hover:translate-x-2 
                     hover:translate-y-2 
-                    hover:shadow-none 
                     transition-all
                     text-white
-                    rounded-xl
-                    min-h-[60px]
+                    rounded-2xl
+                    min-h-[70px]
+                    transform hover:scale-105
+                    relative overflow-hidden
                   ">
-                    <Sparkles className="h-5 w-5 mr-3" />
+                    <Sparkles className="h-6 w-6 mr-4" />
                     SECURE YOUR SPOT NOW
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 hover:opacity-100 transition-opacity rounded-2xl" />
                   </Button>
                 </WaitingListDialog>
                 

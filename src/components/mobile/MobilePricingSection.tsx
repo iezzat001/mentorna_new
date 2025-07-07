@@ -73,8 +73,8 @@ const MobilePricingSection = () => {
             {/* Card Content */}
             <CardContent className="p-6 text-center">
               {/* Value Proposition */}
-              <div className="mb-6">
-                <div className="bg-gradient-to-r from-accent-green/20 to-accent-blue/20 border-2 border-foreground rounded-xl p-4 mb-4">
+              <div className="mb-8">
+                <div className="bg-gradient-to-r from-accent-green/20 to-accent-blue/20 border-2 border-foreground rounded-xl p-4">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <Zap className="h-5 w-5 text-foreground" />
                     <span className="font-black text-sm uppercase text-foreground">Worth €5,000+</span>
@@ -82,14 +82,6 @@ const MobilePricingSection = () => {
                   <p className="font-body text-xs font-semibold text-foreground/80 leading-relaxed">
                     Complete AI entrepreneur transformation + competition prize
                   </p>
-                </div>
-                
-                {/* Urgency */}
-                <div className="bg-primary/10 border-2 border-primary rounded-xl p-3">
-                  <div className="font-black text-primary text-lg mb-1">67% OFF</div>
-                  <div className="font-body text-xs font-bold text-foreground">
-                    Only 18 spots left
-                  </div>
                 </div>
               </div>
             </CardContent>
@@ -102,14 +94,14 @@ const MobilePricingSection = () => {
             <Button className="
               w-full bg-gradient-to-r from-primary to-accent-purple
               border-4 border-foreground 
-              shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
-              font-black text-base px-6 py-4 uppercase
-              hover:translate-x-1 hover:translate-y-1 hover:shadow-none 
+              shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
+              font-black text-lg px-8 py-6 uppercase
+              hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
               transition-all text-white
-              active:scale-95 touch-manipulation min-h-[52px]
-              rounded-xl
+              active:scale-95 touch-manipulation min-h-[60px]
+              rounded-xl transform hover:scale-105
             ">
-              <Sparkles className="h-4 w-4 mr-2" />
+              <Sparkles className="h-5 w-5 mr-3" />
               SECURE YOUR SPOT
             </Button>
           </MobileWaitingListDialog>
