@@ -1,75 +1,51 @@
-import React, { useRef, useEffect, useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart } from 'lucide-react';
-import WaitingListDialog from '../WaitingListDialog';
-import MobileSwipeIndicator from './MobileSwipeIndicator';
+import { Badge } from '@/components/ui/badge';
+import { Play, Pause, Heart, MessageCircle, Share, ChevronDown } from 'lucide-react';
+import MobileWaitingListDialog from './MobileWaitingListDialog';
 
 const MobileHero = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [likes, setLikes] = useState(12400);
-  const [isLiked, setIsLiked] = useState(false);
 
+  // Simulate video progress
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    if (!isPlaying) return;
+    
+    const timer = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          return 0; // Loop the progress
+        }
+        return prev + 0.5;
+      });
+    }, 100);
 
-    const updateProgress = () => {
-      const currentTime = video.currentTime;
-      const duration = video.duration;
-      if (duration > 0) {
-        const progressPercent = (currentTime / duration) * 100;
-        setProgress(progressPercent);
-      }
-    };
+    return () => clearInterval(timer);
+  }, [isPlaying]);
 
-    const handleLoadedMetadata = () => {
-      setProgress(0);
-    };
-
-    const handleEnded = () => {
-      setProgress(100);
-      // Auto-replay the video when it ends
-      video.currentTime = 0;
-      video.play();
-    };
-
-    video.addEventListener('timeupdate', updateProgress);
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    video.addEventListener('ended', handleEnded);
-
-    return () => {
-      video.removeEventListener('timeupdate', updateProgress);
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      video.removeEventListener('ended', handleEnded);
-    };
-  }, []);
-
-  const handleLike = () => {
-    if (!isLiked) {
-      setLikes(prev => prev + 1);
-      setIsLiked(true);
-    }
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
-      {/* Full-screen Video Background */}
+    <div className="relative h-screen w-full overflow-hidden snap-start">
+      {/* Video Background */}
       <video 
-        ref={videoRef}
         autoPlay 
         muted 
         loop 
         playsInline 
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source src="https://d2mp3ttz3u5gci.cloudfront.net/0703.mp4" type="video/mp4" />
+        <source src="https://d2mp3ttz3u5gci.cloudfront.net/hero-mobile-video.mp4" type="video/mp4" />
       </video>
       
-      {/* Dark Overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/30 z-10" />
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-10" />
       
-      {/* Top Bar - Logo and Menu */}
+      {/* Top Bar */}
       <div className="relative z-30 flex items-center justify-between p-4 pt-12">
         <div className="font-heading text-white font-light tracking-wide text-xl">
           iLab®
@@ -78,10 +54,10 @@ const MobileHero = () => {
           <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm" />
         </div>
       </div>
-      
-      {/* Main Content - TikTok Style Layout */}
+
+      {/* Content Layout */}
       <div className="relative z-20 h-full flex">
-        {/* Left side - Content (takes most space) */}
+        {/* Left Content Area (75%) */}
         <div className="flex-1 flex flex-col justify-end p-4 pb-32">
           {/* Profile Section */}
           <div className="flex items-center mb-4">
@@ -92,71 +68,71 @@ const MobileHero = () => {
             </div>
           </div>
           
-          {/* Main Text Content */}
+          {/* Main Content */}
           <div className="mb-6">
+            <Badge className="bg-primary text-primary-foreground font-black uppercase px-2 py-1 text-xs mb-3">
+              🚀 LIMITED LAUNCH
+            </Badge>
             <h1 className="text-white text-xl font-bold leading-tight mb-2">
-              Your 8-Week Transformation Journey
+              Your Child's 8-Week AI Transformation Journey
             </h1>
-            <p className="text-white/90 text-base leading-relaxed mb-3">
-              Launch real products, solve real problems, lead real change.
+            <p className="text-white/90 text-base leading-relaxed">
+              Launch real products, solve real problems, lead real change. Join the first 30 families! 
+              <span className="text-accent-yellow font-semibold"> #AIEducation #Future</span>
             </p>
-            <p className="text-white/80 text-sm">
-              Build MVPs and compete for €5,000 prize 💰
-            </p>
-            
-            {/* Hashtags */}
-            <div className="flex flex-wrap gap-2 mt-3">
-              <span className="text-accent-blue text-sm">#AIEducation</span>
-              <span className="text-accent-blue text-sm">#CodeBootcamp</span>
-              <span className="text-accent-blue text-sm">#TechSkills</span>
-            </div>
           </div>
           
-          {/* CTA Button */}
-          <WaitingListDialog>
-            <Button className="
-              w-full 
-              bg-white 
-              text-black 
-              font-bold 
-              py-4 
-              rounded-full 
-              hover:bg-white/90
-              transition-all
-              text-base
-            ">
+          {/* CTA */}
+          <MobileWaitingListDialog>
+            <Button className="w-full bg-white text-black font-bold py-4 rounded-full active:scale-95 transition-transform touch-manipulation min-h-[48px]">
               Join Waiting List 🚀
             </Button>
-          </WaitingListDialog>
+          </MobileWaitingListDialog>
         </div>
         
-        {/* Right side - TikTok Style Action Bar */}
+        {/* Right Action Bar (25%) */}
         <div className="w-16 flex flex-col items-center justify-end pb-32 pr-2">
-          {/* Like Button */}
-          <div className="flex flex-col items-center mb-6">
+          {/* Action Buttons */}
+          <div className="flex flex-col items-center space-y-6">
             <button 
-              onClick={handleLike}
-              className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center mb-1 active:scale-95 transition-transform"
+              onClick={togglePlay}
+              className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation"
             >
-              <Heart 
-                className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-red-500' : 'text-white'}`} 
-              />
+              {isPlaying ? (
+                <Pause className="w-6 h-6 text-white" />
+              ) : (
+                <Play className="w-6 h-6 text-white ml-1" />
+              )}
             </button>
-            <span className="text-white text-xs font-semibold">{likes.toLocaleString()}</span>
+            
+            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation">
+              <Heart className="w-6 h-6 text-white" />
+              <span className="absolute -bottom-1 text-white text-xs font-semibold">15.2K</span>
+            </button>
+            
+            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation">
+              <MessageCircle className="w-6 h-6 text-white" />
+              <span className="absolute -bottom-1 text-white text-xs font-semibold">3.1K</span>
+            </button>
+            
+            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation">
+              <Share className="w-6 h-6 text-white" />
+              <span className="absolute -bottom-1 text-white text-xs font-semibold">1.2K</span>
+            </button>
           </div>
         </div>
       </div>
-      
-      {/* Real Progress Bar at Bottom */}
+
+      {/* Progress Bar */}
       <div className="absolute bottom-0 left-0 right-0 z-20 h-1 bg-white/20">
-        <div 
-          className="h-full bg-white transition-all duration-100 ease-linear" 
-          style={{ width: `${progress}%` }}
-        />
+        <div className="h-full bg-white transition-all duration-100 ease-linear" style={{ width: `${progress}%` }} />
       </div>
-      
+
       {/* Swipe Indicator */}
-      <MobileSwipeIndicator />
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 flex flex-col items-center">
+        <ChevronDown className="w-6 h-6 text-white/70 animate-bounce" />
+        <span className="text-white/70 text-xs mt-1">Swipe up</span>
+      </div>
     </div>
   );
 };

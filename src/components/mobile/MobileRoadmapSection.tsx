@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Lightbulb, Users, Hammer, RotateCcw, TestTube, Presentation, Rocket, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import MobileWaitingListDialog from './MobileWaitingListDialog';
 
 const MobileRoadmapSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -110,7 +110,7 @@ const MobileRoadmapSection = () => {
       </div>
 
       {/* Content Layout */}
-      <div className="relative z-20 h-[calc(100vh-6rem)] flex flex-col p-4">
+      <div className="relative z-20 flex flex-col h-[calc(100vh-6rem)] p-4">
         {/* Section Title */}
         <div className="text-center mb-6">
           <Badge className="bg-primary text-primary-foreground font-black uppercase px-3 py-1 text-xs mb-3">
@@ -130,7 +130,7 @@ const MobileRoadmapSection = () => {
             <button
               key={index}
               onClick={() => handleStepClick(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              className={`w-2 h-2 rounded-full transition-all duration-300 touch-manipulation ${
                 index === currentStep ? 'bg-white w-6' : 'bg-white/30'
               }`}
             />
@@ -169,7 +169,7 @@ const MobileRoadmapSection = () => {
           <div className="flex justify-between items-center px-8">
             <button
               onClick={() => setCurrentStep((prev) => prev === 0 ? roadmapSteps.length - 1 : prev - 1)}
-              className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
+              className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center touch-manipulation"
             >
               <ChevronRight className="w-6 h-6 text-white rotate-180" />
             </button>
@@ -180,7 +180,7 @@ const MobileRoadmapSection = () => {
             
             <button
               onClick={() => setCurrentStep((prev) => (prev + 1) % roadmapSteps.length)}
-              className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
+              className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center touch-manipulation"
             >
               <ChevronRight className="w-6 h-6 text-white" />
             </button>
@@ -189,16 +189,19 @@ const MobileRoadmapSection = () => {
 
         {/* Bottom CTA */}
         <div className="flex-shrink-0 mt-6">
-          <Button className="
-            w-full bg-primary border-2 border-white 
-            shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] 
-            font-black text-sm px-4 py-3 uppercase
-            hover:translate-x-1 hover:translate-y-1 hover:shadow-none 
-            transition-all text-primary-foreground
-          ">
-            <Rocket className="h-4 w-4 mr-2" />
-            START THE JOURNEY!
-          </Button>
+          <MobileWaitingListDialog>
+            <Button className="
+              w-full bg-primary border-2 border-white 
+              shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] 
+              font-black text-sm px-4 py-3 uppercase
+              hover:translate-x-1 hover:translate-y-1 hover:shadow-none 
+              transition-all text-primary-foreground
+              active:scale-95 touch-manipulation min-h-[48px]
+            ">
+              <Rocket className="h-4 w-4 mr-2" />
+              START THE JOURNEY!
+            </Button>
+          </MobileWaitingListDialog>
           <p className="font-body text-xs font-medium text-white/60 mt-2 text-center">
             Transform Your Child's Future Today
           </p>
