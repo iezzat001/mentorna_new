@@ -1,46 +1,66 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Gift, Users, BookOpen, Award, Lock, Download } from 'lucide-react';
+import { Sparkles, Star, Zap, TrendingUp } from 'lucide-react';
 import WaitingListDialog from './WaitingListDialog';
+
 const PricingSection = () => {
-  const features = [{
-    icon: <BookOpen className="h-5 w-5" />,
-    text: "4 Live Expert Masterclasses"
-  }, {
-    icon: <Users className="h-5 w-5" />,
-    text: "8 Weekly Parent & Kid Packages"
-  }, {
-    icon: <Award className="h-5 w-5" />,
-    text: "AI Innovators Challenge Entry"
-  }, {
-    icon: <Users className="h-5 w-5" />,
-    text: "Private Parents Community Access"
-  }, {
-    icon: <Lock className="h-5 w-5" />,
-    text: "Lifetime Access to All Materials"
-  }, {
-    icon: <Download className="h-5 w-5" />,
-    text: "Digital AI Toolkit (First 30 only)"
-  }];
-  return <section className="bg-accent-yellow border-b-4 border-foreground px-0 py-0">
-      <div className="container mx-auto max-w-4xl">
+  return (
+    <section className="bg-gradient-to-br from-accent-yellow via-accent-yellow/90 to-accent-yellow/70 border-b-4 border-foreground py-20 px-6 relative overflow-hidden">
+      {/* Artistic Background Elements */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-20 right-20 w-40 h-40 border-4 border-foreground rotate-12 animate-pulse" />
+        <div className="absolute bottom-20 left-20 w-32 h-32 border-4 border-foreground -rotate-6 animate-pulse" />
+        <div className="absolute top-1/2 left-1/3 w-24 h-24 border-4 border-foreground rotate-45" />
+        <div className="absolute bottom-1/3 right-1/4 w-28 h-28 border-4 border-foreground -rotate-12" />
+      </div>
+
+      <div className="container mx-auto max-w-5xl relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="
-            font-heading 
-            text-4xl md:text-5xl lg:text-6xl 
+          <div className="relative inline-block mb-8">
+            <h2 className="
+              font-heading 
+              text-5xl md:text-6xl lg:text-7xl 
+              font-black 
+              uppercase 
+              text-foreground 
+              mb-4
+              leading-none
+            ">
+              TRANSFORM
+              <span className="block text-4xl md:text-5xl lg:text-6xl text-primary">
+                YOUR CHILD'S
+              </span>
+              <span className="block text-5xl md:text-6xl lg:text-7xl">
+                FUTURE
+              </span>
+            </h2>
+            
+            {/* Glowing effect behind text */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent-purple/20 to-primary/20 blur-3xl -z-10" />
+          </div>
+          
+          <p className="font-body text-xl md:text-2xl font-bold text-foreground/80 max-w-3xl mx-auto mb-6">
+            8-week intensive program • Real products • Life-changing results
+          </p>
+          
+          <Badge className="
+            bg-gradient-to-r from-primary to-accent-purple
+            text-white
             font-black 
             uppercase 
-            text-foreground 
-            mb-6
+            px-6 
+            py-3 
+            text-sm
+            border-4 
+            border-white
+            shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]
           ">
-            TRANSFORM YOUR CHILD'S FUTURE
-          </h2>
-          <p className="font-body text-xl font-semibold text-foreground/80 max-w-2xl mx-auto">
-            For less than the cost of a few tutoring sessions
-          </p>
+            <TrendingUp className="h-4 w-4 mr-2" />
+            LIMITED LAUNCH OFFER
+          </Badge>
         </div>
 
         {/* Pricing Card */}
@@ -48,105 +68,159 @@ const PricingSection = () => {
           <Card className="
             border-4 
             border-foreground 
-            shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
+            shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] 
             bg-white
-            hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] 
+            hover:shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] 
             hover:scale-[1.02] 
             transition-all
-            duration-200
-            max-w-lg
+            duration-300
+            max-w-2xl
             w-full
+            relative
+            overflow-hidden
           ">
-            <CardHeader className="bg-primary border-b-4 border-foreground text-center">
-              <div className="space-y-4">
+            {/* Background decoration */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-accent-purple/10 to-transparent rounded-full -mr-16 -mt-16" />
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-accent-blue/10 to-transparent rounded-full -ml-20 -mb-20" />
+            
+            <CardHeader className="bg-gradient-to-r from-primary via-accent-purple to-primary border-b-4 border-foreground text-center p-8 relative z-10">
+              <div className="space-y-6">
                 <Badge className="
-                  bg-foreground 
-                  text-background 
+                  bg-white 
+                  text-foreground 
                   font-black 
                   uppercase 
-                  px-4 
-                  py-2 
+                  px-6 
+                  py-3 
                   text-sm
                   border-2 
-                  border-background
+                  border-foreground
+                  shadow-lg
                 ">
+                  <Star className="h-4 w-4 mr-2" />
                   LAUNCH SPECIAL
                 </Badge>
                 
-                <div className="space-y-2">
-                  <div className="text-2xl font-black text-primary-foreground line-through opacity-70">
-                    $500 USD
+                <div className="space-y-3">
+                  <div className="text-2xl md:text-3xl font-black text-white/60 line-through">
+                    €997
                   </div>
-                  <div className="text-6xl font-black text-primary-foreground">
-                    $329
+                  <div className="text-6xl md:text-7xl font-black text-white leading-none">
+                    €329
+                  </div>
+                  <div className="text-white/90 text-lg font-bold uppercase tracking-wide">
+                    Early Bird Pricing
                   </div>
                 </div>
-                
-                <CardTitle className="font-black text-xl uppercase text-primary-foreground">
-                  LAUNCH SPECIAL PRICE
-                </CardTitle>
               </div>
             </CardHeader>
             
-            <CardContent className="p-8">
-              {/* Bonus Section */}
-              <div className="
-                bg-accent-purple 
-                border-4 
-                border-foreground 
-                shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
-                p-4 
-                mb-8
-                flex 
-                items-center 
-                gap-3
-              ">
-                <Gift className="h-6 w-6 text-foreground" />
-                <div>
-                  <div className="font-black text-sm uppercase text-foreground">
-                    💎 BONUS
+            <CardContent className="p-8 md:p-12 text-center relative z-10">
+              {/* Value Proposition */}
+              <div className="space-y-6 mb-8">
+                <div className="bg-gradient-to-r from-accent-green/20 to-accent-blue/20 border-4 border-foreground rounded-2xl p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                  <div className="flex items-center justify-center gap-3 mb-3">
+                    <Zap className="h-6 w-6 text-foreground" />
+                    <span className="font-black text-lg uppercase text-foreground">Program Value: €5,000+</span>
                   </div>
-                  <div className="font-body text-sm font-semibold text-foreground">
-                    First 30 get Digital AI Toolkit ($49 value)
+                  <p className="font-body text-base font-semibold text-foreground/80 leading-relaxed">
+                    Complete AI entrepreneur transformation including mentorship, tools, and €5,000 competition prize
+                  </p>
+                </div>
+                
+                {/* Urgency */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-primary/10 border-4 border-primary rounded-2xl p-4">
+                    <div className="font-black text-primary text-2xl mb-2">67% OFF</div>
+                    <div className="font-body text-sm font-bold text-foreground">
+                      Launch Week Only
+                    </div>
+                  </div>
+                  
+                  <div className="bg-accent-purple/10 border-4 border-accent-purple rounded-2xl p-4">
+                    <div className="font-black text-accent-purple text-2xl mb-2">18 Spots</div>
+                    <div className="font-body text-sm font-bold text-foreground">
+                      Remaining
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Features Section */}
-              
-
               {/* Call to Action */}
-              <div className="mt-8 text-center">
+              <div className="space-y-4">
                 <WaitingListDialog>
                   <Button className="
                     w-full
-                    bg-primary 
-                    hover:bg-primary-hover
+                    bg-gradient-to-r from-primary to-accent-purple
+                    hover:from-primary-hover hover:to-accent-purple
                     border-4 
                     border-foreground 
-                    shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
+                    shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
                     font-black 
-                    text-lg 
+                    text-xl 
                     px-8 
                     py-6
                     uppercase
-                    hover:translate-x-1 
-                    hover:translate-y-1 
+                    hover:translate-x-2 
+                    hover:translate-y-2 
                     hover:shadow-none 
                     transition-all
+                    text-white
+                    rounded-xl
+                    min-h-[60px]
                   ">
-                    SECURE YOUR SPOT NOW!
+                    <Sparkles className="h-5 w-5 mr-3" />
+                    SECURE YOUR SPOT NOW
                   </Button>
                 </WaitingListDialog>
                 
-                <p className="font-body text-sm font-semibold text-foreground/70 mt-4">
-                  Limited Time • First 30 Families Only
-                </p>
+                <div className="space-y-2">
+                  <p className="font-body text-sm font-bold text-foreground/70">
+                    🔒 Limited to first 30 families
+                  </p>
+                  <p className="font-body text-sm font-semibold text-foreground/60">
+                    Next cohort starts February 2025
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
+
+        {/* Bottom Message */}
+        <div className="text-center mt-12">
+          <div className="
+            bg-gradient-to-r from-primary via-accent-yellow to-primary
+            border-4 
+            border-foreground
+            shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)]
+            p-6
+            inline-block
+            max-w-2xl
+            rounded-2xl
+          ">
+            <h3 className="
+              font-heading 
+              text-2xl md:text-3xl
+              font-black 
+              uppercase 
+              text-white
+              mb-3
+              drop-shadow-lg
+            ">
+              🚀 INVESTMENT IN YOUR CHILD'S FUTURE
+            </h3>
+            <p className="font-body text-base md:text-lg font-bold text-white/95 leading-relaxed drop-shadow-md">
+              Less than the cost of private tutoring, with
+              <span className="block mt-1 text-accent-yellow font-black">
+                UNLIMITED LIFETIME VALUE
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default PricingSection;
