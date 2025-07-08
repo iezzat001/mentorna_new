@@ -1,6 +1,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { weekDetailsData } from '@/data/weekDetailsData';
 
 export interface WeekData {
   week: number;
@@ -80,15 +81,18 @@ export const useWeekDetails = (weekNumber: number) => {
       if (skillsRes.error) throw skillsRes.error;
       if (outcomeRes.error) throw outcomeRes.error;
 
+      // Use static data as fallback if database is empty
+      const staticData = weekDetailsData[weekNumber];
+      
       return {
-        outcome: outcomeRes.data?.outcome_text || '',
-        activities: activitiesRes.data?.map(activity => ({
+        outcome: outcomeRes.data?.outcome_text || staticData?.outcome || '',
+        activities: activitiesRes.data?.length > 0 ? activitiesRes.data.map(activity => ({
           type: activity.activity_type as any,
           title: activity.title,
           description: activity.description,
           duration: activity.duration
-        })) || [],
-        skills: skillsRes.data?.map(skill => skill.skill_name) || []
+        })) : staticData?.activities || [],
+        skills: skillsRes.data?.length > 0 ? skillsRes.data.map(skill => skill.skill_name) : staticData?.skills || []
       };
     },
     staleTime: 0, // Force fresh data
