@@ -2,17 +2,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, MessageCircle, Share, ChevronDown } from 'lucide-react';
+import { Heart, ChevronDown } from 'lucide-react';
 import MobileWaitingListDialog from './MobileWaitingListDialog';
 
 const MobileHero = () => {
   const [progress, setProgress] = useState(0);
+  const [likeCount, setLikeCount] = useState(15200);
+  const [isLiked, setIsLiked] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Video progress tracking
+  // Video setup and progress tracking
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    // Force video to play and loop
+    const playVideo = async () => {
+      try {
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        await video.play();
+      } catch (error) {
+        console.error('Video autoplay failed:', error);
+      }
+    };
 
     const updateProgress = () => {
       const currentTime = video.currentTime;
@@ -23,8 +37,33 @@ const MobileHero = () => {
     };
 
     video.addEventListener('timeupdate', updateProgress);
-    return () => video.removeEventListener('timeupdate', updateProgress);
+    video.addEventListener('loadeddata', playVideo);
+    
+    // Try to play immediately
+    playVideo();
+
+    return () => {
+      video.removeEventListener('timeupdate', updateProgress);
+      video.removeEventListener('loadeddata', playVideo);
+    };
   }, []);
+
+  const handleHeartClick = () => {
+    if (!isLiked) {
+      setLikeCount(prev => prev + 1);
+      setIsLiked(true);
+    } else {
+      setLikeCount(prev => prev - 1);
+      setIsLiked(false);
+    }
+  };
+
+  const formatLikeCount = (count: number) => {
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1) + 'K';
+    }
+    return count.toString();
+  };
 
   return (
     <div className="relative h-screen w-full overflow-hidden snap-start">
@@ -35,10 +74,13 @@ const MobileHero = () => {
         muted 
         loop 
         playsInline
-        preload="auto"
+        preload="metadata"
+        controls={false}
         className="absolute inset-0 w-full h-full object-cover"
+        onError={(e) => console.error('Video error:', e)}
       >
         <source src="https://d2mp3ttz3u5gci.cloudfront.net/hero-mobile-video.mp4" type="video/mp4" />
+        <source src="https://d2mp3ttz3u5gci.cloudfront.net/hero-mobile-video.webm" type="video/webm" />
       </video>
       
       {/* Dark Overlay */}
@@ -89,22 +131,23 @@ const MobileHero = () => {
         
         {/* Right Action Bar (25%) */}
         <div className="w-16 flex flex-col items-center justify-end pb-32 pr-2">
-          {/* Action Buttons */}
-          <div className="flex flex-col items-center space-y-6">
-            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation">
-              <Heart className="w-6 h-6 text-white" />
-              <span className="absolute -bottom-1 text-white text-xs font-semibold">15.2K</span>
+          {/* Heart Button */}
+          <div className="flex flex-col items-center">
+            <button 
+              onClick={handleHeartClick}
+              className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation relative transition-all duration-200 active:scale-95"
+            >
+              <Heart 
+                className={`w-6 h-6 transition-all duration-200 ${
+                  isLiked 
+                    ? 'text-red-500 fill-red-500 scale-110' 
+                    : 'text-white hover:text-red-300'
+                }`} 
+              />
             </button>
-            
-            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation">
-              <MessageCircle className="w-6 h-6 text-white" />
-              <span className="absolute -bottom-1 text-white text-xs font-semibold">3.1K</span>
-            </button>
-            
-            <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation">
-              <Share className="w-6 h-6 text-white" />
-              <span className="absolute -bottom-1 text-white text-xs font-semibold">1.2K</span>
-            </button>
+            <span className="text-white text-xs font-semibold mt-1">
+              {formatLikeCount(likeCount)}
+            </span>
           </div>
         </div>
       </div>
