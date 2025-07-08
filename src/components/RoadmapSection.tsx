@@ -201,7 +201,7 @@ const RoadmapSection = () => {
           </div>
           
           <p className="font-body text-xl md:text-2xl font-bold text-white/90 max-w-3xl mx-auto drop-shadow-lg">
-            Watch your child transform from curious learner to confident entrepreneur in just 8 weeks
+            Starting August 10th, 2025 → A transformative family journey into AI & startup innovation! 🚀
           </p>
         </div>
 

@@ -23,7 +23,7 @@ const MobilePricingSection = () => {
         {/* Section Title */}
         <div className="mb-6">
           <h2 className="text-foreground text-2xl font-black uppercase mb-2 leading-tight">
-            Transform Your Child's Future
+            August 10th → Family AI Journey!
           </h2>
           
         </div>
