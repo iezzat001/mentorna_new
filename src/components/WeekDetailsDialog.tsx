@@ -17,7 +17,7 @@ interface WeekDetailsDialogProps {
 }
 
 const WeekDetailsDialog = ({ week, children }: WeekDetailsDialogProps) => {
-  const { data: weekDetails, isLoading, refetch } = useWeekDetails(week.week);
+  const { data: weekDetails, isLoading } = useWeekDetails(week.week);
 
   const getActivityIcon = (type: string) => {
     switch (type) {
@@ -49,16 +49,8 @@ const WeekDetailsDialog = ({ week, children }: WeekDetailsDialogProps) => {
     }
   };
 
-  // Refetch data when dialog opens to ensure we have the latest content
-  const handleDialogOpenChange = (open: boolean) => {
-    if (open) {
-      console.log('Dialog opened for week', week.week, 'refetching data...');
-      refetch();
-    }
-  };
-
   return (
-    <Dialog onOpenChange={handleDialogOpenChange}>
+    <Dialog>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>

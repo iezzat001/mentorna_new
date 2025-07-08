@@ -22,18 +22,19 @@ const OutcomeEditor = ({ weekId, weekNumber, outcome }: OutcomeEditorProps) => {
 
   const updateOutcomeMutation = useMutation({
     mutationFn: async (outcomeText: string) => {
-      console.log('Updating outcome for week:', weekNumber, 'with text:', outcomeText);
+      // Check if this is a real database record (UUID format) or static data
+      const isStaticData = outcome?.id?.startsWith('static-') || !outcome?.id;
       
-      if (outcome && !outcome.id.startsWith('static-')) {
+      if (outcome && !isStaticData) {
         // Update existing database record
         const { error } = await supabase
           .from('week_outcomes')
           .update({ outcome_text: outcomeText })
           .eq('id', outcome.id);
         if (error) throw error;
-        console.log('Updated existing outcome with ID:', outcome.id);
       } else {
-        // Check if a real record already exists for this week
+        // Create new record or replace static data
+        // First check if a real record already exists
         const { data: existingOutcome } = await supabase
           .from('week_outcomes')
           .select('id')
@@ -47,28 +48,21 @@ const OutcomeEditor = ({ weekId, weekNumber, outcome }: OutcomeEditorProps) => {
             .update({ outcome_text: outcomeText })
             .eq('id', existingOutcome.id);
           if (error) throw error;
-          console.log('Updated existing outcome by week_id:', existingOutcome.id);
         } else {
           // Create new record
           const { error } = await supabase
             .from('week_outcomes')
             .insert({ week_id: weekId, outcome_text: outcomeText });
           if (error) throw error;
-          console.log('Created new outcome for week_id:', weekId);
         }
       }
     },
     onSuccess: () => {
-      // Invalidate all related queries to ensure fresh data
       queryClient.invalidateQueries({ queryKey: ['week-details', weekNumber] });
       queryClient.invalidateQueries({ queryKey: ['week-details-data', weekNumber] });
-      queryClient.invalidateQueries({ queryKey: ['weeks-data'] });
-      
-      console.log('Outcome updated successfully, queries invalidated');
       toast.success('Outcome updated successfully!');
     },
     onError: (error) => {
-      console.error('Failed to update outcome:', error);
       toast.error('Failed to update outcome: ' + error.message);
     }
   });
@@ -76,8 +70,6 @@ const OutcomeEditor = ({ weekId, weekNumber, outcome }: OutcomeEditorProps) => {
   const handleSave = () => {
     if (outcomeText.trim()) {
       updateOutcomeMutation.mutate(outcomeText);
-    } else {
-      toast.error('Please enter some text for the outcome');
     }
   };
 

@@ -38,8 +38,8 @@ export const useWeeksData = () => {
         phase: week.phase
       }));
     },
-    staleTime: 0, // Always fetch fresh data
-    gcTime: 0  // Don't cache the data
+    staleTime: 0, // Force fresh data
+    gcTime: 0  // Don't cache the data (updated from cacheTime)
   });
 };
 
@@ -47,8 +47,6 @@ export const useWeekDetails = (weekNumber: number) => {
   return useQuery({
     queryKey: ['week-details-data', weekNumber],
     queryFn: async (): Promise<WeekDetailsData> => {
-      console.log('Fetching week details for week:', weekNumber);
-      
       // First get the week ID
       const { data: week, error: weekError } = await supabase
         .from('weeks')
@@ -58,8 +56,6 @@ export const useWeekDetails = (weekNumber: number) => {
       
       if (weekError) throw weekError;
       if (!week) throw new Error(`Week ${weekNumber} not found`);
-
-      console.log('Week ID found:', week.id);
 
       // Get all related data
       const [activitiesRes, skillsRes, outcomeRes] = await Promise.all([
@@ -84,12 +80,6 @@ export const useWeekDetails = (weekNumber: number) => {
       if (skillsRes.error) throw skillsRes.error;
       if (outcomeRes.error) throw outcomeRes.error;
 
-      console.log('Week details fetched:', {
-        outcome: outcomeRes.data?.outcome_text,
-        activitiesCount: activitiesRes.data?.length,
-        skillsCount: skillsRes.data?.length
-      });
-
       return {
         outcome: outcomeRes.data?.outcome_text || '',
         activities: activitiesRes.data?.map(activity => ({
@@ -101,8 +91,8 @@ export const useWeekDetails = (weekNumber: number) => {
         skills: skillsRes.data?.map(skill => skill.skill_name) || []
       };
     },
-    staleTime: 0, // Always fetch fresh data
-    gcTime: 0, // Don't cache the data
+    staleTime: 0, // Force fresh data
+    gcTime: 0, // Don't cache the data (updated from cacheTime)
     refetchOnWindowFocus: true,
     refetchOnMount: true
   });
