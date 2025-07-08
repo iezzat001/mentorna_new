@@ -1,10 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Lightbulb, Users, Hammer, RotateCcw, TestTube, Presentation, Rocket } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import WaitingListDialog from './WaitingListDialog';
 
 const RoadmapSection = () => {
+  // Background images cycling state
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  // Background images from the cohort
+  const cohortImages = [
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_1.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_2.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_3.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_4.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_5.jpeg",
+    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_6.jpeg"
+  ];
+
+  // Auto-cycle through images every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        prevIndex === cohortImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 4000); // Change image every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [cohortImages.length]);
+
   const roadmapSteps = [
     {
       number: 1,
@@ -64,54 +88,51 @@ const RoadmapSection = () => {
     }
   ];
 
-  // Background images from the cohort
-  const cohortImages = [
-    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_1.jpeg",
-    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_2.jpeg",
-    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_3.jpeg",
-    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_4.jpeg",
-    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_5.jpeg",
-    "https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_6.jpeg"
-  ];
-
   return (
     <section className="relative min-h-screen border-b-4 border-foreground py-16 px-6 overflow-hidden">
-      {/* Dynamic Background Images Layer */}
+      {/* Dynamic Cycling Background Images Layer */}
       <div className="absolute inset-0 z-0">
-        {/* Main background image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url(${cohortImages[0]})`,
-          }}
-        />
+        {/* Main cycling background images */}
+        {cohortImages.map((image, index) => (
+          <div 
+            key={index}
+            className={`
+              absolute inset-0 bg-cover bg-center bg-no-repeat
+              transition-opacity duration-1000 ease-in-out
+              ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}
+            `}
+            style={{
+              backgroundImage: `url(${image})`,
+            }}
+          />
+        ))}
         
-        {/* Additional scattered background images */}
+        {/* Additional decorative scattered images that also cycle */}
         <div 
-          className="absolute top-20 right-10 w-80 h-60 bg-cover bg-center rounded-2xl opacity-20 rotate-12 transform scale-75"
+          className="absolute top-20 right-10 w-80 h-60 bg-cover bg-center rounded-2xl opacity-20 rotate-12 transform scale-75 transition-all duration-1000"
           style={{
-            backgroundImage: `url(${cohortImages[1]})`,
-          }}
-        />
-        
-        <div 
-          className="absolute bottom-32 left-10 w-72 h-56 bg-cover bg-center rounded-2xl opacity-15 -rotate-6 transform scale-90"
-          style={{
-            backgroundImage: `url(${cohortImages[2]})`,
-          }}
-        />
-        
-        <div 
-          className="absolute top-1/3 left-20 w-64 h-48 bg-cover bg-center rounded-2xl opacity-10 rotate-6 transform scale-110"
-          style={{
-            backgroundImage: `url(${cohortImages[3]})`,
+            backgroundImage: `url(${cohortImages[(currentImageIndex + 1) % cohortImages.length]})`,
           }}
         />
         
         <div 
-          className="absolute bottom-20 right-32 w-60 h-40 bg-cover bg-center rounded-2xl opacity-12 -rotate-12 transform scale-85"
+          className="absolute bottom-32 left-10 w-72 h-56 bg-cover bg-center rounded-2xl opacity-15 -rotate-6 transform scale-90 transition-all duration-1000"
           style={{
-            backgroundImage: `url(${cohortImages[4]})`,
+            backgroundImage: `url(${cohortImages[(currentImageIndex + 2) % cohortImages.length]})`,
+          }}
+        />
+        
+        <div 
+          className="absolute top-1/3 left-20 w-64 h-48 bg-cover bg-center rounded-2xl opacity-10 rotate-6 transform scale-110 transition-all duration-1000"
+          style={{
+            backgroundImage: `url(${cohortImages[(currentImageIndex + 3) % cohortImages.length]})`,
+          }}
+        />
+        
+        <div 
+          className="absolute bottom-20 right-32 w-60 h-40 bg-cover bg-center rounded-2xl opacity-12 -rotate-12 transform scale-85 transition-all duration-1000"
+          style={{
+            backgroundImage: `url(${cohortImages[(currentImageIndex + 4) % cohortImages.length]})`,
           }}
         />
       </div>
