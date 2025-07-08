@@ -42,25 +42,24 @@ const EmailMarketingManager = () => {
   const { data: campaigns = [], isLoading } = useQuery({
     queryKey: ['email-campaigns'],
     queryFn: async () => {
-      // Use rpc or raw query to fetch email campaigns
-      const { data, error } = await supabase
-        .rpc('get_email_campaigns')
-        .catch(async () => {
-          // Fallback: try direct query if RPC doesn't exist
-          const response = await fetch(`${supabase.supabaseUrl}/rest/v1/email_campaigns`, {
-            headers: {
-              'Authorization': `Bearer ${supabase.supabaseKey}`,
-              'apikey': supabase.supabaseKey!,
-              'Content-Type': 'application/json'
-            }
-          });
-          if (!response.ok) {
-            throw new Error('Failed to fetch campaigns');
-          }
-          return { data: await response.json(), error: null };
-        });
+      // Use direct fetch to access email campaigns table
+      const response = await fetch(`https://jswejhxrdnvwxonyaopz.supabase.co/rest/v1/email_campaigns`, {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzd2VqaHhyZG52d3hvbnlhb3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NDUwNTAsImV4cCI6MjA2NzEyMTA1MH0.pK9rMFafMN-M91E3pdG8A8c73f9Gs8_BRgkZVLDblC0`,
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzd2VqaHhyZG52d3hvbnlhb3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NDUwNTAsImV4cCI6MjA2NzEyMTA1MH0.pK9rMFafMN-M91E3pdG8A8c73f9Gs8_BRgkZVLDblC0',
+          'Content-Type': 'application/json'
+        }
+      });
       
-      if (error) throw error;
+      if (!response.ok) {
+        if (response.status === 404) {
+          // Table doesn't exist yet, return empty array
+          return [];
+        }
+        throw new Error('Failed to fetch campaigns');
+      }
+      
+      const data = await response.json();
       return (data || []) as EmailCampaign[];
     }
   });
@@ -85,11 +84,11 @@ const EmailMarketingManager = () => {
   const createCampaignMutation = useMutation({
     mutationFn: async (campaignData: typeof formData) => {
       // Use raw fetch to create campaign
-      const response = await fetch(`${supabase.supabaseUrl}/rest/v1/email_campaigns`, {
+      const response = await fetch(`https://jswejhxrdnvwxonyaopz.supabase.co/rest/v1/email_campaigns`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${supabase.supabaseKey}`,
-          'apikey': supabase.supabaseKey!,
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzd2VqaHhyZG52d3hvbnlhb3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NDUwNTAsImV4cCI6MjA2NzEyMTA1MH0.pK9rMFafMN-M91E3pdG8A8c73f9Gs8_BRgkZVLDblC0`,
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzd2VqaHhyZG52d3hvbnlhb3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NDUwNTAsImV4cCI6MjA2NzEyMTA1MH0.pK9rMFafMN-M91E3pdG8A8c73f9Gs8_BRgkZVLDblC0',
           'Content-Type': 'application/json',
           'Prefer': 'return=representation'
         },
@@ -156,11 +155,11 @@ const EmailMarketingManager = () => {
   // Delete campaign mutation
   const deleteCampaignMutation = useMutation({
     mutationFn: async (campaignId: string) => {
-      const response = await fetch(`${supabase.supabaseUrl}/rest/v1/email_campaigns?id=eq.${campaignId}`, {
+      const response = await fetch(`https://jswejhxrdnvwxonyaopz.supabase.co/rest/v1/email_campaigns?id=eq.${campaignId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${supabase.supabaseKey}`,
-          'apikey': supabase.supabaseKey!,
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzd2VqaHhyZG52d3hvbnlhb3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NDUwNTAsImV4cCI6MjA2NzEyMTA1MH0.pK9rMFafMN-M91E3pdG8A8c73f9Gs8_BRgkZVLDblC0`,
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzd2VqaHhyZG52d3hvbnlhb3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NDUwNTAsImV4cCI6MjA2NzEyMTA1MH0.pK9rMFafMN-M91E3pdG8A8c73f9Gs8_BRgkZVLDblC0',
           'Content-Type': 'application/json'
         }
       });
