@@ -1,42 +1,41 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Play, Pause, Heart, MessageCircle, Share, ChevronDown } from 'lucide-react';
+import { Heart, MessageCircle, Share, ChevronDown } from 'lucide-react';
 import MobileWaitingListDialog from './MobileWaitingListDialog';
 
 const MobileHero = () => {
-  const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Simulate video progress
+  // Video progress tracking
   useEffect(() => {
-    if (!isPlaying) return;
-    
-    const timer = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          return 0; // Loop the progress
-        }
-        return prev + 0.5;
-      });
-    }, 100);
+    const video = videoRef.current;
+    if (!video) return;
 
-    return () => clearInterval(timer);
-  }, [isPlaying]);
+    const updateProgress = () => {
+      const currentTime = video.currentTime;
+      const duration = video.duration;
+      if (duration > 0) {
+        setProgress((currentTime / duration) * 100);
+      }
+    };
 
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
+    video.addEventListener('timeupdate', updateProgress);
+    return () => video.removeEventListener('timeupdate', updateProgress);
+  }, []);
 
   return (
     <div className="relative h-screen w-full overflow-hidden snap-start">
       {/* Video Background */}
       <video 
+        ref={videoRef}
         autoPlay 
         muted 
         loop 
-        playsInline 
+        playsInline
+        preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
       >
         <source src="https://d2mp3ttz3u5gci.cloudfront.net/hero-mobile-video.mp4" type="video/mp4" />
@@ -92,17 +91,6 @@ const MobileHero = () => {
         <div className="w-16 flex flex-col items-center justify-end pb-32 pr-2">
           {/* Action Buttons */}
           <div className="flex flex-col items-center space-y-6">
-            <button 
-              onClick={togglePlay}
-              className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation"
-            >
-              {isPlaying ? (
-                <Pause className="w-6 h-6 text-white" />
-              ) : (
-                <Play className="w-6 h-6 text-white ml-1" />
-              )}
-            </button>
-            
             <button className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center touch-manipulation">
               <Heart className="w-6 h-6 text-white" />
               <span className="absolute -bottom-1 text-white text-xs font-semibold">15.2K</span>
