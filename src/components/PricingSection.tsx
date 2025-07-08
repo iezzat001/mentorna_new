@@ -87,7 +87,7 @@ const PricingSection = () => {
                 <Gift className="h-6 w-6 text-foreground" />
                 <div>
                   <div className="font-black text-sm uppercase text-foreground">
-                    💎 BONUS
+                    BONUS
                   </div>
                   <div className="font-body text-sm font-semibold text-foreground">
                     First 30 get Digital AI Toolkit ($49 value)

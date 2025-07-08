@@ -1,6 +1,8 @@
 import React from 'react';
 import { Lightbulb, Users, Hammer, RotateCcw, TestTube, Presentation, Rocket } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import WaitingListDialog from './WaitingListDialog';
 
 const RoadmapSection = () => {
   const roadmapSteps = [
@@ -330,37 +332,55 @@ const RoadmapSection = () => {
         </div>
 
         {/* Enhanced Bottom CTA */}
-        <div className="text-center mt-20">
-          <div className="
-            bg-gradient-to-r from-primary via-accent-yellow to-primary
-            border-4 
-            border-white
-            shadow-[0_20px_40px_rgba(0,0,0,0.4)]
-            p-10
-            inline-block
-            max-w-3xl
-            rounded-3xl
-            transform hover:scale-105 transition-all duration-300
-            backdrop-blur-md
-          ">
+        <div className="text-center mt-20 space-y-6">
+          {/* Header Text Above Button */}
+          <div>
             <h3 className="
               font-heading 
               text-3xl md:text-4xl
               font-black 
               uppercase 
               text-white
-              mb-6
+              mb-4
               drop-shadow-lg
             ">
               🚀 READY TO LAUNCH SUCCESS?
             </h3>
-            <p className="font-body text-lg md:text-xl font-bold text-white/95 leading-relaxed drop-shadow-md">
-              Join the cohort that turns young minds into tomorrow's business leaders. 
-              <span className="block mt-2 text-accent-yellow">
-                Your child's entrepreneurial journey starts here!
-              </span>
+            <p className="font-body text-lg md:text-xl font-bold text-white/90 max-w-2xl mx-auto drop-shadow-md">
+              Join the cohort that turns young minds into tomorrow's business leaders
             </p>
           </div>
+
+          {/* CTA Button */}
+          <div className="py-4">
+            <WaitingListDialog>
+              <Button className="
+                bg-foreground
+                text-background
+                hover:bg-foreground/90
+                border-4 
+                border-white 
+                shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] 
+                font-black 
+                text-xl 
+                px-10 
+                py-6
+                uppercase
+                hover:translate-x-2 
+                hover:translate-y-2 
+                hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] 
+                transition-all
+                min-h-[60px]
+              ">
+                START YOUR CHILD'S JOURNEY NOW!
+              </Button>
+            </WaitingListDialog>
+          </div>
+
+          {/* Supporting Text Below Button */}
+          <p className="font-body text-base font-semibold text-white/80 max-w-lg mx-auto drop-shadow-md">
+            Your child's entrepreneurial journey starts here!
+          </p>
         </div>
       </div>
     </section>
