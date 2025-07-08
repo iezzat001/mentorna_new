@@ -43,7 +43,7 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
           .from('week_outcomes')
           .select('*')
           .eq('week_id', week.id)
-          .single()
+          .maybeSingle()
       ]);
 
       // Use static data as fallback if database is empty
@@ -68,11 +68,12 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
             skill_name: skill,
             order_index: index
           })) || [],
-        outcome: outcomesRes.data || (staticData ? {
-          id: 'static-outcome',
-          week_id: week.id,
-          outcome_text: staticData.outcome
-        } : null)
+        outcome: outcomesRes.data || 
+          (staticData ? {
+            id: 'static-outcome',
+            week_id: week.id,
+            outcome_text: staticData.outcome
+          } : null)
       };
     }
   });

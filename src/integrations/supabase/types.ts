@@ -150,8 +150,11 @@ export type Database = {
           coding_experience: string
           created_at: string
           email: string
+          english_level: string | null
           id: string
           name: string
+          preferred_days: string[] | null
+          relationship: string | null
           whatsapp: string
         }
         Insert: {
@@ -160,8 +163,11 @@ export type Database = {
           coding_experience: string
           created_at?: string
           email: string
+          english_level?: string | null
           id?: string
           name: string
+          preferred_days?: string[] | null
+          relationship?: string | null
           whatsapp: string
         }
         Update: {
@@ -170,8 +176,11 @@ export type Database = {
           coding_experience?: string
           created_at?: string
           email?: string
+          english_level?: string | null
           id?: string
           name?: string
+          preferred_days?: string[] | null
+          relationship?: string | null
           whatsapp?: string
         }
         Relationships: []
