@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit, Loader2 } from 'lucide-react';
 import WeekEditor from './WeekEditor';
+import Week1DataSeeder from './Week1DataSeeder';
 
 const CourseContentManager = () => {
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
@@ -60,6 +61,9 @@ const CourseContentManager = () => {
   return (
     <div className="space-y-6">
       <h2 className="font-heading text-3xl font-black uppercase">Manage Course Content</h2>
+      
+      {/* Week 1 Data Seeder */}
+      <Week1DataSeeder />
       
       <div className="grid gap-4">
         {weeks?.map((week) => (
