@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -34,6 +34,41 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
     relationship: '',
     preferredDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as string[]
   });
+
+  // Mobile keyboard handling
+  useEffect(() => {
+    if (isOpen) {
+      // Prevent body scroll when dialog is open
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      
+      // Add keyboard event listener
+      const handleKeyboardDismiss = () => {
+        // Reset viewport after keyboard dismissal
+        setTimeout(() => {
+          if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+              // Force viewport reset
+              const viewport = document.querySelector('meta[name=viewport]');
+              if (viewport) {
+                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+              }
+            });
+          }
+        }, 100);
+      };
+
+      document.addEventListener('touchend', handleKeyboardDismiss);
+      
+      return () => {
+        document.removeEventListener('touchend', handleKeyboardDismiss);
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+      };
+    }
+  }, [isOpen]);
 
   const ageGroupOptions = [
     '6-8 years',
@@ -153,13 +188,19 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
         </DialogTrigger>
         
         <DialogContent className="
-          max-w-md 
-          max-h-[90vh] 
-          border-2 
-          border-white 
+          mobile-dialog
+          max-w-full
+          max-h-full
+          h-screen
+          w-screen
+          border-none
           bg-gradient-to-br from-accent-yellow to-accent-yellow/90
           p-0
-          rounded-2xl
+          m-0
+          rounded-none
+          flex
+          items-center
+          justify-center
         ">
           <div className="p-6 text-center">
             <div className="text-6xl mb-4">🎉</div>
@@ -198,19 +239,29 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
       </DialogTrigger>
       
       <DialogContent className="
-        max-w-md 
-        max-h-[90vh] 
-        h-[90vh]
-        border-2 
-        border-white 
+        mobile-dialog
+        max-w-full
+        max-h-full
+        h-screen
+        w-screen
+        border-none
         bg-gradient-to-br from-slate-900 to-black
         p-0
+        m-0
         flex
         flex-col
-        rounded-2xl
+        rounded-none
+        keyboard-safe
       ">
-        <DialogHeader className="bg-primary border-b-2 border-white p-4 flex-shrink-0 rounded-t-xl">
-          <DialogTitle className="font-black text-xl uppercase text-primary-foreground text-center">
+        <DialogHeader className="bg-primary border-b-2 border-white p-4 pt-safe-top flex-shrink-0 relative">
+          <button
+            onClick={() => handleDialogChange(false)}
+            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
+            aria-label="Close dialog"
+          >
+            <span className="text-white text-lg font-bold">✕</span>
+          </button>
+          <DialogTitle className="font-black text-lg uppercase text-primary-foreground text-center">
             <Sparkles className="h-5 w-5 inline mr-2" />
             Join the Revolution
           </DialogTitle>
@@ -239,7 +290,7 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                   placeholder="Your full name"
                   required
                   className="
-                    h-10
+                    h-12
                     border-2 
                     border-white/30
                     bg-white/10
@@ -250,8 +301,10 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                     focus:bg-white/20
                     transition-all
                     rounded-lg
-                    text-sm
+                    text-base
+                    font-medium
                   "
+                  style={{ fontSize: '16px' }}
                 />
               </div>
 
@@ -266,7 +319,7 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                   placeholder="your@email.com"
                   required
                   className="
-                    h-10
+                    h-12
                     border-2 
                     border-white/30
                     bg-white/10
@@ -277,8 +330,10 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                     focus:bg-white/20
                     transition-all
                     rounded-lg
-                    text-sm
+                    text-base
+                    font-medium
                   "
+                  style={{ fontSize: '16px' }}
                 />
               </div>
 
@@ -293,7 +348,7 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                   placeholder="+1 (555) 123-4567"
                   required
                   className="
-                    h-10
+                    h-12
                     border-2 
                     border-white/30
                     bg-white/10
@@ -304,8 +359,10 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                     focus:bg-white/20
                     transition-all
                     rounded-lg
-                    text-sm
+                    text-base
+                    font-medium
                   "
+                  style={{ fontSize: '16px' }}
                 />
               </div>
 
@@ -316,7 +373,7 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                 </Label>
                 <Select value={formData.country} onValueChange={(value) => handleInputChange('country', value)}>
                   <SelectTrigger className="
-                    h-10
+                    h-12
                     border-2 
                     border-white/30
                     bg-white/10
@@ -326,10 +383,11 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                     focus:bg-white/20
                     transition-all
                     rounded-lg
-                    text-sm
+                    text-base
+                    font-medium
                     [&>span]:text-white/90
                     [&>span]:placeholder:text-white/60
-                  ">
+                  " style={{ fontSize: '16px' }}>
                     <SelectValue placeholder="Select your country" />
                   </SelectTrigger>
                   <SelectContent className="max-h-[200px] bg-slate-800 border-white/20">
@@ -584,18 +642,19 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
               </div>
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 pb-safe-bottom">
               <Button
                 type="submit"
                 disabled={isSubmitting}
                 className="
                   w-full
-                  h-12
+                  h-14
                   bg-gradient-to-r from-accent-yellow to-accent-yellow/90
                   hover:from-accent-yellow/90 hover:to-accent-yellow/80
                   active:scale-95
                   text-black 
                   font-bold
+                  text-lg
                   border-2
                   border-transparent
                   transition-all
