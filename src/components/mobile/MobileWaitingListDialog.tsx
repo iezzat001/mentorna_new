@@ -7,9 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Sparkles, Users, GraduationCap, Heart } from 'lucide-react';
+import { Sparkles, Users, GraduationCap, Heart, MapPin } from 'lucide-react';
+import { countries } from '@/data/countries';
 
 interface MobileWaitingListDialogProps {
   children: React.ReactNode;
@@ -24,6 +26,7 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
     name: '',
     email: '',
     whatsapp: '',
+    country: '',
     childrenCount: '',
     ageGroups: [] as string[],
     codingExperience: '',
@@ -43,7 +46,7 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
     e.preventDefault();
     
     // Validation
-    if (!formData.name || !formData.email || !formData.whatsapp || 
+    if (!formData.name || !formData.email || !formData.whatsapp || !formData.country ||
         !formData.childrenCount || formData.ageGroups.length === 0 || 
         !formData.codingExperience || !formData.englishLevel || 
         !formData.relationship || formData.preferredDays.length === 0) {
@@ -64,6 +67,7 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
           name: formData.name,
           email: formData.email,
           whatsapp: formData.whatsapp,
+          country: formData.country,
           children_count: formData.childrenCount,
           age_groups: formData.ageGroups,
           coding_experience: formData.codingExperience,
@@ -121,6 +125,7 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
       name: '',
       email: '',
       whatsapp: '',
+      country: '',
       childrenCount: '',
       ageGroups: [],
       codingExperience: '',
@@ -302,6 +307,43 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                     text-sm
                   "
                 />
+              </div>
+
+              <div>
+                <Label className="text-white/90 font-medium text-xs mb-1 block">
+                  <MapPin className="h-3 w-3 inline mr-1" />
+                  Country/Region *
+                </Label>
+                <Select value={formData.country} onValueChange={(value) => handleInputChange('country', value)}>
+                  <SelectTrigger className="
+                    h-10
+                    border-2 
+                    border-white/30
+                    bg-white/10
+                    backdrop-blur-sm
+                    text-white 
+                    focus:border-white/60
+                    focus:bg-white/20
+                    transition-all
+                    rounded-lg
+                    text-sm
+                    [&>span]:text-white/90
+                    [&>span]:placeholder:text-white/60
+                  ">
+                    <SelectValue placeholder="Select your country" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[200px] bg-slate-800 border-white/20">
+                    {countries.map((country) => (
+                      <SelectItem 
+                        key={country.value} 
+                        value={country.value}
+                        className="text-white hover:bg-white/10 focus:bg-white/10"
+                      >
+                        {country.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 

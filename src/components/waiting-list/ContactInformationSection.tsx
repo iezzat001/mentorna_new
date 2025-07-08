@@ -3,13 +3,16 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { User, Mail, Phone } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { User, Mail, Phone, MapPin } from 'lucide-react';
+import { countries } from '@/data/countries';
 
 interface ContactInformationSectionProps {
   formData: {
     name: string;
     email: string;
     whatsapp: string;
+    country: string;
   };
   onInputChange: (field: string, value: string) => void;
 }
@@ -93,6 +96,34 @@ const ContactInformationSection = ({ formData, onInputChange }: ContactInformati
                 transition-all
               "
             />
+          </div>
+
+          <div>
+            <Label className="font-bold text-sm uppercase mb-2 block text-foreground">
+              <MapPin className="h-4 w-4 inline mr-2" />
+              Country/Region *
+            </Label>
+            <Select value={formData.country} onValueChange={(value) => onInputChange('country', value)}>
+              <SelectTrigger className="
+                border-4 
+                border-foreground 
+                shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
+                font-semibold
+                focus:translate-x-1 
+                focus:translate-y-1 
+                focus:shadow-none 
+                transition-all
+              ">
+                <SelectValue placeholder="Select your country" />
+              </SelectTrigger>
+              <SelectContent className="max-h-[200px]">
+                {countries.map((country) => (
+                  <SelectItem key={country.value} value={country.value}>
+                    {country.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </CardContent>

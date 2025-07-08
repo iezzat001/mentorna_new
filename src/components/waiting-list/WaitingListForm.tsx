@@ -8,6 +8,7 @@ interface FormData {
   name: string;
   email: string;
   whatsapp: string;
+  country: string;
   childrenCount: string;
   ageGroups: string[];
   codingExperience: string;

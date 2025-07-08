@@ -20,6 +20,7 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
     name: '',
     email: '',
     whatsapp: '',
+    country: '',
     childrenCount: '',
     ageGroups: [] as string[],
     codingExperience: '',
@@ -32,7 +33,7 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
     e.preventDefault();
     
     // Validation
-    if (!formData.name || !formData.email || !formData.whatsapp || 
+    if (!formData.name || !formData.email || !formData.whatsapp || !formData.country ||
         !formData.childrenCount || formData.ageGroups.length === 0 || 
         !formData.codingExperience || !formData.englishLevel || 
         !formData.relationship || formData.preferredDays.length === 0) {
@@ -53,6 +54,7 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
           name: formData.name,
           email: formData.email,
           whatsapp: formData.whatsapp,
+          country: formData.country,
           children_count: formData.childrenCount,
           age_groups: formData.ageGroups,
           coding_experience: formData.codingExperience,
@@ -110,6 +112,7 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
       name: '',
       email: '',
       whatsapp: '',
+      country: '',
       childrenCount: '',
       ageGroups: [],
       codingExperience: '',

@@ -25,9 +25,7 @@ const MobilePricingSection = () => {
           <h2 className="text-foreground text-2xl font-black uppercase mb-2 leading-tight">
             Transform Your Child's Future
           </h2>
-          <p className="text-foreground/80 text-sm font-medium">
-            For less than the cost of a few tutoring sessions
-          </p>
+          
         </div>
 
         {/* Pricing Display */}
@@ -57,7 +55,7 @@ const MobilePricingSection = () => {
             <span className="font-black text-xs uppercase text-foreground">💎 BONUS</span>
           </div>
           <p className="text-foreground font-semibold text-sm">
-            First 30 get Digital AI Toolkit ($49 value)
+          First 10 families get a 1-1 roadmap consultation with our experts
           </p>
         </div>
 
@@ -90,7 +88,7 @@ const MobilePricingSection = () => {
           </MobileWaitingListDialog>
           
           <p className="text-foreground/70 text-xs font-semibold">
-            Limited Time • First 30 Families Only
+            Limited Time • First 10 Families Only
           </p>
         </div>
       </div>

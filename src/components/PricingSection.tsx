@@ -90,7 +90,7 @@ const PricingSection = () => {
                     BONUS
                   </div>
                   <div className="font-body text-sm font-semibold text-foreground">
-                    First 30 get Digital AI Toolkit ($49 value)
+                    First 10 families get a 1-1 roadmap consultation with our experts
                   </div>
                 </div>
               </div>
@@ -122,7 +122,7 @@ const PricingSection = () => {
                 </WaitingListDialog>
                 
                 <p className="font-body text-sm font-semibold text-foreground/70 mt-4">
-                  Limited Time • First 30 Families Only
+                  Limited Time • First 10 Families Only
                 </p>
               </div>
             </CardContent>

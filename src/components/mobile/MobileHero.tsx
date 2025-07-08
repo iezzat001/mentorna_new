@@ -116,7 +116,7 @@ const MobileHero = () => {
               🚀 LIMITED LAUNCH
             </Badge>
             <h1 className="text-white text-xl font-bold leading-tight mb-2">
-              Your Child's 8-Week AI Transformation Journey
+              Your Child's 8-Week AI Entrepreneurship Transformation Journey
             </h1>
             <p className="text-white/90 text-base leading-relaxed">
               Launch real products, solve real problems, lead real change. Join the first 30 families! 
