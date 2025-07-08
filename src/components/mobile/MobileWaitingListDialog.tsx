@@ -310,16 +310,31 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                   className="grid grid-cols-2 gap-2"
                 >
                   {['1 child', '2 children', '3 children', '4+ children'].map((count) => (
-                    <div key={count} className="flex items-center space-x-2">
+                    <Label
+                      key={count}
+                      htmlFor={`mobile-children-${count}`}
+                      className="
+                        flex items-center space-x-2 
+                        bg-white/10 backdrop-blur-sm
+                        border border-white/30 
+                        rounded-lg p-2
+                        cursor-pointer
+                        hover:bg-white/20
+                        hover:border-white/50
+                        active:scale-95
+                        transition-all duration-150
+                        touch-manipulation
+                      "
+                    >
                       <RadioGroupItem
                         value={count}
-                        id={count}
-                        className="border-white/40 text-accent-yellow"
+                        id={`mobile-children-${count}`}
+                        className="border-white/40 text-accent-yellow flex-shrink-0"
                       />
-                      <Label htmlFor={count} className="text-white/90 text-xs font-medium cursor-pointer">
+                      <span className="text-white/90 text-xs font-medium select-none flex-1">
                         {count}
-                      </Label>
-                    </div>
+                      </span>
+                    </Label>
                   ))}
                 </RadioGroup>
               </div>
@@ -330,17 +345,32 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                 </Label>
                 <div className="grid grid-cols-2 gap-2">
                   {ageGroupOptions.map((ageGroup) => (
-                    <div key={ageGroup} className="flex items-center space-x-2">
+                    <Label
+                      key={ageGroup}
+                      htmlFor={`mobile-age-${ageGroup}`}
+                      className="
+                        flex items-center space-x-2 
+                        bg-white/10 backdrop-blur-sm
+                        border border-white/30 
+                        rounded-lg p-2
+                        cursor-pointer
+                        hover:bg-white/20
+                        hover:border-white/50
+                        active:scale-95
+                        transition-all duration-150
+                        touch-manipulation
+                      "
+                    >
                       <Checkbox
-                        id={ageGroup}
+                        id={`mobile-age-${ageGroup}`}
                         checked={formData.ageGroups.includes(ageGroup)}
                         onCheckedChange={(checked) => handleAgeGroupChange(ageGroup, checked === true)}
-                        className="border-white/40 data-[state=checked]:bg-accent-yellow data-[state=checked]:border-accent-yellow"
+                        className="border-white/40 data-[state=checked]:bg-accent-yellow data-[state=checked]:border-accent-yellow flex-shrink-0"
                       />
-                      <Label htmlFor={ageGroup} className="text-white/90 text-xs font-medium cursor-pointer">
+                      <span className="text-white/90 text-xs font-medium select-none flex-1">
                         {ageGroup}
-                      </Label>
-                    </div>
+                      </span>
+                    </Label>
                   ))}
                 </div>
               </div>
@@ -355,16 +385,32 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                   className="space-y-2"
                 >
                   {codingExperienceOptions.map((experience) => (
-                    <div key={experience} className="flex items-center space-x-2">
+                    <Label
+                      key={experience}
+                      htmlFor={`mobile-experience-${experience}`}
+                      className="
+                        flex items-center space-x-2 
+                        bg-white/10 backdrop-blur-sm
+                        border border-white/30 
+                        rounded-lg p-2
+                        cursor-pointer
+                        hover:bg-white/20
+                        hover:border-white/50
+                        active:scale-95
+                        transition-all duration-150
+                        touch-manipulation
+                        w-full
+                      "
+                    >
                       <RadioGroupItem
                         value={experience}
-                        id={experience}
-                        className="border-white/40 text-accent-yellow"
+                        id={`mobile-experience-${experience}`}
+                        className="border-white/40 text-accent-yellow flex-shrink-0"
                       />
-                      <Label htmlFor={experience} className="text-white/90 text-xs font-medium cursor-pointer">
+                      <span className="text-white/90 text-xs font-medium select-none flex-1">
                         {experience}
-                      </Label>
-                    </div>
+                      </span>
+                    </Label>
                   ))}
                 </RadioGroup>
               </div>

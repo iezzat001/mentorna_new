@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -41,12 +40,32 @@ const ChildrenInformationSection = ({
               className="grid grid-cols-2 gap-3"
             >
               {['1 child', '2 children', '3 children', '4+ children'].map((option) => (
-                <div key={option} className="flex items-center space-x-2 bg-white border-2 border-foreground p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                  <RadioGroupItem value={option} id={option} />
-                  <Label htmlFor={option} className="font-semibold text-sm">
+                <Label
+                  key={option}
+                  htmlFor={`children-${option}`}
+                  className="
+                    flex items-center space-x-3 
+                    bg-white border-2 border-foreground p-4 
+                    shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                    cursor-pointer
+                    hover:bg-accent-yellow/20
+                    hover:scale-[1.02]
+                    active:scale-[0.98]
+                    transition-all duration-150
+                    font-semibold text-sm
+                    w-full
+                    touch-manipulation
+                  "
+                >
+                  <RadioGroupItem 
+                    value={option} 
+                    id={`children-${option}`}
+                    className="flex-shrink-0"
+                  />
+                  <span className="flex-1 select-none">
                     {option}
-                  </Label>
-                </div>
+                  </span>
+                </Label>
               ))}
             </RadioGroup>
           </div>
@@ -58,17 +77,33 @@ const ChildrenInformationSection = ({
             </Label>
             <div className="grid grid-cols-2 gap-3">
               {['8-12 years', '13-15 years', '16-18 years', '19+ years'].map((option) => (
-                <div key={option} className="flex items-center space-x-2 bg-white border-2 border-foreground p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <Label
+                  key={option}
+                  htmlFor={`age-${option}`}
+                  className="
+                    flex items-center space-x-3 
+                    bg-white border-2 border-foreground p-4 
+                    shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                    cursor-pointer
+                    hover:bg-accent-blue/20
+                    hover:scale-[1.02]
+                    active:scale-[0.98]
+                    transition-all duration-150
+                    font-semibold text-sm
+                    w-full
+                    touch-manipulation
+                  "
+                >
                   <Checkbox
-                    id={option}
+                    id={`age-${option}`}
                     checked={formData.ageGroups.includes(option)}
                     onCheckedChange={(checked) => onAgeGroupChange(option, checked as boolean)}
-                    className="border-2 border-foreground"
+                    className="border-2 border-foreground flex-shrink-0"
                   />
-                  <Label htmlFor={option} className="font-semibold text-sm">
+                  <span className="flex-1 select-none">
                     {option}
-                  </Label>
-                </div>
+                  </span>
+                </Label>
               ))}
             </div>
           </div>
@@ -89,12 +124,32 @@ const ChildrenInformationSection = ({
                 'Yes, coding bootcamp',
                 'Yes, school programs'
               ].map((option) => (
-                <div key={option} className="flex items-center space-x-2 bg-white border-2 border-foreground p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                  <RadioGroupItem value={option} id={option} />
-                  <Label htmlFor={option} className="font-semibold text-sm">
+                <Label
+                  key={option}
+                  htmlFor={`experience-${option}`}
+                  className="
+                    flex items-center space-x-3 
+                    bg-white border-2 border-foreground p-4 
+                    shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                    cursor-pointer
+                    hover:bg-accent-green/20
+                    hover:scale-[1.02]
+                    active:scale-[0.98]
+                    transition-all duration-150
+                    font-semibold text-sm
+                    w-full
+                    touch-manipulation
+                  "
+                >
+                  <RadioGroupItem 
+                    value={option} 
+                    id={`experience-${option}`}
+                    className="flex-shrink-0"
+                  />
+                  <span className="flex-1 select-none">
                     {option}
-                  </Label>
-                </div>
+                  </span>
+                </Label>
               ))}
             </RadioGroup>
           </div>
