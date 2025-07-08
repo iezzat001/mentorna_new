@@ -12,13 +12,15 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Users, Mail, Phone, Calendar } from 'lucide-react';
+import { Users, Mail, Phone, Calendar, MapPin } from 'lucide-react';
+import { countries } from '@/data/countries';
 
 interface WaitingListEntry {
   id: string;
   name: string;
   email: string;
   whatsapp: string;
+  country: string;
   children_count: string;
   age_groups: string[];
   coding_experience: string;
@@ -29,6 +31,10 @@ interface WaitingListEntry {
 }
 
 const WaitingListManager = () => {
+  const getCountryName = (countryCode: string) => {
+    const country = countries.find(c => c.value === countryCode);
+    return country ? country.label : countryCode || 'Not specified';
+  };
   const { data: waitingList, isLoading, error } = useQuery({
     queryKey: ['waiting-list'],
     queryFn: async () => {
@@ -125,6 +131,12 @@ const WaitingListManager = () => {
                       </div>
                     </TableHead>
                     <TableHead className="font-black uppercase text-foreground border-r-2 border-foreground">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4" />
+                        Country
+                      </div>
+                    </TableHead>
+                    <TableHead className="font-black uppercase text-foreground border-r-2 border-foreground">
                       Children Count
                     </TableHead>
                     <TableHead className="font-black uppercase text-foreground border-r-2 border-foreground">
@@ -173,6 +185,11 @@ const WaitingListManager = () => {
                         >
                           {entry.whatsapp}
                         </a>
+                      </TableCell>
+                      <TableCell className="border-r border-foreground/20 font-medium">
+                        <Badge className="bg-accent-green text-foreground font-bold text-xs">
+                          {getCountryName(entry.country)}
+                        </Badge>
                       </TableCell>
                       <TableCell className="border-r border-foreground/20 font-medium">
                         {entry.children_count}
