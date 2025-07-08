@@ -12,6 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Mail, Send, Users, Calendar, Eye, Trash2 } from 'lucide-react';
 
+// Define types for email campaigns since they're not in the generated types yet
 interface EmailCampaign {
   id: string;
   title: string;
@@ -22,6 +23,7 @@ interface EmailCampaign {
   status: 'draft' | 'sending' | 'sent' | 'failed';
   created_at: string;
   sent_at: string | null;
+  created_by: string | null;
 }
 
 const EmailMarketingManager = () => {
@@ -36,17 +38,30 @@ const EmailMarketingManager = () => {
     fromName: 'iLab AI Education'
   });
 
-  // Fetch campaigns
+  // Fetch campaigns using raw SQL query to work around type issues
   const { data: campaigns = [], isLoading } = useQuery({
     queryKey: ['email-campaigns'],
     queryFn: async () => {
+      // Use rpc or raw query to fetch email campaigns
       const { data, error } = await supabase
-        .from('email_campaigns')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .rpc('get_email_campaigns')
+        .catch(async () => {
+          // Fallback: try direct query if RPC doesn't exist
+          const response = await fetch(`${supabase.supabaseUrl}/rest/v1/email_campaigns`, {
+            headers: {
+              'Authorization': `Bearer ${supabase.supabaseKey}`,
+              'apikey': supabase.supabaseKey!,
+              'Content-Type': 'application/json'
+            }
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch campaigns');
+          }
+          return { data: await response.json(), error: null };
+        });
       
       if (error) throw error;
-      return data as EmailCampaign[];
+      return (data || []) as EmailCampaign[];
     }
   });
 
@@ -69,20 +84,29 @@ const EmailMarketingManager = () => {
   // Create campaign mutation
   const createCampaignMutation = useMutation({
     mutationFn: async (campaignData: typeof formData) => {
-      const { data, error } = await supabase
-        .from('email_campaigns')
-        .insert({
+      // Use raw fetch to create campaign
+      const response = await fetch(`${supabase.supabaseUrl}/rest/v1/email_campaigns`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${supabase.supabaseKey}`,
+          'apikey': supabase.supabaseKey!,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({
           title: campaignData.title,
           subject: campaignData.subject,
           content: campaignData.content,
           recipient_group: campaignData.recipientGroup,
           status: 'draft'
         })
-        .select()
-        .single();
+      });
       
-      if (error) throw error;
-      return data;
+      if (!response.ok) {
+        throw new Error('Failed to create campaign');
+      }
+      
+      return await response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['email-campaigns'] });
@@ -132,12 +156,18 @@ const EmailMarketingManager = () => {
   // Delete campaign mutation
   const deleteCampaignMutation = useMutation({
     mutationFn: async (campaignId: string) => {
-      const { error } = await supabase
-        .from('email_campaigns')
-        .delete()
-        .eq('id', campaignId);
+      const response = await fetch(`${supabase.supabaseUrl}/rest/v1/email_campaigns?id=eq.${campaignId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${supabase.supabaseKey}`,
+          'apikey': supabase.supabaseKey!,
+          'Content-Type': 'application/json'
+        }
+      });
       
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error('Failed to delete campaign');
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['email-campaigns'] });
@@ -351,7 +381,7 @@ const EmailMarketingManager = () => {
                 No Campaigns Yet
               </h3>
               <p className="font-body text-sm font-medium text-foreground/50">
-                Create your first email campaign to get started
+                Create your first email campaign to get started. Note: You need to run the SQL migration first to create the email_campaigns table.
               </p>
             </div>
           ) : (
