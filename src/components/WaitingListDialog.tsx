@@ -22,7 +22,10 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
     whatsapp: '',
     childrenCount: '',
     ageGroups: [] as string[],
-    codingExperience: ''
+    codingExperience: '',
+    englishLevel: '',
+    relationship: '',
+    preferredDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as string[]
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,7 +34,8 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
     // Validation
     if (!formData.name || !formData.email || !formData.whatsapp || 
         !formData.childrenCount || formData.ageGroups.length === 0 || 
-        !formData.codingExperience) {
+        !formData.codingExperience || !formData.englishLevel || 
+        !formData.relationship || formData.preferredDays.length === 0) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields.",
@@ -51,7 +55,10 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
           whatsapp: formData.whatsapp,
           children_count: formData.childrenCount,
           age_groups: formData.ageGroups,
-          coding_experience: formData.codingExperience
+          coding_experience: formData.codingExperience,
+          english_level: formData.englishLevel,
+          relationship: formData.relationship,
+          preferred_days: formData.preferredDays
         });
 
       if (error) {
@@ -89,6 +96,15 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
     }));
   };
 
+  const handlePreferredDayChange = (day: string, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      preferredDays: checked
+        ? [...prev.preferredDays, day]
+        : prev.preferredDays.filter(d => d !== day)
+    }));
+  };
+
   const resetForm = () => {
     setFormData({
       name: '',
@@ -96,7 +112,10 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
       whatsapp: '',
       childrenCount: '',
       ageGroups: [],
-      codingExperience: ''
+      codingExperience: '',
+      englishLevel: '',
+      relationship: '',
+      preferredDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     });
     setIsSuccess(false);
   };
@@ -147,6 +166,7 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
               onSubmit={handleSubmit}
               onInputChange={handleInputChange}
               onAgeGroupChange={handleAgeGroupChange}
+              onPreferredDayChange={handlePreferredDayChange}
             />
           )}
         </ScrollArea>

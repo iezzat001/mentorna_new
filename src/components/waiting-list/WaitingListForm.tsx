@@ -11,6 +11,9 @@ interface FormData {
   childrenCount: string;
   ageGroups: string[];
   codingExperience: string;
+  englishLevel: string;
+  relationship: string;
+  preferredDays: string[];
 }
 
 interface WaitingListFormProps {
@@ -19,6 +22,7 @@ interface WaitingListFormProps {
   onSubmit: (e: React.FormEvent) => void;
   onInputChange: (field: string, value: string) => void;
   onAgeGroupChange: (ageGroup: string, checked: boolean) => void;
+  onPreferredDayChange: (day: string, checked: boolean) => void;
 }
 
 const WaitingListForm = ({
@@ -26,7 +30,8 @@ const WaitingListForm = ({
   isSubmitting,
   onSubmit,
   onInputChange,
-  onAgeGroupChange
+  onAgeGroupChange,
+  onPreferredDayChange
 }: WaitingListFormProps) => {
   return (
     <form onSubmit={onSubmit} className="space-y-6">
@@ -39,6 +44,7 @@ const WaitingListForm = ({
         formData={formData}
         onInputChange={onInputChange}
         onAgeGroupChange={onAgeGroupChange}
+        onPreferredDayChange={onPreferredDayChange}
       />
 
       <div className="pb-4">

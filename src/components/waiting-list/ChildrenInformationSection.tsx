@@ -10,15 +10,20 @@ interface ChildrenInformationSectionProps {
     childrenCount: string;
     ageGroups: string[];
     codingExperience: string;
+    englishLevel: string;
+    relationship: string;
+    preferredDays: string[];
   };
   onInputChange: (field: string, value: string) => void;
   onAgeGroupChange: (ageGroup: string, checked: boolean) => void;
+  onPreferredDayChange: (day: string, checked: boolean) => void;
 }
 
 const ChildrenInformationSection = ({ 
   formData, 
   onInputChange, 
-  onAgeGroupChange 
+  onAgeGroupChange,
+  onPreferredDayChange
 }: ChildrenInformationSectionProps) => {
   return (
     <Card className="border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-accent-purple/20">
@@ -152,6 +157,126 @@ const ChildrenInformationSection = ({
                 </Label>
               ))}
             </RadioGroup>
+          </div>
+
+          {/* Question 4: English language level */}
+          <div>
+            <Label className="font-bold text-sm uppercase mb-3 block text-foreground">
+              4. What is their English language level? *
+            </Label>
+            <RadioGroup
+              value={formData.englishLevel}
+              onValueChange={(value) => onInputChange('englishLevel', value)}
+              className="grid grid-cols-3 gap-3"
+            >
+              {['Beginner', 'Intermediate', 'Advanced'].map((option) => (
+                <Label
+                  key={option}
+                  htmlFor={`english-${option}`}
+                  className="
+                    flex items-center space-x-3 
+                    bg-white border-2 border-foreground p-4 
+                    shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                    cursor-pointer
+                    hover:bg-accent-purple/20
+                    hover:scale-[1.02]
+                    active:scale-[0.98]
+                    transition-all duration-150
+                    font-semibold text-sm
+                    w-full
+                    touch-manipulation
+                  "
+                >
+                  <RadioGroupItem 
+                    value={option} 
+                    id={`english-${option}`}
+                    className="flex-shrink-0"
+                  />
+                  <span className="flex-1 select-none">
+                    {option}
+                  </span>
+                </Label>
+              ))}
+            </RadioGroup>
+          </div>
+
+          {/* Question 5: Relationship */}
+          <div>
+            <Label className="font-bold text-sm uppercase mb-3 block text-foreground">
+              5. I am the child's... *
+            </Label>
+            <RadioGroup
+              value={formData.relationship}
+              onValueChange={(value) => onInputChange('relationship', value)}
+              className="grid grid-cols-3 gap-3"
+            >
+              {['Father', 'Mother', 'Educator'].map((option) => (
+                <Label
+                  key={option}
+                  htmlFor={`relationship-${option}`}
+                  className="
+                    flex items-center space-x-3 
+                    bg-white border-2 border-foreground p-4 
+                    shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                    cursor-pointer
+                    hover:bg-accent-blue/20
+                    hover:scale-[1.02]
+                    active:scale-[0.98]
+                    transition-all duration-150
+                    font-semibold text-sm
+                    w-full
+                    touch-manipulation
+                  "
+                >
+                  <RadioGroupItem 
+                    value={option} 
+                    id={`relationship-${option}`}
+                    className="flex-shrink-0"
+                  />
+                  <span className="flex-1 select-none">
+                    {option}
+                  </span>
+                </Label>
+              ))}
+            </RadioGroup>
+          </div>
+
+          {/* Question 6: Preferred days */}
+          <div>
+            <Label className="font-bold text-sm uppercase mb-3 block text-foreground">
+              6. Which days work best for workshops/sessions? * (Select all preferred days)
+            </Label>
+            <div className="grid grid-cols-2 gap-3">
+              {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((option) => (
+                <Label
+                  key={option}
+                  htmlFor={`day-${option}`}
+                  className="
+                    flex items-center space-x-3 
+                    bg-white border-2 border-foreground p-4 
+                    shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                    cursor-pointer
+                    hover:bg-accent-yellow/20
+                    hover:scale-[1.02]
+                    active:scale-[0.98]
+                    transition-all duration-150
+                    font-semibold text-sm
+                    w-full
+                    touch-manipulation
+                  "
+                >
+                  <Checkbox
+                    id={`day-${option}`}
+                    checked={formData.preferredDays.includes(option)}
+                    onCheckedChange={(checked) => onPreferredDayChange(option, checked as boolean)}
+                    className="border-2 border-foreground flex-shrink-0"
+                  />
+                  <span className="flex-1 select-none">
+                    {option}
+                  </span>
+                </Label>
+              ))}
+            </div>
           </div>
         </div>
       </CardContent>
