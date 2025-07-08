@@ -24,7 +24,7 @@ const SuccessStories = () => {
       icon: Lightbulb,
       videoUrl: "https://www.youtube.com/live/y4RMA94rLQ4?feature=shared&t=3927",
       thumbnailUrl: "https://d2mp3ttz3u5gci.cloudfront.net/omar_thumbnail.png",
-      description: "Created Omar Waters - the first subscription delivery service for bottled water in Tanta using AI! 💧"
+      description: "Created Power Outage Saver an affordable lighting solution during power cuts💡. Omar won 1st place at both school and state invention conventions, earned the Eversource Energy Award, and was selected for the national finals at the Henry Ford Museum in Michigan!"
     }
   ];
 

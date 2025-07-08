@@ -49,7 +49,7 @@ const RoadmapSection = () => {
     {
       number: 3,
       title: "Build",
-      description: "Using AI tools, your child will begin building a real product—like a mobile app or website—no coding required.",
+      description: "Using AI tools, your child will begin building a real product—like a mobile app or website.",
       icon: Hammer,
       color: "bg-accent-yellow",
       position: "left"

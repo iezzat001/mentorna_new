@@ -49,16 +49,16 @@ const Hero = () => {
           {/* Main Headline */}
           <div className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-none mb-8 font-heading">
             <div className="text-white mb-2">
-              Your 8-Week Transformation Journey
+            AI Entrepreneurship Camp
             </div>
             <div className="text-white/90 text-2xl md:text-3xl lg:text-4xl xl:text-5xl mt-4 leading-tight">
-              Launch real products, solve real problems, lead real change.
+            8-weeks interactive online program that transforms students into startup founders.
             </div>
           </div>
           
           {/* Description */}
           <div className="max-w-md lg:max-w-lg text-white/70 font-light leading-relaxed font-body text-lg">
-            Build MVPs and compete for €5,000 prize.
+          Launch real prodcuts. Solve real problems. Get your first customer.
           </div>
         </div>
       </div>
