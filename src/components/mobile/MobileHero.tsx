@@ -80,7 +80,7 @@ const MobileHero = () => {
         onError={(e) => console.error('Video error:', e)}
         style={{ backgroundColor: '#000' }}
       >
-        <source src="https://d2mp3ttz3u5gci.cloudfront.net/hero-mobile-video.mp4" type="video/mp4" />
+        <source src="https://d2mp3ttz3u5gci.cloudfront.net/0703.mp4" type="video/mp4" />
       </video>
       
       {/* Fallback if video fails */}
