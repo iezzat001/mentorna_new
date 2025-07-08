@@ -26,7 +26,10 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
     whatsapp: '',
     childrenCount: '',
     ageGroups: [] as string[],
-    codingExperience: ''
+    codingExperience: '',
+    englishLevel: '',
+    relationship: '',
+    preferredDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as string[]
   });
 
   const ageGroupOptions = [
@@ -36,20 +39,14 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
     '17+ years'
   ];
 
-  const codingExperienceOptions = [
-    'No experience',
-    'Beginner', 
-    'Intermediate',
-    'Advanced'
-  ];
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validation
     if (!formData.name || !formData.email || !formData.whatsapp || 
         !formData.childrenCount || formData.ageGroups.length === 0 || 
-        !formData.codingExperience) {
+        !formData.codingExperience || !formData.englishLevel || 
+        !formData.relationship || formData.preferredDays.length === 0) {
       toast({
         title: "Missing Information ⚠️",
         description: "Please fill in all required fields.",
@@ -69,7 +66,10 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
           whatsapp: formData.whatsapp,
           children_count: formData.childrenCount,
           age_groups: formData.ageGroups,
-          coding_experience: formData.codingExperience
+          coding_experience: formData.codingExperience,
+          english_level: formData.englishLevel,
+          relationship: formData.relationship,
+          preferred_days: formData.preferredDays
         });
 
       if (error) {
@@ -107,6 +107,15 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
     }));
   };
 
+  const handlePreferredDayChange = (day: string, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      preferredDays: checked
+        ? [...prev.preferredDays, day]
+        : prev.preferredDays.filter(d => d !== day)
+    }));
+  };
+
   const resetForm = () => {
     setFormData({
       name: '',
@@ -114,7 +123,10 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
       whatsapp: '',
       childrenCount: '',
       ageGroups: [],
-      codingExperience: ''
+      codingExperience: '',
+      englishLevel: '',
+      relationship: '',
+      preferredDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     });
     setIsSuccess(false);
   };
@@ -384,7 +396,7 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                   onValueChange={(value) => handleInputChange('codingExperience', value)}
                   className="space-y-2"
                 >
-                  {codingExperienceOptions.map((experience) => (
+                  {['No, complete beginner', 'Yes, online courses', 'Yes, coding bootcamp', 'Yes, school programs'].map((experience) => (
                     <Label
                       key={experience}
                       htmlFor={`mobile-experience-${experience}`}
@@ -413,6 +425,120 @@ const MobileWaitingListDialog = ({ children }: MobileWaitingListDialogProps) => 
                     </Label>
                   ))}
                 </RadioGroup>
+              </div>
+
+              <div>
+                <Label className="text-white/90 font-medium text-xs mb-2 block">
+                  English language level *
+                </Label>
+                <RadioGroup
+                  value={formData.englishLevel}
+                  onValueChange={(value) => handleInputChange('englishLevel', value)}
+                  className="grid grid-cols-3 gap-2"
+                >
+                  {['Beginner', 'Intermediate', 'Advanced'].map((level) => (
+                    <Label
+                      key={level}
+                      htmlFor={`mobile-english-${level}`}
+                      className="
+                        flex items-center space-x-2 
+                        bg-white/10 backdrop-blur-sm
+                        border border-white/30 
+                        rounded-lg p-2
+                        cursor-pointer
+                        hover:bg-white/20
+                        hover:border-white/50
+                        active:scale-95
+                        transition-all duration-150
+                        touch-manipulation
+                      "
+                    >
+                      <RadioGroupItem
+                        value={level}
+                        id={`mobile-english-${level}`}
+                        className="border-white/40 text-accent-yellow flex-shrink-0"
+                      />
+                      <span className="text-white/90 text-xs font-medium select-none flex-1">
+                        {level}
+                      </span>
+                    </Label>
+                  ))}
+                </RadioGroup>
+              </div>
+
+              <div>
+                <Label className="text-white/90 font-medium text-xs mb-2 block">
+                  I am the child's... *
+                </Label>
+                <RadioGroup
+                  value={formData.relationship}
+                  onValueChange={(value) => handleInputChange('relationship', value)}
+                  className="grid grid-cols-3 gap-2"
+                >
+                  {['Father', 'Mother', 'Educator'].map((relation) => (
+                    <Label
+                      key={relation}
+                      htmlFor={`mobile-relationship-${relation}`}
+                      className="
+                        flex items-center space-x-2 
+                        bg-white/10 backdrop-blur-sm
+                        border border-white/30 
+                        rounded-lg p-2
+                        cursor-pointer
+                        hover:bg-white/20
+                        hover:border-white/50
+                        active:scale-95
+                        transition-all duration-150
+                        touch-manipulation
+                      "
+                    >
+                      <RadioGroupItem
+                        value={relation}
+                        id={`mobile-relationship-${relation}`}
+                        className="border-white/40 text-accent-yellow flex-shrink-0"
+                      />
+                      <span className="text-white/90 text-xs font-medium select-none flex-1">
+                        {relation}
+                      </span>
+                    </Label>
+                  ))}
+                </RadioGroup>
+              </div>
+
+              <div>
+                <Label className="text-white/90 font-medium text-xs mb-2 block">
+                  Preferred days for workshops *
+                </Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => (
+                    <Label
+                      key={day}
+                      htmlFor={`mobile-day-${day}`}
+                      className="
+                        flex items-center space-x-2 
+                        bg-white/10 backdrop-blur-sm
+                        border border-white/30 
+                        rounded-lg p-2
+                        cursor-pointer
+                        hover:bg-white/20
+                        hover:border-white/50
+                        active:scale-95
+                        transition-all duration-150
+                        touch-manipulation
+                      "
+                    >
+                      <Checkbox
+                        id={`mobile-day-${day}`}
+                        checked={formData.preferredDays.includes(day)}
+                        onCheckedChange={(checked) => handlePreferredDayChange(day, checked === true)}
+                        className="border-white/40 data-[state=checked]:bg-accent-yellow data-[state=checked]:border-accent-yellow flex-shrink-0"
+                      />
+                      <span className="text-white/90 text-xs font-medium select-none flex-1">
+                        {day}
+                      </span>
+                    </Label>
+                  ))}
+                </div>
               </div>
             </div>
 
