@@ -22,6 +22,9 @@ interface WaitingListEntry {
   children_count: string;
   age_groups: string[];
   coding_experience: string;
+  english_level: string;
+  relationship: string;
+  preferred_days: string[];
   created_at: string;
 }
 
@@ -130,6 +133,15 @@ const WaitingListManager = () => {
                     <TableHead className="font-black uppercase text-foreground border-r-2 border-foreground">
                       Coding Experience
                     </TableHead>
+                    <TableHead className="font-black uppercase text-foreground border-r-2 border-foreground">
+                      English Level
+                    </TableHead>
+                    <TableHead className="font-black uppercase text-foreground border-r-2 border-foreground">
+                      Relationship
+                    </TableHead>
+                    <TableHead className="font-black uppercase text-foreground border-r-2 border-foreground">
+                      Preferred Days
+                    </TableHead>
                     <TableHead className="font-black uppercase text-foreground">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
@@ -189,6 +201,44 @@ const WaitingListManager = () => {
                         >
                           {entry.coding_experience}
                         </Badge>
+                      </TableCell>
+                      <TableCell className="border-r border-foreground/20 font-medium">
+                        <Badge 
+                          className={`font-bold text-xs ${
+                            entry.english_level === 'Beginner' 
+                              ? 'bg-accent-yellow text-foreground' 
+                              : entry.english_level === 'Intermediate'
+                              ? 'bg-accent-green text-foreground'
+                              : 'bg-accent-blue text-foreground'
+                          }`}
+                        >
+                          {entry.english_level}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="border-r border-foreground/20 font-medium">
+                        <Badge 
+                          className={`font-bold text-xs ${
+                            entry.relationship === 'Father' 
+                              ? 'bg-accent-blue text-foreground' 
+                              : entry.relationship === 'Mother'
+                              ? 'bg-accent-purple text-foreground'
+                              : 'bg-accent-green text-foreground'
+                          }`}
+                        >
+                          {entry.relationship}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="border-r border-foreground/20">
+                        <div className="flex flex-wrap gap-1">
+                          {entry.preferred_days?.map((day, index) => (
+                            <Badge 
+                              key={index}
+                              className="bg-accent-yellow text-foreground font-bold text-xs"
+                            >
+                              {day.slice(0, 3)}
+                            </Badge>
+                          ))}
+                        </div>
                       </TableCell>
                       <TableCell className="font-medium text-sm">
                         {formatDate(entry.created_at)}
