@@ -39,6 +39,15 @@ const ActivitiesManager = ({ weekId, weekNumber, activities, activitiesVisible }
     duration: ''
   });
 
+  // Local state fallback until database migration is applied
+  const [localVisibility, setLocalVisibility] = useState(() => {
+    const saved = localStorage.getItem(`activities_visible_week_${weekNumber}`);
+    return saved !== null ? JSON.parse(saved) : activitiesVisible;
+  });
+
+  // Use local visibility if database doesn't support it yet
+  const currentVisibility = activitiesVisible !== undefined ? activitiesVisible : localVisibility;
+
   const addActivityMutation = useMutation({
     mutationFn: async (activity: { type: string; title: string; description: string; duration: string }) => {
       const { error } = await supabase
@@ -117,15 +126,42 @@ const ActivitiesManager = ({ weekId, weekNumber, activities, activitiesVisible }
 
   const toggleVisibilityMutation = useMutation({
     mutationFn: async (visible: boolean) => {
-      const { error } = await supabase
-        .from('weeks')
-        .update({ activities_visible: visible })
-        .eq('id', weekId);
-      if (error) throw error;
+      try {
+        // Try database update first
+        const { error } = await supabase
+          .from('weeks')
+          .update({ activities_visible: visible })
+          .eq('id', weekId);
+        
+        if (error) {
+          // If database doesn't support it yet, use localStorage
+          if (error.code === '42703') { // Column doesn't exist
+            localStorage.setItem(`activities_visible_week_${weekNumber}`, JSON.stringify(visible));
+            setLocalVisibility(visible);
+            throw new Error('LOCAL_STORAGE_FALLBACK');
+          }
+          throw error;
+        }
+      } catch (error) {
+        if (error.message === 'LOCAL_STORAGE_FALLBACK') {
+          // This is expected when using localStorage fallback
+          return;
+        }
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['week-details', weekNumber] });
-      toast.success(`Activities section ${activitiesVisible ? 'hidden' : 'shown'} on frontend`);
+      toast.success(`Activities section ${currentVisibility ? 'hidden' : 'shown'} on frontend`);
+    },
+    onError: (error) => {
+      if (error.message === 'LOCAL_STORAGE_FALLBACK') {
+        // Success case for localStorage fallback
+        queryClient.invalidateQueries({ queryKey: ['week-details', weekNumber] });
+        toast.success(`Activities section ${currentVisibility ? 'hidden' : 'shown'} on frontend (stored locally)`);
+      } else {
+        toast.error(`Failed to update visibility: ${error.message}`);
+      }
     }
   });
 
@@ -150,7 +186,7 @@ const ActivitiesManager = ({ weekId, weekNumber, activities, activitiesVisible }
         justify-between
       ">
         <div className="flex items-center gap-3">
-          {activitiesVisible ? (
+          {currentVisibility ? (
             <Eye className="h-5 w-5 text-green-600" />
           ) : (
             <EyeOff className="h-5 w-5 text-red-600" />
@@ -160,19 +196,24 @@ const ActivitiesManager = ({ weekId, weekNumber, activities, activitiesVisible }
               Frontend Visibility
             </div>
             <div className="text-xs text-foreground/70">
-              {activitiesVisible 
+              {currentVisibility 
                 ? "Activities section is visible on / and /mobile pages" 
                 : "Activities section is hidden from / and /mobile pages"
               }
+              {activitiesVisible === undefined && (
+                <div className="text-xs text-amber-600 mt-1">
+                  (Using local storage - database migration needed)
+                </div>
+              )}
             </div>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-sm font-semibold">
-            {activitiesVisible ? 'Show' : 'Hide'}
+            {currentVisibility ? 'Show' : 'Hide'}
           </span>
           <Switch
-            checked={activitiesVisible}
+            checked={currentVisibility}
             onCheckedChange={(checked) => toggleVisibilityMutation.mutate(checked)}
             disabled={toggleVisibilityMutation.isPending}
           />

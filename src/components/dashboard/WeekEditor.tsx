@@ -133,7 +133,7 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
               weekId={weekData.week.id} 
               weekNumber={weekNumber} 
               activities={weekData.activities}
-              activitiesVisible={weekData.week.activities_visible ?? true}
+              activitiesVisible={weekData.week.activities_visible}
             />
           </TabsContent>
 

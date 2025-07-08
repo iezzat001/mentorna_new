@@ -18,6 +18,16 @@ interface WeekDetailsDialogProps {
 
 const WeekDetailsDialog = ({ week, children }: WeekDetailsDialogProps) => {
   const { data: weekDetails, isLoading } = useWeekDetails(week.week);
+  
+  // Local storage fallback for activities visibility
+  const getActivitiesVisibility = () => {
+    if (weekDetails?.activitiesVisible !== undefined) {
+      return weekDetails.activitiesVisible;
+    }
+    // Fallback to localStorage if database doesn't support it yet
+    const saved = localStorage.getItem(`activities_visible_week_${week.week}`);
+    return saved !== null ? JSON.parse(saved) : true; // Default to true
+  };
 
   const getActivityIcon = (type: string) => {
     switch (type) {
@@ -119,7 +129,7 @@ const WeekDetailsDialog = ({ week, children }: WeekDetailsDialogProps) => {
               </Card>
 
               {/* Activities - Conditionally Rendered */}
-              {weekDetails?.activitiesVisible && (
+              {getActivitiesVisibility() && (
                 <Card className="border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-2 mb-4">

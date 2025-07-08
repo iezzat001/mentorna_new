@@ -19,7 +19,7 @@ export interface WeekDetailsData {
     duration: string;
   }>;
   skills: string[];
-  activitiesVisible: boolean;
+  activitiesVisible?: boolean;
 }
 
 export const useWeeksData = () => {
@@ -49,12 +49,28 @@ export const useWeekDetails = (weekNumber: number) => {
   return useQuery({
     queryKey: ['week-details-data', weekNumber],
     queryFn: async (): Promise<WeekDetailsData> => {
-      // First get the week ID and activities_visible
-      const { data: week, error: weekError } = await supabase
-        .from('weeks')
-        .select('id, activities_visible')
-        .eq('week_number', weekNumber)
-        .single();
+      // Try to get week ID and activities_visible, fallback to just ID if column doesn't exist
+      let week;
+      let weekError;
+      
+      try {
+        const result = await supabase
+          .from('weeks')
+          .select('id, activities_visible')
+          .eq('week_number', weekNumber)
+          .single();
+        week = result.data;
+        weekError = result.error;
+      } catch (error) {
+        // If activities_visible column doesn't exist, try without it
+        const result = await supabase
+          .from('weeks')
+          .select('id')
+          .eq('week_number', weekNumber)
+          .single();
+        week = { ...result.data, activities_visible: undefined };
+        weekError = result.error;
+      }
       
       if (weekError) throw weekError;
       if (!week) throw new Error(`Week ${weekNumber} not found`);
@@ -94,7 +110,7 @@ export const useWeekDetails = (weekNumber: number) => {
           duration: activity.duration
         })) : staticData?.activities || [],
         skills: skillsRes.data?.length > 0 ? skillsRes.data.map(skill => skill.skill_name) : staticData?.skills || [],
-        activitiesVisible: week.activities_visible ?? true
+        activitiesVisible: week.activities_visible
       };
     },
     staleTime: 0, // Force fresh data
