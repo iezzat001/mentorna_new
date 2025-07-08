@@ -1,6 +1,5 @@
 
-import { BookOpen, Users, LogOut, Home, UserPlus, Mail, BarChart3 } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import React from 'react';
 import {
   Sidebar,
   SidebarContent,
@@ -8,74 +7,76 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarHeader,
 } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
+import { 
+  LayoutDashboard, 
+  BookOpen, 
+  Users, 
+  UserCheck, 
+  Mail, 
+  BarChart3,
+  Send
+} from 'lucide-react';
 
 interface AppSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
 }
 
-const menuItems = [
-  {
-    title: 'Dashboard',
-    icon: Home,
-    id: 'dashboard',
-  },
-  {
-    title: 'Course Content',
-    icon: BookOpen,
-    id: 'course-content',
-  },
-  {
-    title: 'Founders',
-    icon: Users,
-    id: 'founders',
-  },
-  {
-    title: 'Waiting List',
-    icon: UserPlus,
-    id: 'waiting-list',
-  },
-  {
-    title: 'Newsletter',
-    icon: Mail,
-    id: 'newsletter',
-  },
-  {
-    title: 'Tracking & Analysis',
-    icon: BarChart3,
-    id: 'tracking-analysis',
-  },
-];
-
-export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
-  const { user, signOut } = useAuth();
-
-  const handleSignOut = async () => {
-    await signOut();
-  };
+const AppSidebar = ({ activeTab, onTabChange }: AppSidebarProps) => {
+  const menuItems = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard Overview',
+      icon: LayoutDashboard,
+    },
+    {
+      id: 'course-content',
+      label: 'Course Content',
+      icon: BookOpen,
+    },
+    {
+      id: 'founders',
+      label: 'Founders',
+      icon: Users,
+    },
+    {
+      id: 'waiting-list',
+      label: 'Waiting List',
+      icon: UserCheck,
+    },
+    {
+      id: 'newsletter',
+      label: 'Newsletter',
+      icon: Mail,
+    },
+    {
+      id: 'email-marketing',
+      label: 'Email Marketing',
+      icon: Send,
+    },
+    {
+      id: 'tracking-analysis',
+      label: 'Tracking & Analysis',
+      icon: BarChart3,
+    },
+  ];
 
   return (
-    <Sidebar className="border-r-4 border-foreground">
-      <SidebarHeader className="border-b-4 border-foreground bg-accent-yellow p-4">
-        <h2 className="font-heading text-lg font-black uppercase text-foreground">
-          Admin Panel
+    <Sidebar className="border-r-4 border-foreground bg-accent-yellow">
+      <SidebarHeader className="border-b-4 border-foreground bg-foreground p-4">
+        <h2 className="font-heading text-xl font-black uppercase text-background">
+          iLab® Admin
         </h2>
-        {user && (
-          <p className="font-body text-xs font-medium text-foreground/70 truncate">
-            {user.email}
-          </p>
-        )}
       </SidebarHeader>
       
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="font-black uppercase text-foreground">
+          <SidebarGroupLabel className="font-heading font-black uppercase text-foreground/70 px-4 py-2">
             Management
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -83,24 +84,17 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
-                    isActive={activeTab === item.id}
                     onClick={() => onTabChange(item.id)}
-                    className="
-                      font-bold
-                      data-[active=true]:bg-primary 
-                      data-[active=true]:text-primary-foreground
-                      data-[active=true]:border-2
-                      data-[active=true]:border-foreground
-                      data-[active=true]:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
-                      hover:bg-accent-purple
-                      hover:border-2
-                      hover:border-foreground
-                      hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
-                      transition-all
-                    "
+                    isActive={activeTab === item.id}
+                    className={`
+                      font-body font-semibold text-foreground hover:bg-foreground/10 
+                      data-[active=true]:bg-foreground data-[active=true]:text-background
+                      data-[active=true]:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]
+                      transition-all duration-200
+                    `}
                   >
-                    <item.icon className="h-4 w-4" />
-                    <span className="font-bold uppercase">{item.title}</span>
+                    <item.icon className="h-5 w-5" />
+                    <span className="font-semibold">{item.label}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -109,28 +103,13 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
         </SidebarGroup>
       </SidebarContent>
       
-      <SidebarFooter className="border-t-4 border-foreground bg-accent-green p-4">
-        <Button
-          onClick={handleSignOut}
-          variant="outline"
-          size="sm"
-          className="
-            w-full
-            border-4 
-            border-foreground 
-            shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] 
-            font-black 
-            uppercase
-            hover:translate-x-1 
-            hover:translate-y-1 
-            hover:shadow-none 
-            transition-all
-          "
-        >
-          <LogOut className="h-4 w-4 mr-2" />
-          Sign Out
-        </Button>
+      <SidebarFooter className="border-t-4 border-foreground bg-foreground p-4">
+        <p className="font-body text-sm font-medium text-background text-center">
+          Admin Dashboard v1.0
+        </p>
       </SidebarFooter>
     </Sidebar>
   );
-}
+};
+
+export default AppSidebar;
