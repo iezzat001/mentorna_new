@@ -132,7 +132,8 @@ const WeekEditor = ({ weekNumber }: WeekEditorProps) => {
             <ActivitiesManager 
               weekId={weekData.week.id} 
               weekNumber={weekNumber} 
-              activities={weekData.activities} 
+              activities={weekData.activities}
+              activitiesVisible={weekData.week.activities_visible ?? true}
             />
           </TabsContent>
 

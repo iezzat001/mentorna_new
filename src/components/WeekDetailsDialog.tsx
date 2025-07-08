@@ -118,54 +118,56 @@ const WeekDetailsDialog = ({ week, children }: WeekDetailsDialogProps) => {
                 </CardContent>
               </Card>
 
-              {/* Activities */}
-              <Card className="border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Calendar className="h-6 w-6 text-accent-purple" />
-                    <h3 className="font-black text-xl uppercase text-foreground">Weekly Activities</h3>
-                  </div>
-                  
-                  {weekDetails?.activities && weekDetails.activities.length > 0 ? (
-                    <div className="space-y-4">
-                      {weekDetails.activities.map((activity, index) => (
-                        <div 
-                          key={index} 
-                          className="bg-background border-2 border-foreground p-4 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
-                        >
-                          <div className="flex items-start gap-4">
-                            <div className="flex-shrink-0 mt-1">
-                              {getActivityIcon(activity.type)}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                                <Badge className={`${getActivityColor(activity.type)} font-black uppercase text-xs w-fit`}>
-                                  {activity.type}
-                                </Badge>
-                                <div className="flex items-center gap-1 text-sm text-foreground/70">
-                                  <Clock className="h-4 w-4" />
-                                  <span className="font-semibold">{activity.duration}</span>
-                                </div>
+              {/* Activities - Conditionally Rendered */}
+              {weekDetails?.activitiesVisible && (
+                <Card className="border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Calendar className="h-6 w-6 text-accent-purple" />
+                      <h3 className="font-black text-xl uppercase text-foreground">Weekly Activities</h3>
+                    </div>
+                    
+                    {weekDetails?.activities && weekDetails.activities.length > 0 ? (
+                      <div className="space-y-4">
+                        {weekDetails.activities.map((activity, index) => (
+                          <div 
+                            key={index} 
+                            className="bg-background border-2 border-foreground p-4 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+                          >
+                            <div className="flex items-start gap-4">
+                              <div className="flex-shrink-0 mt-1">
+                                {getActivityIcon(activity.type)}
                               </div>
-                              <h4 className="font-black text-base uppercase mb-2 text-foreground">
-                                {activity.title}
-                              </h4>
-                              <p className="font-body text-sm text-foreground/80 leading-relaxed">
-                                {activity.description}
-                              </p>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                                  <Badge className={`${getActivityColor(activity.type)} font-black uppercase text-xs w-fit`}>
+                                    {activity.type}
+                                  </Badge>
+                                  <div className="flex items-center gap-1 text-sm text-foreground/70">
+                                    <Clock className="h-4 w-4" />
+                                    <span className="font-semibold">{activity.duration}</span>
+                                  </div>
+                                </div>
+                                <h4 className="font-black text-base uppercase mb-2 text-foreground">
+                                  {activity.title}
+                                </h4>
+                                <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                                  {activity.description}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-foreground/70">
-                      <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p className="font-semibold">Activities are being prepared for this week.</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-foreground/70">
+                        <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p className="font-semibold">Activities are being prepared for this week.</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Skills */}
               <Card className="border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">

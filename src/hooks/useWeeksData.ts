@@ -19,6 +19,7 @@ export interface WeekDetailsData {
     duration: string;
   }>;
   skills: string[];
+  activitiesVisible: boolean;
 }
 
 export const useWeeksData = () => {
@@ -48,10 +49,10 @@ export const useWeekDetails = (weekNumber: number) => {
   return useQuery({
     queryKey: ['week-details-data', weekNumber],
     queryFn: async (): Promise<WeekDetailsData> => {
-      // First get the week ID
+      // First get the week ID and activities_visible
       const { data: week, error: weekError } = await supabase
         .from('weeks')
-        .select('id')
+        .select('id, activities_visible')
         .eq('week_number', weekNumber)
         .single();
       
@@ -92,7 +93,8 @@ export const useWeekDetails = (weekNumber: number) => {
           description: activity.description,
           duration: activity.duration
         })) : staticData?.activities || [],
-        skills: skillsRes.data?.length > 0 ? skillsRes.data.map(skill => skill.skill_name) : staticData?.skills || []
+        skills: skillsRes.data?.length > 0 ? skillsRes.data.map(skill => skill.skill_name) : staticData?.skills || [],
+        activitiesVisible: week.activities_visible ?? true
       };
     },
     staleTime: 0, // Force fresh data

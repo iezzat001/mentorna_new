@@ -7,8 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { GripVertical, X, Edit2, Save, X as XCancel } from 'lucide-react';
+import { GripVertical, X, Edit2, Save, X as XCancel, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import ActivityAdder from './ActivityAdder';
 
@@ -25,9 +26,10 @@ interface ActivitiesManagerProps {
   weekId: string;
   weekNumber: number;
   activities: Activity[];
+  activitiesVisible: boolean;
 }
 
-const ActivitiesManager = ({ weekId, weekNumber, activities }: ActivitiesManagerProps) => {
+const ActivitiesManager = ({ weekId, weekNumber, activities, activitiesVisible }: ActivitiesManagerProps) => {
   const queryClient = useQueryClient();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState({
@@ -113,15 +115,72 @@ const ActivitiesManager = ({ weekId, weekNumber, activities }: ActivitiesManager
     });
   };
 
+  const toggleVisibilityMutation = useMutation({
+    mutationFn: async (visible: boolean) => {
+      const { error } = await supabase
+        .from('weeks')
+        .update({ activities_visible: visible })
+        .eq('id', weekId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['week-details', weekNumber] });
+      toast.success(`Activities section ${activitiesVisible ? 'hidden' : 'shown'} on frontend`);
+    }
+  });
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-black text-lg uppercase">Weekly Activities</h3>
-        <ActivityAdder onAdd={(activity) => addActivityMutation.mutate(activity)} />
+        <div className="flex items-center gap-4">
+          <ActivityAdder onAdd={(activity) => addActivityMutation.mutate(activity)} />
+        </div>
+      </div>
+
+      {/* Visibility Toggle */}
+      <div className="
+        bg-accent-yellow/20 
+        border-2 
+        border-foreground 
+        p-4 
+        rounded-lg
+        flex 
+        items-center 
+        justify-between
+      ">
+        <div className="flex items-center gap-3">
+          {activitiesVisible ? (
+            <Eye className="h-5 w-5 text-green-600" />
+          ) : (
+            <EyeOff className="h-5 w-5 text-red-600" />
+          )}
+          <div>
+            <div className="font-black text-sm uppercase">
+              Frontend Visibility
+            </div>
+            <div className="text-xs text-foreground/70">
+              {activitiesVisible 
+                ? "Activities section is visible on / and /mobile pages" 
+                : "Activities section is hidden from / and /mobile pages"
+              }
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-semibold">
+            {activitiesVisible ? 'Show' : 'Hide'}
+          </span>
+          <Switch
+            checked={activitiesVisible}
+            onCheckedChange={(checked) => toggleVisibilityMutation.mutate(checked)}
+            disabled={toggleVisibilityMutation.isPending}
+          />
+        </div>
       </div>
       
       <div className="space-y-3">
-        {activities.map((activity, index) => (
+        {activities.map((activity) => (
           <Card key={activity.id} className="border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <CardContent className="p-4">
               {editingId === activity.id ? (

@@ -295,6 +295,7 @@ export type Database = {
       }
       weeks: {
         Row: {
+          activities_visible: boolean | null
           created_at: string
           description: string
           id: string
@@ -304,6 +305,7 @@ export type Database = {
           week_number: number
         }
         Insert: {
+          activities_visible?: boolean | null
           created_at?: string
           description: string
           id?: string
@@ -313,6 +315,7 @@ export type Database = {
           week_number: number
         }
         Update: {
+          activities_visible?: boolean | null
           created_at?: string
           description?: string
           id?: string
