@@ -78,10 +78,13 @@ const MobileHero = () => {
         controls={false}
         className="absolute inset-0 w-full h-full object-cover"
         onError={(e) => console.error('Video error:', e)}
+        style={{ backgroundColor: '#000' }}
       >
         <source src="https://d2mp3ttz3u5gci.cloudfront.net/hero-mobile-video.mp4" type="video/mp4" />
-        <source src="https://d2mp3ttz3u5gci.cloudfront.net/hero-mobile-video.webm" type="video/webm" />
       </video>
+      
+      {/* Fallback if video fails */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary via-accent-purple to-accent-blue opacity-30" />
       
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-10" />
