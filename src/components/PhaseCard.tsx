@@ -21,30 +21,44 @@ interface PhaseCardProps {
 const PhaseCard = ({ weeks, phaseTitle, phaseSubtitle, phaseColor }: PhaseCardProps) => (
   <Card className="
     w-full 
-    -mx-2 sm:mx-0
-    border-2 sm:border-4 
+    border-4 
     border-foreground 
-    shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
-    sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
+    shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
     bg-white
-    hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] 
-    sm:hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
-    hover:scale-[1.01] sm:hover:scale-[1.02] 
+    hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] 
+    hover:translate-x-[-2px]
+    hover:translate-y-[-2px]
     transition-all
-    duration-200
-    rounded-xl
+    duration-300
+    rounded-2xl
+    overflow-hidden
   ">
-    <CardHeader className={`${phaseColor} border-b-2 sm:border-b-4 border-foreground p-4 sm:p-6`}>
-      <CardTitle className="font-black text-lg sm:text-xl lg:text-2xl uppercase text-foreground leading-tight">
+    <CardHeader className={`${phaseColor} border-b-4 border-foreground p-8`}>
+      <CardTitle className="
+        font-black 
+        text-2xl 
+        lg:text-3xl 
+        uppercase 
+        text-foreground 
+        leading-tight
+        mb-3
+      ">
         {phaseTitle}
       </CardTitle>
-      <p className="font-body text-sm sm:text-sm font-semibold text-foreground/80 mt-2">
+      <p className="
+        font-body 
+        text-base
+        lg:text-lg 
+        font-semibold 
+        text-foreground/80
+        leading-relaxed
+      ">
         {phaseSubtitle}
       </p>
     </CardHeader>
     
-    <CardContent className="p-4 sm:p-6">
-      <div className="grid gap-4 sm:gap-4">
+    <CardContent className="p-8">
+      <div className="grid gap-6">
         {weeks.map((week) => (
           <div key={week.week}>
             {/* Mobile Layout */}
