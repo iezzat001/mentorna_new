@@ -1,20 +1,26 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Mail, ArrowRight } from 'lucide-react';
+import { Mail, ArrowRight, Sparkles } from 'lucide-react';
 import MobileSwipeIndicator from './MobileSwipeIndicator';
 
 const MobileNewsletterSection = () => {
-  const [email, setEmail] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    name: '',
+    interestedInWebinar: true
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email.trim()) {
+    if (!formData.email.trim()) {
       toast({
         title: "Email Required ✉️",
         description: "Please enter your email address!",
@@ -23,7 +29,7 @@ const MobileNewsletterSection = () => {
       return;
     }
 
-    if (!email.includes('@')) {
+    if (!formData.email.includes('@')) {
       toast({
         title: "Invalid Email 📧",
         description: "Please enter a valid email address.",
@@ -38,8 +44,9 @@ const MobileNewsletterSection = () => {
       const { error } = await supabase
         .from('newsletter_subscribers')
         .insert({
-          email: email.trim(),
-          interested_in_webinar: true
+          email: formData.email.trim(),
+          name: formData.name.trim() || null,
+          interested_in_webinar: formData.interestedInWebinar
         });
 
       if (error) {
@@ -58,7 +65,11 @@ const MobileNewsletterSection = () => {
           description: "You'll receive AI insights and updates.",
           variant: "default",
         });
-        setEmail('');
+        setFormData({
+          email: '',
+          name: '',
+          interestedInWebinar: true
+        });
       }
     } catch (error) {
       console.error('Newsletter subscription error:', error);
@@ -72,6 +83,13 @@ const MobileNewsletterSection = () => {
     }
   };
 
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   return (
     <div className="relative h-screen w-full overflow-hidden snap-start bg-gradient-to-br from-slate-900 via-black to-slate-800">
       {/* Mobile Header */}
@@ -79,7 +97,6 @@ const MobileNewsletterSection = () => {
         <div className="font-heading text-white font-light tracking-wide text-xl">
           iLab®
         </div>
-
       </div>
 
       {/* Content */}
@@ -95,30 +112,84 @@ const MobileNewsletterSection = () => {
           </p>
         </div>
 
-        {/* Simple Form */}
+        {/* Webinar Announcement Box */}
+        <div className="
+          bg-accent-yellow 
+          border-2 
+          border-foreground 
+          shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
+          p-4 
+          text-center
+          rounded-lg
+          mb-6
+        ">
+          <div className="flex items-center justify-center mb-2">
+            <Sparkles className="h-4 w-4 mr-2 text-foreground" />
+            <h3 className="font-heading text-sm font-black uppercase text-foreground">
+              FREE WEBINAR COMING!
+            </h3>
+          </div>
+          <p className="font-body text-xs font-semibold text-foreground/80">
+            Get a taste of our AI bootcamp experience!
+          </p>
+        </div>
+
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4 mb-6">
-          <Input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="your@email.com"
-            disabled={isSubmitting}
-            className="
-              h-12
-              border-2 
-              border-white/30
-              bg-white/10
-              backdrop-blur-sm
-              text-white 
-              placeholder:text-white/60
-              focus:border-white/60
-              focus:bg-white/20
-              transition-all
-              rounded-xl
-              font-medium
-              text-center
-            "
-          />
+          <div className="space-y-2">
+            <Label className="font-bold text-xs uppercase text-white text-left block">
+              Name
+            </Label>
+            <Input
+              type="text"
+              value={formData.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              placeholder="Your Name"
+              disabled={isSubmitting}
+              className="
+                h-12
+                border-2 
+                border-white/30
+                bg-white/10
+                backdrop-blur-sm
+                text-white 
+                placeholder:text-white/60
+                focus:border-white/60
+                focus:bg-white/20
+                transition-all
+                rounded-xl
+                font-medium
+              "
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="font-bold text-xs uppercase text-white text-left block">
+              Email Address *
+            </Label>
+            <Input
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              placeholder="your@email.com"
+              disabled={isSubmitting}
+              className="
+                h-12
+                border-2 
+                border-white/30
+                bg-white/10
+                backdrop-blur-sm
+                text-white 
+                placeholder:text-white/60
+                focus:border-white/60
+                focus:bg-white/20
+                transition-all
+                rounded-xl
+                font-medium
+              "
+            />
+          </div>
           
           <Button
             type="submit"
