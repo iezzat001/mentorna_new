@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -10,6 +9,7 @@ import MobilePricingSection from '@/components/mobile/MobilePricingSection';
 import MobileFounderCard from '@/components/mobile/MobileFounderCard';
 import MobileComingSoonSection from '@/components/mobile/MobileComingSoonSection';
 import MobileNewsletterSection from '@/components/mobile/MobileNewsletterSection';
+import ViewSwitcher from '@/components/ViewSwitcher';
 import { Award, Lightbulb, Rocket, TrendingUp, GraduationCap } from 'lucide-react';
 
 interface Founder {
@@ -167,59 +167,64 @@ const MobileLanding = () => {
   ];
 
   return (
-    <div className="
-      h-screen 
-      overflow-y-scroll 
-      scroll-snap-type-y 
-      scroll-snap-mandatory
-      scrollbar-hide
-    ">
-      {/* Hero Section */}
-      <div className="scroll-snap-start">
-        <MobileHero />
+    <>
+      <div className="
+        h-screen 
+        overflow-y-scroll 
+        scroll-snap-type-y 
+        scroll-snap-mandatory
+        scrollbar-hide
+      ">
+        {/* Hero Section */}
+        <div className="scroll-snap-start">
+          <MobileHero />
+        </div>
+        
+        {/* Success Stories Sections */}
+        {stories.map((story, index) => (
+          <div key={index} className="scroll-snap-start">
+            <MobileStorySection story={story} />
+          </div>
+        ))}
+
+        {/* Roadmap Section */}
+        <div className="scroll-snap-start">
+          <MobileRoadmapSection />
+        </div>
+
+        {/* Phases Sections */}
+        {phases.map((phase, index) => (
+          <div key={index} className="scroll-snap-start">
+            <MobilePhasesSection phase={phase} />
+          </div>
+        ))}
+
+        {/* Pricing Section */}
+        <div className="scroll-snap-start">
+          <MobilePricingSection />
+        </div>
+
+        {/* Coming Soon Section */}
+        <div className="scroll-snap-start">
+          <MobileComingSoonSection programs={comingSoonPrograms} slideIndex={0} />
+        </div>
+
+        {/* Founders Sections */}
+        {founders?.map((founder) => (
+          <div key={founder.id} className="scroll-snap-start">
+            <MobileFounderCard founder={convertFounder(founder)} />
+          </div>
+        ))}
+
+        {/* Newsletter Section */}
+        <div className="scroll-snap-start">
+          <MobileNewsletterSection />
+        </div>
       </div>
       
-      {/* Success Stories Sections */}
-      {stories.map((story, index) => (
-        <div key={index} className="scroll-snap-start">
-          <MobileStorySection story={story} />
-        </div>
-      ))}
-
-      {/* Roadmap Section */}
-      <div className="scroll-snap-start">
-        <MobileRoadmapSection />
-      </div>
-
-      {/* Phases Sections */}
-      {phases.map((phase, index) => (
-        <div key={index} className="scroll-snap-start">
-          <MobilePhasesSection phase={phase} />
-        </div>
-      ))}
-
-      {/* Pricing Section */}
-      <div className="scroll-snap-start">
-        <MobilePricingSection />
-      </div>
-
-      {/* Coming Soon Section */}
-      <div className="scroll-snap-start">
-        <MobileComingSoonSection programs={comingSoonPrograms} slideIndex={0} />
-      </div>
-
-      {/* Founders Sections */}
-      {founders?.map((founder) => (
-        <div key={founder.id} className="scroll-snap-start">
-          <MobileFounderCard founder={convertFounder(founder)} />
-        </div>
-      ))}
-
-      {/* Newsletter Section */}
-      <div className="scroll-snap-start">
-        <MobileNewsletterSection />
-      </div>
-    </div>
+      {/* Add View Switcher */}
+      <ViewSwitcher />
+    </>
   );
 };
 

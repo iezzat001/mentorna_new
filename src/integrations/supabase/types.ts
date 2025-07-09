@@ -148,6 +148,7 @@ export type Database = {
           age_groups: string[]
           children_count: string
           coding_experience: string
+          country: string | null
           created_at: string
           email: string
           english_level: string | null
@@ -161,6 +162,7 @@ export type Database = {
           age_groups: string[]
           children_count: string
           coding_experience: string
+          country?: string | null
           created_at?: string
           email: string
           english_level?: string | null
@@ -174,6 +176,7 @@ export type Database = {
           age_groups?: string[]
           children_count?: string
           coding_experience?: string
+          country?: string | null
           created_at?: string
           email?: string
           english_level?: string | null

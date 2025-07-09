@@ -1,56 +1,49 @@
 
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
+import ViewSwitcher from '@/components/ViewSwitcher';
 import Hero from '@/components/Hero';
-import ProgramSection from '@/components/ProgramSection';
 import SuccessStories from '@/components/SuccessStories';
 import RoadmapSection from '@/components/RoadmapSection';
+import ProgramSection from '@/components/ProgramSection';
 import PricingSection from '@/components/PricingSection';
-import ComingSoon from '@/components/ComingSoon';
 import FoundersSection from '@/components/FoundersSection';
-import SecondarySection from '@/components/SecondarySection';
-
-interface Founder {
-  id: string;
-  name: string;
-  title: string;
-  short_bio: string;
-  extended_bio: string;
-  image_url: string;
-  linkedin_url: string;
-  twitter_url: string;
-  order_index: number;
-  is_active: boolean;
-}
+import ComingSoon from '@/components/ComingSoon';
+import NewsletterForm from '@/components/NewsletterForm';
 
 const Index = () => {
-  // Fetch founders from Supabase
-  const { data: founders } = useQuery({
-    queryKey: ['founders-public'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('founders')
-        .select('*')
-        .eq('is_active', true)
-        .order('order_index');
-      
-      if (error) throw error;
-      return data as Founder[];
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    // Redirect mobile users to the mobile-optimized page
+    if (isMobile) {
+      navigate('/mobile', { replace: true });
     }
-  });
+  }, [isMobile, navigate]);
+
+  // Don't render the desktop layout if we're on mobile (prevents flash before redirect)
+  if (isMobile) {
+    return null;
+  }
 
   return (
-    <div className="min-h-screen">
-      <Hero />
-      <SuccessStories />
-      <RoadmapSection />
-      <ProgramSection />
-      <PricingSection />
-      <ComingSoon />
-      <FoundersSection />
-      <SecondarySection />
-    </div>
+    <>
+      <div className="min-h-screen bg-background">
+        <Hero />
+        <SuccessStories />
+        <RoadmapSection />
+        <ProgramSection />
+        <PricingSection />
+        <FoundersSection />
+        <ComingSoon />
+        <NewsletterForm />
+      </div>
+      
+      {/* Add View Switcher */}
+      <ViewSwitcher />
+    </>
   );
 };
 
