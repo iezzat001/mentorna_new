@@ -125,6 +125,15 @@ const TrackingAnalysisManager = () => {
     }
   };
 
+  // Helper functions to check if tracking is active
+  const isGoogleAnalyticsActive = () => {
+    return googleAnalyticsId && typeof window.gtag === 'function';
+  };
+
+  const isMetaPixelActive = () => {
+    return metaPixelId && typeof window.fbq === 'function';
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -167,7 +176,7 @@ const TrackingAnalysisManager = () => {
               <CardTitle className="font-black text-2xl uppercase flex items-center">
                 <BarChart3 className="h-6 w-6 mr-2" />
                 Google Analytics Configuration
-                {googleAnalyticsId && typeof window.gtag === 'function' && (
+                {isGoogleAnalyticsActive() && (
                   <CheckCircle className="h-5 w-5 ml-2 text-green-600" />
                 )}
               </CardTitle>
@@ -186,7 +195,7 @@ const TrackingAnalysisManager = () => {
                 <p className="text-xs font-semibold text-foreground/70">
                   Enter your Google Analytics 4 Measurement ID (starts with G-)
                 </p>
-                {googleAnalyticsId && typeof window.gtag === 'function' && (
+                {isGoogleAnalyticsActive() && (
                   <div className="flex items-center gap-2 text-green-600 text-sm font-semibold">
                     <CheckCircle className="h-4 w-4" />
                     Google Analytics is active and tracking
@@ -202,7 +211,7 @@ const TrackingAnalysisManager = () => {
                   <Save className="h-4 w-4 mr-2" />
                   {isSaving ? 'Saving...' : 'Save & Reload'}
                 </Button>
-                {googleAnalyticsId && typeof window.gtag === 'function' && (
+                {isGoogleAnalyticsActive() && (
                   <Button
                     onClick={testGoogleAnalytics}
                     variant="outline"
@@ -222,7 +231,7 @@ const TrackingAnalysisManager = () => {
               <CardTitle className="font-black text-2xl uppercase flex items-center">
                 <Code className="h-6 w-6 mr-2" />
                 Meta Pixel Configuration
-                {metaPixelId && typeof window.fbq === 'function' && (
+                {isMetaPixelActive() && (
                   <CheckCircle className="h-5 w-5 ml-2 text-green-600" />
                 )}
               </CardTitle>
@@ -241,7 +250,7 @@ const TrackingAnalysisManager = () => {
                 <p className="text-xs font-semibold text-foreground/70">
                   Enter your Meta Pixel ID (15-16 digit number)
                 </p>
-                {metaPixelId && typeof window.fbq === 'function' && (
+                {isMetaPixelActive() && (
                   <div className="flex items-center gap-2 text-green-600 text-sm font-semibold">
                     <CheckCircle className="h-4 w-4" />
                     Meta Pixel is active and tracking
@@ -257,7 +266,7 @@ const TrackingAnalysisManager = () => {
                   <Save className="h-4 w-4 mr-2" />
                   {isSaving ? 'Saving...' : 'Save & Reload'}
                 </Button>
-                {metaPixelId && typeof window.fbq === 'function' && (
+                {isMetaPixelActive() && (
                   <Button
                     onClick={testMetaPixel}
                     variant="outline"
@@ -318,23 +327,23 @@ const TrackingAnalysisManager = () => {
         <CardContent className="p-6">
           <div className="grid md:grid-cols-3 gap-4">
             <div className="flex items-center gap-2">
-              {googleAnalyticsId && typeof window.gtag === 'function' ? (
+              {isGoogleAnalyticsActive() ? (
                 <CheckCircle className="h-5 w-5 text-green-600" />
               ) : (
                 <AlertCircle className="h-5 w-5 text-orange-500" />
               )}
               <span className="font-semibold">
-                Google Analytics: {googleAnalyticsId && typeof window.gtag === 'function' ? 'Active' : 'Inactive'}
+                Google Analytics: {isGoogleAnalyticsActive() ? 'Active' : 'Inactive'}
               </span>
             </div>
             <div className="flex items-center gap-2">
-              {metaPixelId && typeof window.fbq === 'function' ? (
+              {isMetaPixelActive() ? (
                 <CheckCircle className="h-5 w-5 text-green-600" />
               ) : (
                 <AlertCircle className="h-5 w-5 text-orange-500" />
               )}
               <span className="font-semibold">
-                Meta Pixel: {metaPixelId && typeof window.fbq === 'function' ? 'Active' : 'Inactive'}
+                Meta Pixel: {isMetaPixelActive() ? 'Active' : 'Inactive'}
               </span>
             </div>
             <div className="flex items-center gap-2">

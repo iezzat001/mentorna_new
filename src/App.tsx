@@ -30,9 +30,12 @@ const App = () => {
     const handleRouteChange = () => {
       // Send page view to Google Analytics if available
       if (typeof window.gtag === 'function') {
-        window.gtag('config', localStorage.getItem('google_analytics_id'), {
-          page_path: window.location.pathname,
-        });
+        const gaId = localStorage.getItem('google_analytics_id');
+        if (gaId) {
+          window.gtag('config', gaId, {
+            page_path: window.location.pathname,
+          });
+        }
       }
       
       // Send page view to Meta Pixel if available
