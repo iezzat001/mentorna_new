@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { BarChart3, Code, Save } from 'lucide-react';
+import { BarChart3, Code, Save, CheckCircle, AlertCircle } from 'lucide-react';
 
 const TrackingAnalysisManager = () => {
   const [googleAnalyticsId, setGoogleAnalyticsId] = useState('');
@@ -26,46 +26,33 @@ const TrackingAnalysisManager = () => {
     if (savedCustom) setCustomCode(savedCustom);
   }, []);
 
+  const reloadPageForTracking = () => {
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+
   const handleSaveGoogleAnalytics = () => {
     setIsSaving(true);
     try {
       if (googleAnalyticsId.trim()) {
+        // Validate Google Analytics ID format
+        if (!googleAnalyticsId.trim().match(/^G-[A-Z0-9]+$/)) {
+          toast.error('Invalid Google Analytics ID format. Should be G-XXXXXXXXXX');
+          setIsSaving(false);
+          return;
+        }
+        
         localStorage.setItem('google_analytics_id', googleAnalyticsId.trim());
-        
-        // Remove existing GA script if any
-        const existingScript = document.querySelector('script[src*="googletagmanager.com/gtag/js"]');
-        const existingInlineScript = document.querySelector('#ga-inline-script');
-        if (existingScript) existingScript.remove();
-        if (existingInlineScript) existingInlineScript.remove();
-        
-        // Add new GA script
-        const script = document.createElement('script');
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId.trim()}`;
-        script.async = true;
-        document.head.appendChild(script);
-        
-        const inlineScript = document.createElement('script');
-        inlineScript.id = 'ga-inline-script';
-        inlineScript.innerHTML = `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${googleAnalyticsId.trim()}');
-        `;
-        document.head.appendChild(inlineScript);
-        
-        toast.success('Google Analytics tracking code updated successfully!');
+        toast.success('Google Analytics tracking code saved! The page will reload to activate tracking.');
+        reloadPageForTracking();
       } else {
         localStorage.removeItem('google_analytics_id');
-        const existingScript = document.querySelector('script[src*="googletagmanager.com/gtag/js"]');
-        const existingInlineScript = document.querySelector('#ga-inline-script');
-        if (existingScript) existingScript.remove();
-        if (existingInlineScript) existingInlineScript.remove();
-        toast.success('Google Analytics tracking code removed successfully!');
+        toast.success('Google Analytics tracking code removed! The page will reload.');
+        reloadPageForTracking();
       }
     } catch (error) {
       toast.error('Failed to update Google Analytics code');
-    } finally {
       setIsSaving(false);
     }
   };
@@ -74,39 +61,23 @@ const TrackingAnalysisManager = () => {
     setIsSaving(true);
     try {
       if (metaPixelId.trim()) {
+        // Validate Meta Pixel ID format (should be numeric)
+        if (!metaPixelId.trim().match(/^\d{15,16}$/)) {
+          toast.error('Invalid Meta Pixel ID format. Should be a 15-16 digit number');
+          setIsSaving(false);
+          return;
+        }
+        
         localStorage.setItem('meta_pixel_id', metaPixelId.trim());
-        
-        // Remove existing Meta Pixel script if any
-        const existingScript = document.querySelector('#meta-pixel-script');
-        if (existingScript) existingScript.remove();
-        
-        // Add new Meta Pixel script
-        const script = document.createElement('script');
-        script.id = 'meta-pixel-script';
-        script.innerHTML = `
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '${metaPixelId.trim()}');
-          fbq('track', 'PageView');
-        `;
-        document.head.appendChild(script);
-        
-        toast.success('Meta Pixel tracking code updated successfully!');
+        toast.success('Meta Pixel tracking code saved! The page will reload to activate tracking.');
+        reloadPageForTracking();
       } else {
         localStorage.removeItem('meta_pixel_id');
-        const existingScript = document.querySelector('#meta-pixel-script');
-        if (existingScript) existingScript.remove();
-        toast.success('Meta Pixel tracking code removed successfully!');
+        toast.success('Meta Pixel tracking code removed! The page will reload.');
+        reloadPageForTracking();
       }
     } catch (error) {
       toast.error('Failed to update Meta Pixel code');
-    } finally {
       setIsSaving(false);
     }
   };
@@ -116,28 +87,41 @@ const TrackingAnalysisManager = () => {
     try {
       if (customCode.trim()) {
         localStorage.setItem('custom_tracking_code', customCode.trim());
-        
-        // Remove existing custom script if any
-        const existingScript = document.querySelector('#custom-tracking-script');
-        if (existingScript) existingScript.remove();
-        
-        // Add new custom script
-        const script = document.createElement('script');
-        script.id = 'custom-tracking-script';
-        script.innerHTML = customCode.trim();
-        document.head.appendChild(script);
-        
-        toast.success('Custom tracking code updated successfully!');
+        toast.success('Custom tracking code saved! The page will reload to activate tracking.');
+        reloadPageForTracking();
       } else {
         localStorage.removeItem('custom_tracking_code');
-        const existingScript = document.querySelector('#custom-tracking-script');
-        if (existingScript) existingScript.remove();
-        toast.success('Custom tracking code removed successfully!');
+        toast.success('Custom tracking code removed! The page will reload.');
+        reloadPageForTracking();
       }
     } catch (error) {
       toast.error('Failed to update custom tracking code');
-    } finally {
       setIsSaving(false);
+    }
+  };
+
+  const testGoogleAnalytics = () => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'test_event', {
+        event_category: 'admin_test',
+        event_label: 'tracking_test',
+        value: 1
+      });
+      toast.success('Test event sent to Google Analytics! Check your GA dashboard in a few minutes.');
+    } else {
+      toast.error('Google Analytics is not loaded. Please save your GA ID first.');
+    }
+  };
+
+  const testMetaPixel = () => {
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'AdminTest', {
+        content_name: 'tracking_test',
+        source: 'admin_panel'
+      });
+      toast.success('Test event sent to Meta Pixel! Check your Facebook Events Manager.');
+    } else {
+      toast.error('Meta Pixel is not loaded. Please save your Pixel ID first.');
     }
   };
 
@@ -183,6 +167,9 @@ const TrackingAnalysisManager = () => {
               <CardTitle className="font-black text-2xl uppercase flex items-center">
                 <BarChart3 className="h-6 w-6 mr-2" />
                 Google Analytics Configuration
+                {googleAnalyticsId && typeof window.gtag === 'function' && (
+                  <CheckCircle className="h-5 w-5 ml-2 text-green-600" />
+                )}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 space-y-4">
@@ -199,15 +186,32 @@ const TrackingAnalysisManager = () => {
                 <p className="text-xs font-semibold text-foreground/70">
                   Enter your Google Analytics 4 Measurement ID (starts with G-)
                 </p>
+                {googleAnalyticsId && typeof window.gtag === 'function' && (
+                  <div className="flex items-center gap-2 text-green-600 text-sm font-semibold">
+                    <CheckCircle className="h-4 w-4" />
+                    Google Analytics is active and tracking
+                  </div>
+                )}
               </div>
-              <Button
-                onClick={handleSaveGoogleAnalytics}
-                disabled={isSaving}
-                className="bg-accent-green hover:bg-accent-green/90 text-foreground font-black uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
-              >
-                <Save className="h-4 w-4 mr-2" />
-                {isSaving ? 'Saving...' : 'Save Google Analytics'}
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleSaveGoogleAnalytics}
+                  disabled={isSaving}
+                  className="bg-accent-green hover:bg-accent-green/90 text-foreground font-black uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                >
+                  <Save className="h-4 w-4 mr-2" />
+                  {isSaving ? 'Saving...' : 'Save & Reload'}
+                </Button>
+                {googleAnalyticsId && typeof window.gtag === 'function' && (
+                  <Button
+                    onClick={testGoogleAnalytics}
+                    variant="outline"
+                    className="border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all font-bold"
+                  >
+                    Test Tracking
+                  </Button>
+                )}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -218,6 +222,9 @@ const TrackingAnalysisManager = () => {
               <CardTitle className="font-black text-2xl uppercase flex items-center">
                 <Code className="h-6 w-6 mr-2" />
                 Meta Pixel Configuration
+                {metaPixelId && typeof window.fbq === 'function' && (
+                  <CheckCircle className="h-5 w-5 ml-2 text-green-600" />
+                )}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 space-y-4">
@@ -232,17 +239,34 @@ const TrackingAnalysisManager = () => {
                   className="border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-semibold"
                 />
                 <p className="text-xs font-semibold text-foreground/70">
-                  Enter your Meta Pixel ID (15-digit number)
+                  Enter your Meta Pixel ID (15-16 digit number)
                 </p>
+                {metaPixelId && typeof window.fbq === 'function' && (
+                  <div className="flex items-center gap-2 text-green-600 text-sm font-semibold">
+                    <CheckCircle className="h-4 w-4" />
+                    Meta Pixel is active and tracking
+                  </div>
+                )}
               </div>
-              <Button
-                onClick={handleSaveMetaPixel}
-                disabled={isSaving}
-                className="bg-accent-green hover:bg-accent-green/90 text-foreground font-black uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
-              >
-                <Save className="h-4 w-4 mr-2" />
-                {isSaving ? 'Saving...' : 'Save Meta Pixel'}
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleSaveMetaPixel}
+                  disabled={isSaving}
+                  className="bg-accent-green hover:bg-accent-green/90 text-foreground font-black uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                >
+                  <Save className="h-4 w-4 mr-2" />
+                  {isSaving ? 'Saving...' : 'Save & Reload'}
+                </Button>
+                {metaPixelId && typeof window.fbq === 'function' && (
+                  <Button
+                    onClick={testMetaPixel}
+                    variant="outline"
+                    className="border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all font-bold"
+                  >
+                    Test Tracking
+                  </Button>
+                )}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -277,12 +301,55 @@ const TrackingAnalysisManager = () => {
                 className="bg-accent-green hover:bg-accent-green/90 text-foreground font-black uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
               >
                 <Save className="h-4 w-4 mr-2" />
-                {isSaving ? 'Saving...' : 'Save Custom Code'}
+                {isSaving ? 'Saving...' : 'Save & Reload'}
               </Button>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
+      
+      {/* Status Information */}
+      <Card className="border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <CardHeader className="bg-accent-green border-b-4 border-foreground">
+          <CardTitle className="font-black text-2xl uppercase">
+            Tracking Status
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="flex items-center gap-2">
+              {googleAnalyticsId && typeof window.gtag === 'function' ? (
+                <CheckCircle className="h-5 w-5 text-green-600" />
+              ) : (
+                <AlertCircle className="h-5 w-5 text-orange-500" />
+              )}
+              <span className="font-semibold">
+                Google Analytics: {googleAnalyticsId && typeof window.gtag === 'function' ? 'Active' : 'Inactive'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              {metaPixelId && typeof window.fbq === 'function' ? (
+                <CheckCircle className="h-5 w-5 text-green-600" />
+              ) : (
+                <AlertCircle className="h-5 w-5 text-orange-500" />
+              )}
+              <span className="font-semibold">
+                Meta Pixel: {metaPixelId && typeof window.fbq === 'function' ? 'Active' : 'Inactive'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              {customCode ? (
+                <CheckCircle className="h-5 w-5 text-green-600" />
+              ) : (
+                <AlertCircle className="h-5 w-5 text-orange-500" />
+              )}
+              <span className="font-semibold">
+                Custom Code: {customCode ? 'Configured' : 'Not Set'}
+              </span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

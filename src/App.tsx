@@ -13,6 +13,7 @@ import Member from "./pages/Member";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,33 @@ const App = () => {
   if (!isDashboardSubdomain) {
     useVisitorTracking();
   }
+
+  // Initialize tracking on route changes
+  useEffect(() => {
+    const handleRouteChange = () => {
+      // Send page view to Google Analytics if available
+      if (typeof window.gtag === 'function') {
+        window.gtag('config', localStorage.getItem('google_analytics_id'), {
+          page_path: window.location.pathname,
+        });
+      }
+      
+      // Send page view to Meta Pixel if available
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'PageView');
+      }
+    };
+
+    // Track initial page load
+    handleRouteChange();
+    
+    // Listen for route changes
+    window.addEventListener('popstate', handleRouteChange);
+    
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

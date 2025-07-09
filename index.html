@@ -72,6 +72,68 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Google Analytics Initialization Script -->
+    <script>
+      // Initialize Google Analytics if tracking ID is stored
+      (function() {
+        const gaId = localStorage.getItem('google_analytics_id');
+        if (gaId && gaId.trim()) {
+          // Create and append gtag script
+          const gtagScript = document.createElement('script');
+          gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId.trim();
+          gtagScript.async = true;
+          document.head.appendChild(gtagScript);
+          
+          // Initialize gtag
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', gaId.trim());
+          
+          console.log('Google Analytics initialized with ID:', gaId.trim());
+        }
+      })();
+    </script>
+    
+    <!-- Meta Pixel Initialization Script -->
+    <script>
+      // Initialize Meta Pixel if tracking ID is stored
+      (function() {
+        const metaPixelId = localStorage.getItem('meta_pixel_id');
+        if (metaPixelId && metaPixelId.trim()) {
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', metaPixelId.trim());
+          fbq('track', 'PageView');
+          
+          console.log('Meta Pixel initialized with ID:', metaPixelId.trim());
+        }
+      })();
+    </script>
+    
+    <!-- Custom Tracking Code Initialization Script -->
+    <script>
+      // Initialize custom tracking code if stored
+      (function() {
+        const customCode = localStorage.getItem('custom_tracking_code');
+        if (customCode && customCode.trim()) {
+          try {
+            eval(customCode.trim());
+            console.log('Custom tracking code executed');
+          } catch (error) {
+            console.error('Error executing custom tracking code:', error);
+          }
+        }
+      })();
+    </script>
     </head>
   <body>
     <div id="root"></div>
