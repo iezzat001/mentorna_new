@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Dialog,
@@ -99,6 +98,7 @@ const PrivacyPolicyDialog = ({ children }: PrivacyPolicyDialogProps) => {
                   <h3 className="font-semibold text-lg mb-2">7. International Data Transfers</h3>
                   <p>Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your data in accordance with applicable privacy laws.</p>
                 </div>
+              </div>
             </div>
 
             {/* Terms of Service Section */}
