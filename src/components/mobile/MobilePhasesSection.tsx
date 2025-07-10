@@ -8,7 +8,7 @@ import WaitingListDialog from '../WaitingListDialog';
 import PhaseHeader from './PhaseHeader';
 import MobileSwipeIndicator from './MobileSwipeIndicator';
 import { ChevronRight, Clock, Target, BookOpen, Users, Presentation, Lightbulb as LightbulbIcon, CheckCircle } from 'lucide-react';
-import { weekDetailsData } from '@/data/weekDetailsData';
+import { useWeekDetails } from '@/hooks/useWeeksData';
 
 interface PhaseData {
   phase: string;
@@ -60,7 +60,7 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
   };
 
   const WeekCard = ({ week }: { week: { week: number; title: string; description: string } }) => {
-    const weekData = weekDetailsData[week.week];
+    const { data: weekData, isLoading } = useWeekDetails(week.week);
     const phaseColor = phase.phase === "PHASE I" ? "bg-accent-purple" : "bg-accent-blue";
     
     return (
@@ -105,13 +105,13 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
                         <div className="flex items-center space-x-1">
                           <Target className="h-3 w-3 text-accent-green" />
                           <span className="text-xs font-semibold text-foreground/60">
-                            {weekData?.skills?.length || 0} skills
+                            {isLoading ? '...' : weekData?.skills?.length || 0} skills
                           </span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <Clock className="h-3 w-3 text-accent-blue" />
                           <span className="text-xs font-semibold text-foreground/60">
-                            {weekData?.activities?.length || 0} activities
+                            {isLoading ? '...' : weekData?.activities?.length || 0} activities
                           </span>
                         </div>
                       </div>
@@ -167,68 +167,76 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
           </DialogHeader>
 
           <div className="p-4 space-y-4">
-            {/* Learning Outcome */}
-            <div className="bg-accent-green/10 border-2 border-accent-green/30 rounded-lg p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Target className="h-4 w-4 text-accent-green" />
-                <h3 className="font-black text-sm uppercase text-foreground">Learning Outcome</h3>
+            {isLoading ? (
+              <div className="text-center py-4">
+                <div className="text-sm text-foreground/60">Loading content...</div>
               </div>
-              <p className="font-body text-xs text-foreground/80 leading-relaxed">
-                {weekData?.outcome || 'Learning outcomes are being prepared for this week.'}
-              </p>
-            </div>
+            ) : (
+              <>
+                {/* Learning Outcome */}
+                <div className="bg-accent-green/10 border-2 border-accent-green/30 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target className="h-4 w-4 text-accent-green" />
+                    <h3 className="font-black text-sm uppercase text-foreground">Learning Outcome</h3>
+                  </div>
+                  <p className="font-body text-xs text-foreground/80 leading-relaxed">
+                    {weekData?.outcome || 'Learning outcomes are being prepared for this week.'}
+                  </p>
+                </div>
 
-            {/* Activities */}
-            {weekData?.activities && weekData.activities.length > 0 && (
-              <div className="space-y-2">
-                <h3 className="font-black text-sm uppercase text-foreground flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-accent-blue" />
-                  Activities
-                </h3>
-                {weekData.activities.map((activity, index) => (
-                  <div key={index} className="bg-background/50 border-2 border-foreground/20 rounded-lg p-3">
-                    <div className="flex items-start gap-2">
-                      <div className="mt-0.5">
-                        {getActivityIcon(activity.type)}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Badge className={`${getActivityColor(activity.type)} font-black uppercase text-xs px-2 py-0.5`}>
-                            {activity.type}
-                          </Badge>
-                          <span className="text-xs text-foreground/60 font-semibold">
-                            {activity.duration}
-                          </span>
+                {/* Activities */}
+                {weekData?.activities && weekData.activities.length > 0 && weekData.activitiesVisible && (
+                  <div className="space-y-2">
+                    <h3 className="font-black text-sm uppercase text-foreground flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-accent-blue" />
+                      Activities
+                    </h3>
+                    {weekData.activities.map((activity, index) => (
+                      <div key={index} className="bg-background/50 border-2 border-foreground/20 rounded-lg p-3">
+                        <div className="flex items-start gap-2">
+                          <div className="mt-0.5">
+                            {getActivityIcon(activity.type)}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <Badge className={`${getActivityColor(activity.type)} font-black uppercase text-xs px-2 py-0.5`}>
+                                {activity.type}
+                              </Badge>
+                              <span className="text-xs text-foreground/60 font-semibold">
+                                {activity.duration}
+                              </span>
+                            </div>
+                            <h4 className="font-black text-xs uppercase text-foreground mb-1">
+                              {activity.title}
+                            </h4>
+                            <p className="font-body text-xs text-foreground/70 leading-relaxed">
+                              {activity.description}
+                            </p>
+                          </div>
                         </div>
-                        <h4 className="font-black text-xs uppercase text-foreground mb-1">
-                          {activity.title}
-                        </h4>
-                        <p className="font-body text-xs text-foreground/70 leading-relaxed">
-                          {activity.description}
-                        </p>
                       </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Skills */}
+                {weekData?.skills && weekData.skills.length > 0 && (
+                  <div className="space-y-2">
+                    <h3 className="font-black text-sm uppercase text-foreground flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-accent-green" />
+                      Skills You'll Master
+                    </h3>
+                    <div className="grid grid-cols-1 gap-2">
+                      {weekData.skills.map((skill, index) => (
+                        <div key={index} className="flex items-center gap-2 p-2 bg-accent-green/10 border-2 border-accent-green/30 rounded-lg">
+                          <CheckCircle className="h-3 w-3 text-accent-green flex-shrink-0" />
+                          <span className="font-body text-xs font-semibold text-foreground">{skill}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-
-            {/* Skills */}
-            {weekData?.skills && weekData.skills.length > 0 && (
-              <div className="space-y-2">
-                <h3 className="font-black text-sm uppercase text-foreground flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-accent-green" />
-                  Skills You'll Master
-                </h3>
-                <div className="grid grid-cols-1 gap-2">
-                  {weekData.skills.map((skill, index) => (
-                    <div key={index} className="flex items-center gap-2 p-2 bg-accent-green/10 border-2 border-accent-green/30 rounded-lg">
-                      <CheckCircle className="h-3 w-3 text-accent-green flex-shrink-0" />
-                      <span className="font-body text-xs font-semibold text-foreground">{skill}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                )}
+              </>
             )}
           </div>
         </DialogContent>

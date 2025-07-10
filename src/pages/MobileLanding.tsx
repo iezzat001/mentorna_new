@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -11,6 +12,7 @@ import MobileComingSoonSection from '@/components/mobile/MobileComingSoonSection
 import MobileNewsletterSection from '@/components/mobile/MobileNewsletterSection';
 import ViewSwitcher from '@/components/ViewSwitcher';
 import { Award, Lightbulb, Rocket, TrendingUp, GraduationCap } from 'lucide-react';
+import { useWeeksData } from '@/hooks/useWeeksData';
 
 interface Founder {
   id: string;
@@ -26,7 +28,7 @@ interface Founder {
 }
 
 const MobileLanding = () => {
-  // Fetch founders from Supabase (same as main landing page)
+  // Fetch founders from Supabase
   const { data: founders } = useQuery({
     queryKey: ['founders-public'],
     queryFn: async () => {
@@ -40,6 +42,9 @@ const MobileLanding = () => {
       return data as Founder[];
     }
   });
+
+  // Fetch weeks data from database
+  const { data: weeks, isLoading: weeksLoading } = useWeeksData();
 
   // Convert database founder to the format expected by MobileFounderCard
   const convertFounder = (founder: Founder) => ({
@@ -88,35 +93,19 @@ const MobileLanding = () => {
     }
   ];
 
-  const phases = [
+  // Create phases using dynamic data from database
+  const phases = weeks && !weeksLoading ? [
     {
       phase: "PHASE I",
       title: "Foundation Building",
       description: "Master the fundamentals of AI, coding, and entrepreneurial thinking through hands-on projects and real-world applications.",
       color: "bg-accent-purple",
       icon: Lightbulb,
-      weeks: [
-        {
-          week: 1,
-          title: "AI Fundamentals & Python Basics",
-          description: "Introduction to artificial intelligence concepts and Python programming"
-        },
-        {
-          week: 2,
-          title: "Data Science & Machine Learning", 
-          description: "Learn data analysis and basic machine learning algorithms"
-        },
-        {
-          week: 3,
-          title: "Web Development Foundations",
-          description: "HTML, CSS, JavaScript and modern web development"
-        },
-        {
-          week: 4,
-          title: "Entrepreneurship & Business Models",
-          description: "Business fundamentals and startup methodology"
-        }
-      ]
+      weeks: weeks.filter(week => week.phase === 'Foundation Building').map(week => ({
+        week: week.week,
+        title: week.title,
+        description: week.description
+      }))
     },
     {
       phase: "PHASE II",
@@ -124,30 +113,13 @@ const MobileLanding = () => {
       description: "Build real products, launch your startup, and compete for €5,000 prize while developing advanced technical and business skills.",
       color: "bg-accent-blue",
       icon: Rocket,
-      weeks: [
-        {
-          week: 5,
-          title: "Advanced AI & APIs",
-          description: "Deep learning, AI APIs, and advanced programming concepts"
-        },
-        {
-          week: 6,
-          title: "Product Development & MVP",
-          description: "Build your minimum viable product and test with users"
-        },
-        {
-          week: 7,
-          title: "Business Launch & Marketing",
-          description: "Launch strategies, digital marketing, and customer acquisition"
-        },
-        {
-          week: 8,
-          title: "Pitch & Competition",
-          description: "Final presentations and compete for €5,000 prize"
-        }
-      ]
+      weeks: weeks.filter(week => week.phase === 'Advanced Implementation').map(week => ({
+        week: week.week,
+        title: week.title,
+        description: week.description
+      }))
     }
-  ];
+  ] : [];
 
   const comingSoonPrograms = [
     {
@@ -165,6 +137,18 @@ const MobileLanding = () => {
       gradient: "from-accent-blue to-blue-600"
     }
   ];
+
+  // Show loading state while weeks are loading
+  if (weeksLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="text-lg font-black uppercase text-foreground mb-2">Loading Course Content...</div>
+          <div className="text-sm text-foreground/60">Please wait while we load the latest program details</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -192,7 +176,7 @@ const MobileLanding = () => {
           <MobileRoadmapSection />
         </div>
 
-        {/* Phases Sections */}
+        {/* Phases Sections - Now using dynamic data */}
         {phases.map((phase, index) => (
           <div key={index} className="scroll-snap-start">
             <MobilePhasesSection phase={phase} />
