@@ -37,13 +37,12 @@ export const useTrackingLogic = () => {
         }
         
         localStorage.setItem('google_analytics_id', googleAnalyticsId.trim());
-        toast.success('Google Analytics tracking code saved! The page will reload to activate tracking.');
-        reloadPageForTracking();
+        toast.success('Google Analytics tracking code saved! Note: Tracking will only work after users give cookie consent.');
       } else {
         localStorage.removeItem('google_analytics_id');
-        toast.success('Google Analytics tracking code removed! The page will reload.');
-        reloadPageForTracking();
+        toast.success('Google Analytics tracking code removed!');
       }
+      setIsSaving(false);
     } catch (error) {
       toast.error('Failed to update Google Analytics code');
       setIsSaving(false);
@@ -62,13 +61,12 @@ export const useTrackingLogic = () => {
         }
         
         localStorage.setItem('meta_pixel_id', metaPixelId.trim());
-        toast.success('Meta Pixel tracking code saved! The page will reload to activate tracking.');
-        reloadPageForTracking();
+        toast.success('Meta Pixel tracking code saved! Note: Tracking will only work after users give cookie consent.');
       } else {
         localStorage.removeItem('meta_pixel_id');
-        toast.success('Meta Pixel tracking code removed! The page will reload.');
-        reloadPageForTracking();
+        toast.success('Meta Pixel tracking code removed!');
       }
+      setIsSaving(false);
     } catch (error) {
       toast.error('Failed to update Meta Pixel code');
       setIsSaving(false);
@@ -80,13 +78,12 @@ export const useTrackingLogic = () => {
     try {
       if (customCode.trim()) {
         localStorage.setItem('custom_tracking_code', customCode.trim());
-        toast.success('Custom tracking code saved! The page will reload to activate tracking.');
-        reloadPageForTracking();
+        toast.success('Custom tracking code saved! Note: Tracking will only work after users give cookie consent.');
       } else {
         localStorage.removeItem('custom_tracking_code');
-        toast.success('Custom tracking code removed! The page will reload.');
-        reloadPageForTracking();
+        toast.success('Custom tracking code removed!');
       }
+      setIsSaving(false);
     } catch (error) {
       toast.error('Failed to update custom tracking code');
       setIsSaving(false);
@@ -94,6 +91,19 @@ export const useTrackingLogic = () => {
   };
 
   const testGoogleAnalytics = () => {
+    // Check if user has given analytics consent
+    const consent = localStorage.getItem('cookie_consent');
+    if (!consent) {
+      toast.error('Cannot test tracking: No cookie consent given yet. Users must accept cookies first.');
+      return;
+    }
+
+    const preferences = JSON.parse(consent);
+    if (!preferences.analytics) {
+      toast.error('Cannot test tracking: Analytics cookies not enabled. Users must accept analytics cookies.');
+      return;
+    }
+
     if (typeof window.gtag === 'function') {
       window.gtag('event', 'test_event', {
         event_category: 'admin_test',
@@ -102,11 +112,24 @@ export const useTrackingLogic = () => {
       });
       toast.success('Test event sent to Google Analytics! Check your GA dashboard in a few minutes.');
     } else {
-      toast.error('Google Analytics is not loaded. Please save your GA ID first.');
+      toast.error('Google Analytics is not loaded. Make sure users have given consent and the page has been refreshed.');
     }
   };
 
   const testMetaPixel = () => {
+    // Check if user has given analytics consent
+    const consent = localStorage.getItem('cookie_consent');
+    if (!consent) {
+      toast.error('Cannot test tracking: No cookie consent given yet. Users must accept cookies first.');
+      return;
+    }
+
+    const preferences = JSON.parse(consent);
+    if (!preferences.analytics) {
+      toast.error('Cannot test tracking: Analytics cookies not enabled. Users must accept analytics cookies.');
+      return;
+    }
+
     if (typeof window.fbq === 'function') {
       window.fbq('track', 'AdminTest', {
         content_name: 'tracking_test',
@@ -114,17 +137,23 @@ export const useTrackingLogic = () => {
       });
       toast.success('Test event sent to Meta Pixel! Check your Facebook Events Manager.');
     } else {
-      toast.error('Meta Pixel is not loaded. Please save your Pixel ID first.');
+      toast.error('Meta Pixel is not loaded. Make sure users have given consent and the page has been refreshed.');
     }
   };
 
-  // Helper functions to check if tracking is active
+  // Helper functions to check if tracking is active (with consent)
   const isGoogleAnalyticsActive = () => {
-    return googleAnalyticsId && typeof window.gtag === 'function';
+    const consent = localStorage.getItem('cookie_consent');
+    if (!consent) return false;
+    const preferences = JSON.parse(consent);
+    return googleAnalyticsId && preferences.analytics && typeof window.gtag === 'function';
   };
 
   const isMetaPixelActive = () => {
-    return metaPixelId && typeof window.fbq === 'function';
+    const consent = localStorage.getItem('cookie_consent');
+    if (!consent) return false;
+    const preferences = JSON.parse(consent);
+    return metaPixelId && preferences.analytics && typeof window.fbq === 'function';
   };
 
   return {

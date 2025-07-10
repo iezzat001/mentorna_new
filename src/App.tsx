@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { isOnDashboardSubdomain } from "@/utils/subdomain";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import CookieConsent from "@/components/CookieConsent";
 import Index from "./pages/Index";
 import MobileLanding from "./pages/MobileLanding";
 import Member from "./pages/Member";
@@ -25,10 +26,17 @@ const App = () => {
     useVisitorTracking();
   }
 
-  // Initialize tracking on route changes
+  // Initialize tracking on route changes (only with consent)
   useEffect(() => {
     const handleRouteChange = () => {
-      // Send page view to Google Analytics if available
+      // Check if user has given analytics consent
+      const consent = localStorage.getItem('cookie_consent');
+      if (!consent) return;
+
+      const preferences = JSON.parse(consent);
+      if (!preferences.analytics) return;
+
+      // Send page view to Google Analytics if available and consent given
       if (typeof window.gtag === 'function') {
         const gaId = localStorage.getItem('google_analytics_id');
         if (gaId) {
@@ -38,7 +46,7 @@ const App = () => {
         }
       }
       
-      // Send page view to Meta Pixel if available
+      // Send page view to Meta Pixel if available and consent given
       if (typeof window.fbq === 'function') {
         window.fbq('track', 'PageView');
       }
@@ -102,6 +110,9 @@ const App = () => {
               )}
             </Routes>
           </BrowserRouter>
+          
+          {/* Show cookie consent banner only on main domain */}
+          {!isDashboardSubdomain && <CookieConsent />}
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>
