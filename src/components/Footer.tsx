@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import ContactDialog from './ContactDialog';
+import PrivacyPolicyDialog from './PrivacyPolicyDialog';
 
 const Footer = () => {
   return (
@@ -33,6 +34,11 @@ const Footer = () => {
               <a href="#founders" className="block font-body text-background/80 hover:text-background transition-colors">
                 Our Team
               </a>
+              <PrivacyPolicyDialog>
+                <button className="block font-body text-background/80 hover:text-background transition-colors text-left">
+                  Terms and Privacy
+                </button>
+              </PrivacyPolicyDialog>
             </div>
           </div>
           
