@@ -23,6 +23,7 @@ import WaitingListManager from '@/components/dashboard/WaitingListManager';
 import NewsletterManager from '@/components/dashboard/NewsletterManager';
 import EmailMarketingManager from '@/components/dashboard/EmailMarketingManager';
 import TrackingAnalysisManager from '@/components/dashboard/TrackingAnalysisManager';
+import ContactMessagesManager from '@/components/dashboard/ContactMessagesManager';
 import { migrateWeekData } from '@/utils/migrateWeekData';
 import { toast } from 'sonner';
 import DashboardAnalytics from '@/components/dashboard/DashboardAnalytics';
@@ -61,6 +62,8 @@ const Dashboard = () => {
         return 'Email Marketing Management';
       case 'tracking-analysis':
         return 'Tracking & Analysis Management';
+      case 'contact-messages':
+        return 'Contact Messages Management';
       default:
         return 'Dashboard Overview';
     }
@@ -80,6 +83,8 @@ const Dashboard = () => {
         return <EmailMarketingManager />;
       case 'tracking-analysis':
         return <TrackingAnalysisManager />;
+      case 'contact-messages':
+        return <ContactMessagesManager />;
       default:
         return <DashboardAnalytics />;
     }

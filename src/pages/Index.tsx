@@ -11,6 +11,7 @@ import PricingSection from '@/components/PricingSection';
 import FoundersSection from '@/components/FoundersSection';
 import ComingSoon from '@/components/ComingSoon';
 import NewsletterForm from '@/components/NewsletterForm';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ const Index = () => {
         <FoundersSection />
         <ComingSoon />
         <NewsletterForm />
+        <Footer />
       </div>
       
       {/* Add View Switcher */}

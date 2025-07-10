@@ -1,115 +1,106 @@
-
 import React from 'react';
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from '@/components/ui/sidebar';
-import { 
-  LayoutDashboard, 
-  BookOpen, 
-  Users, 
-  UserCheck, 
-  Mail, 
-  BarChart3,
-  Send
+  BarChart,
+  BookOpen,
+  Clock,
+  Mail,
+  MessageSquare,
+  Send,
+  TrendingUp,
+  Users,
 } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import { Sidebar, SidebarClose, SidebarContent, SidebarFooter, SidebarHeader, SidebarItem, SidebarTrigger } from '@/components/ui/sidebar';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface AppSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
 }
 
-const AppSidebar = ({ activeTab, onTabChange }: AppSidebarProps) => {
+export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
   const menuItems = [
     {
-      id: 'dashboard',
-      label: 'Dashboard Overview',
-      icon: LayoutDashboard,
+      title: "Dashboard Overview",
+      url: "dashboard",
+      icon: BarChart,
     },
     {
-      id: 'course-content',
-      label: 'Course Content',
+      title: "Course Content",
+      url: "course-content", 
       icon: BookOpen,
     },
     {
-      id: 'founders',
-      label: 'Founders',
+      title: "Founders",
+      url: "founders",
       icon: Users,
     },
     {
-      id: 'waiting-list',
-      label: 'Waiting List',
-      icon: UserCheck,
+      title: "Waiting List",
+      url: "waiting-list",
+      icon: Clock,
     },
     {
-      id: 'newsletter',
-      label: 'Newsletter',
+      title: "Newsletter",
+      url: "newsletter", 
       icon: Mail,
     },
     {
-      id: 'email-marketing',
-      label: 'Email Marketing',
+      title: "Contact Messages",
+      url: "contact-messages",
+      icon: MessageSquare,
+    },
+    {
+      title: "Email Marketing",
+      url: "email-marketing",
       icon: Send,
     },
     {
-      id: 'tracking-analysis',
-      label: 'Tracking & Analysis',
-      icon: BarChart3,
+      title: "Tracking & Analysis",
+      url: "tracking-analysis",
+      icon: TrendingUp,
     },
   ];
 
   return (
-    <Sidebar className="border-r-4 border-foreground bg-accent-yellow">
-      <SidebarHeader className="border-b-4 border-foreground bg-foreground p-4">
-        <h2 className="font-heading text-xl font-black uppercase text-background">
-          iLab® Admin
-        </h2>
-      </SidebarHeader>
-      
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="font-heading font-black uppercase text-foreground/70 px-4 py-2">
-            Management
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton
-                    onClick={() => onTabChange(item.id)}
-                    isActive={activeTab === item.id}
-                    className={`
-                      font-body font-semibold text-foreground hover:bg-foreground/10 
-                      data-[active=true]:bg-foreground data-[active=true]:text-background
-                      data-[active=true]:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]
-                      transition-all duration-200
-                    `}
-                  >
-                    <item.icon className="h-5 w-5" />
-                    <span className="font-semibold">{item.label}</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+    <Sidebar>
+      <SidebarContent className="w-64 border-r bg-background border-foreground">
+        <SidebarHeader className="font-bold text-2xl p-4 flex items-center gap-2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Admin
+          <SidebarClose className="ml-auto" />
+        </SidebarHeader>
+        <Separator className="bg-foreground" />
+        {menuItems.map((item) => (
+          <SidebarItem
+            key={item.url}
+            title={item.title}
+            active={activeTab === item.url}
+            onClick={() => onTabChange(item.url)}
+            icon={item.icon}
+            url={item.url}
+          />
+        ))}
+        <Separator className="bg-foreground" />
+        <SidebarFooter>
+          <Button variant="ghost" className="w-full justify-start" onClick={handleSignOut}>
+            Sign Out
+          </Button>
+        </SidebarFooter>
       </SidebarContent>
-      
-      <SidebarFooter className="border-t-4 border-foreground bg-foreground p-4">
-        <p className="font-body text-sm font-medium text-background text-center">
-          Admin Dashboard v1.0
-        </p>
-      </SidebarFooter>
     </Sidebar>
   );
-};
-
-export default AppSidebar;
+}
