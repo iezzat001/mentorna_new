@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   BarChart,
@@ -9,8 +10,18 @@ import {
   TrendingUp,
   Users,
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Sidebar, SidebarClose, SidebarContent, SidebarFooter, SidebarHeader, SidebarItem, SidebarTrigger } from '@/components/ui/sidebar';
+import { 
+  Sidebar, 
+  SidebarContent, 
+  SidebarFooter, 
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarTrigger
+} from '@/components/ui/sidebar';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -81,19 +92,25 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
             <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           Admin
-          <SidebarClose className="ml-auto" />
+          <SidebarTrigger className="ml-auto" />
         </SidebarHeader>
         <Separator className="bg-foreground" />
-        {menuItems.map((item) => (
-          <SidebarItem
-            key={item.url}
-            title={item.title}
-            active={activeTab === item.url}
-            onClick={() => onTabChange(item.url)}
-            icon={item.icon}
-            url={item.url}
-          />
-        ))}
+        
+        <SidebarMenu>
+          {menuItems.map((item) => (
+            <SidebarMenuItem key={item.url}>
+              <SidebarMenuButton
+                isActive={activeTab === item.url}
+                onClick={() => onTabChange(item.url)}
+                className="w-full justify-start font-medium"
+              >
+                <item.icon className="h-4 w-4" />
+                <span>{item.title}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+        
         <Separator className="bg-foreground" />
         <SidebarFooter>
           <Button variant="ghost" className="w-full justify-start" onClick={handleSignOut}>
