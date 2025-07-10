@@ -152,6 +152,7 @@ const PrivacyPolicyDialog = ({ children }: PrivacyPolicyDialogProps) => {
                   <h3 className="font-semibold text-lg mb-2">8. Governing Law</h3>
                   <p>These terms are governed by the laws of the jurisdiction in which iLab® operates, without regard to conflict of law principles.</p>
                 </div>
+              </div>
             </div>
 
             {/* Contact Information */}
