@@ -73,7 +73,24 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
       const timeMatch = url.match(/[&?]t=(\d+)/);
       const startTime = timeMatch ? `&start=${timeMatch[1]}` : '';
       
-      return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}${startTime}&enablejsapi=1`;
+      // Enhanced parameters to minimize ads and improve user experience
+      // Use nocookie domain to reduce ad loading attempts
+      return `https://www.youtube-nocookie.com/embed/${videoId}?` +
+        `autoplay=1` +
+        `&mute=${muted ? 1 : 0}` +
+        `&loop=1` +
+        `&playlist=${videoId}` +
+        `${startTime}` +
+        `&enablejsapi=1` +
+        `&rel=0` +                    // Don't show related videos
+        `&modestbranding=1` +         // Modest YouTube branding
+        `&iv_load_policy=3` +         // Don't show video annotations
+        `&cc_load_policy=0` +         // Don't show captions by default
+        `&fs=0` +                     // Disable fullscreen button
+        `&disablekb=1` +              // Disable keyboard controls
+        `&controls=0` +               // Hide player controls
+        `&showinfo=0` +               // Don't show video info
+        `&origin=${window.location.origin}`; // Set origin for security
     } catch (error) {
       console.error('Error parsing YouTube URL:', error);
       return '';
@@ -167,7 +184,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
       {/* Video Background */}
       <div className="absolute inset-0 bg-black">
         {isYouTubeVideo ? (
-          // YouTube iframe embed
+          // YouTube iframe embed with nocookie domain to reduce ad loading
           <iframe
             ref={iframeRef}
             src={getYouTubeEmbedUrl(story.videoUrl, isMuted)}
@@ -177,6 +194,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
             allowFullScreen
             title={`${story.name} Success Story`}
             key={isMuted ? 'muted' : 'unmuted'} // Force re-render when mute state changes
+            onError={(e) => console.warn('YouTube iframe loading issue (likely adblocker):', e)}
           />
         ) : (
           <video 
@@ -187,6 +205,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
             playsInline 
             className="absolute inset-0 w-full h-full object-cover"
             onClick={togglePlayPause}
+            onError={(e) => console.warn('Video loading error:', e)}
           >
             <source src={story.videoUrl} type="video/mp4" />
           </video>

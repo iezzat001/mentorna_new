@@ -13,6 +13,7 @@ import MobileNewsletterSection from '@/components/mobile/MobileNewsletterSection
 import ViewSwitcher from '@/components/ViewSwitcher';
 import { Award, Lightbulb, Rocket, TrendingUp, GraduationCap } from 'lucide-react';
 import { useWeeksData } from '@/hooks/useWeeksData';
+import '@/utils/suppressAdErrors'; // Suppress YouTube ad-related console errors
 
 interface Founder {
   id: string;
