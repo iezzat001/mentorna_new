@@ -26,19 +26,32 @@ export const useWeeksData = () => {
   return useQuery({
     queryKey: ['weeks-data'],
     queryFn: async (): Promise<WeekData[]> => {
-      const { data: weeks, error } = await supabase
-        .from('weeks')
-        .select('*')
-        .order('week_number');
-      
-      if (error) throw error;
-      
-      return weeks.map(week => ({
-        week: week.week_number,
-        title: week.title,
-        description: week.description,
-        phase: week.phase
-      }));
+      try {
+        const { data: weeks, error } = await supabase
+          .from('weeks')
+          .select('*')
+          .order('week_number');
+        
+        if (error) {
+          console.error('Error fetching weeks data:', error);
+          throw error;
+        }
+        
+        if (!weeks || !Array.isArray(weeks)) {
+          console.warn('No weeks data found or invalid format');
+          return [];
+        }
+        
+        return weeks.map(week => ({
+          week: week.week_number || 0,
+          title: week.title || 'Untitled Week',
+          description: week.description || '',
+          phase: week.phase || 'Unknown Phase'
+        }));
+      } catch (error) {
+        console.error('Failed to fetch weeks data:', error);
+        throw error;
+      }
     },
     staleTime: 0, // Force fresh data
     gcTime: 0  // Don't cache the data (updated from cacheTime)

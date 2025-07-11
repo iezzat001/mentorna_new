@@ -47,18 +47,29 @@ const MobileLanding = () => {
   const { data: weeks, isLoading: weeksLoading } = useWeeksData();
 
   // Convert database founder to the format expected by MobileFounderCard
-  const convertFounder = (founder: Founder) => ({
-    id: parseInt(founder.id.slice(-8), 16), // Convert UUID to number for compatibility
-    name: founder.name,
-    title: founder.title,
-    shortBio: founder.short_bio,
-    extendedBio: founder.extended_bio,
-    image: founder.image_url,
-    socialMedia: {
-      linkedin: founder.linkedin_url,
-      twitter: founder.twitter_url
+  const convertFounder = (founder: Founder) => {
+    // Safely convert UUID to number, with fallback
+    let convertedId: number;
+    try {
+      convertedId = parseInt(founder.id.slice(-8), 16);
+    } catch (error) {
+      console.warn('Failed to convert founder ID, using fallback:', error);
+      convertedId = Math.floor(Math.random() * 1000000); // Fallback to random number
     }
-  });
+
+    return {
+      id: convertedId,
+      name: founder.name || 'Unknown',
+      title: founder.title || 'Team Member',
+      shortBio: founder.short_bio || '',
+      extendedBio: founder.extended_bio || '',
+      image: founder.image_url || '/placeholder.svg',
+      socialMedia: {
+        linkedin: founder.linkedin_url || '',
+        twitter: founder.twitter_url || ''
+      }
+    };
+  };
 
   const stories = [
     {

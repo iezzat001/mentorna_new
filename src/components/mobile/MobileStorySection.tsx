@@ -31,7 +31,20 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [likes, setLikes] = useState(parseInt(story.likes.replace('K', '')) * 1000);
+  const [likes, setLikes] = useState(() => {
+    // Safely parse likes with fallback
+    try {
+      const likesStr = story.likes || '0';
+      if (likesStr.includes('K')) {
+        const numPart = parseFloat(likesStr.replace('K', ''));
+        return Math.floor(numPart * 1000);
+      }
+      return parseInt(likesStr) || 0;
+    } catch (error) {
+      console.warn('Failed to parse likes:', error);
+      return 0;
+    }
+  });
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
@@ -41,19 +54,30 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
   const getYouTubeEmbedUrl = (url: string, muted: boolean = true) => {
     let videoId = '';
     
-    if (url.includes('youtube.com/watch?v=')) {
-      videoId = url.split('v=')[1].split('&')[0];
-    } else if (url.includes('youtube.com/live/')) {
-      videoId = url.split('live/')[1].split('?')[0];
-    } else if (url.includes('youtu.be/')) {
-      videoId = url.split('youtu.be/')[1].split('?')[0];
+    try {
+      if (url.includes('youtube.com/watch?v=')) {
+        const urlParams = new URLSearchParams(url.split('?')[1]);
+        videoId = urlParams.get('v') || '';
+      } else if (url.includes('youtube.com/live/')) {
+        videoId = url.split('live/')[1]?.split('?')[0] || '';
+      } else if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1]?.split('?')[0] || '';
+      }
+      
+      if (!videoId) {
+        console.warn('Could not extract YouTube video ID from URL:', url);
+        return '';
+      }
+      
+      // Add timestamp if present in original URL
+      const timeMatch = url.match(/[&?]t=(\d+)/);
+      const startTime = timeMatch ? `&start=${timeMatch[1]}` : '';
+      
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}${startTime}&enablejsapi=1`;
+    } catch (error) {
+      console.error('Error parsing YouTube URL:', error);
+      return '';
     }
-    
-    // Add timestamp if present in original URL
-    const timeMatch = url.match(/[&?]t=(\d+)/);
-    const startTime = timeMatch ? `&start=${timeMatch[1]}` : '';
-    
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}${startTime}&enablejsapi=1`;
   };
 
   useEffect(() => {

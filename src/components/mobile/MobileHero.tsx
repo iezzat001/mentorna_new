@@ -24,20 +24,29 @@ const MobileHero = () => {
         video.playsInline = true;
         await video.play();
       } catch (error) {
-        console.error('Video autoplay failed:', error);
+        console.warn('Video autoplay failed (likely due to browser policy):', error);
       }
     };
 
     const updateProgress = () => {
-      const currentTime = video.currentTime;
-      const duration = video.duration;
-      if (duration > 0) {
-        setProgress((currentTime / duration) * 100);
+      try {
+        const currentTime = video.currentTime;
+        const duration = video.duration;
+        if (duration > 0 && !isNaN(duration) && !isNaN(currentTime)) {
+          setProgress((currentTime / duration) * 100);
+        }
+      } catch (error) {
+        console.warn('Error updating video progress:', error);
       }
+    };
+
+    const handleError = (error: Event) => {
+      console.warn('Video loading error:', error);
     };
 
     video.addEventListener('timeupdate', updateProgress);
     video.addEventListener('loadeddata', playVideo);
+    video.addEventListener('error', handleError);
     
     // Try to play immediately
     playVideo();
@@ -45,6 +54,7 @@ const MobileHero = () => {
     return () => {
       video.removeEventListener('timeupdate', updateProgress);
       video.removeEventListener('loadeddata', playVideo);
+      video.removeEventListener('error', handleError);
     };
   }, []);
 
