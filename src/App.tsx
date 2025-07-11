@@ -14,54 +14,41 @@ import Member from "./pages/Member";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
-import { useEffect } from "react";
+import { usePageTracking } from "@/hooks/usePageTracking";
+import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const isDashboardSubdomain = isOnDashboardSubdomain();
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+  const [measurementId, setMeasurementId] = useState('');
   
   // Track visitors on the main site (not on dashboard subdomain)
   if (!isDashboardSubdomain) {
     useVisitorTracking();
   }
 
-  // Initialize tracking on route changes (only with consent)
+  // Check for analytics consent and measurement ID
   useEffect(() => {
-    const handleRouteChange = () => {
-      // Check if user has given analytics consent
-      const consent = localStorage.getItem('cookie_consent');
-      if (!consent) return;
-
+    const consent = localStorage.getItem('cookie_consent');
+    const gaId = localStorage.getItem('google_analytics_id');
+    
+    if (consent) {
       const preferences = JSON.parse(consent);
-      if (!preferences.analytics) return;
-
-      // Send page view to Google Analytics if available and consent given
-      if (typeof window.gtag === 'function') {
-        const gaId = localStorage.getItem('google_analytics_id');
-        if (gaId) {
-          window.gtag('config', gaId, {
-            page_path: window.location.pathname,
-          });
-        }
-      }
-      
-      // Send page view to Meta Pixel if available and consent given
-      if (typeof window.fbq === 'function') {
-        window.fbq('track', 'PageView');
-      }
-    };
-
-    // Track initial page load
-    handleRouteChange();
+      setAnalyticsEnabled(preferences.analytics);
+    }
     
-    // Listen for route changes
-    window.addEventListener('popstate', handleRouteChange);
-    
-    return () => {
-      window.removeEventListener('popstate', handleRouteChange);
-    };
+    if (gaId && gaId.trim()) {
+      setMeasurementId(gaId.trim());
+    }
   }, []);
+
+  // Enable page tracking for SPA navigation when analytics is enabled
+  usePageTracking({
+    measurementId,
+    isEnabled: analyticsEnabled && !isDashboardSubdomain
+  });
 
   return (
     <QueryClientProvider client={queryClient}>

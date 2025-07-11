@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 interface CookiePreferences {
   necessary: boolean;
@@ -28,6 +28,15 @@ const CookieConsent = () => {
     marketing: false
   });
 
+  // Get GA measurement ID from localStorage or environment
+  const measurementId = localStorage.getItem('google_analytics_id') || '';
+  
+  // Initialize GA4 with consent mode (loads immediately with denied consent)
+  const { isInitialized, updateConsent, trackEvent } = useGoogleAnalytics({
+    measurementId: measurementId.trim(),
+    debugMode: process.env.NODE_ENV === 'development'
+  });
+
   useEffect(() => {
     const consent = localStorage.getItem('cookie_consent');
     if (!consent) {
@@ -35,40 +44,22 @@ const CookieConsent = () => {
     } else {
       const savedPreferences = JSON.parse(consent);
       setPreferences(savedPreferences);
-      // Load tracking scripts based on saved preferences
-      if (savedPreferences.analytics) {
-        loadAnalyticsScripts();
+      
+      // Update GA4 consent based on saved preferences
+      if (isInitialized && savedPreferences.analytics) {
+        updateConsent({
+          analytics_storage: 'granted',
+          ad_storage: savedPreferences.marketing ? 'granted' : 'denied'
+        });
       }
     }
-  }, []);
+  }, [isInitialized, updateConsent]);
 
-  const loadAnalyticsScripts = () => {
-    // Load Google Analytics
-    const gaId = localStorage.getItem('google_analytics_id');
-    if (gaId && gaId.trim()) {
-      // Create and append gtag script
-      const gtagScript = document.createElement('script');
-      gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${gaId.trim()}`;
-      gtagScript.async = true;
-      document.head.appendChild(gtagScript);
-      
-      // Initialize gtag
-      window.dataLayer = window.dataLayer || [];
-      function gtag(...args: any[]) { window.dataLayer?.push(args); }
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', gaId.trim(), {
-        anonymize_ip: true,
-        cookie_flags: 'SameSite=None;Secure'
-      });
-      
-      console.log('Google Analytics loaded with consent:', gaId.trim());
-    }
-
-    // Load Meta Pixel
+  const loadAdditionalTrackingScripts = () => {
+    // Load Meta Pixel if consent given and ID exists
     const metaPixelId = localStorage.getItem('meta_pixel_id');
     if (metaPixelId && metaPixelId.trim()) {
-      !function(f: any, b: any, e: any, v: any, n: any, t: any, s: any) {
+      (function(f: any, b: any, e: any, v: any, n: any, t: any, s: any) {
         if (f.fbq) return;
         n = f.fbq = function() {
           n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
@@ -82,16 +73,18 @@ const CookieConsent = () => {
         t.async = !0;
         t.src = v;
         s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
-      }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        s.parentNode!.insertBefore(t, s);
+      })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
       
-      window.fbq('init', metaPixelId.trim());
-      window.fbq('track', 'PageView');
+      if (window.fbq) {
+        window.fbq('init', metaPixelId.trim());
+        window.fbq('track', 'PageView');
+      }
       
       console.log('Meta Pixel loaded with consent:', metaPixelId.trim());
     }
 
-    // Load custom tracking code
+    // Load custom tracking code if exists
     const customCode = localStorage.getItem('custom_tracking_code');
     if (customCode && customCode.trim()) {
       try {
@@ -109,11 +102,30 @@ const CookieConsent = () => {
       analytics: true,
       marketing: true
     };
+    
     setPreferences(newPreferences);
     localStorage.setItem('cookie_consent', JSON.stringify(newPreferences));
     localStorage.setItem('cookie_consent_date', new Date().toISOString());
+    
+    // Update GA4 consent to granted
+    updateConsent({
+      analytics_storage: 'granted',
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted'
+    });
+    
+    // Load additional tracking scripts
+    loadAdditionalTrackingScripts();
+    
+    // Track consent acceptance
+    trackEvent('cookie_consent', {
+      consent_type: 'accept_all',
+      analytics: true,
+      marketing: true
+    });
+    
     setShowBanner(false);
-    loadAnalyticsScripts();
   };
 
   const handleRejectAll = () => {
@@ -122,21 +134,55 @@ const CookieConsent = () => {
       analytics: false,
       marketing: false
     };
+    
     setPreferences(newPreferences);
     localStorage.setItem('cookie_consent', JSON.stringify(newPreferences));
     localStorage.setItem('cookie_consent_date', new Date().toISOString());
+    
+    // Keep GA4 consent as denied (already set by default)
+    updateConsent({
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+    
+    // Track consent rejection
+    trackEvent('cookie_consent', {
+      consent_type: 'reject_all',
+      analytics: false,
+      marketing: false
+    });
+    
     setShowBanner(false);
   };
 
   const handleSavePreferences = () => {
     localStorage.setItem('cookie_consent', JSON.stringify(preferences));
     localStorage.setItem('cookie_consent_date', new Date().toISOString());
+    
+    // Update GA4 consent based on preferences
+    updateConsent({
+      analytics_storage: preferences.analytics ? 'granted' : 'denied',
+      ad_storage: preferences.marketing ? 'granted' : 'denied',
+      ad_user_data: preferences.marketing ? 'granted' : 'denied',
+      ad_personalization: preferences.marketing ? 'granted' : 'denied'
+    });
+    
+    // Load additional scripts if analytics consent given
+    if (preferences.analytics || preferences.marketing) {
+      loadAdditionalTrackingScripts();
+    }
+    
+    // Track custom preferences
+    trackEvent('cookie_consent', {
+      consent_type: 'custom',
+      analytics: preferences.analytics,
+      marketing: preferences.marketing
+    });
+    
     setShowBanner(false);
     setShowSettings(false);
-    
-    if (preferences.analytics) {
-      loadAnalyticsScripts();
-    }
   };
 
   const updatePreference = (key: keyof CookiePreferences, value: boolean) => {
@@ -262,6 +308,15 @@ const CookieConsent = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Debug info in development */}
+      {process.env.NODE_ENV === 'development' && isInitialized && (
+        <div className="fixed top-4 right-4 z-50 bg-black/80 text-white p-2 rounded text-xs">
+          GA4 Status: {isInitialized ? '✅ Loaded' : '❌ Not Loaded'}
+          <br />
+          ID: {measurementId || 'Not Set'}
+        </div>
+      )}
     </>
   );
 };
