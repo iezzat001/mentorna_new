@@ -88,7 +88,11 @@ const CookieConsent = () => {
     const customCode = localStorage.getItem('custom_tracking_code');
     if (customCode && customCode.trim()) {
       try {
-        eval(customCode.trim());
+        // Use safer script injection instead of eval()
+        const script = document.createElement('script');
+        script.textContent = customCode.trim();
+        script.type = 'text/javascript';
+        document.head.appendChild(script);
         console.log('Custom tracking code executed with consent');
       } catch (error) {
         console.error('Error executing custom tracking code:', error);

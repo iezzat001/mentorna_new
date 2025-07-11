@@ -116,10 +116,12 @@ const MobileHero = () => {
               🚀 LIMITED LAUNCH
             </Badge>
             <h1 className="text-white text-xl font-bold leading-tight mb-2">
-              Starting August 10th → Family AI & Startup Journey! 🚀
+            8-weeks interactive online program that transforms students into startup founders.🚀
+            
+              
             </h1>
             <p className="text-white/90 text-base leading-relaxed">
-              Launch real products, solve real problems, lead real change. Join the first 30 families! 
+            Launch real prodcuts. Solve real problems. Get your first customer
               <span className="text-accent-yellow font-semibold"> #AIEducation #Future</span>
             </p>
           </div>
