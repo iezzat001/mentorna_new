@@ -131,7 +131,7 @@ const MobileHero = () => {
               
             </h1>
             <p className="text-white/90 text-base leading-relaxed">
-            Launch real prodcuts. Solve real problems. Get your first customer
+            Launch real products. Solve real problems. Get your first customer
               <span className="text-accent-yellow font-semibold"> #AIEducation #Future</span>
             </p>
           </div>
