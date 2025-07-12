@@ -58,7 +58,7 @@ const Hero = () => {
           
           {/* Description */}
           <div className="max-w-md lg:max-w-lg text-white/70 font-light leading-relaxed font-body text-lg">
-          Launch real productts. Solve real problems. Get your first customer.
+          Launch real products. Solve real problems. Get your first customer.
           </div>
         </div>
       </div>
