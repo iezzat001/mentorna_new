@@ -59,7 +59,7 @@ const FoundersSection = () => {
             text-foreground 
             mb-6
           ">
-            MEET THE FOUNDERS
+            MEET THE MENTORS
           </h2>
           <div className="
             bg-foreground 
