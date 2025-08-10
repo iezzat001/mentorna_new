@@ -1,12 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
 
-// TypeScript declarations for Google Analytics
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
-  }
-}
+import { useState, useEffect, useCallback } from 'react';
 
 interface GA4Config {
   measurementId: string;
