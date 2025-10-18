@@ -14,17 +14,6 @@ const SuccessStories = () => {
       videoUrl: "https://d2mp3ttz3u5gci.cloudfront.net/mariam.MOV",
       thumbnailUrl: "https://d2mp3ttz3u5gci.cloudfront.net/mariam_thumbnail.png",
       description: "Secured a scholarship to study at Ludwig Maximilian University of Munich (LMU) - ranked 27th globally! 🏆"
-    },
-    {
-      name: "OMAR MOSA",
-      emoji: "💡",
-      badge: "YOUNG ENTREPRENEUR & INNOVATOR",
-      badgeColor: "bg-accent-yellow",
-      headerColor: "bg-accent-blue",
-      icon: Lightbulb,
-      videoUrl: "https://www.youtube.com/live/y4RMA94rLQ4?feature=shared&t=3927",
-      thumbnailUrl: "https://d2mp3ttz3u5gci.cloudfront.net/omar_thumbnail.png",
-      description: "Created Power Outage Saver an affordable lighting solution during power cuts💡. Omar won 1st place at both school and state invention conventions, earned the Eversource Energy Award, and was selected for the national finals at the Henry Ford Museum in Michigan!"
     }
   ];
 

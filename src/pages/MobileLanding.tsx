@@ -87,21 +87,6 @@ const MobileLanding = () => {
       comments: "3.1K",
       shares: "1.2K",
       hashtags: ["ScholarshipWinner", "Munich", "Success", "AIEducation"]
-    },
-    {
-      name: "OMAR MOSA",
-      emoji: "💡",
-      badge: "YOUNG ENTREPRENEUR & INNOVATOR",
-      badgeColor: "bg-accent-yellow",
-      headerColor: "bg-accent-blue",
-      icon: Lightbulb,
-      videoUrl: "https://www.youtube.com/live/y4RMA94rLQ4?feature=shared&t=3927",
-      thumbnailUrl: "https://d2mp3ttz3u5gci.cloudfront.net/omar_thumbnail.png",
-      description: "Created Omar Waters - the first subscription delivery service for bottled water in Tanta using AI! 💧",
-      likes: "18.7K",
-      comments: "4.5K",
-      shares: "2.1K",
-      hashtags: ["Entrepreneur", "StartupLife", "Innovation", "WaterDelivery"]
     }
   ];
 
