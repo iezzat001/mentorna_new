@@ -14,6 +14,7 @@ import MobileLanding from "./pages/MobileLanding";
 import Member from "./pages/Member";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import ComingSoonPage from "./pages/ComingSoonPage";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 
 const queryClient = new QueryClient();
@@ -53,7 +54,8 @@ const App = () => {
               ) : (
                 // Main domain routes
                 <>
-                  <Route path="/" element={<Index />} />
+                  <Route path="/" element={<ComingSoonPage />} />
+                  <Route path="/ahmedezzat_vibe" element={<Index />} />
                   <Route path="/mobile" element={<MobileLanding />} />
                   <Route 
                     path="/member/*" 
