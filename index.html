@@ -8,7 +8,10 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://mentorna.com/" />
+
   <!-- Enhanced SEO Meta Tags -->
   <meta name="description" content="Join Mentorna's 8-week AI & Entrepreneurship Bootcamp. Learn Python, machine learning, web development, and build your own AI startup. Expert mentors, hands-on projects, and €5,000 prize competition. Transform your future with cutting-edge AI skills.">
   <meta name="keywords" content="AI bootcamp, coding bootcamp, entrepreneurship program, Python programming, machine learning, web development, AI education, startup incubator, tech skills, young entrepreneurs, AI innovation, coding for kids, STEM education, artificial intelligence training, Mentorna">
@@ -41,30 +44,175 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   
-  <!-- Schema.org Structured Data -->
+  <!-- Schema.org Structured Data - Organization -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    "name": "Mentorna AI Bootcamp",
-    "description": "8-week intensive AI & entrepreneurship bootcamp teaching Python, machine learning, web development, and startup skills",
+    "name": "Mentorna",
+    "alternateName": "Mentorna AI Bootcamp",
+    "description": "Premium AI education platform offering an 8-week intensive bootcamp for children and teenagers (ages 8-18) to learn AI, coding, and entrepreneurship",
     "url": "https://mentorna.com",
     "logo": "https://d2mp3ttz3u5gci.cloudfront.net/mentorna-logo.png",
+    "image": "https://d2mp3ttz3u5gci.cloudfront.net/mentorna-og-image.jpg",
+    "foundingDate": "2025",
+    "sameAs": [
+      "https://twitter.com/MentornaBootcamp",
+      "https://instagram.com/Mentorna_Official"
+    ],
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",
-      "email": "info@mentorna.com"
+      "email": "info@mentorna.com",
+      "availableLanguage": ["English"]
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "Global"
+    }
+  }
+  </script>
+
+  <!-- Schema.org Structured Data - Course -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "AI & Entrepreneurship Bootcamp",
+    "description": "8-week intensive online bootcamp teaching AI, Python programming, machine learning, web development, and entrepreneurship to ages 8-18",
+    "provider": {
+      "@type": "EducationalOrganization",
+      "name": "Mentorna",
+      "url": "https://mentorna.com"
+    },
+    "courseMode": "online",
+    "educationalLevel": "Beginner to Intermediate",
+    "timeRequired": "P8W",
+    "typicalAgeRange": "8-18",
+    "audience": {
+      "@type": "EducationalAudience",
+      "educationalRole": "student",
+      "audienceType": "Children and Teenagers"
+    },
+    "teaches": [
+      "Python Programming",
+      "Machine Learning",
+      "Web Development",
+      "Artificial Intelligence",
+      "Entrepreneurship",
+      "Startup Development",
+      "Problem Solving",
+      "Critical Thinking"
+    ],
+    "coursePrerequisites": "No prior programming experience required",
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "online",
+      "courseWorkload": "P8W",
+      "instructor": [
+        {
+          "@type": "Person",
+          "name": "Ahmed Ezzat",
+          "description": "AI Consultant & Serial Entrepreneur with 5 years experience"
+        },
+        {
+          "@type": "Person",
+          "name": "Islam Mosa",
+          "description": "Tech Entrepreneur, 40 under 40 by HBJ"
+        }
+      ]
     },
     "offers": {
       "@type": "Offer",
-      "name": "AI & Entrepreneurship Bootcamp",
-      "description": "8-week program with expert mentors, hands-on projects, and startup competition",
+      "category": "Course",
       "price": "329",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock"
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2025-11-11",
+      "url": "https://mentorna.com"
     },
-    "educationalCredentialAwarded": "AI & Entrepreneurship Certificate",
-    "teaches": ["Python Programming", "Machine Learning", "Web Development", "Artificial Intelligence", "Entrepreneurship", "Startup Development"]
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "1"
+    }
+  }
+  </script>
+
+  <!-- Schema.org Structured Data - FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Mentorna AI Bootcamp?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mentorna is an 8-week intensive online bootcamp for ages 8-18 that teaches AI, coding, and entrepreneurship. Students learn Python programming, machine learning, web development, and how to build and launch real AI-powered products with expert mentors."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long is the program?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The bootcamp runs for 8 weeks, divided into two phases: Phase I (Weeks 1-4) covers Foundation Building with AI fundamentals and Python programming, while Phase II (Weeks 5-8) focuses on Advanced Implementation with ML concepts and startup launch."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the age range for students?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mentorna AI Bootcamp is designed for children and teenagers aged 8-18 years old. No prior programming experience is required."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does the bootcamp cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The launch special price is $329 (regularly $500). This includes the full 8-week program, expert mentorship, hands-on projects, participation in the €5,000 startup competition, and lifetime access to all materials."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the program online or in-person?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The bootcamp is 100% online, making it accessible to students globally. All sessions are conducted virtually with live expert instruction and hands-on project work."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What will students learn?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Students will master Python programming, machine learning fundamentals, web development, AI implementation, entrepreneurship skills, and startup development. They'll work on real-world projects and learn to build and launch AI-powered products."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Schema.org Structured Data - WebSite for Search Box -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Mentorna",
+    "alternateName": "Mentorna AI Bootcamp",
+    "url": "https://mentorna.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://mentorna.com/?s={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
   }
   </script>
   

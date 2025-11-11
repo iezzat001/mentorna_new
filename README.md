@@ -1,73 +1,130 @@
-# Welcome to your Lovable project
+# Mentorna AI Bootcamp
 
-## Project info
+## Project Overview
 
-**URL**: https://lovable.dev/projects/10f6bc6c-6ac6-4960-8ee4-2ce073d64c00
+Mentorna is a premium AI education platform offering an 8-week intensive online bootcamp for children and teenagers (ages 8-18) to learn AI, coding, and entrepreneurship skills.
 
-## How can I edit this code?
+## Technologies Used
 
-There are several ways of editing your application.
+This project is built with modern web technologies:
 
-**Use Lovable**
+- **Vite** - Fast build tool and development server
+- **TypeScript** - Type-safe development
+- **React 18** - UI component framework
+- **Tailwind CSS** - Utility-first styling framework
+- **shadcn-ui** - Component library
+- **Supabase** - Backend infrastructure (PostgreSQL, Auth, Edge Functions)
+- **React Query** - Server state management
+- **React Router** - Client-side routing
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/10f6bc6c-6ac6-4960-8ee4-2ce073d64c00) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js (v18 or higher)
+- npm or yarn package manager
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
+1. Clone the repository:
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
+cd mentorna_new
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. Install dependencies:
+```sh
+npm install
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. Set up environment variables:
+Create a `.env` file in the root directory with your Supabase credentials:
+```
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+4. Start the development server:
+```sh
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Available Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint for code quality
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+```
+mentorna_new/
+├── src/
+│   ├── components/     # React components
+│   ├── pages/         # Page components
+│   ├── contexts/      # React contexts
+│   ├── hooks/         # Custom React hooks
+│   ├── integrations/  # External service integrations
+│   ├── lib/           # Utility libraries
+│   └── types/         # TypeScript type definitions
+├── supabase/
+│   ├── functions/     # Edge functions
+│   └── migrations/    # Database migrations
+├── public/            # Static assets
+└── Documentation/     # Project documentation
+```
 
-This project is built with:
+## Key Features
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- Responsive landing pages (desktop and mobile TikTok-style)
+- 8-week curriculum display
+- Admin dashboard with CMS capabilities
+- Lead capture and management
+- Email campaign management
+- Analytics and visitor tracking
+- Google Analytics 4 and Meta Pixel integration
 
-## How can I deploy this project?
+## Documentation
 
-Simply open [Lovable](https://lovable.dev/projects/10f6bc6c-6ac6-4960-8ee4-2ce073d64c00) and click on Share -> Publish.
+Comprehensive documentation is available in the root directory:
 
-## Can I connect a custom domain to my Lovable project?
+- `PROJECT_BRIEF.md` - Business strategy and overview
+- `DESIGN_SYSTEM.md` - Neubrutalism design guidelines
+- `MOBILE_DESIGN_SYSTEM.md` - Mobile-specific patterns
+- `GA4_VERIFICATION_GUIDE.md` - Analytics setup
+- `FOUNDERS_SECTION_TECHNICAL_GUIDE.md` - Technical implementation
 
-Yes, you can!
+## Deployment
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This project can be deployed to any static hosting service that supports Vite applications:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Vercel
+- Netlify
+- Cloudflare Pages
+- AWS Amplify
+- Firebase Hosting
+
+Build the project first:
+```sh
+npm run build
+```
+
+The output will be in the `dist/` directory.
+
+## Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Test thoroughly
+4. Submit a pull request
+
+## License
+
+Copyright © 2025 Mentorna. All rights reserved.
+
+## Support
+
+For questions or support, contact: info@mentorna.com
