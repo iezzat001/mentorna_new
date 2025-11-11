@@ -11,7 +11,7 @@ const MobilePricingSection = () => {
       {/* Mobile Header */}
       <div className="relative z-30 flex items-center justify-between p-4 pt-12">
         <div className="font-heading text-foreground font-light tracking-wide text-xl">
-          iLab®
+          Mentorna®
         </div>
         <div className="w-8 h-8 flex items-center justify-center">
           <div className="w-6 h-6 rounded-full bg-foreground/20 backdrop-blur-sm" />

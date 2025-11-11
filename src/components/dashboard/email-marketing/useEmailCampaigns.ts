@@ -97,7 +97,7 @@ export const useEmailCampaigns = () => {
           content: campaign.content,
           recipientGroup: campaign.recipient_group,
           fromEmail: 'noreply@yourdomain.com',
-          fromName: 'iLab AI Education'
+          fromName: 'Mentorna AI Education'
         }
       });
 

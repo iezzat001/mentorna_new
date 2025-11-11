@@ -15,7 +15,7 @@ const Hero = () => {
       <nav className="relative z-30 flex items-center justify-between p-8 lg:p-12">
         {/* Logo */}
         <div className="font-heading text-white font-light tracking-wide text-xl">
-          iLab®
+          Mentorna®
         </div>
         
         {/* Navigation Links */}

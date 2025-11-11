@@ -27,10 +27,14 @@ const CookieConsent = () => {
     analytics: false,
     marketing: false
   });
+  const [measurementId, setMeasurementId] = useState('');
 
-  // Get GA measurement ID from localStorage or environment
-  const measurementId = localStorage.getItem('google_analytics_id') || '';
-  
+  // Get GA measurement ID from localStorage in useEffect
+  useEffect(() => {
+    const gaId = localStorage.getItem('google_analytics_id') || '';
+    setMeasurementId(gaId);
+  }, []);
+
   // Initialize GA4 with consent mode (loads immediately with denied consent)
   const { isInitialized, updateConsent, trackEvent } = useGoogleAnalytics({
     measurementId: measurementId.trim(),
@@ -42,15 +46,22 @@ const CookieConsent = () => {
     if (!consent) {
       setShowBanner(true);
     } else {
-      const savedPreferences = JSON.parse(consent);
-      setPreferences(savedPreferences);
-      
-      // Update GA4 consent based on saved preferences
-      if (isInitialized && savedPreferences.analytics) {
-        updateConsent({
-          analytics_storage: 'granted',
-          ad_storage: savedPreferences.marketing ? 'granted' : 'denied'
-        });
+      try {
+        const savedPreferences = JSON.parse(consent);
+        setPreferences(savedPreferences);
+
+        // Update GA4 consent based on saved preferences
+        if (isInitialized && savedPreferences.analytics) {
+          updateConsent({
+            analytics_storage: 'granted',
+            ad_storage: savedPreferences.marketing ? 'granted' : 'denied'
+          });
+        }
+      } catch (error) {
+        // If parsing fails, clear invalid data and show banner
+        console.warn('Invalid cookie consent data, clearing...', error);
+        localStorage.removeItem('cookie_consent');
+        setShowBanner(true);
       }
     }
   }, [isInitialized, updateConsent]);

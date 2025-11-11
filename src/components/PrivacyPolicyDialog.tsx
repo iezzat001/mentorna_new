@@ -108,12 +108,12 @@ const PrivacyPolicyDialog = ({ children }: PrivacyPolicyDialogProps) => {
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-lg mb-2">1. Acceptance of Terms</h3>
-                  <p>By accessing and using iLab® AI Education Platform, you accept and agree to be bound by these terms and conditions.</p>
+                  <p>By accessing and using Mentorna® AI Education Platform, you accept and agree to be bound by these terms and conditions.</p>
                 </div>
 
                 <div>
                   <h3 className="font-semibold text-lg mb-2">2. Description of Service</h3>
-                  <p>iLab® provides AI education services for children, including coding courses, workshops, and educational content. Our services are designed to teach AI and programming concepts to young learners.</p>
+                  <p>Mentorna® provides AI education services for children, including coding courses, workshops, and educational content. Our services are designed to teach AI and programming concepts to young learners.</p>
                 </div>
 
                 <div>
@@ -130,12 +130,12 @@ const PrivacyPolicyDialog = ({ children }: PrivacyPolicyDialogProps) => {
 
                 <div>
                   <h3 className="font-semibold text-lg mb-2">4. Intellectual Property</h3>
-                  <p>All content, materials, and intellectual property on our platform are owned by iLab® or our licensors. You may not reproduce, distribute, or create derivative works without our written permission.</p>
+                  <p>All content, materials, and intellectual property on our platform are owned by Mentorna® or our licensors. You may not reproduce, distribute, or create derivative works without our written permission.</p>
                 </div>
 
                 <div>
                   <h3 className="font-semibold text-lg mb-2">5. Limitation of Liability</h3>
-                  <p>To the maximum extent permitted by law, iLab® shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services.</p>
+                  <p>To the maximum extent permitted by law, Mentorna® shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services.</p>
                 </div>
 
                 <div>
@@ -150,7 +150,7 @@ const PrivacyPolicyDialog = ({ children }: PrivacyPolicyDialogProps) => {
 
                 <div>
                   <h3 className="font-semibold text-lg mb-2">8. Governing Law</h3>
-                  <p>These terms are governed by the laws of the jurisdiction in which iLab® operates, without regard to conflict of law principles.</p>
+                  <p>These terms are governed by the laws of the jurisdiction in which Mentorna® operates, without regard to conflict of law principles.</p>
                 </div>
               </div>
             </div>
@@ -160,8 +160,8 @@ const PrivacyPolicyDialog = ({ children }: PrivacyPolicyDialogProps) => {
               <h2 className="font-heading text-xl font-bold uppercase mb-4">Contact Information</h2>
               <p className="mb-2">For questions about this Privacy Policy or Terms of Service, please contact us:</p>
               <ul className="space-y-1">
-                <li><strong>Email:</strong> privacy@ilab-ai.com</li>
-                <li><strong>Address:</strong> iLab® AI Education Platform</li>
+                <li><strong>Email:</strong> privacy@mentorna.com</li>
+                <li><strong>Address:</strong> Mentorna® AI Education Platform</li>
                 <li><strong>Phone:</strong> Available through our contact form</li>
               </ul>
               <p className="mt-4 text-sm text-foreground/70">

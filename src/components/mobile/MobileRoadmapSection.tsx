@@ -177,7 +177,7 @@ const MobileRoadmapSection = () => {
       {/* Mobile Header */}
       <div className="relative z-30 flex items-center justify-between p-4 pt-12">
         <div className="font-heading text-white font-light tracking-wide text-xl drop-shadow-lg">
-          iLab®
+          Mentorna®
         </div>
 
       </div>
@@ -192,7 +192,7 @@ const MobileRoadmapSection = () => {
               <span className="text-xl">{currentStepData.emoji}</span>
             </div>
             <div>
-              <div className="text-white font-bold text-sm drop-shadow-md">@iLab_PathToSuccess</div>
+              <div className="text-white font-bold text-sm drop-shadow-md">@Mentorna_PathToSuccess</div>
               <div className="text-white/80 text-xs">Step {currentStepData.number} • AI Education</div>
             </div>
           </div>

@@ -1,11 +1,11 @@
-# iLab® AI Education Platform
+# Mentorna® AI Education Platform
 ## Business Summary & Marketing Strategy Document
 
 ---
 
 ## Executive Summary
 
-iLab® is a premium AI education platform designed to empower children and teenagers (ages 8-18) with cutting-edge artificial intelligence and coding skills. Through an intensive 8-week transformation journey, students learn to launch real products, solve real problems, and lead real change in the AI-powered future.
+Mentorna® is a premium AI education platform designed to empower children and teenagers (ages 8-18) with cutting-edge artificial intelligence and coding skills. Through an intensive 8-week transformation journey, students learn to launch real products, solve real problems, and lead real change in the AI-powered future.
 
 **Mission**: To give children the ultimate advantage in tomorrow's world by providing world-class AI education that transforms curious learners into confident creators.
 
@@ -366,7 +366,7 @@ This approach targets modern parents who consume content on mobile and expect so
 
 ## Conclusion
 
-iLab® represents a timely opportunity in the rapidly growing AI education market. By combining premium positioning, proven pedagogical approaches, distinctive brand identity, and modern technology, the platform is well-positioned to capture market share among forward-thinking parents seeking competitive advantages for their children.
+Mentorna® represents a timely opportunity in the rapidly growing AI education market. By combining premium positioning, proven pedagogical approaches, distinctive brand identity, and modern technology, the platform is well-positioned to capture market share among forward-thinking parents seeking competitive advantages for their children.
 
 The launch strategy leverages scarcity, exclusivity, and social proof to build momentum, while the strong technical foundation and clear roadmap provide a path to sustainable growth and market leadership.
 

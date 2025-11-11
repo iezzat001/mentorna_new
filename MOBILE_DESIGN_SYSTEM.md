@@ -1,5 +1,5 @@
 
-# Mobile-First Design System for iLab® AI Education Platform
+# Mobile-First Design System for Mentorna® AI Education Platform
 
 ## Design Philosophy
 
@@ -93,7 +93,7 @@ The mobile design system for `/mobile` embodies **TikTok-Style Educational Engag
   {/* Top Bar */}
   <div className="relative z-30 flex items-center justify-between p-4 pt-12">
     <div className="font-heading text-white font-light tracking-wide text-xl">
-      iLab®
+      Mentorna®
     </div>
     <div className="w-8 h-8 flex items-center justify-center">
       <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm" />
@@ -108,7 +108,7 @@ The mobile design system for `/mobile` embodies **TikTok-Style Educational Engag
       <div className="flex items-center mb-4">
         <div className="w-10 h-10 rounded-full bg-gradient-to-r from-accent-purple to-accent-blue mr-3" />
         <div>
-          <div className="text-white font-semibold text-sm">@iLab_Official</div>
+          <div className="text-white font-semibold text-sm">@Mentorna_Official</div>
           <div className="text-white/70 text-xs">AI Education Platform</div>
         </div>
       </div>
@@ -160,7 +160,7 @@ The mobile design system for `/mobile` embodies **TikTok-Style Educational Engag
   
   {/* Mobile Header */}
   <div className="relative z-30 flex items-center justify-between p-4 pt-12">
-    <div className="font-heading text-white font-light text-xl">iLab®</div>
+    <div className="font-heading text-white font-light text-xl">Mentorna®</div>
     <div className="w-8 h-8 flex items-center justify-center">
       <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm" />
     </div>
@@ -208,7 +208,7 @@ The mobile design system for `/mobile` embodies **TikTok-Style Educational Engag
   {/* Mobile Header */}
   <div className="relative z-30 flex items-center justify-between p-4 pt-8">
     <div className="font-heading text-foreground font-light tracking-wide text-lg">
-      iLab® Program
+      Mentorna® Program
     </div>
     <div className="w-6 h-6 flex items-center justify-center">
       <div className="w-4 h-4 rounded-full bg-foreground/20 backdrop-blur-sm" />
@@ -305,7 +305,7 @@ const MobileSection = ({ children, backgroundColor, hasVideo, videoUrl }: Mobile
 ### Mobile Header Component
 ```tsx
 // Consistent mobile header across all sections
-const MobileHeader = ({ title = "iLab®", variant = "light" }: { title?: string; variant?: "light" | "dark" }) => (
+const MobileHeader = ({ title = "Mentorna®", variant = "light" }: { title?: string; variant?: "light" | "dark" }) => (
   <div className="relative z-30 flex items-center justify-between p-4 pt-12">
     <div className={`font-heading font-light tracking-wide text-xl ${variant === "light" ? "text-white" : "text-foreground"}`}>
       {title}

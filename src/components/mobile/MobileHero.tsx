@@ -102,7 +102,7 @@ const MobileHero = () => {
       {/* Top Bar */}
       <div className="relative z-30 flex items-center justify-between p-4 pt-12">
         <div className="font-heading text-white font-light tracking-wide text-xl">
-          iLab®
+          Mentorna®
         </div>
 
       </div>
@@ -115,7 +115,7 @@ const MobileHero = () => {
           <div className="flex items-center mb-4">
             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-accent-purple to-accent-blue mr-3" />
             <div>
-              <div className="text-white font-semibold text-sm">@iLab_Official</div>
+              <div className="text-white font-semibold text-sm">@Mentorna_Official</div>
               <div className="text-white/70 text-xs">AI Education Platform</div>
             </div>
           </div>

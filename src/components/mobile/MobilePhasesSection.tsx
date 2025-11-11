@@ -249,7 +249,7 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
       {/* Compact Header */}
       <div className="relative z-30 flex items-center justify-between p-4 pt-8">
         <div className="font-heading text-foreground font-light tracking-wide text-lg">
-          iLab® Program
+          Mentorna® Program
         </div>
         <div className="w-6 h-6 flex items-center justify-center">
           <div className="w-4 h-4 rounded-full bg-foreground/20 backdrop-blur-sm" />

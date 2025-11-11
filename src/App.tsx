@@ -14,7 +14,7 @@ import MobileLanding from "./pages/MobileLanding";
 import Member from "./pages/Member";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
-import ComingSoonPage from "./pages/ComingSoonPage";
+import ResponsiveHome from "@/components/ResponsiveHome";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 
 const queryClient = new QueryClient();
@@ -54,25 +54,30 @@ const App = () => {
               ) : (
                 // Main domain routes
                 <>
-                  <Route path="/" element={<ComingSoonPage />} />
-                  <Route path="/ahmedezzat_vibe" element={<Index />} />
-                  <Route path="/mobile" element={<MobileLanding />} />
-                  <Route 
-                    path="/member/*" 
+                  {/* Root path - shows desktop or mobile view based on device */}
+                  <Route path="/" element={<ResponsiveHome />} />
+
+                  {/* Protected member area */}
+                  <Route
+                    path="/member/*"
                     element={
                       <ProtectedRoute>
                         <Member />
                       </ProtectedRoute>
-                    } 
+                    }
                   />
-                  <Route 
-                    path="/dashboard" 
+
+                  {/* Admin dashboard */}
+                  <Route
+                    path="/dashboard"
                     element={
                       <ProtectedRoute requireAdmin={true}>
                         <Dashboard />
                       </ProtectedRoute>
-                    } 
+                    }
                   />
+
+                  {/* 404 page */}
                   <Route path="*" element={<NotFound />} />
                 </>
               )}

@@ -4,7 +4,10 @@
       "Bash(npm install)",
       "Bash(npm run dev:*)",
       "Bash(git commit:*)",
-      "WebFetch(domain:d2mp3ttz3u5gci.cloudfront.net)"
+      "WebFetch(domain:d2mp3ttz3u5gci.cloudfront.net)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(xargs git branch -D)"
     ],
     "deny": []
   }

@@ -17,12 +17,19 @@ const PageTracker = ({ isEnabled }: PageTrackerProps) => {
   useEffect(() => {
     const consent = localStorage.getItem('cookie_consent');
     const gaId = localStorage.getItem('google_analytics_id');
-    
+
     if (consent) {
-      const preferences = JSON.parse(consent);
-      setAnalyticsEnabled(preferences.analytics);
+      try {
+        const preferences = JSON.parse(consent);
+        setAnalyticsEnabled(preferences.analytics || false);
+      } catch (error) {
+        // If parsing fails, clear invalid data and disable analytics
+        console.warn('Invalid cookie consent data, clearing...', error);
+        localStorage.removeItem('cookie_consent');
+        setAnalyticsEnabled(false);
+      }
     }
-    
+
     if (gaId && gaId.trim()) {
       setMeasurementId(gaId.trim());
     }

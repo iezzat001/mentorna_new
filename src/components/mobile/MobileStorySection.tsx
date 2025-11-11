@@ -218,7 +218,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
       {/* Top Bar */}
       <div className="relative z-30 flex items-center justify-between p-4 pt-12">
         <div className="font-heading text-white font-light tracking-wide text-xl">
-          iLab® Success Stories
+          Mentorna® Success Stories
         </div>
 
       </div>

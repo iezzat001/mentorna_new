@@ -95,7 +95,7 @@ const MobileNewsletterSection = () => {
       {/* Mobile Header */}
       <div className="relative z-30 flex items-center justify-between p-4 pt-12">
         <div className="font-heading text-white font-light tracking-wide text-xl">
-          iLab®
+          Mentorna®
         </div>
       </div>
 

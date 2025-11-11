@@ -15,7 +15,7 @@ const EmailMarketingManager = () => {
     content: '',
     recipientGroup: 'newsletter',
     fromEmail: 'noreply@yourdomain.com',
-    fromName: 'iLab AI Education'
+    fromName: 'Mentorna AI Education'
   });
 
   const {
@@ -41,7 +41,7 @@ const EmailMarketingManager = () => {
           content: '',
           recipientGroup: 'newsletter',
           fromEmail: 'noreply@yourdomain.com',
-          fromName: 'iLab AI Education'
+          fromName: 'Mentorna AI Education'
         });
       }
     });
