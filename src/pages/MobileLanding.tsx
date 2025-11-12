@@ -10,7 +10,6 @@ import MobilePricingSection from '@/components/mobile/MobilePricingSection';
 import MobileFounderCard from '@/components/mobile/MobileFounderCard';
 import MobileComingSoonSection from '@/components/mobile/MobileComingSoonSection';
 import MobileNewsletterSection from '@/components/mobile/MobileNewsletterSection';
-import ViewSwitcher from '@/components/ViewSwitcher';
 import { Award, Lightbulb, Rocket, TrendingUp, GraduationCap } from 'lucide-react';
 import { useWeeksData } from '@/hooks/useWeeksData';
 import '@/utils/suppressAdErrors'; // Suppress YouTube ad-related console errors
@@ -202,9 +201,6 @@ const MobileLanding = () => {
           <MobileNewsletterSection />
         </div>
       </div>
-      
-      {/* Add View Switcher */}
-      <ViewSwitcher />
     </>
   );
 };
