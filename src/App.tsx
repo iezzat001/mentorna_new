@@ -12,6 +12,7 @@ import PageTracker from "@/components/PageTracker";
 import Index from "./pages/Index";
 import MobileLanding from "./pages/MobileLanding";
 import Member from "./pages/Member";
+import VibeCoding from "./pages/VibeCoding";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import ResponsiveHome from "@/components/ResponsiveHome";
@@ -66,6 +67,9 @@ const App = () => {
                       </ProtectedRoute>
                     }
                   />
+
+                  {/* Vibe Coding lead magnet page */}
+                  <Route path="/vibecoding" element={<VibeCoding />} />
 
                   {/* Admin dashboard */}
                   <Route
