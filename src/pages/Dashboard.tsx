@@ -21,6 +21,7 @@ import CourseContentManager from '@/components/dashboard/CourseContentManager';
 import FoundersManager from '@/components/dashboard/FoundersManager';
 import WaitingListManager from '@/components/dashboard/WaitingListManager';
 import NewsletterManager from '@/components/dashboard/NewsletterManager';
+import MagnetLeadManager from '@/components/dashboard/MagnetLeadManager';
 import EmailMarketingManager from '@/components/dashboard/EmailMarketingManager';
 import TrackingAnalysisManager from '@/components/dashboard/TrackingAnalysisManager';
 import ContactMessagesManager from '@/components/dashboard/ContactMessagesManager';
@@ -58,6 +59,8 @@ const Dashboard = () => {
         return 'Waiting List Management';
       case 'newsletter':
         return 'Newsletter Management';
+      case 'magnet-lead':
+        return 'Magnet Lead Management';
       case 'email-marketing':
         return 'Email Marketing Management';
       case 'tracking-analysis':
@@ -79,6 +82,8 @@ const Dashboard = () => {
         return <WaitingListManager />;
       case 'newsletter':
         return <NewsletterManager />;
+      case 'magnet-lead':
+        return <MagnetLeadManager />;
       case 'email-marketing':
         return <EmailMarketingManager />;
       case 'tracking-analysis':

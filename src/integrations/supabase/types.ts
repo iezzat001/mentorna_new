@@ -44,6 +44,30 @@ export type Database = {
         }
         Relationships: []
       }
+      magnet_leads: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          source: string
+          whatsapp: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          source?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          source?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       founders: {
         Row: {
           created_at: string

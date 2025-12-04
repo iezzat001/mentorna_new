@@ -5,6 +5,7 @@ import {
   BookOpen,
   Clock,
   Mail,
+  Magnet,
   MessageSquare,
   Send,
   TrendingUp,
@@ -47,7 +48,7 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
     },
     {
       title: "Course Content",
-      url: "course-content", 
+      url: "course-content",
       icon: BookOpen,
     },
     {
@@ -62,8 +63,13 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
     },
     {
       title: "Newsletter",
-      url: "newsletter", 
+      url: "newsletter",
       icon: Mail,
+    },
+    {
+      title: "Magnet Lead",
+      url: "magnet-lead",
+      icon: Magnet,
     },
     {
       title: "Contact Messages",

@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Flow and coordination directories
+.claude-flow/
+.hive-mind/
+.swarm/
+memory/
+claude-flow
+
+# MCP configuration
+.mcp.json
+
+# Local data directories
+Mentorna/
+
+# Claude settings (already covered by *.local but being explicit)
+.claude/settings.local.json
