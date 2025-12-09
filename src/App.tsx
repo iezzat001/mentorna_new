@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 import MobileLanding from "./pages/MobileLanding";
 import Member from "./pages/Member";
 import VibeCoding from "./pages/VibeCoding";
+import SkillsIn2026 from "./pages/SkillsIn2026";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import ResponsiveHome from "@/components/ResponsiveHome";
@@ -70,6 +71,9 @@ const App = () => {
 
                   {/* Vibe Coding lead magnet page */}
                   <Route path="/vibecoding" element={<VibeCoding />} />
+
+                  {/* Skills in 2026 page */}
+                  <Route path="/skills-in-2026" element={<SkillsIn2026 />} />
 
                   {/* Admin dashboard */}
                   <Route
