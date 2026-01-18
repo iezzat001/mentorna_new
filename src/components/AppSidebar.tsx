@@ -4,6 +4,7 @@ import {
   BarChart,
   BookOpen,
   Clock,
+  FileSignature,
   Mail,
   Magnet,
   MessageSquare,
@@ -75,6 +76,11 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
       title: "Contact Messages",
       url: "contact-messages",
       icon: MessageSquare,
+    },
+    {
+      title: "Signed Contracts",
+      url: "contracts",
+      icon: FileSignature,
     },
     {
       title: "Email Marketing",

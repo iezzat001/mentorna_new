@@ -14,6 +14,7 @@ import MobileLanding from "./pages/MobileLanding";
 import Member from "./pages/Member";
 import VibeCoding from "./pages/VibeCoding";
 import SkillsIn2026 from "./pages/SkillsIn2026";
+import MohamedOffer from "./pages/MohamedOffer";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import ResponsiveHome from "@/components/ResponsiveHome";
@@ -74,6 +75,9 @@ const App = () => {
 
                   {/* Skills in 2026 page */}
                   <Route path="/skills-in-2026" element={<SkillsIn2026 />} />
+
+                  {/* Mohamed Offer page */}
+                  <Route path="/offer/mohamed" element={<MohamedOffer />} />
 
                   {/* Admin dashboard */}
                   <Route
