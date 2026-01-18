@@ -12,6 +12,9 @@ const MohamedOffer = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    whatsapp: "",
+    telegram: "",
+    address: "",
     signature: "",
     agree1: false,
     agree2: false,
@@ -53,6 +56,9 @@ const MohamedOffer = () => {
       const { error } = await supabase.from("signed_contracts").insert({
         full_name: formData.fullName,
         email: formData.email,
+        whatsapp: formData.whatsapp,
+        telegram: formData.telegram,
+        address: formData.address,
         signature: formData.signature,
         offer_type: "solopreneur_launchpad",
         total_amount: 49500,
@@ -366,6 +372,39 @@ const MohamedOffer = () => {
                 className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+            </div>
+            <div className="mb-5">
+              <label className="block font-bold uppercase text-sm mb-2 tracking-wider">WhatsApp Number</label>
+              <input
+                type="tel"
+                required
+                placeholder="+20 xxx xxx xxxx"
+                className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
+                value={formData.whatsapp}
+                onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+              />
+            </div>
+            <div className="mb-5">
+              <label className="block font-bold uppercase text-sm mb-2 tracking-wider">Telegram Username</label>
+              <input
+                type="text"
+                required
+                placeholder="@username"
+                className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
+                value={formData.telegram}
+                onChange={(e) => setFormData({ ...formData, telegram: e.target.value })}
+              />
+            </div>
+            <div className="mb-5">
+              <label className="block font-bold uppercase text-sm mb-2 tracking-wider">Address</label>
+              <input
+                type="text"
+                required
+                placeholder="City, Country"
+                className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               />
             </div>
             {/* Signature */}
