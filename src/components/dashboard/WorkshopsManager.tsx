@@ -33,7 +33,6 @@ interface Workshop {
   materials: {
     type: 'pdf' | 'slides' | 'script' | 'video';
     title: string;
-    path?: string;
     url?: string;
   }[];
   keyTakeaways: string[];
@@ -61,10 +60,10 @@ const workshops: Workshop[] = [
     ],
     description: 'A comprehensive workshop teaching the fundamentals of vibe coding - building applications using AI without traditional programming knowledge. Covers the evolution from traditional coding to AI-assisted development, with hands-on exercises using Replit.',
     materials: [
-      { type: 'pdf', title: 'Vibe Coding Strategic Guide (PDF)', path: '/Users/iEzzat/Documents/Ahmed Ezzat_Content/Workshop_1/Vibe_Coding_The_Strategic_Guide_to_Building_with_AI.pdf' },
-      { type: 'slides', title: 'Workshop Slides (HTML)', path: '/Users/iEzzat/Documents/Ahmed Ezzat_Content/Workshop_1/vibecoding_workshop_slides.html' },
-      { type: 'script', title: 'Full Workshop Script', path: '/Users/iEzzat/Documents/Ahmed Ezzat_Content/Workshop_1/workshop_content.md' },
-      { type: 'script', title: 'Platform-Agnostic Script', path: '/Users/iEzzat/Documents/Ahmed Ezzat_Content/Workshop_1/workshop_script_platform_agnostic.md' },
+      { type: 'slides', title: 'Workshop Slides (Interactive)', url: '/workshops/workshop-1-slides.html' },
+      { type: 'pdf', title: 'Vibe Coding Strategic Guide (PDF)', url: '#' },
+      { type: 'script', title: 'Full Workshop Script', url: '#' },
+      { type: 'script', title: 'Platform-Agnostic Script', url: '#' },
     ],
     keyTakeaways: [
       'Be precise - give AI one task at a time',
@@ -279,9 +278,20 @@ const WorkshopsManager = () => {
                             <p className="text-xs text-muted-foreground uppercase">{material.type}</p>
                           </div>
                         </div>
-                        <Button variant="outline" size="sm" className="border-2 border-foreground">
-                          <ExternalLink className="w-4 h-4" />
-                        </Button>
+                        {material.url && material.url !== '#' ? (
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="border-2 border-foreground"
+                            onClick={() => window.open(material.url, '_blank')}
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                        ) : (
+                          <Button variant="outline" size="sm" className="border-2 border-foreground opacity-50" disabled>
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                        )}
                       </div>
                     ))}
                   </div>

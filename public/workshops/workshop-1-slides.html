@@ -1,0 +1,2681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Coding Workshop - Complete Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        .presentation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .slide-wrapper {
+            position: relative;
+        }
+
+        .slide-label {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            font-size: 12px;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Base slide styles */
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border: 2px solid #fff;
+        }
+
+        .brand {
+            position: absolute;
+            bottom: 30px;
+            left: 60px;
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
+        }
+
+        /* ==================== SLIDE 1: TITLE ==================== */
+        .slide-1 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(255, 107, 53, 0.8);
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+
+        .slide-1 .badge {
+            background: #ff6b35;
+            color: #000;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 10px 24px;
+            border: 3px solid #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+            margin-bottom: 40px;
+        }
+
+        .slide-1 .title {
+            font-size: 96px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            line-height: 1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .slide-1 .title span {
+            background: linear-gradient(135deg, #ff6b35, #ff8c42, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-1 .subtitle {
+            font-size: 28px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .slide-1 .tools {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .slide-1 .tool {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .slide-1 .duration {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* ==================== SLIDE 2: ORIGIN ==================== */
+        .slide-2 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(29, 161, 242, 0.8);
+            padding: 50px 60px;
+        }
+
+        .slide-2 .section-tag {
+            background: #1da1f2;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .slide-2 .title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .slide-2 .title span { color: #1da1f2; }
+
+        .slide-2 .content {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+            align-items: center;
+        }
+
+        .slide-2 .tweet-card {
+            background: #000;
+            border: 3px solid #2f3336;
+            border-radius: 16px;
+            padding: 24px;
+            width: 500px;
+        }
+
+        .slide-2 .tweet-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .slide-2 .tweet-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .slide-2 .tweet-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .slide-2 .verified {
+            width: 18px;
+            height: 18px;
+            background: #1da1f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #fff;
+        }
+
+        .slide-2 .tweet-handle {
+            font-size: 14px;
+            color: #71767b;
+        }
+
+        .slide-2 .tweet-text {
+            font-size: 17px;
+            color: #e7e9ea;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .slide-2 .tweet-highlight { color: #1da1f2; font-weight: 600; }
+
+        .slide-2 .tweet-date {
+            font-size: 14px;
+            color: #71767b;
+            padding-top: 16px;
+            border-top: 1px solid #2f3336;
+        }
+
+        .slide-2 .right-col { flex: 1; }
+
+        .slide-2 .context-box {
+            background: rgba(255, 107, 53, 0.1);
+            border: 3px solid #ff6b35;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .slide-2 .context-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #ff6b35;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .slide-2 .context-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+
+        .slide-2 .who-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 24px;
+        }
+
+        .slide-2 .who-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .slide-2 .who-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .slide-2 .who-role {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        /* ==================== SLIDE 2B: PROGRAMMING EVOLUTION ==================== */
+        .slide-2b {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(168, 85, 247, 0.8);
+            padding: 40px 60px 50px;
+        }
+
+        .slide-2b .section-tag {
+            background: #a855f7;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .slide-2b .title {
+            font-size: 40px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .slide-2b .title span { color: #a855f7; }
+
+        .slide-2b .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 28px;
+        }
+
+        .slide-2b .timeline {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            flex: 1;
+            position: relative;
+            padding-top: 30px;
+        }
+
+        .slide-2b .timeline::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            right: 20px;
+            height: 4px;
+            background: linear-gradient(90deg, #666 0%, #a855f7 100%);
+            z-index: 0;
+        }
+
+        .slide-2b .era {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slide-2b .era-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #333;
+            border: 3px solid;
+            margin-bottom: 16px;
+            margin-top: -10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .slide-2b .era:nth-child(1) .era-dot { border-color: #666; background: #444; }
+        .slide-2b .era:nth-child(2) .era-dot { border-color: #888; background: #555; }
+        .slide-2b .era:nth-child(3) .era-dot { border-color: #06b6d4; background: rgba(6, 182, 212, 0.3); }
+        .slide-2b .era:nth-child(4) .era-dot { border-color: #10b981; background: rgba(16, 185, 129, 0.3); }
+        .slide-2b .era:nth-child(5) .era-dot { border-color: #a855f7; background: rgba(168, 85, 247, 0.5); }
+
+        .slide-2b .era-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            text-align: center;
+            width: 100%;
+            margin: 0 8px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-2b .era:nth-child(5) .era-card {
+            border-color: rgba(168, 85, 247, 0.5);
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .slide-2b .era-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .slide-2b .era-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .slide-2b .era-year {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 10px;
+        }
+
+        .slide-2b .era-examples {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .slide-2b .era-abstraction {
+            font-size: 10px;
+            color: #a855f7;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .slide-2b .insight-bar {
+            margin-top: 24px;
+            padding: 20px 24px;
+            background: rgba(168, 85, 247, 0.15);
+            border: 3px solid #a855f7;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-2b .insight-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .slide-2b .insight-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+
+        .slide-2b .insight-text span {
+            color: #a855f7;
+            font-weight: 700;
+        }
+
+        /* ==================== SLIDE 3: COMPARISON PART 1 ==================== */
+        .slide-3 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(255, 107, 53, 0.8);
+            padding: 50px 60px;
+        }
+
+        .slide-3 .section-tag {
+            background: #ff6b35;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .slide-3 .title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .slide-3 .comparison {
+            display: flex;
+            gap: 60px;
+            flex: 1;
+        }
+
+        .slide-3 .col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-3 .col-header {
+            text-align: center;
+            padding: 16px 20px;
+            margin-bottom: 30px;
+            border: 3px solid;
+        }
+
+        .slide-3 .col-header.old {
+            background: rgba(120, 120, 120, 0.2);
+            border-color: #666;
+        }
+
+        .slide-3 .col-header.new {
+            background: rgba(255, 107, 53, 0.2);
+            border-color: #ff6b35;
+        }
+
+        .slide-3 .col-title {
+            font-size: 22px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .slide-3 .col-header.old .col-title { color: #999; }
+        .slide-3 .col-header.new .col-title { color: #ff6b35; }
+
+        .slide-3 .traits {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .slide-3 .trait {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 16px 20px;
+            border: 2px solid;
+        }
+
+        .slide-3 .trait.old {
+            color: #999;
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .slide-3 .trait.new {
+            color: #ff6b35;
+            border-color: rgba(255, 107, 53, 0.3);
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .slide-3 .trait-icon { font-size: 22px; }
+
+        .slide-3 .bottom-quote {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: auto;
+        }
+
+        .slide-3 .quote-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
+
+        .slide-3 .quote-text span {
+            color: #ff6b35;
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        /* ==================== SLIDE 4: THE FLYWHEEL ==================== */
+        .slide-4 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(124, 58, 237, 0.8);
+            padding: 50px 60px;
+        }
+
+        .slide-4 .section-tag {
+            background: #7c3aed;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .slide-4 .title {
+            font-size: 44px;
+            font-weight: 800;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .slide-4 .title span { color: #7c3aed; }
+
+        .slide-4 .subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .slide-4 .flywheel-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+
+        .slide-4 .flywheel {
+            position: relative;
+            width: 500px;
+            height: 400px;
+        }
+
+        .slide-4 .fw-step {
+            position: absolute;
+            width: 200px;
+            padding: 20px;
+            border: 3px solid;
+            text-align: center;
+        }
+
+        .slide-4 .fw-step.s1 {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 107, 53, 0.15);
+            border-color: #ff6b35;
+        }
+
+        .slide-4 .fw-step.s2 {
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            background: rgba(6, 182, 212, 0.15);
+            border-color: #06b6d4;
+        }
+
+        .slide-4 .fw-step.s3 {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(16, 185, 129, 0.15);
+            border-color: #10b981;
+        }
+
+        .slide-4 .fw-step.s4 {
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            background: rgba(124, 58, 237, 0.15);
+            border-color: #7c3aed;
+        }
+
+        .slide-4 .fw-num {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .slide-4 .fw-step.s1 .fw-num { color: #ff6b35; }
+        .slide-4 .fw-step.s2 .fw-num { color: #06b6d4; }
+        .slide-4 .fw-step.s3 .fw-num { color: #10b981; }
+        .slide-4 .fw-step.s4 .fw-num { color: #7c3aed; }
+
+        .slide-4 .fw-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .slide-4 .fw-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .slide-4 .fw-arrows {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .slide-4 .fw-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .slide-4 .fw-center-icon { font-size: 32px; margin-bottom: 8px; }
+        
+        .slide-4 .fw-center-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ==================== SLIDE 5: FIVE GOLDEN RULES ==================== */
+        .slide-5 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(255, 215, 0, 0.8);
+            padding: 45px 60px;
+        }
+
+        .slide-5 .section-tag {
+            background: #ffd700;
+            color: #000;
+            margin-bottom: 16px;
+        }
+
+        .slide-5 .title {
+            font-size: 44px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 28px;
+        }
+
+        .slide-5 .title span { color: #ffd700; }
+
+        .slide-5 .rules {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .slide-5 .rule {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 24px;
+        }
+
+        .slide-5 .rule-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 215, 0, 0.15);
+            border: 3px solid #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .slide-5 .rule-content {
+            flex: 1;
+        }
+
+        .slide-5 .rule-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .slide-5 .rule-desc {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        /* ==================== SLIDE 6: RECOMMENDED PLATFORMS ==================== */
+        .slide-6 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(6, 182, 212, 0.8);
+            padding: 45px 60px;
+        }
+
+        .slide-6 .section-tag {
+            background: #06b6d4;
+            color: #000;
+            margin-bottom: 16px;
+        }
+
+        .slide-6 .title {
+            font-size: 44px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .slide-6 .title span { color: #06b6d4; }
+
+        .slide-6 .platforms {
+            display: flex;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .slide-6 .platform-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-6 .platform-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .slide-6 .platform-logo {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+            border: 3px solid #fff;
+        }
+
+        .slide-6 .platform-logo.lovable { background: #ff6b9d; color: #fff; }
+        .slide-6 .platform-logo.bolt { background: #ffd93d; color: #000; }
+        .slide-6 .platform-logo.replit { background: #ff6b35; color: #fff; }
+
+        .slide-6 .platform-name {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .slide-6 .platform-best {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .slide-6 .platform-desc {
+            font-size: 15px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .slide-6 .platform-features {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .slide-6 .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .slide-6 .feature-check {
+            width: 18px;
+            height: 18px;
+            background: rgba(6, 182, 212, 0.2);
+            border: 2px solid #06b6d4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #06b6d4;
+        }
+
+        .slide-6 .free-badge {
+            display: inline-block;
+            background: #10b981;
+            color: #000;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            margin-top: 14px;
+            letter-spacing: 1px;
+        }
+
+        .slide-6 .advanced-hint {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slide-6 .advanced-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .slide-6 .advanced-content {
+            flex: 1;
+        }
+
+        .slide-6 .advanced-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .slide-6 .advanced-tools {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .slide-6 .adv-tool {
+            font-size: 13px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* ==================== SLIDE 7: PROJECT INTRO ==================== */
+        .slide-7 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(255, 107, 53, 0.8);
+            padding: 40px 60px 50px;
+        }
+
+        .slide-7 .section-tag {
+            background: #ff6b35;
+            color: #000;
+            margin-bottom: 12px;
+        }
+
+        .slide-7 .title {
+            font-size: 40px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .slide-7 .title span { color: #ff6b35; }
+
+        .slide-7 .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
+        }
+
+        .slide-7 .project-content {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .slide-7 .left-col {
+            flex: 1;
+        }
+
+        .slide-7 .app-name {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ff6b35;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slide-7 .app-name span {
+            font-size: 28px;
+        }
+
+        .slide-7 .app-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            padding-left: 14px;
+            border-left: 3px solid #ff6b35;
+        }
+
+        .slide-7 .workflow {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .slide-7 .workflow-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgba(255, 107, 53, 0.1);
+            border: 2px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .slide-7 .step-num {
+            width: 24px;
+            height: 24px;
+            background: #ff6b35;
+            color: #000;
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .slide-7 .step-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .slide-7 .right-col {
+            width: 380px;
+        }
+
+        .slide-7 .mockup {
+            background: #1a1a1a;
+            border: 3px solid #333;
+            border-radius: 12px;
+            padding: 16px;
+            height: 100%;
+        }
+
+        .slide-7 .mockup-header {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .slide-7 .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .slide-7 .mockup-dot.red { background: #ff5f57; }
+        .slide-7 .mockup-dot.yellow { background: #ffbd2e; }
+        .slide-7 .mockup-dot.green { background: #28ca42; }
+
+        .slide-7 .mockup-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .slide-7 .mockup-input {
+            background: #2a2a2a;
+            border: 2px solid #444;
+            padding: 8px 12px;
+            color: #888;
+            font-size: 11px;
+            font-family: inherit;
+        }
+
+        .slide-7 .mockup-btn {
+            background: #ff6b35;
+            color: #000;
+            font-weight: 700;
+            font-size: 11px;
+            padding: 8px;
+            text-align: center;
+            border: none;
+        }
+
+        .slide-7 .mockup-output {
+            background: #2a2a2a;
+            border: 2px solid #444;
+            padding: 10px;
+        }
+
+        .slide-7 .mockup-label {
+            font-size: 9px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .slide-7 .mockup-topics {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .slide-7 .mockup-topic {
+            font-size: 10px;
+            color: #aaa;
+            padding: 5px 8px;
+            background: #333;
+            border-left: 3px solid #ff6b35;
+        }
+
+        /* ==================== SLIDE 8: BREAKING DOWN THE IDEA ==================== */
+        .slide-8 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(16, 185, 129, 0.8);
+            padding: 40px 60px 50px;
+        }
+
+        .slide-8 .section-tag {
+            background: #10b981;
+            color: #000;
+            margin-bottom: 12px;
+        }
+
+        .slide-8 .title {
+            font-size: 40px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .slide-8 .title span { color: #10b981; }
+
+        .slide-8 .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 28px;
+        }
+
+        .slide-8 .content {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .slide-8 .process-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .slide-8 .step-card {
+            display: flex;
+            gap: 16px;
+            padding: 18px 20px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .slide-8 .step-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 3px solid #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .slide-8 .step-content {
+            flex: 1;
+        }
+
+        .slide-8 .step-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 6px;
+        }
+
+        .slide-8 .step-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        .slide-8 .benefit-col {
+            width: 380px;
+        }
+
+        .slide-8 .benefit-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-8 .benefit-header {
+            font-size: 14px;
+            font-weight: 800;
+            color: #10b981;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .slide-8 .benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .slide-8 .benefit {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .slide-8 .benefit-check {
+            width: 22px;
+            height: 22px;
+            background: #10b981;
+            color: #000;
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .slide-8 .benefit-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.5;
+        }
+
+        .slide-8 .benefit-text strong {
+            color: #fff;
+        }
+
+        .slide-8 .quote-box {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .slide-8 .quote-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .slide-8 .quote-text span {
+            color: #10b981;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        /* ==================== SLIDE 13: FREE CREDITS ==================== */
+        .slide-13 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(255, 215, 0, 0.8);
+            padding: 40px 60px 50px;
+        }
+
+        .slide-13 .section-tag {
+            background: #ffd700;
+            color: #000;
+            margin-bottom: 12px;
+        }
+
+        .slide-13 .title {
+            font-size: 44px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .slide-13 .title span { color: #ffd700; }
+
+        .slide-13 .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 32px;
+        }
+
+        .slide-13 .offers {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .slide-13 .offer-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .slide-13 .offer-card.featured {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        .slide-13 .offer-badge {
+            display: inline-block;
+            background: #ffd700;
+            color: #000;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 12px;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            align-self: center;
+        }
+
+        .slide-13 .offer-logo {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .slide-13 .offer-name {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .slide-13 .offer-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 16px;
+        }
+
+        .slide-13 .offer-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .slide-13 .offer-code-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .slide-13 .offer-code {
+            background: #1a1a1a;
+            border: 2px solid #ffd700;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffd700;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .slide-13 .cta-bar {
+            margin-top: 28px;
+            padding: 20px 24px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            text-align: center;
+        }
+
+        .slide-13 .cta-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .slide-13 .cta-text span {
+            color: #ffd700;
+        }
+
+        /* ==================== SLIDE 10: APP STRUCTURE PART 1 ==================== */
+        .slide-10 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(6, 182, 212, 0.8);
+            padding: 40px 60px 50px;
+        }
+
+        .slide-10 .section-tag {
+            background: #06b6d4;
+            color: #000;
+            margin-bottom: 12px;
+        }
+
+        .slide-10 .title {
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .slide-10 .title span { color: #06b6d4; }
+
+        .slide-10 .subtitle {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
+        }
+
+        .slide-10 .layers {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .slide-10 .layer-row {
+            display: flex;
+            gap: 16px;
+            align-items: stretch;
+        }
+
+        .slide-10 .layer {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border: 2px solid;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .slide-10 .layer.idea { border-color: #a855f7; background: rgba(168, 85, 247, 0.1); }
+        .slide-10 .layer.sketch { border-color: #ec4899; background: rgba(236, 72, 153, 0.1); }
+        .slide-10 .layer.wireframe { border-color: #f97316; background: rgba(249, 115, 22, 0.1); }
+        .slide-10 .layer.lofi { border-color: #eab308; background: rgba(234, 179, 8, 0.1); }
+        .slide-10 .layer.hifi { border-color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+        .slide-10 .layer.frontend { border-color: #06b6d4; background: rgba(6, 182, 212, 0.1); }
+        .slide-10 .layer.backend { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+
+        .slide-10 .layer-num {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: #000;
+            flex-shrink: 0;
+        }
+
+        .slide-10 .layer.idea .layer-num { background: #a855f7; }
+        .slide-10 .layer.sketch .layer-num { background: #ec4899; }
+        .slide-10 .layer.wireframe .layer-num { background: #f97316; }
+        .slide-10 .layer.lofi .layer-num { background: #eab308; }
+        .slide-10 .layer.hifi .layer-num { background: #22c55e; }
+        .slide-10 .layer.frontend .layer-num { background: #06b6d4; }
+        .slide-10 .layer.backend .layer-num { background: #3b82f6; }
+
+        .slide-10 .layer-icon {
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .slide-10 .layer-content {
+            flex: 1;
+        }
+
+        .slide-10 .layer-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .slide-10 .layer-desc {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .slide-10 .phase-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 12px 0 8px 0;
+        }
+
+        .slide-10 .insight-bar {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: rgba(6, 182, 212, 0.1);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slide-10 .insight-icon {
+            font-size: 28px;
+        }
+
+        .slide-10 .insight-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+
+        .slide-10 .insight-text span {
+            color: #06b6d4;
+            font-weight: 700;
+        }
+
+        /* ==================== SLIDE 11: FOCUS STRATEGY ==================== */
+        .slide-11 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(249, 115, 22, 0.8);
+            padding: 40px 60px 50px;
+        }
+
+        .slide-11 .section-tag {
+            background: #f97316;
+            color: #000;
+            margin-bottom: 12px;
+        }
+
+        .slide-11 .title {
+            font-size: 40px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .slide-11 .title span { color: #f97316; }
+
+        .slide-11 .subtitle {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 28px;
+        }
+
+        .slide-11 .strategy-content {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .slide-11 .strategy-card {
+            flex: 1;
+            border: 3px solid;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-11 .strategy-card.flow {
+            border-color: #f97316;
+            background: rgba(249, 115, 22, 0.08);
+        }
+
+        .slide-11 .strategy-card.choice {
+            border-color: #a855f7;
+            background: rgba(168, 85, 247, 0.08);
+        }
+
+        .slide-11 .strategy-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .slide-11 .strategy-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            border: 3px solid;
+        }
+
+        .slide-11 .strategy-card.flow .strategy-icon {
+            background: rgba(249, 115, 22, 0.2);
+            border-color: #f97316;
+        }
+
+        .slide-11 .strategy-card.choice .strategy-icon {
+            background: rgba(168, 85, 247, 0.2);
+            border-color: #a855f7;
+        }
+
+        .slide-11 .strategy-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .slide-11 .strategy-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .slide-11 .strategy-example {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 14px;
+            margin-top: auto;
+        }
+
+        .slide-11 .example-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .slide-11 .example-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        .slide-11 .example-text strong {
+            color: #fff;
+        }
+
+        .slide-11 .vs-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            flex-shrink: 0;
+        }
+
+        .slide-11 .vs-circle {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .slide-11 .key-message {
+            margin-top: 24px;
+            padding: 18px 24px;
+            background: rgba(249, 115, 22, 0.15);
+            border: 3px solid #f97316;
+            text-align: center;
+        }
+
+        .slide-11 .key-message-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .slide-11 .key-message-text span {
+            color: #f97316;
+        }
+
+        /* ==================== SLIDE 12: PRD DOCUMENT ==================== */
+        .slide-12 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px rgba(139, 92, 246, 0.8);
+            padding: 40px 60px 50px;
+        }
+
+        .slide-12 .section-tag {
+            background: #8b5cf6;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .slide-12 .title {
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .slide-12 .title span { color: #8b5cf6; }
+
+        .slide-12 .subtitle {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
+        }
+
+        .slide-12 .content {
+            display: flex;
+            gap: 28px;
+            flex: 1;
+        }
+
+        .slide-12 .left-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .slide-12 .what-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            padding: 16px;
+        }
+
+        .slide-12 .what-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #8b5cf6;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .slide-12 .what-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+
+        .slide-12 .prd-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .slide-12 .prd-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .slide-12 .prd-num {
+            width: 22px;
+            height: 22px;
+            background: #8b5cf6;
+            color: #000;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .slide-12 .prd-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            min-width: 100px;
+        }
+
+        .slide-12 .prd-desc {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            flex: 1;
+        }
+
+        .slide-12 .right-col {
+            width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .slide-12 .ai-prompt-box {
+            background: #1a1a1a;
+            border: 3px solid #8b5cf6;
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-12 .prompt-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .slide-12 .prompt-icon {
+            font-size: 20px;
+        }
+
+        .slide-12 .prompt-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #8b5cf6;
+        }
+
+        .slide-12 .prompt-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            flex: 1;
+        }
+
+        .slide-12 .prompt-text em {
+            color: #8b5cf6;
+            font-style: normal;
+        }
+
+        .slide-12 .connection-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid #10b981;
+            padding: 14px;
+        }
+
+        .slide-12 .connection-header {
+            font-size: 11px;
+            font-weight: 800;
+            color: #10b981;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .slide-12 .connection-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        .slide-12 .connection-text span {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .slide-12 .flow-arrow {
+            text-align: center;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            padding: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+
+        <!-- ==================== SLIDE 1: TITLE ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 1</div>
+            <div class="slide slide-1">
+                <div class="badge">2-Hour Workshop</div>
+                <h1 class="title"><span>Beyond</span> Workflows</h1>
+                <p class="subtitle">Build Real Apps with AI — No Coding Required</p>
+                <div class="tools">
+                    <div class="tool">Lovable</div>
+                    <div class="tool">Bolt</div>
+                    <div class="tool">Replit</div>
+                </div>
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+                <div class="duration">⏱ 120 Minutes</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 2: ORIGIN ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 2</div>
+            <div class="slide slide-2">
+                <div class="slide-number">02 / 12</div>
+                <div class="section-tag">Origin Story</div>
+                <h1 class="title">Where <span>"Vibe Coding"</span> Began</h1>
+                
+                <div class="content">
+                    <div class="tweet-card">
+                        <div class="tweet-header">
+                            <div class="tweet-avatar">AK</div>
+                            <div>
+                                <div class="tweet-name">Andrej Karpathy <span class="verified">✓</span></div>
+                                <div class="tweet-handle">@karpathy</div>
+                            </div>
+                        </div>
+                        <div class="tweet-text">
+                            There's a new kind of coding I call <span class="tweet-highlight">"vibe coding"</span>, where you fully give in to the vibes, embrace exponentials, and forget that the code even exists... It's not really coding - I just see stuff, say stuff, run stuff, and copy paste stuff, and it mostly works.
+                        </div>
+                        <div class="tweet-date">February 2025</div>
+                    </div>
+
+                    <div class="right-col">
+                        <div class="context-box">
+                            <div class="context-title">The Shift</div>
+                            <div class="context-text">This tweet went viral and defined a new era: you don't need to be a programmer to build software anymore.</div>
+                        </div>
+                        <div class="who-box">
+                            <div class="who-title">Who is Andrej Karpathy?</div>
+                            <div class="who-name">AI Pioneer & Legend</div>
+                            <div class="who-role">
+                                Former Director of AI at Tesla<br>
+                                Co-founder of OpenAI<br>
+                                Stanford PhD in Deep Learning
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 2B: PROGRAMMING EVOLUTION ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 3</div>
+            <div class="slide slide-2b">
+                <div class="slide-number">03 / 13</div>
+                <div class="section-tag">Historical Context</div>
+                <h1 class="title">The <span>Evolution</span> of Programming</h1>
+                <p class="subtitle">Every leap forward abstracts complexity — so creators can focus on ideas, not implementation</p>
+
+                <div class="timeline">
+                    <div class="era">
+                        <div class="era-dot"></div>
+                        <div class="era-card">
+                            <div class="era-icon">💾</div>
+                            <div class="era-name">Machine Code</div>
+                            <div class="era-year">1940s</div>
+                            <div class="era-examples">Binary: 0s and 1s<br>Direct hardware control</div>
+                            <div class="era-abstraction">Hardware Level</div>
+                        </div>
+                    </div>
+
+                    <div class="era">
+                        <div class="era-dot"></div>
+                        <div class="era-card">
+                            <div class="era-icon">⚙️</div>
+                            <div class="era-name">Assembly</div>
+                            <div class="era-year">1950s</div>
+                            <div class="era-examples">MOV, ADD, JMP<br>Human-readable mnemonics</div>
+                            <div class="era-abstraction">Symbolic Level</div>
+                        </div>
+                    </div>
+
+                    <div class="era">
+                        <div class="era-dot"></div>
+                        <div class="era-card">
+                            <div class="era-icon">📝</div>
+                            <div class="era-name">High-Level</div>
+                            <div class="era-year">1970s–90s</div>
+                            <div class="era-examples">C, Python, Java<br>Logic over memory</div>
+                            <div class="era-abstraction">Logic Level</div>
+                        </div>
+                    </div>
+
+                    <div class="era">
+                        <div class="era-dot"></div>
+                        <div class="era-card">
+                            <div class="era-icon">🧩</div>
+                            <div class="era-name">Frameworks</div>
+                            <div class="era-year">2000s–10s</div>
+                            <div class="era-examples">React, WordPress<br>Components & templates</div>
+                            <div class="era-abstraction">Structure Level</div>
+                        </div>
+                    </div>
+
+                    <div class="era">
+                        <div class="era-dot"></div>
+                        <div class="era-card">
+                            <div class="era-icon">✨</div>
+                            <div class="era-name">Vibe Coding</div>
+                            <div class="era-year">2024+</div>
+                            <div class="era-examples">Natural language<br>Describe → Build</div>
+                            <div class="era-abstraction">Intent Level</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-bar">
+                    <div class="insight-icon">🎨</div>
+                    <div class="insight-text">Each evolution <span>hides complexity</span> so we can be <span>more artistic</span>. Vibe coding is the next leap — where you express intent, and AI handles the rest.</div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 3: COMPARISON ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 4</div>
+            <div class="slide slide-3">
+                <div class="slide-number">04 / 13</div>
+                <div class="section-tag">The Shift</div>
+                <h1 class="title">The World of Building Has Changed</h1>
+
+                <div class="comparison">
+                    <div class="col">
+                        <div class="col-header old">
+                            <div class="col-title">Traditional Development</div>
+                        </div>
+                        <div class="traits">
+                            <div class="trait old"><span class="trait-icon">🐌</span> Slow</div>
+                            <div class="trait old"><span class="trait-icon">💰</span> Expensive</div>
+                            <div class="trait old"><span class="trait-icon">🎓</span> Requires Deep Expertise</div>
+                            <div class="trait old"><span class="trait-icon">🚧</span> High Barrier to Entry</div>
+                            <div class="trait old"><span class="trait-icon">📅</span> Months of Work</div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="col-header new">
+                            <div class="col-title">Vibe Coding</div>
+                        </div>
+                        <div class="traits">
+                            <div class="trait new"><span class="trait-icon">⚡</span> Rapid</div>
+                            <div class="trait new"><span class="trait-icon">💸</span> Cost-Effective</div>
+                            <div class="trait new"><span class="trait-icon">👁️</span> Focus on Vision</div>
+                            <div class="trait new"><span class="trait-icon">🚪</span> Low Barrier to Entry</div>
+                            <div class="trait new"><span class="trait-icon">⏰</span> Hours to Prototype</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-quote">
+                    <div class="quote-text">Instead of learning syntax, you learn to <span>communicate your vision</span>. The AI handles the code.</div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 4: THE FLYWHEEL ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 5</div>
+            <div class="slide slide-4">
+                <div class="slide-number">05 / 13</div>
+                <div class="section-tag">Mental Model</div>
+                <h1 class="title">The <span>Vibe Coding Flywheel</span></h1>
+                <p class="subtitle">A continuous cycle of creation powered by AI. You steer the vision; the AI writes the code.</p>
+
+                <div class="flywheel-container">
+                    <div class="flywheel">
+                        <div class="fw-step s1">
+                            <div class="fw-num">01</div>
+                            <div class="fw-title">Idea</div>
+                            <div class="fw-desc">Define the problem and solution</div>
+                        </div>
+                        <div class="fw-step s2">
+                            <div class="fw-num">02</div>
+                            <div class="fw-title">Prompt</div>
+                            <div class="fw-desc">Translate into clear AI instructions</div>
+                        </div>
+                        <div class="fw-step s3">
+                            <div class="fw-num">03</div>
+                            <div class="fw-title">Build</div>
+                            <div class="fw-desc">AI generates the initial MVP</div>
+                        </div>
+                        <div class="fw-step s4">
+                            <div class="fw-num">04</div>
+                            <div class="fw-title">Iterate</div>
+                            <div class="fw-desc">Test, debug, refine with follow-ups</div>
+                        </div>
+                        
+                        <div class="fw-arrows">↻</div>
+                        <div class="fw-center">
+                            <div class="fw-center-icon">🚀</div>
+                            <div class="fw-center-text">Ship Fast</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 5: FIVE GOLDEN RULES ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 6</div>
+            <div class="slide slide-5">
+                <div class="slide-number">06 / 13</div>
+                <div class="section-tag">Mindset</div>
+                <h1 class="title">The Five <span>Golden Rules</span></h1>
+
+                <div class="rules">
+                    <div class="rule">
+                        <div class="rule-icon">🎯</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Be Precise</div>
+                            <div class="rule-desc">One task at a time. Break down complex features into smaller, unambiguous instructions.</div>
+                        </div>
+                    </div>
+
+                    <div class="rule">
+                        <div class="rule-icon">🧱</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Be Organised</div>
+                            <div class="rule-desc">Add features step-by-step. Test after each addition and roll back if something breaks.</div>
+                        </div>
+                    </div>
+
+                    <div class="rule">
+                        <div class="rule-icon">🔄</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Start Fresh</div>
+                            <div class="rule-desc">Use a new chat or session for each major feature. This makes it easier to track changes and debug.</div>
+                        </div>
+                    </div>
+
+                    <div class="rule">
+                        <div class="rule-icon">⏳</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Be Patient</div>
+                            <div class="rule-desc">Read the AI's explanations to learn as you go. Debugging is 70% of the process, even for pros.</div>
+                        </div>
+                    </div>
+
+                    <div class="rule">
+                        <div class="rule-icon">✅</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Review & Trust</div>
+                            <div class="rule-desc">Question things that don't make sense, but also trust that an unexpected AI solution might be creative and effective.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 6: RECOMMENDED PLATFORMS ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 7</div>
+            <div class="slide slide-6">
+                <div class="slide-number">07 / 13</div>
+                <div class="section-tag">Tools</div>
+                <h1 class="title">Recommended <span>Platforms</span></h1>
+
+                <div class="platforms">
+                    <!-- Lovable -->
+                    <div class="platform-card">
+                        <div class="platform-header">
+                            <div class="platform-logo lovable">L</div>
+                            <div class="platform-name">Lovable</div>
+                        </div>
+                        <div class="platform-best">Best For</div>
+                        <div class="platform-desc">Visual apps, MVPs, beautiful UI out-of-the-box with native Supabase integration</div>
+                        <div class="platform-features">
+                            <div class="feature"><div class="feature-check">✓</div> Stunning designs instantly</div>
+                            <div class="feature"><div class="feature-check">✓</div> Built-in authentication</div>
+                            <div class="feature"><div class="feature-check">✓</div> Database ready</div>
+                        </div>
+                        <div class="free-badge">FREE TIER</div>
+                    </div>
+
+                    <!-- Bolt -->
+                    <div class="platform-card">
+                        <div class="platform-header">
+                            <div class="platform-logo bolt">B</div>
+                            <div class="platform-name">Bolt</div>
+                        </div>
+                        <div class="platform-best">Best For</div>
+                        <div class="platform-desc">Quick prototypes, landing pages, simple tools with instant live preview</div>
+                        <div class="platform-features">
+                            <div class="feature"><div class="feature-check">✓</div> Fastest setup</div>
+                            <div class="feature"><div class="feature-check">✓</div> Real-time updates</div>
+                            <div class="feature"><div class="feature-check">✓</div> One-click deploy</div>
+                        </div>
+                        <div class="free-badge">FREE TIER</div>
+                    </div>
+
+                    <!-- Replit -->
+                    <div class="platform-card">
+                        <div class="platform-header">
+                            <div class="platform-logo replit">R</div>
+                            <div class="platform-name">Replit</div>
+                        </div>
+                        <div class="platform-best">Best For</div>
+                        <div class="platform-desc">Full-stack apps, complex backend logic, APIs, and learning to code</div>
+                        <div class="platform-features">
+                            <div class="feature"><div class="feature-check">✓</div> Complete environment</div>
+                            <div class="feature"><div class="feature-check">✓</div> PostgreSQL included</div>
+                            <div class="feature"><div class="feature-check">✓</div> See all the code</div>
+                        </div>
+                        <div class="free-badge">FREE TIER</div>
+                    </div>
+                </div>
+
+                <div class="advanced-hint">
+                    <div class="advanced-icon">🚀</div>
+                    <div class="advanced-content">
+                        <div class="advanced-label">For Advanced Users</div>
+                        <div class="advanced-tools">
+                            <div class="adv-tool">Cursor</div>
+                            <div class="adv-tool">Claude Code CLI</div>
+                            <div class="adv-tool">Kiro (AWS)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 7: PROJECT INTRO ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 8</div>
+            <div class="slide slide-7">
+                <div class="slide-number">08 / 13</div>
+                <div class="section-tag">Hands-On Project</div>
+                <h1 class="title">Let's Build: <span>Content Creator Tool</span></h1>
+                <p class="subtitle">A real app you can use to generate social media content ideas</p>
+
+                <div class="project-content">
+                    <div class="left-col">
+                        <div class="app-name"><span>📱</span> ContentFlow AI</div>
+                        <div class="app-desc">
+                            A tool that helps content creators go from zero to a full content calendar — find trends, analyze competitors, generate topic ideas, and expand them into full posts.
+                        </div>
+
+                        <div class="workflow">
+                            <div class="workflow-step">
+                                <div class="step-num">1</div>
+                                <div class="step-text">Find trending topics in your niche</div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-num">2</div>
+                                <div class="step-text">Discover what questions your audience asks</div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-num">3</div>
+                                <div class="step-text">Audit competitor content for gaps</div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-num">4</div>
+                                <div class="step-text">Generate a list of content topics</div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-num">5</div>
+                                <div class="step-text">Expand each topic into talking points</div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-num">6</div>
+                                <div class="step-text">Create ready-to-post content</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-col">
+                        <div class="mockup">
+                            <div class="mockup-header">
+                                <div class="mockup-dot red"></div>
+                                <div class="mockup-dot yellow"></div>
+                                <div class="mockup-dot green"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-input">Enter your niche: "AI & Entrepreneurship"</div>
+                                <div class="mockup-btn">🚀 GENERATE CONTENT IDEAS</div>
+                                <div class="mockup-output">
+                                    <div class="mockup-label">Generated Topics</div>
+                                    <div class="mockup-topics">
+                                        <div class="mockup-topic">How to validate ideas with AI in 24h</div>
+                                        <div class="mockup-topic">5 AI tools replacing $10K agencies</div>
+                                        <div class="mockup-topic">Why vibe coding is the future</div>
+                                        <div class="mockup-topic">Build your MVP this weekend</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 8: BREAKING DOWN THE IDEA ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 9</div>
+            <div class="slide slide-8">
+                <div class="slide-number">09 / 13</div>
+                <div class="section-tag">Before You Build</div>
+                <h1 class="title">Break It Down <span>First</span></h1>
+                <p class="subtitle">Close the loop before you start — so you don't discover missing pieces mid-build</p>
+
+                <div class="content">
+                    <div class="process-col">
+                        <div class="step-card">
+                            <div class="step-icon">✏️</div>
+                            <div class="step-content">
+                                <div class="step-title">1. Sketch on Paper</div>
+                                <div class="step-desc">Draw your screens, flows, and user journey. It doesn't have to be pretty — just clear. Paper forces you to think through the experience.</div>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-icon">🤖</div>
+                            <div class="step-content">
+                                <div class="step-title">2. Show It to an LLM</div>
+                                <div class="step-desc">Take a photo of your sketch. Upload it to ChatGPT, Claude, or Gemini. Explain what you want to achieve. Use the AI as your thinking partner.</div>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-icon">🔍</div>
+                            <div class="step-content">
+                                <div class="step-title">3. Ask for Criticism</div>
+                                <div class="step-desc">"What am I missing?" "What could go wrong?" "Is this too complex for an MVP?" Let the AI challenge your assumptions before you invest time building.</div>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-icon">✂️</div>
+                            <div class="step-content">
+                                <div class="step-title">4. Strip to Lean MVP</div>
+                                <div class="step-desc">Remove every feature that isn't essential. Ask: "What's the ONE thing this must do well?" Ship that first, add the rest later.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benefit-col">
+                        <div class="benefit-box">
+                            <div class="benefit-header">Why This Matters</div>
+                            <div class="benefits">
+                                <div class="benefit">
+                                    <div class="benefit-check">✓</div>
+                                    <div class="benefit-text"><strong>Avoid scope creep</strong> — No surprises mid-build that derail your project</div>
+                                </div>
+                                <div class="benefit">
+                                    <div class="benefit-check">✓</div>
+                                    <div class="benefit-text"><strong>Better prompts</strong> — Clear thinking = clear instructions to AI</div>
+                                </div>
+                                <div class="benefit">
+                                    <div class="benefit-check">✓</div>
+                                    <div class="benefit-text"><strong>Faster iteration</strong> — Smaller scope = quicker to build & test</div>
+                                </div>
+                                <div class="benefit">
+                                    <div class="benefit-check">✓</div>
+                                    <div class="benefit-text"><strong>Ship sooner</strong> — A working MVP beats a perfect idea in your head</div>
+                                </div>
+                            </div>
+                            <div class="quote-box">
+                                <div class="quote-text">"The goal isn't to build everything. It's to build <span>the right thing</span> — fast."</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 10: APP STRUCTURE ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 10</div>
+            <div class="slide slide-10">
+                <div class="slide-number">10 / 13</div>
+                <div class="section-tag">Understanding Apps</div>
+                <h1 class="title">Anatomy of a <span>Full-Stack App</span></h1>
+                <p class="subtitle">Every application is built in layers — from idea to infrastructure</p>
+
+                <div class="layers">
+                    <div class="phase-label">💭 Concept Phase</div>
+                    <div class="layer-row">
+                        <div class="layer idea">
+                            <div class="layer-num">1</div>
+                            <div class="layer-icon">💡</div>
+                            <div class="layer-content">
+                                <div class="layer-name">Idea & Problem</div>
+                                <div class="layer-desc">What problem are you solving? Who is it for?</div>
+                            </div>
+                        </div>
+                        <div class="layer sketch">
+                            <div class="layer-num">2</div>
+                            <div class="layer-icon">✏️</div>
+                            <div class="layer-content">
+                                <div class="layer-name">Sketch</div>
+                                <div class="layer-desc">Rough drawings on paper, flows & screens</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="phase-label">🎨 Design Phase</div>
+                    <div class="layer-row">
+                        <div class="layer wireframe">
+                            <div class="layer-num">3</div>
+                            <div class="layer-icon">📐</div>
+                            <div class="layer-content">
+                                <div class="layer-name">Wireframe</div>
+                                <div class="layer-desc">Basic structure, boxes & layout — no styling</div>
+                            </div>
+                        </div>
+                        <div class="layer lofi">
+                            <div class="layer-num">4</div>
+                            <div class="layer-icon">🖼️</div>
+                            <div class="layer-content">
+                                <div class="layer-name">Low-Fidelity UI</div>
+                                <div class="layer-desc">Simple mockups with basic components</div>
+                            </div>
+                        </div>
+                        <div class="layer hifi">
+                            <div class="layer-num">5</div>
+                            <div class="layer-icon">✨</div>
+                            <div class="layer-content">
+                                <div class="layer-name">High-Fidelity UI</div>
+                                <div class="layer-desc">Polished design, colors, fonts, final look</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="phase-label">⚙️ Development Phase</div>
+                    <div class="layer-row">
+                        <div class="layer frontend">
+                            <div class="layer-num">6</div>
+                            <div class="layer-icon">🖥️</div>
+                            <div class="layer-content">
+                                <div class="layer-name">Frontend</div>
+                                <div class="layer-desc">What users see & interact with (UI, buttons, forms)</div>
+                            </div>
+                        </div>
+                        <div class="layer backend">
+                            <div class="layer-num">7</div>
+                            <div class="layer-icon">🗄️</div>
+                            <div class="layer-content">
+                                <div class="layer-name">Backend</div>
+                                <div class="layer-desc">Server, database, logic, APIs — the engine</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-bar">
+                    <div class="insight-icon">🎯</div>
+                    <div class="insight-text">Vibe coding tools handle layers 5-7 for you. Your job: <span>nail layers 1-4</span> — the clearer your vision, the better the output.</div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 11: FOCUS STRATEGY ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 11</div>
+            <div class="slide slide-11">
+                <div class="slide-number">11 / 13</div>
+                <div class="section-tag">Build Strategy</div>
+                <h1 class="title">One Thing at a <span>Time</span></h1>
+                <p class="subtitle">You can't build everything at once — here's how to focus your effort</p>
+
+                <div class="strategy-content">
+                    <div class="strategy-card flow">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">🔀</div>
+                            <div class="strategy-title">Focus on ONE Flow</div>
+                        </div>
+                        <div class="strategy-desc">
+                            Don't try to build every feature. Pick the most important user journey and make it work end-to-end before moving to the next one.
+                        </div>
+                        <div class="strategy-example">
+                            <div class="example-label">Example: Content Tool</div>
+                            <div class="example-text">
+                                <strong>First flow:</strong> User enters niche → Gets topic ideas<br>
+                                <strong>Later:</strong> Save topics, expand to posts, scheduling
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vs-divider">
+                        <div class="vs-circle">+</div>
+                    </div>
+
+                    <div class="strategy-card choice">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">⚖️</div>
+                            <div class="strategy-title">Function OR Form</div>
+                        </div>
+                        <div class="strategy-desc">
+                            Decide: are you testing if the idea works (functionality) or how it looks (appearance)? Trying both at once leads to confusion.
+                        </div>
+                        <div class="strategy-example">
+                            <div class="example-label">Pick Your Priority</div>
+                            <div class="example-text">
+                                <strong>Functionality first:</strong> Ugly but works = validated idea<br>
+                                <strong>Appearance first:</strong> Beautiful mockup for feedback
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-message">
+                    <div class="key-message-text">🚀 Ship a <span>working slice</span>, not a broken whole. Iterate from there.</div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 12: PRD DOCUMENT ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 12</div>
+            <div class="slide slide-12">
+                <div class="slide-number">12 / 13</div>
+                <div class="section-tag">Your Blueprint</div>
+                <h1 class="title">The <span>PRD</span>: Your App's Blueprint</h1>
+                <p class="subtitle">A Product Requirements Document turns your vision into clear instructions for AI</p>
+
+                <div class="content">
+                    <div class="left-col">
+                        <div class="what-box">
+                            <div class="what-label">What is a PRD?</div>
+                            <div class="what-text">A structured document that describes <strong>what</strong> you're building, <strong>who</strong> it's for, and <strong>how</strong> it should work — before writing any code. It's the bridge between your sketch and the AI.</div>
+                        </div>
+
+                        <div class="prd-sections">
+                            <div class="prd-section">
+                                <div class="prd-num">1</div>
+                                <div class="prd-name">Problem</div>
+                                <div class="prd-desc">What pain point are you solving?</div>
+                            </div>
+                            <div class="prd-section">
+                                <div class="prd-num">2</div>
+                                <div class="prd-name">User</div>
+                                <div class="prd-desc">Who is this for? What do they need?</div>
+                            </div>
+                            <div class="prd-section">
+                                <div class="prd-num">3</div>
+                                <div class="prd-name">Core Features</div>
+                                <div class="prd-desc">The essential functionality (MVP scope)</div>
+                            </div>
+                            <div class="prd-section">
+                                <div class="prd-num">4</div>
+                                <div class="prd-name">User Flow</div>
+                                <div class="prd-desc">Step-by-step journey through the app</div>
+                            </div>
+                            <div class="prd-section">
+                                <div class="prd-num">5</div>
+                                <div class="prd-name">Screens</div>
+                                <div class="prd-desc">What pages/views are needed?</div>
+                            </div>
+                            <div class="prd-section">
+                                <div class="prd-num">6</div>
+                                <div class="prd-name">Data</div>
+                                <div class="prd-desc">What information needs to be stored?</div>
+                            </div>
+                            <div class="prd-section">
+                                <div class="prd-num">7</div>
+                                <div class="prd-name">Style</div>
+                                <div class="prd-desc">Look & feel, colors, tone</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-col">
+                        <div class="ai-prompt-box">
+                            <div class="prompt-header">
+                                <div class="prompt-icon">🤖</div>
+                                <div class="prompt-title">Let AI Create Your PRD</div>
+                            </div>
+                            <div class="prompt-text">
+                                "I want to build <em>[app idea]</em>. Help me create a PRD document that includes:<br><br>
+                                • Problem statement<br>
+                                • Target user persona<br>
+                                • MVP feature list (max 5)<br>
+                                • Main user flow<br>
+                                • Required screens<br>
+                                • Data to store<br>
+                                • Visual style direction<br><br>
+                                Keep it lean and focused on one core flow. Ask me questions if you need more clarity."
+                            </div>
+                        </div>
+
+                        <div class="flow-arrow">↓</div>
+
+                        <div class="connection-box">
+                            <div class="connection-header">🔗 The Connection</div>
+                            <div class="connection-text">
+                                Your PRD maps directly to <span>layers 1-5</span> from the app structure. Once complete, paste it into Lovable/Bolt/Replit as your <span>first prompt</span> — the AI now has everything it needs to build your MVP.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 13: FREE CREDITS ==================== -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 13</div>
+            <div class="slide slide-13">
+                <div class="slide-number">13 / 13</div>
+                <div class="section-tag">Exclusive Offers</div>
+                <h1 class="title">Your <span>Free Credits</span> 🎁</h1>
+                <p class="subtitle">Special gifts for workshop attendees — start building today!</p>
+
+                <div class="offers">
+                    <div class="offer-card featured">
+                        <div class="offer-badge">EXCLUSIVE</div>
+                        <div class="offer-logo">💜</div>
+                        <div class="offer-name">Lovable</div>
+                        <div class="offer-value">10 Free Credits + 5 Daily</div>
+                        <div class="offer-desc">Build beautiful apps with AI. Your 10 bonus credits stack on top of the free daily allowance. Perfect for your first vibe coding projects!</div>
+                        <div class="offer-code-label">Invite Link</div>
+                        <div class="offer-code">lovable.dev/invite/9DSSP01</div>
+                    </div>
+
+                    <div class="offer-card featured">
+                        <div class="offer-badge">EXCLUSIVE</div>
+                        <div class="offer-logo">🎙️</div>
+                        <div class="offer-name">Wispr Flow</div>
+                        <div class="offer-value">1 Month Free</div>
+                        <div class="offer-desc">Voice-to-text AI that writes as you speak. Perfect companion for drafting prompts, notes, and ideas faster than typing!</div>
+                        <div class="offer-code-label">Invite Link</div>
+                        <div class="offer-code">wisprflow.ai/r?AHMED24</div>
+                    </div>
+                </div>
+
+                <div class="cta-bar">
+                    <div class="cta-text">🚀 Use these links to sign up and <span>start building your first app today!</span></div>
+                </div>
+
+                <div class="brand">Ahmed Ezzat — Co-founder of Akadeemy</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
