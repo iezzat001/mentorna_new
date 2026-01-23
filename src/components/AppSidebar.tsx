@@ -5,6 +5,7 @@ import {
   BookOpen,
   Clock,
   FileSignature,
+  Film,
   Mail,
   Magnet,
   MessageSquare,
@@ -91,6 +92,11 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
       title: "Tracking & Analysis",
       url: "tracking-analysis",
       icon: TrendingUp,
+    },
+    {
+      title: "Reels Analysis",
+      url: "reels-analysis",
+      icon: Film,
     },
   ];
 

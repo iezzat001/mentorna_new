@@ -38,3 +38,6 @@ Mentorna/
 
 # Claude settings (already covered by *.local but being explicit)
 .claude/settings.local.json
+
+# Auto Claude data directory
+.auto-claude/

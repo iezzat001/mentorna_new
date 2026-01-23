@@ -26,6 +26,7 @@ import EmailMarketingManager from '@/components/dashboard/EmailMarketingManager'
 import TrackingAnalysisManager from '@/components/dashboard/TrackingAnalysisManager';
 import ContactMessagesManager from '@/components/dashboard/ContactMessagesManager';
 import ContractsManager from '@/components/dashboard/ContractsManager';
+import ReelsAnalysisManager from '@/components/dashboard/ReelsAnalysisManager';
 import { migrateWeekData } from '@/utils/migrateWeekData';
 import { toast } from 'sonner';
 import DashboardAnalytics from '@/components/dashboard/DashboardAnalytics';
@@ -70,6 +71,8 @@ const Dashboard = () => {
         return 'Contact Messages Management';
       case 'contracts':
         return 'Signed Contracts';
+      case 'reels-analysis':
+        return 'Reels Analytics & Insights';
       default:
         return 'Dashboard Overview';
     }
@@ -95,6 +98,8 @@ const Dashboard = () => {
         return <ContactMessagesManager />;
       case 'contracts':
         return <ContractsManager />;
+      case 'reels-analysis':
+        return <ReelsAnalysisManager />;
       default:
         return <DashboardAnalytics />;
     }

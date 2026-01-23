@@ -7,8 +7,22 @@
       "WebFetch(domain:d2mp3ttz3u5gci.cloudfront.net)",
       "Bash(git fetch:*)",
       "Bash(git pull:*)",
-      "Bash(xargs git branch -D)"
+      "Bash(xargs git branch -D)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(git push:*)",
+      "Bash(git remote:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git merge:*)",
+      "Bash(cat:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
-  }
+  },
+  "disabledMcpjsonServers": [
+    "claude-flow@alpha",
+    "ruv-swarm",
+    "flow-nexus"
+  ]
 }
