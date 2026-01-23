@@ -73,6 +73,39 @@ const workshops: Workshop[] = [
     ],
     targetAudience: 'Non-technical entrepreneurs, business owners, parents wanting to learn AI skills',
   },
+  {
+    id: 'workshop-2',
+    title: 'Grand Slam Offer',
+    subtitle: 'The Value Equation: How to Craft a £100M Offer',
+    date: 'January 2025',
+    duration: '1.5 hours',
+    status: 'completed',
+    attendees: 0,
+    topics: [
+      'The Value Equation',
+      'Dream Outcome',
+      'Perceived Likelihood',
+      'Time Delay',
+      'Effort & Sacrifice',
+      'Scarcity & Urgency',
+      'Guarantees & Risk Reversal',
+      'The Bonus Stack',
+    ],
+    description: 'Based on Alex Hormozi\'s framework, this workshop teaches how to craft irresistible offers by manipulating four key variables. Learn to turn a £2,000 service into a £50,000 solution.',
+    materials: [
+      { type: 'slides', title: 'Workshop Slides (Interactive)', url: '/workshops/workshop-2-slides.html' },
+    ],
+    keyTakeaways: [
+      'Value = (Dream × Likelihood) ÷ (Delay × Effort)',
+      'Outcomes are drivers of STATUS',
+      'People pay for certainty, not just results',
+      'Time delay kills value - deliver fast wins',
+      'Remove effort and sacrifice from the customer',
+      'Never discount - add bonuses instead',
+      'Use scarcity, urgency, and guarantees as enhancers',
+    ],
+    targetAudience: 'Entrepreneurs, service providers, anyone selling high-ticket offers',
+  },
 ];
 
 const WorkshopsManager = () => {

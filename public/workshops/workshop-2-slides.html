@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Slam Offer Creation - The Value Equation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        .presentation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .slide-wrapper {
+            position: relative;
+        }
+
+        .slide-label {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            font-size: 12px;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border: 2px solid #fff;
+        }
+
+        .brand {
+            position: absolute;
+            bottom: 30px;
+            left: 60px;
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
+        }
+
+        /* Color scheme - Gold/Bronze theme for premium offer */
+        :root {
+            --gold: #c9a227;
+            --gold-light: #e8d48b;
+            --bronze: #8b6914;
+            --cream: #f5f0e1;
+            --dark: #1a1a1a;
+            --coral: #ff6b35;
+        }
+
+        /* ==================== SLIDE 1: TITLE ==================== */
+        .slide-1 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid var(--gold);
+            box-shadow: 12px 12px 0px 0px var(--gold);
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+
+        .slide-1 .badge {
+            background: var(--gold);
+            color: #000;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 10px 24px;
+            border: 3px solid #fff;
+            box-shadow: 4px 4px 0px 0px #fff;
+            margin-bottom: 40px;
+        }
+
+        .slide-1 .title {
+            font-size: 72px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .slide-1 .title span {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-1 .subtitle {
+            font-size: 24px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 800px;
+        }
+
+        .slide-1 .author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+        }
+
+        .slide-1 .author-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #000;
+        }
+
+        /* ==================== SLIDE 2: THE GOAL ==================== */
+        .slide-2 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px var(--gold);
+            padding: 50px 60px;
+        }
+
+        .slide-2 .section-tag {
+            background: var(--gold);
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .slide-2 .title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 40px;
+        }
+
+        .slide-2 .title span { color: var(--gold); }
+
+        .slide-2 .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .slide-2 .flow-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            padding: 30px 40px;
+            text-align: center;
+            min-width: 250px;
+        }
+
+        .slide-2 .flow-box.highlight {
+            border-color: var(--gold);
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        .slide-2 .flow-box h3 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .slide-2 .flow-arrow {
+            font-size: 36px;
+            color: var(--gold);
+        }
+
+        .slide-2 .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .slide-2 .info-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+        }
+
+        .slide-2 .info-box h4 {
+            color: var(--gold);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .slide-2 .info-box p, .slide-2 .info-box li {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .slide-2 .info-box ul {
+            list-style: none;
+        }
+
+        .slide-2 .info-box li::before {
+            content: "→";
+            color: var(--gold);
+            margin-right: 10px;
+        }
+
+        /* ==================== SLIDE 3: THE FORMULA ==================== */
+        .slide-3 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid var(--gold);
+            box-shadow: 12px 12px 0px 0px rgba(255, 107, 53, 0.8);
+            padding: 50px 60px;
+            justify-content: center;
+        }
+
+        .slide-3 .section-tag {
+            background: var(--coral);
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .slide-3 .title {
+            font-size: 52px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .slide-3 .formula-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-3 .formula-row {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .slide-3 .formula-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid #fff;
+            padding: 25px 40px;
+            text-align: center;
+        }
+
+        .slide-3 .formula-box.numerator {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .slide-3 .formula-box.denominator {
+            border-color: #f87171;
+            background: rgba(248, 113, 113, 0.1);
+        }
+
+        .slide-3 .formula-box h3 {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .slide-3 .formula-operator {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .slide-3 .formula-line {
+            width: 600px;
+            height: 4px;
+            background: var(--gold);
+        }
+
+        .slide-3 .result-box {
+            background: var(--gold);
+            color: #000;
+            font-size: 48px;
+            font-weight: 800;
+            padding: 20px 60px;
+            border: 4px solid #fff;
+            box-shadow: 6px 6px 0px 0px #fff;
+        }
+
+        .slide-3 .labels {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .slide-3 .label-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+        }
+
+        .slide-3 .label-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .slide-3 .label-dot.green { background: #4ade80; }
+        .slide-3 .label-dot.red { background: #f87171; }
+
+        /* ==================== SLIDE 4-7: VARIABLES ==================== */
+        .variable-slide {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px var(--gold);
+            padding: 50px 60px;
+        }
+
+        .variable-slide .var-number {
+            background: var(--gold);
+            color: #000;
+            font-size: 14px;
+            font-weight: 800;
+            padding: 8px 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .variable-slide .title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .variable-slide .subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+
+        .variable-slide .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .variable-slide .comp-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .variable-slide .comp-box.low {
+            border-color: #f87171;
+        }
+
+        .variable-slide .comp-box.high {
+            border-color: #4ade80;
+        }
+
+        .variable-slide .comp-box .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .variable-slide .comp-box h4 {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .variable-slide .comp-box .price {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .variable-slide .comp-box.low .price { color: #f87171; }
+        .variable-slide .comp-box.high .price { color: #4ade80; }
+
+        .variable-slide .comp-box p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+        }
+
+        .variable-slide .insight-box {
+            background: rgba(201, 162, 39, 0.1);
+            border: 3px solid var(--gold);
+            padding: 25px 30px;
+        }
+
+        .variable-slide .insight-box h5 {
+            color: var(--gold);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .variable-slide .insight-box p {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* ==================== SLIDE 8: OPERATIONALISING ==================== */
+        .slide-8 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px var(--coral);
+            padding: 50px 60px;
+        }
+
+        .slide-8 .section-tag {
+            background: var(--coral);
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .slide-8 .title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .slide-8 .subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+
+        .slide-8 .problem-solution {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .slide-8 .ps-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-8 .problem {
+            background: rgba(248, 113, 113, 0.1);
+            border: 2px solid #f87171;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slide-8 .problem .icon {
+            font-size: 32px;
+        }
+
+        .slide-8 .problem p {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .slide-8 .arrow {
+            font-size: 32px;
+            color: var(--gold);
+        }
+
+        .slide-8 .solution {
+            background: rgba(74, 222, 128, 0.1);
+            border: 2px solid #4ade80;
+            padding: 20px 30px;
+        }
+
+        .slide-8 .solution p {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .slide-8 .strategy-box {
+            background: var(--gold);
+            color: #000;
+            padding: 25px 30px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* ==================== SLIDE 9-10: ENHANCERS ==================== */
+        .enhancer-slide {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px var(--gold);
+            padding: 50px 60px;
+        }
+
+        .enhancer-slide .enhancer-tag {
+            background: #6366f1;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            padding: 8px 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .enhancer-slide .title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .enhancer-slide .subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+
+        .enhancer-slide .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .enhancer-slide .enhancer-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .enhancer-slide .enhancer-box .gauge {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .enhancer-slide .enhancer-box h4 {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .enhancer-slide .enhancer-box .label {
+            color: var(--gold);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .enhancer-slide .enhancer-box p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        /* Guarantee types grid */
+        .enhancer-slide .guarantee-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .enhancer-slide .guarantee-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 25px;
+        }
+
+        .enhancer-slide .guarantee-item h5 {
+            color: var(--gold);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .enhancer-slide .guarantee-item p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* ==================== SLIDE 11-12: EXECUTION ==================== */
+        .execution-slide {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px var(--coral);
+            padding: 50px 60px;
+        }
+
+        .execution-slide .exec-tag {
+            background: var(--coral);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            padding: 8px 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .execution-slide .title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .execution-slide .subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+
+        .execution-slide .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .execution-slide .stack-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .execution-slide .stack-item {
+            padding: 20px 40px;
+            text-align: center;
+            font-weight: 700;
+            color: #fff;
+            width: 100%;
+        }
+
+        .execution-slide .stack-item.core {
+            background: #1e3a5f;
+            border: 3px solid #3b82f6;
+            font-size: 20px;
+        }
+
+        .execution-slide .stack-item.bonus {
+            background: rgba(201, 162, 39, 0.3);
+            border: 2px solid var(--gold);
+            font-size: 16px;
+        }
+
+        .execution-slide .no-discount {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .execution-slide .no-discount .icon {
+            font-size: 48px;
+        }
+
+        .execution-slide .no-discount p {
+            color: #f87171;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .execution-slide .how-it-works {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 25px;
+        }
+
+        .execution-slide .how-it-works h4 {
+            color: var(--gold);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .execution-slide .how-it-works ol {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            line-height: 2;
+            padding-left: 20px;
+        }
+
+        /* ==================== SLIDE 13: CHEAT SHEET ==================== */
+        .slide-13 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid var(--gold);
+            box-shadow: 12px 12px 0px 0px var(--gold);
+            padding: 50px 60px;
+        }
+
+        .slide-13 .title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .slide-13 .subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+        }
+
+        .slide-13 .formula-recap {
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid #fff;
+            padding: 20px 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .slide-13 .formula-recap p {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .slide-13 .formula-recap span {
+            color: var(--gold);
+        }
+
+        .slide-13 .cheat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .slide-13 .checklist {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 25px;
+        }
+
+        .slide-13 .checklist h4 {
+            color: var(--gold);
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .slide-13 .checklist ul {
+            list-style: none;
+        }
+
+        .slide-13 .checklist li {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            line-height: 2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slide-13 .checklist li::before {
+            content: "✓";
+            color: #4ade80;
+            font-weight: 800;
+        }
+
+        .slide-13 .enhancers-recap {
+            background: rgba(201, 162, 39, 0.1);
+            border: 2px solid var(--gold);
+            padding: 25px;
+        }
+
+        .slide-13 .enhancers-recap h4 {
+            color: var(--gold);
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .slide-13 .enhancer-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .slide-13 .pill {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ==================== SLIDE 14: LOLLAPALOOZA ==================== */
+        .slide-14 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid #fff;
+            box-shadow: 12px 12px 0px 0px var(--gold);
+            padding: 50px 60px;
+        }
+
+        .slide-14 .section-tag {
+            background: #4ade80;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .slide-14 .title {
+            font-size: 52px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .slide-14 .subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+
+        .slide-14 .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .slide-14 .benefit-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .slide-14 .benefit-card .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .slide-14 .benefit-card p {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .slide-14 .quote-box {
+            background: var(--gold);
+            color: #000;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .slide-14 .quote-box p {
+            font-size: 22px;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        /* ==================== SLIDE 15: FINAL ==================== */
+        .slide-15 {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1510 50%, #2a1f0f 100%);
+            border: 4px solid var(--gold);
+            box-shadow: 12px 12px 0px 0px var(--gold);
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+
+        .slide-15 .pre-quote {
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+        }
+
+        .slide-15 .main-quote {
+            font-size: 64px;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 40px;
+            max-width: 1000px;
+        }
+
+        .slide-15 .main-quote span {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-15 .attribution {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 1 — Title</div>
+            <div class="slide slide-1">
+                <div class="slide-number">01</div>
+                <div class="badge">VALUE EQUATION FRAMEWORK</div>
+                <h1 class="title">THE <span>£100M</span> OFFER</h1>
+                <p class="subtitle">Why changing what you sell is infinitely more profitable than improving how you sell it.</p>
+                <div class="author">
+                    <div class="author-avatar">AH</div>
+                    <span>Based on the framework by Alex Hormozi</span>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: THE GOAL -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 2 — The Goal</div>
+            <div class="slide slide-2">
+                <div class="slide-number">02</div>
+                <div class="section-tag">CORE CONCEPT</div>
+                <h2 class="title">Maximise Price & Conversion <span>Simultaneously</span></h2>
+                
+                <div class="flow-container">
+                    <div class="flow-box">
+                        <h3>Create Superior<br>Value</h3>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box highlight">
+                        <h3>Resolve Demand<br>Constraints</h3>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">
+                        <h3>Pricing<br>Power</h3>
+                    </div>
+                </div>
+
+                <div class="two-col">
+                    <div class="info-box">
+                        <h4>The Constraints</h4>
+                        <p>Most businesses are either:</p>
+                        <ul>
+                            <li><strong>Supply Constrained</strong> — can't produce enough</li>
+                            <li><strong>Demand Constrained</strong> — can't sell enough</li>
+                        </ul>
+                        <p style="margin-top: 15px;">The Value Equation solves <strong>Demand Constraints</strong>.</p>
+                    </div>
+                    <div class="info-box">
+                        <h4>The Objective</h4>
+                        <ul>
+                            <li>Charge as much as possible</li>
+                            <li>Convert as many people as humanly possible</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: THE FORMULA -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 3 — The Formula</div>
+            <div class="slide slide-3">
+                <div class="slide-number">03</div>
+                <div class="section-tag">THE CORE EQUATION</div>
+                <h2 class="title">The Grand Slam Offer Formula</h2>
+                
+                <div class="formula-container">
+                    <div class="formula-box numerator">
+                        <h3>Dream Outcome × Perceived Likelihood</h3>
+                    </div>
+                    <div class="formula-line"></div>
+                    <div class="formula-box denominator">
+                        <h3>Time Delay × Effort & Sacrifice</h3>
+                    </div>
+                    <div class="formula-row" style="margin-top: 30px;">
+                        <div class="formula-operator">=</div>
+                        <div class="result-box">VALUE</div>
+                    </div>
+                </div>
+
+                <div class="labels">
+                    <div class="label-item">
+                        <div class="label-dot green"></div>
+                        <span>MAXIMISE the numerator</span>
+                    </div>
+                    <div class="label-item">
+                        <div class="label-dot red"></div>
+                        <span>MINIMISE the denominator</span>
+                    </div>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: VARIABLE 1 - DREAM OUTCOME -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 4 — Variable 1</div>
+            <div class="slide variable-slide">
+                <div class="slide-number">04</div>
+                <div class="var-number">VARIABLE 1</div>
+                <h2 class="title">The Dream Outcome</h2>
+                <p class="subtitle">Outcomes are ultimately drivers of STATUS.</p>
+                
+                <div class="comparison">
+                    <div class="comp-box low">
+                        <div class="icon">📄</div>
+                        <h4>Diet Guide PDF</h4>
+                        <div class="price">$5</div>
+                        <p>Information only.<br>Low Status.</p>
+                    </div>
+                    <div class="comp-box high">
+                        <div class="icon">👨‍⚕️</div>
+                        <h4>Tummy Tuck Surgery</h4>
+                        <div class="price">£50,000</div>
+                        <p>Transformation.<br>High Status.</p>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <h5>Key Insight</h5>
+                    <p>Both solve the exact same problem (stomach appearance), but the Dream Outcome carries different weight. In B2B, status = ROI. In B2C, status = appearance or capability.</p>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: VARIABLE 2 - LIKELIHOOD -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 5 — Variable 2</div>
+            <div class="slide variable-slide">
+                <div class="slide-number">05</div>
+                <div class="var-number">VARIABLE 2</div>
+                <h2 class="title">Perceived Likelihood of Achievement</h2>
+                <p class="subtitle">People pay for certainty, not just the result.</p>
+                
+                <div class="comparison">
+                    <div class="comp-box low">
+                        <div class="icon">🎓</div>
+                        <h4>Surgeon A: Fresh Graduate</h4>
+                        <div class="price">£5,000</div>
+                        <p>0 Surgeries. No Reviews.<br>High Risk.</p>
+                    </div>
+                    <div class="comp-box high">
+                        <div class="icon">⭐</div>
+                        <h4>Surgeon B: The Veteran</h4>
+                        <div class="price">£50,000</div>
+                        <p>10,000 Surgeries. 5-Star Rating.<br>Low Risk.</p>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <h5>Key Insight</h5>
+                    <p>The procedure is identical. The price difference is purely the price of certainty.</p>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: VARIABLE 3 - TIME DELAY -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 6 — Variable 3</div>
+            <div class="slide variable-slide">
+                <div class="slide-number">06</div>
+                <div class="var-number">VARIABLE 3</div>
+                <h2 class="title">Time Delay</h2>
+                <p class="subtitle">The 'Fast Win' Rule: The shorter the delay, the higher the value.</p>
+                
+                <div class="comparison">
+                    <div class="comp-box high">
+                        <div class="icon">⚡</div>
+                        <h4>Liposuction</h4>
+                        <div class="price">£50,000</div>
+                        <p>Immediate Result<br>(Wake up thin)</p>
+                    </div>
+                    <div class="comp-box low">
+                        <div class="icon">🏋️</div>
+                        <h4>Personal Training</h4>
+                        <div class="price">£2,000</div>
+                        <p>12-18 Month Slog<br>(Delayed gratification)</p>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <h5>Key Insight</h5>
+                    <p>Time Delay kills value. People will pay 25x more for immediate results.</p>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: VARIABLE 4 - EFFORT & SACRIFICE -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 7 — Variable 4</div>
+            <div class="slide variable-slide">
+                <div class="slide-number">07</div>
+                <div class="var-number">VARIABLE 4</div>
+                <h2 class="title">Effort & Sacrifice</h2>
+                <p class="subtitle">Effort = Active Pain (things you must START). Sacrifice = Passive Loss (things you must STOP).</p>
+                
+                <div class="comparison">
+                    <div class="comp-box low">
+                        <div class="icon">😓</div>
+                        <h4>The Gym</h4>
+                        <div class="price">LOW VALUE</div>
+                        <p>Waking up early, being sore,<br>no Taco Tuesdays</p>
+                    </div>
+                    <div class="comp-box high">
+                        <div class="icon">😴</div>
+                        <h4>Liposuction</h4>
+                        <div class="price">HIGH VALUE</div>
+                        <p>Anesthesia, immediate fix,<br>zero lifestyle change</p>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <h5>Key Insight</h5>
+                    <p>The less effort and sacrifice required, the more valuable your offer becomes.</p>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: OPERATIONALISING -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 8 — Operationalising</div>
+            <div class="slide slide-8">
+                <div class="slide-number">08</div>
+                <div class="section-tag">IMPLEMENTATION</div>
+                <h2 class="title">Operationalising the Equation</h2>
+                <p class="subtitle">Systematically destroying the denominator.</p>
+                
+                <div class="problem-solution">
+                    <div class="ps-row">
+                        <div class="problem">
+                            <div class="icon">🛒</div>
+                            <p>Grocery Shopping takes time/effort</p>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="solution">
+                            <p>We send you the food</p>
+                        </div>
+                        <div class="strategy-box">Strategy: Itemise every step the customer hates (effort) or has to give up (sacrifice), and solve for it specifically.</div>
+                    </div>
+                    <div class="ps-row">
+                        <div class="problem">
+                            <div class="icon">🍳</div>
+                            <p>Cooking is hard/messy</p>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="solution">
+                            <p>Pre-cooked meals</p>
+                        </div>
+                    </div>
+                    <div class="ps-row">
+                        <div class="problem">
+                            <div class="icon">⏰</div>
+                            <p>Results take too long</p>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="solution">
+                            <p>Fast-start 5kg drop programme</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: ENHANCER 1 - SCARCITY & URGENCY -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 9 — Enhancer 1</div>
+            <div class="slide enhancer-slide">
+                <div class="slide-number">09</div>
+                <div class="enhancer-tag">ENHANCER 1</div>
+                <h2 class="title">Scarcity & Urgency</h2>
+                <p class="subtitle">Psychological levers to balance Supply and Demand.</p>
+                
+                <div class="two-col">
+                    <div class="enhancer-box">
+                        <div class="gauge">⏱️</div>
+                        <h4>Scarcity</h4>
+                        <div class="label">Function of Quantity</div>
+                        <p>"Only 5 spots left."</p>
+                    </div>
+                    <div class="enhancer-box">
+                        <div class="gauge">🔥</div>
+                        <h4>Urgency</h4>
+                        <div class="label">Function of Time</div>
+                        <p>"Enrollment closes Friday."</p>
+                    </div>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: ENHANCER 2 - GUARANTEES -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 10 — Enhancer 2</div>
+            <div class="slide enhancer-slide">
+                <div class="slide-number">10</div>
+                <div class="enhancer-tag">ENHANCER 2</div>
+                <h2 class="title">Guarantees (Risk Reversal)</h2>
+                <p class="subtitle">Psychological levers to balance Supply and Demand.</p>
+                
+                <div class="guarantee-grid">
+                    <div class="guarantee-item">
+                        <h5>🔓 Unconditional</h5>
+                        <p>"I'll give your money back if you ask for it. No questions asked."</p>
+                    </div>
+                    <div class="guarantee-item">
+                        <h5>📋 Conditional</h5>
+                        <p>"I'll guarantee it IF you do X, Y, and Z." Ensures compliance.</p>
+                    </div>
+                    <div class="guarantee-item">
+                        <h5>🚫 Anti-Guarantee</h5>
+                        <p>All sales final. "This is not for everyone." Builds status.</p>
+                    </div>
+                    <div class="guarantee-item">
+                        <h5>📈 Implied (Performance)</h5>
+                        <p>"We don't get paid unless you make money."</p>
+                    </div>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: BONUS STACK -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 11 — Execution</div>
+            <div class="slide execution-slide">
+                <div class="slide-number">11</div>
+                <div class="exec-tag">EXECUTION</div>
+                <h2 class="title">The Bonus Stack</h2>
+                <p class="subtitle">Never discount price. Add value to solve constraints.</p>
+                
+                <div class="content-grid">
+                    <div>
+                        <div class="no-discount">
+                            <div class="icon">🏷️❌</div>
+                            <p>No Discounts.</p>
+                        </div>
+                        <div class="stack-visual">
+                            <div class="stack-item bonus">Bonus 3: 1-on-1 Onboarding</div>
+                            <div class="stack-item bonus">Bonus 2: Grocery List</div>
+                            <div class="stack-item bonus">Bonus 1: Meal Prep Guide</div>
+                            <div class="stack-item core">CORE OFFER</div>
+                        </div>
+                    </div>
+                    <div class="how-it-works">
+                        <h4>How it works:</h4>
+                        <ol>
+                            <li>Make the core ask</li>
+                            <li>If they hesitate, identify the specific constraint</li>
+                            <li>Plug in a bonus that specifically solves that constraint</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: SURPRISE & DELIGHT -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 12 — Execution</div>
+            <div class="slide execution-slide">
+                <div class="slide-number">12</div>
+                <div class="exec-tag">EXECUTION</div>
+                <h2 class="title">Surprise and Delight</h2>
+                <p class="subtitle">Give the unneeded bonuses post-purchase.</p>
+                
+                <div class="content-grid">
+                    <div class="how-it-works">
+                        <h4>Benefits by Buyer Type:</h4>
+                        <ol>
+                            <li><strong>For the difficult buyer:</strong> It closes the deal</li>
+                            <li><strong>For the fast buyer:</strong> It creates a 'wow' moment</li>
+                            <li><strong>For Ops:</strong> Every customer receives the exact same deliverables</li>
+                        </ol>
+                    </div>
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="background: var(--gold); color: #000; padding: 30px 40px; text-align: center; border: 3px solid #fff;">
+                            <p style="font-size: 20px; font-weight: 800;">Consistent Operations<br>&<br>Higher Loyalty</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: CHEAT SHEET -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 13 — Cheat Sheet</div>
+            <div class="slide slide-13">
+                <div class="slide-number">13</div>
+                <h2 class="title">The £100M Offer Cheat Sheet</h2>
+                <p class="subtitle">Organize the slide as a dense, grid-based reference card.</p>
+                
+                <div class="formula-recap">
+                    <p>(Dream × Likelihood) ÷ (Delay × Effort) = <span>VALUE</span></p>
+                </div>
+
+                <div class="cheat-grid">
+                    <div class="checklist">
+                        <h4>The Checklist</h4>
+                        <ul>
+                            <li>Increase the Status of the Outcome</li>
+                            <li>Provide Social Proof/Data to increase Certainty</li>
+                            <li>Shorten the Time Delay (Fast Wins)</li>
+                            <li>Remove Effort (Do it for them)</li>
+                            <li>Remove Sacrifice (Let them keep what they love)</li>
+                        </ul>
+                    </div>
+                    <div class="enhancers-recap">
+                        <h4>The Enhancers</h4>
+                        <div class="enhancer-pills">
+                            <div class="pill">⏱️ Scarcity (Quantity)</div>
+                            <div class="pill">🔥 Urgency (Time)</div>
+                            <div class="pill">🛡️ Guarantees (Risk)</div>
+                            <div class="pill">🎁 Bonuses (Additions)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: LOLLAPALOOZA EFFECT -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 14 — Impact</div>
+            <div class="slide slide-14">
+                <div class="slide-number">14</div>
+                <div class="section-tag">RESULTS</div>
+                <h2 class="title">The "Lollapalooza" Effect</h2>
+                <p class="subtitle">Psychological levers for exponential value growth.</p>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="icon">💰</div>
+                        <p>Double or triple<br>the price</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">🤝</div>
+                        <p>Close at a higher<br>percentage</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">📦</div>
+                        <p>Zero change to<br>the core product</p>
+                    </div>
+                </div>
+
+                <div class="quote-box">
+                    <p>"Companies go from £2 million to £10 million in a year changing nothing but the core offer."</p>
+                </div>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: FINAL QUOTE -->
+        <div class="slide-wrapper">
+            <div class="slide-label">Slide 15 — Closing</div>
+            <div class="slide slide-15">
+                <div class="slide-number">15</div>
+                <p class="pre-quote">Make an offer so good...</p>
+                <h1 class="main-quote">"...<span>PEOPLE WOULD FEEL STUPID SAYING NO.</span>"</h1>
+                <p class="attribution">— Adapted from Alex Hormozi</p>
+                <div class="brand">Mentorna® Workshop Series</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
