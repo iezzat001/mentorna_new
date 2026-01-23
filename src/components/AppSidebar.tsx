@@ -9,6 +9,7 @@ import {
   Mail,
   Magnet,
   MessageSquare,
+  Presentation,
   Send,
   TrendingUp,
   Users,
@@ -97,6 +98,11 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
       title: "Reels Analysis",
       url: "reels-analysis",
       icon: Film,
+    },
+    {
+      title: "Workshops",
+      url: "workshops",
+      icon: Presentation,
     },
   ];
 
