@@ -61,9 +61,6 @@ const workshops: Workshop[] = [
     description: 'A comprehensive workshop teaching the fundamentals of vibe coding - building applications using AI without traditional programming knowledge. Covers the evolution from traditional coding to AI-assisted development, with hands-on exercises using Replit.',
     materials: [
       { type: 'slides', title: 'Workshop Slides (Interactive)', url: '/workshops/workshop-1-slides.html' },
-      { type: 'pdf', title: 'Vibe Coding Strategic Guide (PDF)', url: '#' },
-      { type: 'script', title: 'Full Workshop Script', url: '#' },
-      { type: 'script', title: 'Platform-Agnostic Script', url: '#' },
     ],
     keyTakeaways: [
       'Be precise - give AI one task at a time',
