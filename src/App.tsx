@@ -17,6 +17,7 @@ import SkillsIn2026 from "./pages/SkillsIn2026";
 import MohamedOffer from "./pages/MohamedOffer";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import Valuation from "./pages/Valuation";
 import ResponsiveHome from "@/components/ResponsiveHome";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 
@@ -75,6 +76,9 @@ const App = () => {
 
                   {/* Skills in 2026 page */}
                   <Route path="/skills-in-2026" element={<SkillsIn2026 />} />
+
+                  {/* Startup valuation calculator lead magnet */}
+                  <Route path="/valuation" element={<Valuation />} />
 
                   {/* Mohamed Offer page */}
                   <Route path="/offer/mohamed" element={<MohamedOffer />} />

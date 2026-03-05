@@ -68,6 +68,57 @@ export type Database = {
         }
         Relationships: []
       }
+
+      valuation_submissions: {
+        Row: {
+          base_valuation: number
+          created_at: string
+          dilution_percent: number
+          growth_adjusted_valuation: number
+          growth_rate: number
+          id: string
+          industry: string
+          investment_amount: number
+          lead_id: string | null
+          mrr: number
+          post_money_valuation: number
+        }
+        Insert: {
+          base_valuation: number
+          created_at?: string
+          dilution_percent: number
+          growth_adjusted_valuation: number
+          growth_rate: number
+          id?: string
+          industry: string
+          investment_amount: number
+          lead_id?: string | null
+          mrr: number
+          post_money_valuation: number
+        }
+        Update: {
+          base_valuation?: number
+          created_at?: string
+          dilution_percent?: number
+          growth_adjusted_valuation?: number
+          growth_rate?: number
+          id?: string
+          industry?: string
+          investment_amount?: number
+          lead_id?: string | null
+          mrr?: number
+          post_money_valuation?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_valuation_submissions_lead"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "magnet_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       founders: {
         Row: {
           created_at: string
