@@ -3,6 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import FounderCard from './FounderCard';
+import { normalizeSocialUrl } from '@/utils/socialLinks';
 
 interface Founder {
   id: string;
@@ -11,8 +12,10 @@ interface Founder {
   short_bio: string;
   extended_bio: string;
   image_url: string;
-  linkedin_url: string;
-  twitter_url: string;
+  linkedin_url: string | null;
+  twitter_url: string | null;
+  instagram_url?: string | null;
+  tiktok_url?: string | null;
   order_index: number;
   is_active: boolean;
 }
@@ -41,14 +44,16 @@ const FoundersSection = () => {
     extendedBio: founder.extended_bio,
     image: founder.image_url,
     socialMedia: {
-      linkedin: founder.linkedin_url,
-      twitter: founder.twitter_url
+      linkedin: normalizeSocialUrl(founder.linkedin_url, 'linkedin') ?? '',
+      twitter: normalizeSocialUrl(founder.twitter_url, 'twitter') ?? '',
+      instagram: normalizeSocialUrl(founder.instagram_url, 'instagram') ?? '',
+      tiktok: normalizeSocialUrl(founder.tiktok_url, 'tiktok') ?? ''
     }
   });
 
   return (
-    <section className="bg-accent-purple border-b-4 border-foreground py-16 px-6">
-      <div className="container mx-auto max-w-6xl">
+    <section className="bg-accent-purple border-b-4 border-foreground py-16 px-6" id="founders">
+      <div className="container mx-auto max-w-5xl">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="
@@ -74,12 +79,16 @@ const FoundersSection = () => {
             inline-block
             shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
           ">
-            EDUCATORS, AI INNOVATORS & ENTREPRENEURS
+            FOUNDERS • OPERATORS • AI BUILDERS
           </div>
+          <p className="mt-6 max-w-2xl mx-auto font-body text-base md:text-lg font-semibold text-foreground/80">
+            You’re not buying theory. You’re working with mentors who build, ship, and help founders turn ideas into MVPs
+            and first customers.
+          </p>
         </div>
 
-        {/* Founders Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        {/* Mentors */}
+        <div className="flex flex-col items-center gap-8 mb-12">
           {founders?.map((founder) => (
             <FounderCard key={founder.id} founder={convertFounder(founder)} />
           ))}
@@ -101,7 +110,8 @@ const FoundersSection = () => {
             text-foreground 
             leading-relaxed
           ">
-            Parents trust us because we've walked this journey. We've helped Arab students win scholarships, launch projects, and discover their passion early.
+            Founders trust us because we’ve shipped real products and built repeatable systems. The focus is execution:
+            validate fast, build the MVP, launch, and get your first customers.
           </p>
         </div>
       </div>

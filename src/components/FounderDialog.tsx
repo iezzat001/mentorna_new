@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Instagram, Linkedin, Twitter } from 'lucide-react';
+import TikTokIcon from '@/components/icons/TikTokIcon';
 
 interface Founder {
   id: number;
@@ -12,6 +14,8 @@ interface Founder {
   socialMedia: {
     linkedin: string;
     twitter: string;
+    instagram?: string;
+    tiktok?: string;
   };
 }
 
@@ -20,6 +24,18 @@ interface FounderDialogProps {
 }
 
 const FounderDialog = ({ founder }: FounderDialogProps) => {
+  const socials = [
+    { key: 'linkedin', label: 'LinkedIn', href: founder.socialMedia.linkedin, Icon: Linkedin },
+    { key: 'twitter', label: 'Twitter', href: founder.socialMedia.twitter, Icon: Twitter },
+    { key: 'instagram', label: 'Instagram', href: founder.socialMedia.instagram || '', Icon: Instagram },
+    {
+      key: 'tiktok',
+      label: 'TikTok',
+      href: founder.socialMedia.tiktok || '',
+      Icon: (props: { className?: string }) => <TikTokIcon className={props.className} />,
+    },
+  ].filter((s) => !!s.href);
+
   return (
     <DialogContent className="
       max-w-2xl 
@@ -111,70 +127,40 @@ const FounderDialog = ({ founder }: FounderDialogProps) => {
             </p>
           </div>
           
-          <div className="
-            bg-accent-blue 
-            border-4 
-            border-foreground 
-            p-6 
-            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-          ">
-            <h4 className="
-              font-heading 
-              text-lg 
-              font-black 
-              uppercase 
-              mb-4 
-              text-foreground
+          {socials.length > 0 && (
+            <div className="
+              bg-accent-blue 
+              border-4 
+              border-foreground 
+              p-6 
+              shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
             ">
-              CONNECT WITH {founder.name.split(' ')[0].toUpperCase()}
-            </h4>
-            <div className="flex gap-4 justify-center">
-              <a 
-                href={founder.socialMedia.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  bg-foreground 
-                  text-background 
-                  font-black 
-                  uppercase 
-                  px-6 
-                  py-3 
-                  border-4 
-                  border-foreground 
-                  shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
-                  hover:translate-x-1 
-                  hover:translate-y-1 
-                  hover:shadow-none 
-                  transition-all
-                "
-              >
-                LINKEDIN
-              </a>
-              <a 
-                href={founder.socialMedia.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  bg-primary 
-                  text-primary-foreground 
-                  font-black 
-                  uppercase 
-                  px-6 
-                  py-3 
-                  border-4 
-                  border-foreground 
-                  shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
-                  hover:translate-x-1 
-                  hover:translate-y-1 
-                  hover:shadow-none 
-                  transition-all
-                "
-              >
-                TWITTER
-              </a>
+              <h4 className="
+                font-heading 
+                text-lg 
+                font-black 
+                uppercase 
+                mb-4 
+                text-foreground
+              ">
+                CONNECT WITH {founder.name.split(' ')[0].toUpperCase()}
+              </h4>
+              <div className="flex gap-3 justify-center flex-wrap">
+                {socials.map(({ key, href, label, Icon }) => (
+                  <a
+                    key={key}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="w-12 h-12 flex items-center justify-center border-4 border-foreground bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                  >
+                    <Icon className="w-6 h-6 text-foreground" />
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </DialogContent>

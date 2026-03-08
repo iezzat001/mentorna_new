@@ -29,8 +29,10 @@ const getDeviceType = () => {
   return 'Desktop';
 };
 
-export const useVisitorTracking = () => {
+export const useVisitorTracking = (isEnabled: boolean = true) => {
   useEffect(() => {
+    if (!isEnabled) return;
+
     const trackVisitor = async () => {
       try {
         const sessionId = getSessionId();
@@ -68,5 +70,5 @@ export const useVisitorTracking = () => {
     return () => {
       window.removeEventListener('popstate', handleRouteChange);
     };
-  }, []);
+  }, [isEnabled]);
 };

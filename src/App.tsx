@@ -20,16 +20,15 @@ import NotFound from "./pages/NotFound";
 import Valuation from "./pages/Valuation";
 import ResponsiveHome from "@/components/ResponsiveHome";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
+import Workshop from "./pages/Workshop";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const isDashboardSubdomain = isOnDashboardSubdomain();
-  
+
   // Track visitors on the main site (not on dashboard subdomain)
-  if (!isDashboardSubdomain) {
-    useVisitorTracking();
-  }
+  useVisitorTracking(!isDashboardSubdomain);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -79,6 +78,9 @@ const App = () => {
 
                   {/* Startup valuation calculator lead magnet */}
                   <Route path="/valuation" element={<Valuation />} />
+
+                  {/* Workshop landing page */}
+                  <Route path="/workshop" element={<Workshop />} />
 
                   {/* Mohamed Offer page */}
                   <Route path="/offer/mohamed" element={<MohamedOffer />} />

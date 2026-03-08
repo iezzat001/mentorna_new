@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import FounderForm from './FounderForm';
+import { normalizeSocialUrl } from '@/utils/socialLinks';
 
 interface Founder {
   id: string;
@@ -16,8 +17,10 @@ interface Founder {
   short_bio: string;
   extended_bio: string;
   image_url: string;
-  linkedin_url: string;
-  twitter_url: string;
+  linkedin_url: string | null;
+  twitter_url: string | null;
+  instagram_url?: string | null;
+  tiktok_url?: string | null;
   order_index: number;
   is_active: boolean;
 }
@@ -96,6 +99,9 @@ const FoundersManager = () => {
     );
   }
 
+  const socialValue = (raw: string | null | undefined, platform: Parameters<typeof normalizeSocialUrl>[1]) =>
+    normalizeSocialUrl(raw, platform) ?? '';
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -138,8 +144,24 @@ const FoundersManager = () => {
                   
                   <h4 className="font-black text-sm uppercase mb-2">Social Media</h4>
                   <div className="space-y-1">
-                    <p className="font-semibold text-xs">LinkedIn: {founder.linkedin_url}</p>
-                    <p className="font-semibold text-xs">Twitter: {founder.twitter_url}</p>
+                    {socialValue(founder.linkedin_url, 'linkedin') && (
+                      <p className="font-semibold text-xs">LinkedIn: {socialValue(founder.linkedin_url, 'linkedin')}</p>
+                    )}
+                    {socialValue(founder.twitter_url, 'twitter') && (
+                      <p className="font-semibold text-xs">Twitter: {socialValue(founder.twitter_url, 'twitter')}</p>
+                    )}
+                    {socialValue(founder.instagram_url, 'instagram') && (
+                      <p className="font-semibold text-xs">Instagram: {socialValue(founder.instagram_url, 'instagram')}</p>
+                    )}
+                    {socialValue(founder.tiktok_url, 'tiktok') && (
+                      <p className="font-semibold text-xs">TikTok: {socialValue(founder.tiktok_url, 'tiktok')}</p>
+                    )}
+                    {!socialValue(founder.linkedin_url, 'linkedin') &&
+                      !socialValue(founder.twitter_url, 'twitter') &&
+                      !socialValue(founder.instagram_url, 'instagram') &&
+                      !socialValue(founder.tiktok_url, 'tiktok') && (
+                        <p className="font-semibold text-xs text-foreground/60">No social links set</p>
+                      )}
                   </div>
                 </div>
                 <div>

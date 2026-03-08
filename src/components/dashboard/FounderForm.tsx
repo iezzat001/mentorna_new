@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { normalizeSocialUrl } from '@/utils/socialLinks';
 
 interface Founder {
   id: string;
@@ -16,8 +17,10 @@ interface Founder {
   short_bio: string;
   extended_bio: string;
   image_url: string;
-  linkedin_url: string;
-  twitter_url: string;
+  linkedin_url: string | null;
+  twitter_url: string | null;
+  instagram_url?: string | null;
+  tiktok_url?: string | null;
   order_index: number;
   is_active: boolean;
 }
@@ -28,14 +31,21 @@ interface FounderFormProps {
 }
 
 const FounderForm = ({ founder, onCancel }: FounderFormProps) => {
+  const cleanInputValue = (value: string | null | undefined) => {
+    const v = (value ?? '').trim();
+    return v && v !== '#' ? v : '';
+  };
+
   const [formData, setFormData] = useState({
     name: founder?.name || '',
     title: founder?.title || '',
     short_bio: founder?.short_bio || '',
     extended_bio: founder?.extended_bio || '',
     image_url: founder?.image_url || '',
-    linkedin_url: founder?.linkedin_url || '#',
-    twitter_url: founder?.twitter_url || '#',
+    linkedin_url: cleanInputValue(founder?.linkedin_url),
+    twitter_url: cleanInputValue(founder?.twitter_url),
+    instagram_url: cleanInputValue(founder?.instagram_url),
+    tiktok_url: cleanInputValue(founder?.tiktok_url),
     order_index: founder?.order_index || 0,
     is_active: founder?.is_active ?? true
   });
@@ -44,16 +54,24 @@ const FounderForm = ({ founder, onCancel }: FounderFormProps) => {
 
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
+      const payload = {
+        ...data,
+        linkedin_url: normalizeSocialUrl(data.linkedin_url, 'linkedin'),
+        twitter_url: normalizeSocialUrl(data.twitter_url, 'twitter'),
+        instagram_url: normalizeSocialUrl(data.instagram_url, 'instagram'),
+        tiktok_url: normalizeSocialUrl(data.tiktok_url, 'tiktok'),
+      };
+
       if (founder) {
         const { error } = await supabase
           .from('founders')
-          .update(data)
+          .update(payload)
           .eq('id', founder.id);
         if (error) throw error;
       } else {
         const { error } = await supabase
           .from('founders')
-          .insert(data);
+          .insert(payload);
         if (error) throw error;
       }
     },
@@ -143,6 +161,7 @@ const FounderForm = ({ founder, onCancel }: FounderFormProps) => {
                 value={formData.linkedin_url}
                 onChange={(e) => handleChange('linkedin_url', e.target.value)}
                 className="border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-semibold"
+                placeholder="https://www.linkedin.com/in/..."
               />
             </div>
             <div>
@@ -151,6 +170,28 @@ const FounderForm = ({ founder, onCancel }: FounderFormProps) => {
                 value={formData.twitter_url}
                 onChange={(e) => handleChange('twitter_url', e.target.value)}
                 className="border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-semibold"
+                placeholder="https://x.com/... or @handle"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="font-bold text-sm uppercase mb-2 block">Instagram URL</Label>
+              <Input
+                value={formData.instagram_url}
+                onChange={(e) => handleChange('instagram_url', e.target.value)}
+                className="border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-semibold"
+                placeholder="https://instagram.com/... or @handle"
+              />
+            </div>
+            <div>
+              <Label className="font-bold text-sm uppercase mb-2 block">TikTok URL</Label>
+              <Input
+                value={formData.tiktok_url}
+                onChange={(e) => handleChange('tiktok_url', e.target.value)}
+                className="border-4 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-semibold"
+                placeholder="https://tiktok.com/@... or @handle"
               />
             </div>
           </div>

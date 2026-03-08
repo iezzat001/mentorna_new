@@ -1,0 +1,461 @@
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { ArrowRight, CheckCircle, Users } from 'lucide-react';
+import FoundersSection from '@/components/FoundersSection';
+import Footer from '@/components/Footer';
+
+const Workshop = () => {
+  const measurementId = (localStorage.getItem('google_analytics_id') || '').trim();
+  const { trackEvent } = useGoogleAnalytics({ measurementId });
+
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    whatsapp: '',
+    telegram: '',
+    address: '',
+    signature: '',
+    agree1: false,
+    agree2: false,
+    agree3: false,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const today = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const onCtaClick = () => {
+    trackEvent('workshop_cta_click', {
+      page_path: window.location.pathname,
+      cta: 'primary',
+    });
+
+    const el = document.getElementById('secure-your-spot');
+    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.from('signed_contracts').insert({
+        full_name: formData.fullName,
+        email: formData.email,
+        whatsapp: formData.whatsapp,
+        telegram: formData.telegram,
+        address: formData.address,
+        signature: formData.signature,
+        offer_type: 'solopreneur_launchpad',
+        total_amount: 49500,
+        currency: 'EGP',
+        installment_amount: 24750,
+        installments_count: 2,
+        agreed_terms: {
+          sessions_commitment: formData.agree1,
+          tasks_commitment: formData.agree2,
+          payment_agreement: formData.agree3,
+        },
+        status: 'pending',
+      });
+
+      if (error) throw error;
+
+      trackEvent('workshop_contract_submit', {
+        page_path: window.location.pathname,
+        offer_type: 'solopreneur_launchpad',
+      });
+
+      toast.success('Enrollment received!');
+      alert(
+        `Thank you, ${formData.fullName}! 🎉\n\nYour enrollment has been received. I'll confirm your payment and send onboarding details shortly.`
+      );
+    } catch (err) {
+      console.error('Error saving contract:', err);
+      toast.error('Failed to submit. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif]">
+      <section className="bg-gradient-to-br from-accent-yellow via-accent-yellow/90 to-accent-yellow/70 border-b-4 border-foreground">
+        <div className="container mx-auto px-4 py-10 md:py-14">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
+            <div className="relative">
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden bg-white">
+                <img
+                  src="https://d2mp3ttz3u5gci.cloudfront.net/ahmed_ezzat_ai_entrepreneur.png"
+                  alt="Ahmed Ezzat"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-1 -right-1 bg-accent-blue border-2 border-foreground rounded-full p-1">
+                <CheckCircle className="w-5 h-5 text-foreground" />
+              </div>
+            </div>
+
+            <div className="text-center md:text-left flex-1">
+              <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
+                <h2 className="font-heading text-2xl md:text-3xl font-black text-foreground">Ahmed Ezzat</h2>
+                <Badge className="bg-foreground text-background font-bold text-xs px-2 py-0.5 w-fit mx-auto md:mx-0">
+                  @mentorna
+                </Badge>
+              </div>
+              <p className="font-body text-sm md:text-base font-semibold text-foreground/80 mb-3">
+                AI Consultant & Serial Entrepreneur
+              </p>
+
+              <div className="flex justify-center md:justify-start gap-6 mb-4">
+                <div className="text-center">
+                  <p className="font-heading font-black text-lg md:text-xl text-foreground">10+</p>
+                  <p className="text-xs font-semibold text-foreground/70">Years in AI</p>
+                </div>
+                <div className="text-center">
+                  <p className="font-heading font-black text-lg md:text-xl text-foreground">300+</p>
+                  <p className="text-xs font-semibold text-foreground/70">Founders Helped</p>
+                </div>
+                <div className="text-center">
+                  <p className="font-heading font-black text-lg md:text-xl text-foreground">3</p>
+                  <p className="text-xs font-semibold text-foreground/70">Startups</p>
+                </div>
+              </div>
+
+              <p className="font-body text-sm text-foreground/80 max-w-lg">
+                Helping founders validate ideas, build MVPs, and ship offers that convert.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white border-4 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-6 md:p-8">
+            <div className="text-xl font-light tracking-[2px] mb-4 text-foreground">Mentorna®</div>
+            <Badge className="bg-foreground text-background font-black uppercase px-3 py-1 text-xs mb-4">
+              Exclusive 1:1 Program
+            </Badge>
+            <h1 className="font-heading text-2xl md:text-4xl font-black uppercase text-foreground mb-2 leading-tight">
+              Solopreneur Launchpad
+            </h1>
+            <p className="font-body text-base md:text-lg font-semibold text-foreground/80 mb-6">
+              3-Month Mentorship with Ahmed Ezzat
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <Button
+                onClick={onCtaClick}
+                className="bg-primary text-white border-4 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] font-black text-base md:text-lg py-6 px-6 uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+              >
+                Secure Your Spot
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              <div className="flex items-center gap-2 text-sm font-semibold text-foreground/70">
+                <Users className="w-4 h-4" />
+                Limited spots • Founders only
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main className="max-w-3xl mx-auto px-5 py-8">
+        <section className="mb-8">
+          <span className="inline-block bg-[hsl(0,0%,15%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,15%)]">
+            Prepared For
+          </span>
+          <h2 className="text-3xl font-extrabold mt-3">Founders</h2>
+          <p className="font-semibold opacity-80">Idea → MVP → First Customers</p>
+        </section>
+
+        <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 mb-8">
+          <h2 className="text-2xl font-extrabold uppercase mb-5 pb-3 border-b-4 border-[hsl(0,0%,15%)] inline-block">
+            The Promise
+          </h2>
+          <p className="text-xl font-semibold">
+            In 90 days, you will go from “idea in your head” to{' '}
+            <span className="bg-[hsl(45,95%,65%)] px-1.5 py-0.5">launched MVP with a clear offer</span> — ready
+            to generate revenue from your own digital product.
+          </p>
+        </div>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-extrabold uppercase mb-5 pb-3 border-b-4 border-[hsl(0,0%,15%)] inline-block">
+            What You Get
+          </h2>
+          {[
+            {
+              icon: '📅',
+              title: '12 Weeks of 1:1 Mentorship',
+              items: ['2x sessions per week (1.5 hours each)', '24 total sessions of direct coaching'],
+            },
+            {
+              icon: '💬',
+              title: 'Async Support',
+              items: ['Telegram access for quick questions', 'Loom videos', 'Response within 24 hours (Mon–Fri)'],
+            },
+            {
+              icon: '📦',
+              title: 'Frameworks & Templates',
+              items: [
+                'Customer interview scripts',
+                'Idea validation checklist',
+                'Landing page templates',
+                'Offer creation framework',
+                'Launch campaign playbook',
+              ],
+            },
+            {
+              icon: '🛠️',
+              title: 'Done-With-You Deliverables',
+              items: ['Professional landing page', 'Sales funnel setup', 'Traction strategy'],
+            },
+          ].map((feature, idx) => (
+            <div
+              key={idx}
+              className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-5 mb-5"
+            >
+              <h3 className="text-lg font-extrabold uppercase mb-3">
+                {feature.icon} {feature.title}
+              </h3>
+              <ul className="list-none">
+                {feature.items.map((item) => (
+                  <li key={item} className="py-2 pl-6 relative font-medium">
+                    <span className="absolute left-0 font-extrabold">→</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-extrabold uppercase mb-5 pb-3 border-b-4 border-[hsl(0,0%,15%)] inline-block">
+            The Journey
+          </h2>
+          <div className="border-4 border-[hsl(0,0%,15%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-[hsl(0,0%,15%)] text-white">
+                  <th className="p-4 text-left font-extrabold uppercase">Phase</th>
+                  <th className="p-4 text-left font-extrabold uppercase">Weeks</th>
+                  <th className="p-4 text-left font-extrabold uppercase">Outcome</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  {
+                    phase: 'Validate',
+                    weeks: '1–4',
+                    outcome: 'Problem validated, target customer defined, offer drafted',
+                    color: 'bg-[hsl(260,50%,75%)]',
+                  },
+                  {
+                    phase: 'Build',
+                    weeks: '5–8',
+                    outcome: 'MVP built, landing page live, funnel ready',
+                    color: 'bg-[hsl(210,75%,70%)]',
+                  },
+                  {
+                    phase: 'Launch',
+                    weeks: '9–12',
+                    outcome: 'First customers, revenue generated, growth system in place',
+                    color: 'bg-[hsl(140,50%,60%)]',
+                  },
+                ].map((row) => (
+                  <tr key={row.phase}>
+                    <td className={`p-4 border-2 border-[hsl(0,0%,15%)] ${row.color}`}>
+                      <span className="font-extrabold uppercase">{row.phase}</span>
+                    </td>
+                    <td className="p-4 border-2 border-[hsl(0,0%,15%)] bg-white">{row.weeks}</td>
+                    <td className="p-4 border-2 border-[hsl(0,0%,15%)] bg-white">{row.outcome}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 mb-8">
+          <h3 className="text-xl font-extrabold uppercase mb-4">🛡️ The Guarantee</h3>
+          <p className="font-semibold mb-4">
+            Complete the program with full commitment, and if you don’t have a launched MVP with a clear offer by the
+            end of Month 3 — <strong>you get 100% of your money back.</strong>
+          </p>
+          <p className="font-bold mb-3">Commitment Requirements:</p>
+          {[
+            'Attend all scheduled sessions (maximum 2 missed sessions allowed)',
+            'Complete all assigned tasks (maximum 2 incomplete tasks allowed)',
+          ].map((item) => (
+            <div key={item} className="flex items-start gap-3 py-2">
+              <span className="bg-[hsl(140,50%,60%)] w-6 h-6 flex items-center justify-center font-extrabold flex-shrink-0 border-2 border-[hsl(0,0%,15%)]">
+                <CheckCircle className="w-4 h-4" />
+              </span>
+              <span className="font-medium">{item}</span>
+            </div>
+          ))}
+          <div className="bg-[hsl(45,95%,65%)] border-2 border-[hsl(0,0%,15%)] p-4 mt-5 font-semibold">
+            ⚠️ If either condition is not met, the guarantee is void.
+          </div>
+        </div>
+
+        <div className="bg-[hsl(45,95%,65%)] border-4 border-[hsl(0,0%,15%)] text-center p-10 mb-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <span className="inline-block bg-[hsl(0,0%,15%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,15%)] mb-4">
+            Investment
+          </span>
+          <div className="text-5xl md:text-6xl font-extrabold leading-none">49,500 EGP</div>
+          <p className="text-lg font-semibold mt-3">2 installments of 24,750 EGP</p>
+          <div className="mt-4 border-t-4 border-[hsl(0,0%,15%)] pt-4">
+            <div className="text-3xl md:text-4xl font-extrabold leading-none">$1,000 USD</div>
+            <p className="text-lg font-semibold mt-2">2 installments of $500 USD</p>
+          </div>
+        </div>
+
+        <div className="bg-[hsl(140,50%,60%)] border-4 border-[hsl(0,0%,15%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-5 mb-8">
+          <h3 className="text-lg font-extrabold uppercase mb-3">💳 Payment Details</h3>
+          <p className="font-semibold mb-4">
+            First installment (EGP): <strong>24,750 EGP</strong>
+          </p>
+          <p className="font-bold mb-2">Send via InstaPay to:</p>
+          <div className="bg-white border-4 border-[hsl(0,0%,15%)] p-4 text-2xl md:text-3xl font-extrabold text-center tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            +20 120 532 9570
+          </div>
+          <p className="text-sm mt-3 opacity-80">After payment, fill the form below to confirm your enrollment.</p>
+        </div>
+
+        <div id="secure-your-spot" className="bg-[hsl(0,0%,15%)] text-white p-8 md:p-10 mb-8">
+          <h2 className="text-2xl font-extrabold uppercase mb-6 pb-3 border-b-4 border-white inline-block">
+            Secure Your Spot
+          </h2>
+          <form onSubmit={handleFormSubmit}>
+            <div className="mb-5">
+              <label className="block font-bold uppercase text-sm mb-2 tracking-wider">Full Name</label>
+              <input
+                type="text"
+                required
+                placeholder="Enter your full name"
+                className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
+                value={formData.fullName}
+                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+              />
+            </div>
+            <div className="mb-5">
+              <label className="block font-bold uppercase text-sm mb-2 tracking-wider">Email Address</label>
+              <input
+                type="email"
+                required
+                placeholder="Enter your email"
+                className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+            </div>
+            <div className="mb-5">
+              <label className="block font-bold uppercase text-sm mb-2 tracking-wider">WhatsApp Number</label>
+              <input
+                type="tel"
+                required
+                placeholder="+20 xxx xxx xxxx"
+                className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
+                value={formData.whatsapp}
+                onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+              />
+            </div>
+            <div className="mb-5">
+              <label className="block font-bold uppercase text-sm mb-2 tracking-wider">Telegram Username</label>
+              <input
+                type="text"
+                required
+                placeholder="@username"
+                className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
+                value={formData.telegram}
+                onChange={(e) => setFormData({ ...formData, telegram: e.target.value })}
+              />
+            </div>
+            <div className="mb-5">
+              <label className="block font-bold uppercase text-sm mb-2 tracking-wider">Address</label>
+              <input
+                type="text"
+                required
+                placeholder="City, Country"
+                className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+              />
+            </div>
+
+            <div className="bg-white border-4 border-[hsl(0,0%,15%)] p-5 mb-5">
+              <div className="text-sm font-bold uppercase text-[hsl(0,0%,15%)] mb-3">Your Signature</div>
+              <input
+                type="text"
+                required
+                placeholder="Type your full name"
+                className="w-full p-5 text-3xl text-center border-none border-b-[3px] border-[hsl(0,0%,15%)] bg-transparent text-[hsl(0,0%,15%)] outline-none"
+                style={{ fontFamily: "'Brush Script MT', cursive" }}
+                value={formData.signature}
+                onChange={(e) => setFormData({ ...formData, signature: e.target.value })}
+              />
+              <div className="text-right text-sm text-[hsl(0,0%,15%)] mt-3 font-semibold">Date: {today}</div>
+            </div>
+
+            <div className="bg-white/10 p-5 mb-5 border-2 border-white/30">
+              <p className="text-sm mb-4">By signing above and submitting this form, I agree to the following:</p>
+              {[
+                {
+                  id: 'agree1',
+                  text: 'I commit to attending all scheduled sessions and completing assigned tasks as outlined in the program.',
+                },
+                {
+                  id: 'agree2',
+                  text: 'I understand that missing more than 2 sessions OR failing to complete more than 2 assigned tasks will void the money-back guarantee.',
+                },
+                {
+                  id: 'agree3',
+                  text: 'I agree to pay 49,500 EGP in 2 installments (24,750 EGP each via InstaPay) OR $1,000 USD in 2 installments ($500 each).',
+                },
+              ].map((checkbox) => (
+                <div key={checkbox.id} className="flex items-start gap-3 mt-4">
+                  <input
+                    type="checkbox"
+                    id={checkbox.id}
+                    required
+                    className="w-6 h-6 flex-shrink-0 mt-0.5 cursor-pointer"
+                    checked={formData[checkbox.id as keyof typeof formData] as boolean}
+                    onChange={(e) => setFormData({ ...formData, [checkbox.id]: e.target.checked })}
+                  />
+                  <label htmlFor={checkbox.id} className="font-semibold cursor-pointer">
+                    {checkbox.text}
+                  </label>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-5 px-10 text-xl font-extrabold uppercase bg-[hsl(45,95%,65%)] text-[hsl(0,0%,15%)] border-4 border-[hsl(0,0%,15%)] shadow-[6px_6px_0px_0px_rgba(255,255,255,0.5)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.5)] active:translate-x-1.5 active:translate-y-1.5 active:shadow-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? 'Submitting...' : "🚀 I'm In — Let's Build!"}
+            </button>
+          </form>
+        </div>
+
+        <div className="mb-8">
+          <FoundersSection />
+        </div>
+
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Workshop;

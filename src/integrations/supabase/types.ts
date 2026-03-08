@@ -125,11 +125,13 @@ export type Database = {
           extended_bio: string
           id: string
           image_url: string
+          instagram_url: string | null
           is_active: boolean
           linkedin_url: string | null
           name: string
           order_index: number
           short_bio: string
+          tiktok_url: string | null
           title: string
           twitter_url: string | null
           updated_at: string
@@ -139,11 +141,13 @@ export type Database = {
           extended_bio: string
           id?: string
           image_url: string
+          instagram_url?: string | null
           is_active?: boolean
           linkedin_url?: string | null
           name: string
           order_index?: number
           short_bio: string
+          tiktok_url?: string | null
           title: string
           twitter_url?: string | null
           updated_at?: string
@@ -153,11 +157,13 @@ export type Database = {
           extended_bio?: string
           id?: string
           image_url?: string
+          instagram_url?: string | null
           is_active?: boolean
           linkedin_url?: string | null
           name?: string
           order_index?: number
           short_bio?: string
+          tiktok_url?: string | null
           title?: string
           twitter_url?: string | null
           updated_at?: string

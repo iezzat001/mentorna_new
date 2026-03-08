@@ -13,6 +13,7 @@ import MobileNewsletterSection from '@/components/mobile/MobileNewsletterSection
 import { Award, Lightbulb, Rocket, TrendingUp, GraduationCap } from 'lucide-react';
 import { useWeeksData } from '@/hooks/useWeeksData';
 import '@/utils/suppressAdErrors'; // Suppress YouTube ad-related console errors
+import { normalizeSocialUrl } from '@/utils/socialLinks';
 
 interface Founder {
   id: string;
@@ -21,8 +22,10 @@ interface Founder {
   short_bio: string;
   extended_bio: string;
   image_url: string;
-  linkedin_url: string;
-  twitter_url: string;
+  linkedin_url: string | null;
+  twitter_url: string | null;
+  instagram_url?: string | null;
+  tiktok_url?: string | null;
   order_index: number;
   is_active: boolean;
 }
@@ -65,8 +68,10 @@ const MobileLanding = () => {
       extendedBio: founder.extended_bio || '',
       image: founder.image_url || '/placeholder.svg',
       socialMedia: {
-        linkedin: founder.linkedin_url || '',
-        twitter: founder.twitter_url || ''
+        linkedin: normalizeSocialUrl(founder.linkedin_url, 'linkedin') ?? '',
+        twitter: normalizeSocialUrl(founder.twitter_url, 'twitter') ?? '',
+        instagram: normalizeSocialUrl(founder.instagram_url, 'instagram') ?? '',
+        tiktok: normalizeSocialUrl(founder.tiktok_url, 'tiktok') ?? ''
       }
     };
   };

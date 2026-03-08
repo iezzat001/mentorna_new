@@ -15,7 +15,7 @@ const Footer = () => {
               Mentorna®
             </div>
             <p className="font-body text-background/80 leading-relaxed">
-              Transform your child's future with our cutting-edge AI education platform.
+              Helping founders validate ideas, build MVPs, and launch with repeatable AI-powered execution systems.
             </p>
           </div>
           
@@ -32,7 +32,7 @@ const Footer = () => {
                 Pricing
               </a>
               <a href="#founders" className="block font-body text-background/80 hover:text-background transition-colors">
-                Our Team
+                Mentors
               </a>
               <PrivacyPolicyDialog>
                 <button className="block font-body text-background/80 hover:text-background transition-colors text-left">
@@ -64,7 +64,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-background/20 mt-8 pt-8 text-center">
           <p className="font-body text-background/60 text-sm">
-            © 2024 Mentorna® AI Education Platform. All rights reserved.
+            © 2026 Mentorna®. All rights reserved.
           </p>
         </div>
       </div>

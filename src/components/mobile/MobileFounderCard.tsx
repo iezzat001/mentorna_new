@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import { Linkedin, Twitter, Users } from 'lucide-react';
+import { Instagram, Linkedin, Twitter, Users } from 'lucide-react';
 import WaitingListDialog from '../WaitingListDialog';
 import FounderDialog from '../FounderDialog';
 import MobileSwipeIndicator from './MobileSwipeIndicator';
+import TikTokIcon from '@/components/icons/TikTokIcon';
 interface Founder {
   id: number;
   name: string;
@@ -15,6 +16,8 @@ interface Founder {
   socialMedia: {
     linkedin: string;
     twitter: string;
+    instagram?: string;
+    tiktok?: string;
   };
 }
 interface MobileFounderCardProps {
@@ -136,6 +139,32 @@ const MobileFounderCard = ({
                   hover:bg-background/30
                 ">
                 <Twitter className="h-5 w-5 text-background" />
+              </a>}
+            {founder.socialMedia.instagram && <a href={founder.socialMedia.instagram} target="_blank" rel="noopener noreferrer" className="
+                  bg-background/20 
+                  backdrop-blur-sm 
+                  border-2 
+                  border-background/40 
+                  p-2 
+                  rounded-full 
+                  hover:scale-110 
+                  transition-transform
+                  hover:bg-background/30
+                ">
+                <Instagram className="h-5 w-5 text-background" />
+              </a>}
+            {founder.socialMedia.tiktok && <a href={founder.socialMedia.tiktok} target="_blank" rel="noopener noreferrer" className="
+                  bg-background/20 
+                  backdrop-blur-sm 
+                  border-2 
+                  border-background/40 
+                  p-2 
+                  rounded-full 
+                  hover:scale-110 
+                  transition-transform
+                  hover:bg-background/30
+                ">
+                <TikTokIcon className="h-5 w-5 text-background" />
               </a>}
           </div>
 
