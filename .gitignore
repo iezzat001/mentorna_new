@@ -1,0 +1,43 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Claude Flow and coordination directories
+.claude-flow/
+.hive-mind/
+.swarm/
+memory/
+claude-flow
+
+# MCP configuration
+.mcp.json
+
+# Local data directories
+Mentorna/
+
+# Claude settings (already covered by *.local but being explicit)
+.claude/settings.local.json
+
+# Auto Claude data directory
+.auto-claude/
