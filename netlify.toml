@@ -1,0 +1,45 @@
+# ──────────────────────────────────────────────────────────────
+# Netlify Configuration – Mentorna
+# ──────────────────────────────────────────────────────────────
+# Production branch: master
+# Development branch: develop (deployed as branch-deploy / staging)
+# ──────────────────────────────────────────────────────────────
+
+[build]
+  command   = "npm run build"
+  publish   = "dist"
+
+# Production context (master branch)
+[context.production]
+  command = "npm run build"
+  [context.production.environment]
+    NODE_VERSION = "22"
+    NODE_ENV     = "production"
+
+# Branch-deploy context (covers 'develop' and any other non-production branches)
+[context.branch-deploy]
+  command = "npm run build"
+  [context.branch-deploy.environment]
+    NODE_VERSION = "22"
+    NODE_ENV     = "development"
+
+# Explicit develop branch context (overrides branch-deploy if needed)
+[context.develop]
+  command = "npm run build"
+  [context.develop.environment]
+    NODE_VERSION = "22"
+    NODE_ENV     = "development"
+
+# SPA fallback – all routes serve index.html
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options         = "DENY"
+    X-Content-Type-Options  = "nosniff"
+    Referrer-Policy         = "strict-origin-when-cross-origin"
