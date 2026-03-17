@@ -1,53 +1,42 @@
 
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from 'convex/react';
+import { api } from '@/lib/convex';
 import FounderCard from './FounderCard';
 import { normalizeSocialUrl } from '@/utils/socialLinks';
 
-interface Founder {
-  id: string;
+/** Shape returned by the Convex `founders.listActive` query. */
+interface ConvexFounder {
+  _id: string;
   name: string;
   title: string;
-  short_bio: string;
-  extended_bio: string;
-  image_url: string;
-  linkedin_url: string | null;
-  twitter_url: string | null;
-  instagram_url?: string | null;
-  tiktok_url?: string | null;
-  order_index: number;
-  is_active: boolean;
+  shortBio: string;
+  extendedBio: string;
+  imageUrl: string;
+  linkedinUrl?: string | null;
+  twitterUrl?: string | null;
+  instagramUrl?: string | null;
+  tiktokUrl?: string | null;
+  orderIndex: number;
+  isActive: boolean;
 }
 
 const FoundersSection = () => {
-  const { data: founders } = useQuery({
-    queryKey: ['founders-public'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('founders')
-        .select('*')
-        .eq('is_active', true)
-        .order('order_index');
-      
-      if (error) throw error;
-      return data as Founder[];
-    }
-  });
+  const founders = useQuery(api.founders.listActive) as ConvexFounder[] | undefined;
 
-  // Convert database founder to the format expected by FounderCard
-  const convertFounder = (founder: Founder) => ({
-    id: parseInt(founder.id.slice(-8), 16), // Convert UUID to number for compatibility
+  // Convert Convex founder to the format expected by FounderCard
+  const convertFounder = (founder: ConvexFounder) => ({
+    id: parseInt(founder._id.slice(-8), 16) || 0, // Convex _id → numeric id for FounderCard compat
     name: founder.name,
     title: founder.title,
-    shortBio: founder.short_bio,
-    extendedBio: founder.extended_bio,
-    image: founder.image_url,
+    shortBio: founder.shortBio,
+    extendedBio: founder.extendedBio,
+    image: founder.imageUrl,
     socialMedia: {
-      linkedin: normalizeSocialUrl(founder.linkedin_url, 'linkedin') ?? '',
-      twitter: normalizeSocialUrl(founder.twitter_url, 'twitter') ?? '',
-      instagram: normalizeSocialUrl(founder.instagram_url, 'instagram') ?? '',
-      tiktok: normalizeSocialUrl(founder.tiktok_url, 'tiktok') ?? ''
+      linkedin: normalizeSocialUrl(founder.linkedinUrl ?? null, 'linkedin') ?? '',
+      twitter: normalizeSocialUrl(founder.twitterUrl ?? null, 'twitter') ?? '',
+      instagram: normalizeSocialUrl(founder.instagramUrl ?? null, 'instagram') ?? '',
+      tiktok: normalizeSocialUrl(founder.tiktokUrl ?? null, 'tiktok') ?? ''
     }
   });
 
@@ -90,7 +79,7 @@ const FoundersSection = () => {
         {/* Mentors */}
         <div className="flex flex-col items-center gap-8 mb-12">
           {founders?.map((founder) => (
-            <FounderCard key={founder.id} founder={convertFounder(founder)} />
+            <FounderCard key={founder._id} founder={convertFounder(founder)} />
           ))}
         </div>
 

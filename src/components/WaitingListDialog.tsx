@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { supabase } from '@/integrations/supabase/client';
+import { useMutation } from 'convex/react';
+import { api } from '@/lib/convex';
 import { useToast } from '@/hooks/use-toast';
 import WaitingListForm from './waiting-list/WaitingListForm';
 import SuccessMessage from './waiting-list/SuccessMessage';
@@ -13,6 +14,7 @@ interface WaitingListDialogProps {
 
 const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
   const { toast } = useToast();
+  const addToWaitingList = useMutation(api.waitingList.add);
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -48,24 +50,18 @@ const WaitingListDialog = ({ children }: WaitingListDialogProps) => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('waiting_list')
-        .insert({
-          name: formData.name,
-          email: formData.email,
-          whatsapp: formData.whatsapp,
-          country: formData.country,
-          children_count: formData.childrenCount,
-          age_groups: formData.ageGroups,
-          coding_experience: formData.codingExperience,
-          english_level: formData.englishLevel,
-          relationship: formData.relationship,
-          preferred_days: formData.preferredDays
-        });
-
-      if (error) {
-        throw error;
-      }
+      await addToWaitingList({
+        name: formData.name,
+        email: formData.email,
+        whatsapp: formData.whatsapp,
+        childrenCount: formData.childrenCount,
+        ageGroups: formData.ageGroups,
+        codingExperience: formData.codingExperience,
+        englishLevel: formData.englishLevel || undefined,
+        relationship: formData.relationship || undefined,
+        country: formData.country || undefined,
+        preferredDays: formData.preferredDays.length > 0 ? formData.preferredDays : undefined,
+      });
 
       setIsSuccess(true);
       toast({

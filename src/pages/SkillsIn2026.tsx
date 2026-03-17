@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { supabase } from '@/integrations/supabase/client';
+import { useMutation } from 'convex/react';
+import { api } from '@/lib/convex';
 import { useToast } from '@/hooks/use-toast';
 import {
   CheckCircle, Cpu, Brain, Globe, Blocks, Target, Languages, Sparkles, Mail, MessageCircle
@@ -56,6 +57,7 @@ const SkillsIn2026 = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { toast } = useToast();
+  const createLead = useMutation(api.leads.create);
   const isAr = lang === 'ar';
 
   const handleSubmit = async () => {
@@ -63,17 +65,11 @@ const SkillsIn2026 = () => {
     setIsSubmitting(true);
 
     try {
-      const leadData = {
-        email: contactMethod === 'email' ? contactValue.trim() : null,
-        whatsapp: contactMethod === 'whatsapp' ? contactValue.trim() : null,
+      await createLead({
+        email: contactMethod === 'email' ? contactValue.trim() : undefined,
+        whatsapp: contactMethod === 'whatsapp' ? contactValue.trim() : undefined,
         source: 'Skills in 2026',
-      };
-
-      const { error } = await supabase
-        .from('magnet_leads')
-        .insert([leadData]);
-
-      if (error) throw error;
+      });
 
       setIsSubscribed(true);
       toast({
