@@ -37,8 +37,34 @@ export const api = {
   },
   waitingList: {
     add: makeFunctionReference<"mutation">("waitingList:add"),
+    list: makeFunctionReference<"query">("waitingList:list"),
   },
   leads: {
     create: makeFunctionReference<"mutation">("leads:create"),
+    list: makeFunctionReference<"query">("leads:list"),
+  },
+  newsletterSubscribers: {
+    subscribe: makeFunctionReference<"mutation">("newsletterSubscribers:subscribe"),
+    list: makeFunctionReference<"query">("newsletterSubscribers:list"),
+  },
+  signedContracts: {
+    create: makeFunctionReference<"mutation">("signedContracts:create"),
+    list: makeFunctionReference<"query">("signedContracts:list"),
+    updateStatus: makeFunctionReference<"mutation">("signedContracts:updateStatus"),
+  },
+  valuationSubmissions: {
+    create: makeFunctionReference<"mutation">("valuationSubmissions:create"),
+    list: makeFunctionReference<"query">("valuationSubmissions:list"),
+  },
+  visitorTracking: {
+    track: makeFunctionReference<"mutation">("visitorTracking:track"),
+    list: makeFunctionReference<"query">("visitorTracking:list"),
+    listSince: makeFunctionReference<"query">("visitorTracking:listSince"),
+  },
+  emailCampaigns: {
+    list: makeFunctionReference<"query">("emailCampaigns:list"),
+    create: makeFunctionReference<"mutation">("emailCampaigns:create"),
+    remove: makeFunctionReference<"mutation">("emailCampaigns:remove"),
+    sendCampaign: makeFunctionReference<"action">("emailCampaigns:sendCampaign"),
   },
 } as const;

@@ -1,6 +1,6 @@
-
 import { useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useMutation } from 'convex/react';
+import { api } from '@/lib/convex';
 
 // Generate session ID that persists for the browser session
 const getSessionId = () => {
@@ -30,10 +30,12 @@ const getDeviceType = () => {
 };
 
 export const useVisitorTracking = (isEnabled: boolean = true) => {
+  const trackVisitor = useMutation(api.visitorTracking.track);
+
   useEffect(() => {
     if (!isEnabled) return;
 
-    const trackVisitor = async () => {
+    const doTrack = async () => {
       try {
         const sessionId = getSessionId();
         const pagePath = window.location.pathname;
@@ -43,14 +45,12 @@ export const useVisitorTracking = (isEnabled: boolean = true) => {
 
         console.log('Tracking visitor with session ID:', sessionId);
 
-        await supabase.functions.invoke('track-visitor', {
-          body: {
-            sessionId,
-            pagePath,
-            referrer,
-            userAgent,
-            deviceType
-          }
+        await trackVisitor({
+          sessionId,
+          pagePath,
+          referrer: referrer || undefined,
+          userAgent: userAgent || undefined,
+          deviceType: deviceType || undefined,
         });
       } catch (error) {
         console.error('Failed to track visitor:', error);
@@ -58,11 +58,11 @@ export const useVisitorTracking = (isEnabled: boolean = true) => {
     };
 
     // Track on initial load
-    trackVisitor();
+    doTrack();
 
     // Track on route changes (for SPAs)
     const handleRouteChange = () => {
-      setTimeout(trackVisitor, 100); // Small delay to ensure route has changed
+      setTimeout(doTrack, 100); // Small delay to ensure route has changed
     };
 
     window.addEventListener('popstate', handleRouteChange);
@@ -70,5 +70,5 @@ export const useVisitorTracking = (isEnabled: boolean = true) => {
     return () => {
       window.removeEventListener('popstate', handleRouteChange);
     };
-  }, [isEnabled]);
+  }, [isEnabled, trackVisitor]);
 };

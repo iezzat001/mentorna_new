@@ -72,4 +72,115 @@ export default defineSchema({
   })
     .index("by_source", ["source"])
     .index("by_email", ["email"]),
+
+  // ───────────────────────────────────────────────
+  // newsletterSubscribers — Newsletter sign-ups
+  // (Supabase: newsletter_subscribers)
+  // ───────────────────────────────────────────────
+  newsletterSubscribers: defineTable({
+    email: v.string(),
+    name: v.optional(v.string()),
+    interestedInWebinar: v.boolean(),
+  })
+    .index("by_email", ["email"]),
+
+  // ───────────────────────────────────────────────
+  // signedContracts — Mentorship agreements
+  // (Supabase: signed_contracts)
+  // ───────────────────────────────────────────────
+  signedContracts: defineTable({
+    fullName: v.string(),
+    email: v.string(),
+    whatsapp: v.optional(v.string()),
+    telegram: v.optional(v.string()),
+    address: v.optional(v.string()),
+    signature: v.string(),
+    offerType: v.string(),
+    totalAmount: v.number(),
+    currency: v.string(),
+    installmentAmount: v.number(),
+    installmentsCount: v.number(),
+    agreedTerms: v.object({
+      sessions_commitment: v.boolean(),
+      tasks_commitment: v.boolean(),
+      payment_agreement: v.boolean(),
+    }),
+    signedAt: v.number(),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("active"),
+      v.literal("completed"),
+      v.literal("refunded"),
+      v.literal("cancelled"),
+    ),
+    updatedAt: v.number(),
+  })
+    .index("by_email", ["email"])
+    .index("by_status", ["status"])
+    .index("by_signedAt", ["signedAt"]),
+
+  // ───────────────────────────────────────────────
+  // valuationSubmissions — Startup valuation calculator results
+  // (Supabase: valuation_submissions)
+  //
+  // NOTE: leadId references the `leads` table.
+  //       CHECK constraints (>= 0, dilution 0-100) are
+  //       enforced in the mutation function.
+  // ───────────────────────────────────────────────
+  valuationSubmissions: defineTable({
+    leadId: v.optional(v.id("leads")),
+    mrr: v.number(),
+    industry: v.string(),
+    growthRate: v.number(),
+    investmentAmount: v.number(),
+    baseValuation: v.number(),
+    growthAdjustedValuation: v.number(),
+    postMoneyValuation: v.number(),
+    dilutionPercent: v.number(),
+  })
+    .index("by_leadId", ["leadId"])
+    .index("by_industry", ["industry"]),
+
+  // ───────────────────────────────────────────────
+  // visitorTracking — Page-view & session analytics
+  // (Supabase: visitor_analytics)
+  //
+  // Replaces the Supabase Edge Function "track-visitor".
+  // IP hashing is done client-side or omitted (Convex
+  // mutations don't receive raw HTTP headers).
+  // ───────────────────────────────────────────────
+  visitorTracking: defineTable({
+    sessionId: v.string(),
+    pagePath: v.string(),
+    referrer: v.optional(v.string()),
+    userAgent: v.optional(v.string()),
+    deviceType: v.optional(v.string()),
+    country: v.optional(v.string()),
+  })
+    .index("by_sessionId", ["sessionId"])
+    .index("by_pagePath", ["pagePath"]),
+
+  // ───────────────────────────────────────────────
+  // emailCampaigns — Marketing email campaigns
+  // (Supabase: email_campaigns)
+  //
+  // Replaces the Supabase Edge Function "send-marketing-email".
+  // Actual email dispatch is handled by a Convex action
+  // that calls the Resend API.
+  // ───────────────────────────────────────────────
+  emailCampaigns: defineTable({
+    title: v.string(),
+    subject: v.string(),
+    content: v.string(),
+    recipientGroup: v.union(v.literal("newsletter"), v.literal("waiting_list")),
+    status: v.union(
+      v.literal("draft"),
+      v.literal("sending"),
+      v.literal("sent"),
+      v.literal("failed"),
+    ),
+    sentCount: v.number(),
+    sentAt: v.optional(v.number()),
+  })
+    .index("by_status", ["status"]),
 });

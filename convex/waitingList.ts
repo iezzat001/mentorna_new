@@ -1,4 +1,4 @@
-import { mutationGeneric } from "convex/server";
+import { queryGeneric, mutationGeneric } from "convex/server";
 import { v } from "convex/values";
 
 /**
@@ -33,5 +33,22 @@ export const add = mutationGeneric({
       country: args.country,
       preferredDays: args.preferredDays,
     });
+  },
+});
+
+/**
+ * List all waiting list entries, newest first.
+ *
+ * Convex equivalent of:
+ *   supabase.from('waiting_list').select('*').order('created_at', { ascending: false })
+ */
+export const list = queryGeneric({
+  args: {},
+  handler: async (ctx) => {
+    const entries = await ctx.db
+      .query("waitingList")
+      .order("desc")
+      .collect();
+    return entries;
   },
 });
