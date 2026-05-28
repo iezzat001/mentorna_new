@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Check, Lock, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -18,32 +18,6 @@ const JassimOffer = () => {
     agree3: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // 48-hour countdown — stored in sessionStorage so it persists on refresh
-  const OFFER_DURATION_MS = 48 * 60 * 60 * 1000;
-  const getDeadline = () => {
-    const stored = sessionStorage.getItem("jassim_offer_deadline");
-    if (stored) return Number(stored);
-    const deadline = Date.now() + OFFER_DURATION_MS;
-    sessionStorage.setItem("jassim_offer_deadline", String(deadline));
-    return deadline;
-  };
-  const deadlineRef = useRef<number>(getDeadline());
-  const calcTimeLeft = () => {
-    const diff = deadlineRef.current - Date.now();
-    if (diff <= 0) return { hours: 0, minutes: 0, seconds: 0 };
-    return {
-      hours: Math.floor(diff / (1000 * 60 * 60)),
-      minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-      seconds: Math.floor((diff % (1000 * 60)) / 1000),
-    };
-  };
-  const [timeLeft, setTimeLeft] = useState(calcTimeLeft);
-  useEffect(() => {
-    const timer = setInterval(() => setTimeLeft(calcTimeLeft()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-  const pad = (n: number) => String(n).padStart(2, "0");
 
   const today = new Date().toLocaleDateString("en-US", {
     year: "numeric",
@@ -148,29 +122,11 @@ const JassimOffer = () => {
         <p className="text-lg font-semibold text-white/90">Strategic Coaching with Ahmed Ezzat</p>
       </header>
 
-      {/* 48-Hour Countdown Banner */}
-      <div className="bg-[hsl(0,0%,15%)] text-white text-center py-4 px-5 border-b-4 border-[hsl(14,90%,65%)]">
-        <p className="text-xs font-extrabold uppercase tracking-widest mb-2 opacity-70">⏳ This Offer Expires In</p>
-        <div className="flex items-center justify-center gap-3">
-          {[
-            { label: "Hours", value: pad(timeLeft.hours) },
-            { label: "Minutes", value: pad(timeLeft.minutes) },
-            { label: "Seconds", value: pad(timeLeft.seconds) },
-          ].map((unit, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-extrabold tabular-nums bg-[hsl(14,90%,65%)] px-3 py-1 border-2 border-white">
-                  {unit.value}
-                </div>
-                <div className="text-xs font-bold uppercase mt-1 opacity-70">{unit.label}</div>
-              </div>
-              {i < 2 && <span className="text-3xl font-extrabold opacity-50 mb-4">:</span>}
-            </div>
-          ))}
-        </div>
-        {timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 && (
-          <p className="text-[hsl(14,90%,65%)] font-extrabold mt-2 text-sm uppercase">This offer has expired.</p>
-        )}
+      {/* 48-Hour Notice */}
+      <div className="bg-[hsl(0,0%,98%)] border-b border-[hsl(0,0%,85%)] text-center py-3 px-5">
+        <p className="text-sm font-medium text-[hsl(0,0%,45%)]">
+          ⏳ This offer is valid for <span className="font-semibold text-[hsl(0,0%,15%)]">48 hours</span> only.
+        </p>
       </div>
 
       <main className="max-w-3xl mx-auto px-5 py-8">
