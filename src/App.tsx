@@ -15,6 +15,7 @@ import Member from "./pages/Member";
 import VibeCoding from "./pages/VibeCoding";
 import SkillsIn2026 from "./pages/SkillsIn2026";
 import MohamedOffer from "./pages/MohamedOffer";
+import JassimOffer from "./pages/JassimOffer";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Valuation from "./pages/Valuation";
@@ -84,6 +85,7 @@ const App = () => {
 
                   {/* Mohamed Offer page */}
                   <Route path="/offer/mohamed" element={<MohamedOffer />} />
+                  <Route path="/mentorship-offer" element={<JassimOffer />} />
 
                   {/* Admin dashboard */}
                   <Route
