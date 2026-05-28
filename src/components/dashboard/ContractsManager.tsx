@@ -49,6 +49,15 @@ const ContractsManager = () => {
     fetchContracts();
   }, []);
 
+  const getOfferLabel = (offerType: string) => {
+    const labels: Record<string, string> = {
+      vc_fundraising_mentorship: 'VC Fundraising Mentorship',
+      solopreneur_launchpad: 'Solopreneur Launchpad',
+      mohamed_offer: 'Mohamed Offer',
+    };
+    return labels[offerType] || offerType.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  };
+
   const generatePDF = (contract: Contract) => {
     const signedDate = new Date(contract.signed_at).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -56,6 +65,7 @@ const ContractsManager = () => {
       day: 'numeric',
     });
 
+    const offerLabel = getOfferLabel(contract.offer_type);
     const htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -89,8 +99,8 @@ const ContractsManager = () => {
       <body>
         <div class="header">
           <div class="logo">Mentorna®</div>
-          <div class="title">Solopreneur Launchpad</div>
-          <div class="subtitle">3-Month Mentorship Agreement</div>
+          <div class="title">${offerLabel}</div>
+          <div class="subtitle">Mentorship Agreement</div>
         </div>
 
         <div class="section">
@@ -227,9 +237,14 @@ const ContractsManager = () => {
                   <CardTitle className="text-lg font-bold">
                     {contract.full_name}
                   </CardTitle>
-                  <Badge className={`${getStatusBadge(contract.status)} font-bold uppercase text-xs`}>
-                    {contract.status}
-                  </Badge>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold uppercase bg-[hsl(210,75%,85%)] px-2 py-1 border border-foreground">
+                      {getOfferLabel(contract.offer_type)}
+                    </span>
+                    <Badge className={`${getStatusBadge(contract.status)} font-bold uppercase text-xs`}>
+                      {contract.status}
+                    </Badge>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
