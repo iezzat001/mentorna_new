@@ -150,7 +150,7 @@ const JassimOffer = () => {
             If you'd like to discuss a new arrangement, feel free to reach out directly.
           </p>
           <a
-            href="https://wa.me/message/XXXXXXX"
+            href="https://wa.me/358414819241"
             className="inline-block mt-8 py-3 px-8 font-extrabold uppercase bg-[hsl(14,90%,65%)] text-white border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
           >
             Contact Ahmed
