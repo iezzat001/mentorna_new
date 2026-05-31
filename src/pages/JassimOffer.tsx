@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Check, Lock, ExternalLink } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Check, Lock, ExternalLink, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -18,6 +18,11 @@ const JassimOffer = () => {
     agree3: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Offer validity — update OFFER_SENT_AT whenever you send a new offer
+  const OFFER_SENT_AT = new Date("2026-05-31T00:00:00Z"); // ← update this date when resending
+  const OFFER_DURATION_HOURS = 48;
+  const offerExpired = Date.now() > OFFER_SENT_AT.getTime() + OFFER_DURATION_HOURS * 60 * 60 * 1000;
 
   const today = new Date().toLocaleDateString("en-US", {
     year: "numeric",
@@ -108,11 +113,35 @@ const JassimOffer = () => {
     );
   }
 
+  if (offerExpired) {
+    return (
+      <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5">
+        <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-10 md:p-14 max-w-md w-full text-center">
+          <div className="w-16 h-16 bg-[hsl(0,0%,90%)] border-4 border-[hsl(0,0%,15%)] rounded-full flex items-center justify-center mx-auto mb-6">
+            <Clock className="w-8 h-8 text-[hsl(0,0%,40%)]" />
+          </div>
+          <h1 className="text-2xl font-extrabold uppercase mb-3">Offer Expired</h1>
+          <p className="font-medium text-[hsl(0,0%,45%)] leading-relaxed">
+            This offer was valid for 48 hours and is no longer available.
+            <br /><br />
+            If you'd like to discuss a new arrangement, feel free to reach out directly.
+          </p>
+          <a
+            href="https://wa.me/message/XXXXXXX"
+            className="inline-block mt-8 py-3 px-8 font-extrabold uppercase bg-[hsl(14,90%,65%)] text-white border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+          >
+            Contact Ahmed
+          </a>
+          <p className="text-xs font-medium opacity-40 mt-8">Mentorna® | Exclusive Access</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Header */}
-      <header className="text-center py-10 px-5 bg-[hsl(14,90%,65%)] border-b-4 border-[hsl(0,0%,15%)]">
-        <div className="text-xl font-light tracking-[2px] mb-5 text-white">Mentorna®</div>
+      <header className="text-center py-10 px-5 bg-[hsl(14,90%,65%)] border-b-4 border-[hsl(0,0%,15%)]">        <div className="text-xl font-light tracking-[2px] mb-5 text-white">Mentorna®</div>
         <span className="inline-block bg-[hsl(0,0%,15%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,15%)] mb-4">
           Exclusive 1:1 Program
         </span>
@@ -128,7 +157,6 @@ const JassimOffer = () => {
           ⏳ This offer is valid for <span className="font-semibold text-[hsl(0,0%,15%)]">48 hours</span> only.
         </p>
       </div>
-
       <main className="max-w-3xl mx-auto px-5 py-8">
         {/* Prepared For */}
         <section className="mb-8">
