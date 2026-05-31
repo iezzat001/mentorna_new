@@ -11,6 +11,7 @@ import {
   MessageSquare,
   Presentation,
   Send,
+  Tag,
   TrendingUp,
   Users,
 } from 'lucide-react';
@@ -83,6 +84,11 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
       title: "Signed Contracts",
       url: "contracts",
       icon: FileSignature,
+    },
+    {
+      title: "Offer Pages",
+      url: "offers",
+      icon: Tag,
     },
     {
       title: "Email Marketing",

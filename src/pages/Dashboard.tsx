@@ -28,6 +28,7 @@ import ContactMessagesManager from '@/components/dashboard/ContactMessagesManage
 import ContractsManager from '@/components/dashboard/ContractsManager';
 import ReelsAnalysisManager from '@/components/dashboard/ReelsAnalysisManager';
 import WorkshopsManager from '@/components/dashboard/WorkshopsManager';
+import OffersManager from '@/components/dashboard/OffersManager';
 import { migrateWeekData } from '@/utils/migrateWeekData';
 import { toast } from 'sonner';
 import DashboardAnalytics from '@/components/dashboard/DashboardAnalytics';
@@ -72,6 +73,8 @@ const Dashboard = () => {
         return 'Contact Messages Management';
       case 'contracts':
         return 'Signed Contracts';
+      case 'offers':
+        return 'Offer Pages';
       case 'reels-analysis':
         return 'Reels Analytics & Insights';
       case 'workshops':
@@ -101,6 +104,8 @@ const Dashboard = () => {
         return <ContactMessagesManager />;
       case 'contracts':
         return <ContractsManager />;
+      case 'offers':
+        return <OffersManager />;
       case 'reels-analysis':
         return <ReelsAnalysisManager />;
       case 'workshops':

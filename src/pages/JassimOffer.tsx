@@ -18,11 +18,26 @@ const JassimOffer = () => {
     agree3: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [offerStatus, setOfferStatus] = useState<"loading" | "active" | "expired">("loading");
 
-  // Offer validity — update OFFER_SENT_AT whenever you send a new offer
-  const OFFER_SENT_AT = new Date("2026-05-31T00:00:00Z"); // ← update this date when resending
-  const OFFER_DURATION_HOURS = 48;
-  const offerExpired = Date.now() > OFFER_SENT_AT.getTime() + OFFER_DURATION_HOURS * 60 * 60 * 1000;
+  useEffect(() => {
+    const checkOffer = async () => {
+      const { data, error } = await supabase
+        .from("offer_settings")
+        .select("is_active, expires_at")
+        .eq("slug", "vc_fundraising_mentorship")
+        .single();
+
+      if (error || !data) {
+        setOfferStatus("expired");
+        return;
+      }
+
+      const isExpired = data.expires_at ? new Date(data.expires_at) < new Date() : false;
+      setOfferStatus(data.is_active && !isExpired ? "active" : "expired");
+    };
+    checkOffer();
+  }, []);
 
   const today = new Date().toLocaleDateString("en-US", {
     year: "numeric",
@@ -113,7 +128,15 @@ const JassimOffer = () => {
     );
   }
 
-  if (offerExpired) {
+  if (offerStatus === "loading") {
+    return (
+      <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center">
+        <div className="animate-pulse text-lg font-bold text-[hsl(0,0%,40%)]">Loading...</div>
+      </div>
+    );
+  }
+
+  if (offerStatus === "expired") {
     return (
       <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5">
         <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-10 md:p-14 max-w-md w-full text-center">

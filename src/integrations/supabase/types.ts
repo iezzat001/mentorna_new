@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      offer_settings: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          url_path: string
+          is_active: boolean
+          expires_at: string | null
+          passcode: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          url_path: string
+          is_active?: boolean
+          expires_at?: string | null
+          passcode?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          url_path?: string
+          is_active?: boolean
+          expires_at?: string | null
+          passcode?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
