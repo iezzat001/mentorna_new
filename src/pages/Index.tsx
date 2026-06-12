@@ -1,6 +1,8 @@
 
+
 import React from 'react';
 import Hero from '@/components/Hero';
+import TestimonialHighlight from '@/components/TestimonialHighlight';
 import SuccessStories from '@/components/SuccessStories';
 import RoadmapSection from '@/components/RoadmapSection';
 import ProgramSection from '@/components/ProgramSection';
@@ -14,6 +16,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Hero />
+      <TestimonialHighlight />
       <SuccessStories />
       <RoadmapSection />
       <ProgramSection />
