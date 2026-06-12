@@ -22,6 +22,7 @@ import Valuation from "./pages/Valuation";
 import ResponsiveHome from "@/components/ResponsiveHome";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 import Workshop from "./pages/Workshop";
+import Testimonials from "./pages/Testimonials";
 
 const queryClient = new QueryClient();
 
@@ -82,6 +83,9 @@ const App = () => {
 
                   {/* Workshop landing page */}
                   <Route path="/workshop" element={<Workshop />} />
+
+                  {/* Testimonials page */}
+                  <Route path="/testimonials" element={<Testimonials />} />
 
                   {/* Mohamed Offer page */}
                   <Route path="/offer/mohamed" element={<MohamedOffer />} />
