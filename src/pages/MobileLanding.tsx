@@ -3,6 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import MobileHero from '@/components/mobile/MobileHero';
+import MobileTestimonialSection from '@/components/mobile/MobileTestimonialSection';
 import MobileStorySection from '@/components/mobile/MobileStorySection';
 import MobileRoadmapSection from '@/components/mobile/MobileRoadmapSection';
 import MobilePhasesSection from '@/components/mobile/MobilePhasesSection';
@@ -165,6 +166,11 @@ const MobileLanding = () => {
           <MobileHero />
         </div>
         
+        {/* Testimonial Section */}
+        <div className="scroll-snap-start">
+          <MobileTestimonialSection />
+        </div>
+
         {/* Success Stories Sections */}
         {stories.map((story, index) => (
           <div key={index} className="scroll-snap-start">
