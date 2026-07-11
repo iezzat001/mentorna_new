@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { ArrowRight, CheckCircle, Users } from 'lucide-react';
+import { ArrowRight, CheckCircle, Clock, Users } from 'lucide-react';
 import FoundersSection from '@/components/FoundersSection';
 import Footer from '@/components/Footer';
 
 const Workshop = () => {
   const measurementId = (localStorage.getItem('google_analytics_id') || '').trim();
   const { trackEvent } = useGoogleAnalytics({ measurementId });
+  const [offerStatus, setOfferStatus] = useState<'loading' | 'active' | 'expired'>('loading');
+
+  useEffect(() => {
+    const checkOffer = async () => {
+      const { data } = await supabase
+        .from('offer_settings')
+        .select('is_active, expires_at')
+        .eq('slug', 'solopreneur_launchpad_workshop')
+        .single();
+
+      if (data) {
+        const isExpired = data.expires_at ? new Date(data.expires_at) < new Date() : false;
+        setOfferStatus(data.is_active && !isExpired ? 'active' : 'expired');
+      } else {
+        setOfferStatus('active'); // default to active if no record found
+      }
+    };
+    checkOffer();
+  }, []);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -86,10 +105,41 @@ const Workshop = () => {
     }
   };
 
+  if (offerStatus === 'loading') {
+    return (
+      <div className="min-h-screen bg-[hsl(0,0%,98%)] flex items-center justify-center">
+        <div className="animate-pulse text-2xl font-bold">Loading...</div>
+      </div>
+    );
+  }
+
+  if (offerStatus === 'expired') {
+    return (
+      <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5">
+        <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-10 md:p-14 max-w-md w-full text-center">
+          <div className="w-16 h-16 bg-[hsl(0,0%,90%)] border-4 border-[hsl(0,0%,15%)] rounded-full flex items-center justify-center mx-auto mb-6">
+            <Clock className="w-8 h-8 text-[hsl(0,0%,40%)]" />
+          </div>
+          <h1 className="text-2xl font-extrabold uppercase mb-3">Offer Expired</h1>
+          <p className="font-medium text-[hsl(0,0%,45%)] leading-relaxed">
+            This offer is no longer available.<br /><br />
+            If you'd like to discuss a new arrangement, feel free to reach out directly.
+          </p>
+          <a
+            href="https://wa.me/358414819241"
+            className="inline-block mt-8 py-3 px-8 font-extrabold uppercase bg-[hsl(45,95%,65%)] text-[hsl(0,0%,15%)] border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+          >
+            Contact Ahmed
+          </a>
+          <p className="text-xs font-medium opacity-40 mt-8">Mentorna®</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif]">
-      <section className="bg-gradient-to-br from-accent-yellow via-accent-yellow/90 to-accent-yellow/70 border-b-4 border-foreground">
-        <div className="container mx-auto px-4 py-10 md:py-14">
+      <section className="bg-gradient-to-br from-accent-yellow via-accent-yellow/90 to-accent-yellow/70 border-b-4 border-foreground">        <div className="container mx-auto px-4 py-10 md:py-14">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
             <div className="relative">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden bg-white">
