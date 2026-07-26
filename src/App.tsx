@@ -17,6 +17,10 @@ import SkillsIn2026 from "./pages/SkillsIn2026";
 import MohamedOffer from "./pages/MohamedOffer";
 import JassimOffer from "./pages/JassimOffer";
 import Dashboard from "./pages/Dashboard";
+import Investment from "./pages/Investment";
+import WorkshopDeck from "./pages/WorkshopDeck";
+import WorkshopHub from "./pages/WorkshopHub";
+import WorkshopSection from "./pages/WorkshopSection";
 import NotFound from "./pages/NotFound";
 import Valuation from "./pages/Valuation";
 import ResponsiveHome from "@/components/ResponsiveHome";
@@ -97,6 +101,42 @@ const App = () => {
                     element={
                       <ProtectedRoute requireAdmin={true}>
                         <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* Investor data room — admin only */}
+                  <Route
+                    path="/investment"
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <Investment />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* Workshop deck — admin only. Hub → per-section → full deck */}
+                  <Route
+                    path="/workshop-deck"
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <WorkshopHub />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/workshop-deck/section/:sectionId"
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <WorkshopSection />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/workshop-deck/all"
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <WorkshopDeck />
                       </ProtectedRoute>
                     }
                   />

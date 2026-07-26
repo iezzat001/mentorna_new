@@ -205,3 +205,13 @@
     }
   }
 }
+
+/* Neubrutalist shadow utilities (ported from the zero-to-one workshop deck) */
+@layer utilities {
+  .brutal-shadow { box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1); }
+  .brutal-shadow-sm { box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1); }
+  .brutal-shadow-lg { box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1); }
+  .brutal-shadow-xl { box-shadow: 12px 12px 0px 0px rgba(0, 0, 0, 1); }
+  .brutal-hover { transition: all 0.15s ease; }
+  .brutal-hover:hover { transform: translate(4px, 4px); box-shadow: none; }
+}

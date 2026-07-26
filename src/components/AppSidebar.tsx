@@ -6,6 +6,7 @@ import {
   Clock,
   FileSignature,
   Film,
+  Landmark,
   Mail,
   Magnet,
   MessageSquare,
@@ -110,6 +111,16 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
       url: "workshops",
       icon: Presentation,
     },
+    {
+      title: "Investor Data Room",
+      url: "investment",
+      icon: Landmark,
+    },
+    {
+      title: "Workshop Deck",
+      url: "workshop",
+      icon: Presentation,
+    },
   ];
 
   return (
@@ -131,7 +142,15 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
             <SidebarMenuItem key={item.url}>
               <SidebarMenuButton
                 isActive={activeTab === item.url}
-                onClick={() => onTabChange(item.url)}
+                onClick={() => {
+                  if (item.url === 'investment') {
+                    navigate('/investment');
+                  } else if (item.url === 'workshop') {
+                    navigate('/workshop-deck');
+                  } else {
+                    onTabChange(item.url);
+                  }
+                }}
                 className="w-full justify-start font-medium"
               >
                 <item.icon className="h-4 w-4" />

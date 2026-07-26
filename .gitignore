@@ -41,3 +41,7 @@ Mentorna/
 
 # Auto Claude data directory
 .auto-claude/
+
+# OpenWork / opencode local tooling (not part of the app)
+.opencode/
+opencode.jsonc
