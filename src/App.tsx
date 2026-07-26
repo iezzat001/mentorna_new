@@ -14,6 +14,7 @@ import MobileLanding from "./pages/MobileLanding";
 import Member from "./pages/Member";
 import VibeCoding from "./pages/VibeCoding";
 import SkillsIn2026 from "./pages/SkillsIn2026";
+import ProblemFinder from "./pages/ProblemFinder";
 import MohamedOffer from "./pages/MohamedOffer";
 import JassimOffer from "./pages/JassimOffer";
 import Dashboard from "./pages/Dashboard";
@@ -81,6 +82,9 @@ const App = () => {
 
                   {/* Skills in 2026 page */}
                   <Route path="/skills-in-2026" element={<SkillsIn2026 />} />
+
+                  {/* Startup Problem Finder lead magnet (Arabic RTL) */}
+                  <Route path="/problem-finder" element={<ProblemFinder />} />
 
                   {/* Startup valuation calculator lead magnet */}
                   <Route path="/valuation" element={<Valuation />} />
