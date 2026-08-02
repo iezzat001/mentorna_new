@@ -45,3 +45,7 @@ Mentorna/
 # OpenWork / opencode local tooling (not part of the app)
 .opencode/
 opencode.jsonc
+
+# Local pitch deck working files (images live on CloudFront, not in the repo)
+docs/pitch_deck.zip
+docs/pitch_deck_extracted/
