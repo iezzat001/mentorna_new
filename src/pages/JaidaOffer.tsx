@@ -1,12 +1,196 @@
-import { useState, useEffect } from "react";
-import { Check, Lock, ExternalLink, Clock } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Check, Lock, ExternalLink, Clock, ArrowRight, Zap, MessageCircle, Sparkles, TrendingUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
+/* ────────────────────────────────────────────────────────────
+   Design tokens
+   ──────────────────────────────────────────────────────────── */
+const INK = "hsl(0,0%,10%)";
+const PURPLE = "hsl(262,70%,60%)";
+const PINK = "hsl(322,80%,62%)";
+const AMBER = "hsl(38,95%,58%)";
+const TEAL = "hsl(160,70%,45%)";
+const BLUE = "hsl(210,85%,60%)";
+
+const brutal = "border-4 border-[hsl(0,0%,10%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]";
+const brutalLg = "border-4 border-[hsl(0,0%,10%)] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]";
+
+/* Warm surfaces — never flat white (matches the pitch-deck language) */
+const CREAM = "linear-gradient(160deg,#FDF6EC 0%,#F6E2C9 55%,#EFD6B8 100%)";
+const CREAM_SOFT = "linear-gradient(150deg,#FFFBF4 0%,#F9EAD7 100%)";
+const PAGE_BG = "linear-gradient(180deg,#F7E9D6 0%,#F3E0CB 25%,#F6E5D2 55%,#EFDAC2 100%)";
+
+/* Organic blob radii, borrowed from the deck */
+const BLOB_A = "46% 54% 48% 52% / 54% 46% 54% 46%";
+const BLOB_B = "50% 50% 46% 54% / 52% 48% 52% 48%";
+const BLOB_C = "52% 48% 52% 48% / 50% 50% 50% 50%";
+
+/* Dot-grid pattern overlay */
+const DOTS = {
+  backgroundImage: "radial-gradient(rgba(0,0,0,.16) 1.4px, transparent 1.4px)",
+  backgroundSize: "18px 18px",
+};
+
+/* Global styles — rendered on every branch (gate, expired, main) */
+const GlobalStyles = () => (
+  <style>{`
+    @keyframes floatBlob { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.1)} 66%{transform:translate(-20px,20px) scale(.95)} }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes drift { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-26px) rotate(6deg)} }
+    .blob { animation: floatBlob 16s ease-in-out infinite; }
+    .drift { animation: drift 11s ease-in-out infinite; }
+    .card-cream { background: linear-gradient(150deg,#FFFBF4 0%,#F9EAD7 55%,#F3DEC6 100%); }
+    .card-cream-soft { background: linear-gradient(155deg,#FFFDF9 0%,#FBF0E1 100%); }
+  `}</style>
+);
+
+/* Floating decorative blob */
+const Blob = ({
+  color,
+  size,
+  radius,
+  className,
+  delay = 0,
+  opacity = 0.5,
+}: {
+  color: string;
+  size: number;
+  radius: string;
+  className?: string;
+  delay?: number;
+  opacity?: number;
+}) => (
+  <div
+    aria-hidden
+    className={`blob pointer-events-none absolute blur-2xl ${className ?? ""}`}
+    style={{
+      width: size,
+      height: size,
+      background: color,
+      borderRadius: radius,
+      opacity,
+      animationDelay: `${delay}s`,
+    }}
+  />
+);
+
+/* ────────────────────────────────────────────────────────────
+   Scroll reveal
+   ──────────────────────────────────────────────────────────── */
+const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${delay}ms` }}
+      className={`transition-all duration-700 ease-out ${
+        shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
+      {children}
+    </div>
+  );
+};
+
+/* ────────────────────────────────────────────────────────────
+   Count-up number
+   ──────────────────────────────────────────────────────────── */
+const CountUp = ({ to, prefix = "", duration = 1400 }: { to: number; prefix?: string; duration?: number }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [val, setVal] = useState(0);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        const start = performance.now();
+        const tick = (now: number) => {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          setVal(Math.round(to * eased));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [to, duration]);
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {val.toLocaleString()}
+    </span>
+  );
+};
+
+/* ────────────────────────────────────────────────────────────
+   Data
+   ──────────────────────────────────────────────────────────── */
+const VALUE_STACK = [
+  { item: "Stock clearance & sales campaign", detail: "Pricing, bundles, launch offers, channel activation", value: 2000 },
+  { item: "Sales & growth engine", detail: "Documented, repeatable — yours to keep forever", value: 3000 },
+  { item: "Brand positioning + GCC → international roadmap", detail: "Story, visual direction, expansion plan", value: 2500 },
+  { item: "Grant proposal + financial projections", detail: "Built to submission standard, fully reviewed", value: 3500 },
+  { item: "12 weekly 1:1 sessions + async access", detail: "Direct line to Ahmed, Mon–Fri within 24h", value: 4800 },
+];
+const CORE_TOTAL = 15800;
+
+const BONUSES = [
+  { icon: "🤖", title: "AI Marketing & Ops Toolkit", desc: "Prompt library + workflows to run marketing, content and admin at a fraction of the time.", value: 600 },
+  { icon: "📁", title: "Grant & Proposal Template Library", desc: "The exact templates, financial models and structures that get proposals funded.", value: 450 },
+  { icon: "🔄", title: "30-Day Post-Program Check-In", desc: "A follow-up session after the program to course-correct and keep momentum.", value: 500 },
+];
+const BONUS_TOTAL = 1550;
+const GRAND_TOTAL = CORE_TOTAL + BONUS_TOTAL;
+const PRICE = 2500;
+
+const TIME_ANSWERS = [
+  { icon: Clock, title: "60–90 min / week", desc: "One focused session. That's the whole time commitment. Built around your schedule, not mine." },
+  { icon: MessageCircle, title: "Never stuck waiting", desc: "Async support Mon–Fri, replies within 24h. You don't lose a week because you hit a wall on Tuesday." },
+  { icon: Zap, title: "Done WITH you, not assigned to you", desc: "We build the plans, decks and proposals together on the call — you don't leave with homework piles." },
+  { icon: Sparkles, title: "AI does the heavy lifting", desc: "We automate the slow parts — content, research, admin — so your hours go to decisions, not busywork." },
+];
+
+const TRANSFORM = [
+  { now: "Stock sitting unsold, cash tied up", then: "Stock cleared, cash back in the business" },
+  { now: "Selling in bursts, no system", then: "A repeatable engine you can run alone" },
+  { now: "Brand known only locally", then: "GCC positioning + international roadmap" },
+  { now: "Grant plan stuck as a draft proposal", then: "Submitted, reviewed, funding-ready" },
+];
+
+/* ────────────────────────────────────────────────────────────
+   Page
+   ──────────────────────────────────────────────────────────── */
 const JaidaOffer = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");
+  const [showBar, setShowBar] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -32,17 +216,22 @@ const JaidaOffer = () => {
         const isExpired = data.expires_at ? new Date(data.expires_at) < new Date() : false;
         setOfferStatus(data.is_active && !isExpired ? "active" : "expired");
       } else {
-        setOfferStatus("active"); // default to active if no record found
+        setOfferStatus("active");
       }
     };
     checkOffer();
   }, []);
 
-  const today = new Date().toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  // Sticky price bar after hero
+  useEffect(() => {
+    const onScroll = () => setShowBar(window.scrollY > 620);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+
+  const scrollToForm = () => document.getElementById("secure-spot")?.scrollIntoView({ behavior: "smooth" });
 
   const handlePasscodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,24 +279,33 @@ const JaidaOffer = () => {
     }
   };
 
+  /* ── Passcode gate ── */
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5">
-        <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 md:p-12 max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-[hsl(262,60%,62%)] border-4 border-[hsl(0,0%,15%)] rounded-full flex items-center justify-center mx-auto mb-6">
+      <div className="min-h-screen bg-[hsl(0,0%,10%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5 relative overflow-hidden">
+        <GlobalStyles />
+        <div
+          className="absolute inset-0 opacity-60"
+          style={{
+            background: `radial-gradient(circle at 20% 20%, ${PURPLE}55, transparent 45%), radial-gradient(circle at 80% 70%, ${PINK}44, transparent 45%), radial-gradient(circle at 50% 100%, ${AMBER}33, transparent 40%)`,
+          }}
+        />
+        <div className={`relative card-cream ${brutalLg} p-8 md:p-12 max-w-md w-full text-center`}>
+          <div
+            className="w-16 h-16 border-4 border-[hsl(0,0%,10%)] rounded-full flex items-center justify-center mx-auto mb-6"
+            style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
+          >
             <Lock className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-2xl font-extrabold uppercase mb-2">Private Offer</h1>
-          <p className="text-sm font-medium opacity-70 mb-8">
-            Enter the passcode to access this exclusive offer
-          </p>
+          <p className="text-sm font-medium opacity-70 mb-8">Enter the passcode to access this exclusive offer</p>
           <form onSubmit={handlePasscodeSubmit}>
             <input
               type="password"
               inputMode="numeric"
               maxLength={4}
               placeholder="Enter 4-digit passcode"
-              className="w-full p-4 text-center text-2xl font-bold tracking-[0.5em] border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none mb-4"
+              className="w-full p-4 text-center text-2xl font-bold tracking-[0.5em] border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none mb-4"
               value={passcode}
               onChange={(e) => setPasscode(e.target.value.replace(/\D/g, "").slice(0, 4))}
               autoFocus
@@ -116,7 +314,8 @@ const JaidaOffer = () => {
             <button
               type="submit"
               disabled={passcode.length !== 4}
-              className="w-full py-4 px-8 text-lg font-extrabold uppercase bg-[hsl(262,60%,62%)] text-white border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 px-8 text-lg font-extrabold uppercase text-white border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
             >
               Unlock Offer
             </button>
@@ -129,7 +328,7 @@ const JaidaOffer = () => {
 
   if (offerStatus === "loading") {
     return (
-      <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center">
+      <div style={{background:PAGE_BG}} className="min-h-screen font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center">
         <div className="animate-pulse text-lg font-bold text-[hsl(0,0%,40%)]">Loading...</div>
       </div>
     );
@@ -137,20 +336,23 @@ const JaidaOffer = () => {
 
   if (offerStatus === "expired") {
     return (
-      <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5">
-        <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-10 md:p-14 max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-[hsl(0,0%,90%)] border-4 border-[hsl(0,0%,15%)] rounded-full flex items-center justify-center mx-auto mb-6">
+      <div style={{background:PAGE_BG}} className="min-h-screen font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5">
+        <GlobalStyles />
+        <div className={`card-cream ${brutalLg} p-10 md:p-14 max-w-md w-full text-center`}>
+          <div className="w-16 h-16 bg-[hsl(0,0%,90%)] border-4 border-[hsl(0,0%,10%)] rounded-full flex items-center justify-center mx-auto mb-6">
             <Clock className="w-8 h-8 text-[hsl(0,0%,40%)]" />
           </div>
           <h1 className="text-2xl font-extrabold uppercase mb-3">Offer Expired</h1>
           <p className="font-medium text-[hsl(0,0%,45%)] leading-relaxed">
             This offer was valid for 48 hours and is no longer available.
-            <br /><br />
+            <br />
+            <br />
             If you'd like to discuss a new arrangement, feel free to reach out directly.
           </p>
           <a
             href="https://wa.me/358414819241"
-            className="inline-block mt-8 py-3 px-8 font-extrabold uppercase bg-[hsl(262,60%,62%)] text-white border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+            className="inline-block mt-8 py-3 px-8 font-extrabold uppercase text-white border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+            style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
           >
             Contact Ahmed
           </a>
@@ -160,61 +362,232 @@ const JaidaOffer = () => {
     );
   }
 
+  /* ── Main ── */
   return (
-    <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif]">
-      {/* Header */}
-      <header className="text-center py-10 px-5 bg-[hsl(262,60%,62%)] border-b-4 border-[hsl(0,0%,15%)]">
-        <div className="text-xl font-light tracking-[2px] mb-5 text-white">Mentorna®</div>
-        <span className="inline-block bg-[hsl(0,0%,15%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,15%)] mb-4">
-          Exclusive 1:1 Program
-        </span>
-        <h1 className="text-4xl md:text-5xl font-extrabold uppercase leading-tight mb-2 text-white">
-          Business Revival & Growth Program
-        </h1>
-        <p className="text-lg font-semibold text-white/90">3-Month Mentorship with Ahmed Ezzat</p>
-      </header>
+    <div
+      className="relative min-h-screen font-['Plus_Jakarta_Sans',sans-serif] overflow-x-hidden"
+      style={{ background: PAGE_BG }}
+    >
+      <GlobalStyles />
 
-      {/* 48-Hour Notice */}
-      <div className="bg-[hsl(0,0%,98%)] border-b border-[hsl(0,0%,85%)] text-center py-3 px-5">
-        <p className="text-sm font-medium text-[hsl(0,0%,45%)]">
-          ⏳ This offer is valid for <span className="font-semibold text-[hsl(0,0%,15%)]">48 hours</span> only.
-        </p>
+      {/* Ambient floating colour field behind the whole page */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden z-0">
+        <Blob color={PURPLE} size={520} radius={BLOB_A} className="-left-40 top-[12%]" opacity={0.18} />
+        <Blob color={PINK} size={460} radius={BLOB_B} className="-right-32 top-[34%]" opacity={0.16} delay={3} />
+        <Blob color={TEAL} size={480} radius={BLOB_C} className="-left-32 top-[62%]" opacity={0.15} delay={6} />
+        <Blob color={AMBER} size={420} radius={BLOB_A} className="-right-24 top-[84%]" opacity={0.18} delay={9} />
       </div>
-      <main className="max-w-3xl mx-auto px-5 py-8">
-        {/* Prepared For */}
-        <section className="mb-8">
-          <span className="inline-block bg-[hsl(0,0%,15%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,15%)]">
-            Prepared For
-          </span>
-          <h2 className="text-3xl font-extrabold mt-3">Jaida Al Hinai</h2>
-          <p className="font-semibold opacity-80">Founder, Oman — Reviving her brand, building for growth & funding</p>
-        </section>
 
-        {/* Promise */}
-        <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 mb-8">
-          <h2 className="text-2xl font-extrabold uppercase mb-5 pb-3 border-b-4 border-[hsl(0,0%,15%)] inline-block">
-            The Promise
-          </h2>
-          <p className="text-xl font-semibold">
-            In 90 days, you'll go from "reviving the business" to{" "}
-            <span className="bg-[hsl(262,60%,62%)] text-white px-1.5 py-0.5">
-              a business that's selling, growing, and fundable.
-            </span>{" "}
-            We'll clear your existing kids' stock, build your sales & brand engine, and take your
-            sanitary pad manufacturing plan from proposal to grant-ready.
+      {/* Page-wide dot pattern */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 opacity-[0.16]" style={DOTS} />
+
+      {/* ═══ HERO ═══ */}
+      <header className="relative bg-[hsl(0,0%,10%)] border-b-4 border-[hsl(0,0%,10%)] overflow-hidden">
+        <div
+          className="blob absolute -top-24 -left-20 w-[420px] h-[420px] rounded-full opacity-50 blur-3xl"
+          style={{ background: PURPLE }}
+        />
+        <div
+          className="blob absolute top-10 right-0 w-[380px] h-[380px] rounded-full opacity-40 blur-3xl"
+          style={{ background: PINK, animationDelay: "3s" }}
+        />
+        <div
+          className="blob absolute -bottom-20 left-1/3 w-[340px] h-[340px] rounded-full opacity-30 blur-3xl"
+          style={{ background: AMBER, animationDelay: "6s" }}
+        />
+
+        {/* Dot pattern + crisp floating shapes over the hero */}
+        <div aria-hidden className="absolute inset-0 opacity-[0.18]" style={DOTS} />
+        <div
+          aria-hidden
+          className="drift absolute top-16 left-[8%] w-16 h-16 border-4 border-white/25 hidden md:block"
+          style={{ borderRadius: BLOB_A }}
+        />
+        <div
+          aria-hidden
+          className="drift absolute bottom-24 right-[10%] w-12 h-12 border-4 border-white/20 hidden md:block"
+          style={{ borderRadius: BLOB_C, animationDelay: "4s" }}
+        />
+        <div
+          aria-hidden
+          className="drift absolute top-1/3 right-[6%] w-6 h-6 hidden md:block"
+          style={{ background: AMBER, borderRadius: BLOB_B, animationDelay: "2s", opacity: 0.7 }}
+        />
+
+        <div className="relative max-w-4xl mx-auto px-5 py-14 md:py-20 text-center">
+          <div className="text-lg font-light tracking-[3px] mb-6 text-white/80">Mentorna®</div>
+
+          <span
+            className="inline-block text-white text-xs font-extrabold uppercase py-2 px-4 border-2 border-white/40 mb-6 tracking-wider backdrop-blur"
+            style={{ background: "rgba(255,255,255,.1)" }}
+          >
+            ✦ Exclusive 1:1 Program · Prepared for Jaida
+          </span>
+
+          <h1 className="text-4xl md:text-6xl font-extrabold uppercase leading-[0.95] mb-5 text-white">
+            Business Revival
+            <br />
+            <span
+              style={{
+                background: `linear-gradient(90deg, ${AMBER}, ${PINK}, ${PURPLE})`,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              & Growth Program
+            </span>
+          </h1>
+
+          <p className="text-lg md:text-xl font-semibold text-white/80 max-w-2xl mx-auto">
+            90 days to clear your stock, build a sales engine that runs without you, and turn your manufacturing
+            plan into a funded reality.
           </p>
+
+          {/* Hero stats */}
+          <div className="grid grid-cols-3 gap-3 md:gap-4 mt-10 max-w-2xl mx-auto">
+            {[
+              { v: "90", l: "Days", c: AMBER },
+              { v: "60–90", l: "Min / week", c: TEAL },
+              { v: "$17.3K", l: "Total value", c: PINK },
+            ].map((s) => (
+              <div key={s.l} className="bg-white/10 backdrop-blur border-2 border-white/30 p-3 md:p-4">
+                <div className="text-2xl md:text-4xl font-extrabold" style={{ color: s.c }}>
+                  {s.v}
+                </div>
+                <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/70 mt-1">
+                  {s.l}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={scrollToForm}
+            className="mt-10 inline-flex items-center gap-2 py-4 px-8 text-base md:text-lg font-extrabold uppercase text-white border-4 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,0.25)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+            style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
+          >
+            Claim Your Spot <ArrowRight className="w-5 h-5" />
+          </button>
         </div>
 
-        {/* What You Get */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-extrabold uppercase mb-5 pb-3 border-b-4 border-[hsl(0,0%,15%)] inline-block">
-            What You Get
-          </h2>
+        {/* Marquee */}
+        <div className="relative border-t-2 border-white/20 py-3 overflow-hidden">
+          <div className="flex whitespace-nowrap" style={{ animation: "marquee 28s linear infinite", width: "max-content" }}>
+            {[0, 1].map((dup) => (
+              <div key={dup} className="flex">
+                {["Stock Cleared", "Sales Engine Built", "Brand Positioned", "Grant Submitted", "GCC → International", "Funding Ready"].map(
+                  (t, i) => (
+                    <span key={`${dup}-${i}`} className="mx-6 text-sm font-extrabold uppercase tracking-widest text-white/50">
+                      ✦ {t}
+                    </span>
+                  )
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* 48-hour notice */}
+      <div className="bg-[hsl(0,0%,10%)] text-center py-3 px-5 border-b-4 border-[hsl(0,0%,10%)]">
+        <p className="text-sm font-bold text-white">
+          ⏳ This offer is valid for <span style={{ color: AMBER }}>48 hours</span> only.
+        </p>
+      </div>
+
+      <main className="relative z-10 max-w-3xl mx-auto px-5 py-10">
+        {/* ═══ TRANSFORMATION ═══ */}
+        <Reveal>
+          <section className="mb-12">
+            <h2 className="text-2xl md:text-3xl font-extrabold uppercase mb-6">
+              Where you are <span className="opacity-40">→</span> where you'll be
+            </h2>
+            <div className={`${brutalLg} overflow-hidden`}>
+              <div className="grid grid-cols-2">
+                <div
+                  className="p-4 border-r-4 border-[hsl(0,0%,10%)]"
+                  style={{ background: "linear-gradient(150deg,#E4DACE,#D6C9B8)" }}
+                >
+                  <span className="text-xs font-extrabold uppercase tracking-widest opacity-60">Today</span>
+                </div>
+                <div className="p-4" style={{ background: TEAL }}>
+                  <span className="text-xs font-extrabold uppercase tracking-widest text-white">In 90 days</span>
+                </div>
+              </div>
+              {TRANSFORM.map((row, i) => (
+                <div key={i} className="grid grid-cols-2 border-t-4 border-[hsl(0,0%,10%)]">
+                  <div className="card-cream p-4 border-r-4 border-[hsl(0,0%,10%)] font-medium text-sm opacity-60 line-through decoration-2">
+                    {row.now}
+                  </div>
+                  <div className="card-cream p-4 font-bold text-sm flex items-start gap-2">
+                    <Check className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: TEAL }} />
+                    {row.then}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        {/* ═══ PROMISE ═══ */}
+        <Reveal>
+          <div className={`card-cream ${brutalLg} p-8 mb-12`}>
+            <h2 className="text-2xl font-extrabold uppercase mb-5 pb-3 border-b-4 border-[hsl(0,0%,10%)] inline-block">
+              The Promise
+            </h2>
+            <p className="text-xl font-semibold leading-relaxed">
+              In 90 days, you'll go from "reviving the business" to{" "}
+              <span className="text-white px-1.5 py-0.5" style={{ background: `linear-gradient(120deg, ${PURPLE}, ${PINK})` }}>
+                a business that's selling, growing, and fundable.
+              </span>{" "}
+              We'll clear your existing kids' stock, build your sales &amp; brand engine, and take your sanitary pad
+              manufacturing plan from proposal to grant-ready.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* ═══ TIME OBJECTION ═══ */}
+        <Reveal>
+          <section className="mb-12">
+            <div className={`bg-[hsl(0,0%,10%)] ${brutalLg} p-8`}>
+              <span
+                className="inline-block text-white text-xs font-extrabold uppercase py-1.5 px-3 mb-4 tracking-wider"
+                style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
+              >
+                Let's address the real question
+              </span>
+              <h2 className="text-2xl md:text-3xl font-extrabold uppercase mb-3 text-white">
+                "I don't have time for this."
+              </h2>
+              <p className="font-semibold text-white/70 mb-7 leading-relaxed">
+                You're running a business, not looking for a course to fall behind on. This program is designed around
+                that reality — it gives you time back, it doesn't take it.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {TIME_ANSWERS.map((t, i) => (
+                  <div key={i} className="bg-white/10 backdrop-blur border-2 border-white/25 p-5">
+                    <t.icon className="w-6 h-6 mb-3" style={{ color: AMBER }} />
+                    <h3 className="font-extrabold uppercase text-sm mb-2 text-white">{t.title}</h3>
+                    <p className="text-sm font-medium text-white/65 leading-relaxed">{t.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </Reveal>
+
+        {/* ═══ WHAT YOU GET ═══ */}
+        <section className="mb-12">
+          <Reveal>
+            <h2 className="text-2xl font-extrabold uppercase mb-6 pb-3 border-b-4 border-[hsl(0,0%,10%)] inline-block">
+              What You Get
+            </h2>
+          </Reveal>
           {[
             {
               icon: "📦",
               title: "Stock Clearance & Sales",
-              color: "bg-[hsl(262,55%,90%)]",
+              color: "hsl(262,55%,92%)",
               items: [
                 "Sell out your existing kids' products — pricing, bundles & launch offers",
                 "Sales channels & campaigns activated (WhatsApp, Instagram, marketplaces)",
@@ -224,7 +597,7 @@ const JaidaOffer = () => {
             {
               icon: "📈",
               title: "Sales & Growth Engine",
-              color: "bg-[hsl(210,75%,85%)]",
+              color: "hsl(210,75%,88%)",
               items: [
                 "Repeatable customer acquisition system you can run alone",
                 "Funnel, follow-up & conversion processes documented",
@@ -234,7 +607,7 @@ const JaidaOffer = () => {
             {
               icon: "🌍",
               title: "Regional & International Brand Building",
-              color: "bg-[hsl(140,50%,80%)]",
+              color: "hsl(160,50%,85%)",
               items: [
                 "Clear brand positioning, story & visual direction",
                 "GCC-first growth plan, then an international expansion roadmap",
@@ -244,7 +617,7 @@ const JaidaOffer = () => {
             {
               icon: "📝",
               title: "Grant & Funding Readiness",
-              color: "bg-[hsl(45,95%,80%)]",
+              color: "hsl(45,95%,85%)",
               items: [
                 "Business plan & proposal finalised to submission standard",
                 "Financial projections & use-of-funds built cleanly",
@@ -254,7 +627,7 @@ const JaidaOffer = () => {
             {
               icon: "🛠️",
               title: "Structure, Focus & Accountability",
-              color: "bg-[hsl(14,90%,90%)]",
+              color: "hsl(322,70%,92%)",
               items: [
                 "Weekly 1:1 sessions + async support (response within 24 hours, Mon–Fri)",
                 "Simple planning & decision frameworks built around how you work",
@@ -262,178 +635,305 @@ const JaidaOffer = () => {
               ],
             },
           ].map((feature, idx) => (
-            <div
-              key={idx}
-              className={`${feature.color} border-4 border-[hsl(0,0%,15%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-5 mb-5`}
-            >
-              <h3 className="text-lg font-extrabold uppercase mb-3">
-                {feature.icon} {feature.title}
-              </h3>
-              <ul className="list-none">
-                {feature.items.map((item, i) => (
-                  <li key={i} className="py-2 pl-6 relative font-medium">
-                    <span className="absolute left-0 font-extrabold">→</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </section>
-
-        {/* Journey */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-extrabold uppercase mb-5 pb-3 border-b-4 border-[hsl(0,0%,15%)] inline-block">
-            The Journey
-          </h2>
-          <div className="border-4 border-[hsl(0,0%,15%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-[hsl(0,0%,15%)] text-white">
-                  <th className="p-4 text-left font-extrabold uppercase">Phase</th>
-                  <th className="p-4 text-left font-extrabold uppercase">Weeks</th>
-                  <th className="p-4 text-left font-extrabold uppercase">Outcome</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  {
-                    phase: "Revive",
-                    weeks: "1–4",
-                    outcome: "Stock inventory & clearance plan live, brand & offer reset, weekly system running, business plan outline updated",
-                    color: "bg-[hsl(260,50%,75%)]",
-                  },
-                  {
-                    phase: "Grow",
-                    weeks: "5–8",
-                    outcome: "First sales campaigns launched, regional traction building, sales engine documented, grant business plan drafted",
-                    color: "bg-[hsl(210,75%,70%)]",
-                  },
-                  {
-                    phase: "Fund & Scale",
-                    weeks: "9–12",
-                    outcome: "Stock cleared, grant proposal submitted, international brand roadmap set, growth system in place",
-                    color: "bg-[hsl(140,50%,60%)]",
-                  },
-                ].map((row, idx) => (
-                  <tr key={idx}>
-                    <td className={`p-4 border-2 border-[hsl(0,0%,15%)] ${row.color}`}>
-                      <span className="font-extrabold uppercase">{row.phase}</span>
-                    </td>
-                    <td className="p-4 border-2 border-[hsl(0,0%,15%)] bg-white">{row.weeks}</td>
-                    <td className="p-4 border-2 border-[hsl(0,0%,15%)] bg-white">{row.outcome}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* Money-Back Guarantee */}
-        <div className="bg-[hsl(140,50%,80%)] border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 mb-8">
-          <h3 className="text-xl font-extrabold uppercase mb-4 flex items-center gap-3">
-            🛡️ The Guarantee
-          </h3>
-          <p className="font-semibold mb-4">
-            Complete the program with full commitment, and if by the end of Month 3 you don't have
-            your stock clearance executed, a working sales & growth system, and a grant-ready
-            submission —{" "}
-            <strong>you get 100% of your money back.</strong>
-          </p>
-          <p className="font-bold mb-3">Commitment Requirements:</p>
-          {[
-            "Attend all scheduled sessions (maximum 2 missed sessions allowed)",
-            "Complete all assigned tasks (maximum 2 incomplete tasks allowed)",
-          ].map((item, idx) => (
-            <div key={idx} className="flex items-start gap-3 py-2">
-              <span className="bg-[hsl(140,50%,60%)] w-6 h-6 flex items-center justify-center font-extrabold flex-shrink-0 border-2 border-[hsl(0,0%,15%)]">
-                <Check className="w-4 h-4" />
-              </span>
-              <span className="font-medium">{item}</span>
-            </div>
-          ))}
-          <div className="bg-[hsl(45,95%,65%)] border-2 border-[hsl(0,0%,15%)] p-4 mt-5 font-semibold">
-            ⚠️ If either condition is not met, the guarantee is void.
-          </div>
-        </div>
-
-        {/* Pricing */}
-        <div className="bg-[hsl(262,60%,62%)] border-4 border-[hsl(0,0%,15%)] text-center p-10 mb-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <span className="inline-block bg-[hsl(0,0%,15%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,15%)] mb-4">
-            Investment
-          </span>
-          <div className="text-5xl md:text-6xl font-extrabold leading-none text-white">$2,500 USD</div>
-          <p className="text-lg font-semibold mt-3 text-white/90">One-time payment — full 3-month program</p>
-        </div>
-
-        {/* Payment Details */}
-        <div className="bg-[hsl(0,0%,15%)] text-white border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 mb-8">
-          <span className="inline-block bg-[hsl(262,60%,62%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-white mb-4">
-            Payment Details
-          </span>
-          <h3 className="text-xl font-extrabold uppercase mb-5">🏦 Bank Transfer Details</h3>
-          <div className="space-y-4">
-            {[
-              { label: "IBAN", value: "ES73 1583 0001 1290 8220 1110" },
-              { label: "BIC / SWIFT", value: "REVOES M2" },
-              { label: "Bank", value: "Revolut Bank UAB" },
-              { label: "Correspondent BIC", value: "CHASDEFX" },
-            ].map(({ label, value }) => (
-              <div key={label} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 border-b border-white/20 pb-3">
-                <span className="text-xs font-extrabold uppercase tracking-widest opacity-60 sm:w-40 flex-shrink-0">{label}</span>
-                <span className="font-mono font-bold text-lg tracking-wider">{value}</span>
+            <Reveal key={idx} delay={idx * 60}>
+              <div className={`${brutal} p-6 mb-5 hover:-translate-y-1 transition-transform`} style={{ background: feature.color }}>
+                <h3 className="text-lg font-extrabold uppercase mb-3">
+                  {feature.icon} {feature.title}
+                </h3>
+                <ul className="list-none">
+                  {feature.items.map((item, i) => (
+                    <li key={i} className="py-2 pl-6 relative font-medium">
+                      <span className="absolute left-0 font-extrabold">→</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
+            </Reveal>
+          ))}
+        </section>
+
+        {/* ═══ BONUSES ═══ */}
+        <section className="mb-12">
+          <Reveal>
+            <div className="flex items-center gap-3 mb-6">
+              <h2 className="text-2xl font-extrabold uppercase pb-3 border-b-4 border-[hsl(0,0%,10%)] inline-block">
+                Included Free
+              </h2>
+              <span
+                className="text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,10%)]"
+                style={{ background: AMBER, color: INK }}
+              >
+                +${BONUS_TOTAL} value
+              </span>
+            </div>
+          </Reveal>
+          <div className="grid sm:grid-cols-3 gap-4">
+            {BONUSES.map((b, i) => (
+              <Reveal key={i} delay={i * 80}>
+                <div className={`card-cream ${brutal} p-5 h-full flex flex-col hover:-translate-y-1 transition-transform`}>
+                  <div className="text-3xl mb-3">{b.icon}</div>
+                  <h3 className="font-extrabold uppercase text-sm mb-2 leading-tight">{b.title}</h3>
+                  <p className="text-sm font-medium opacity-70 leading-relaxed flex-1">{b.desc}</p>
+                  <div
+                    className="mt-4 font-extrabold text-sm py-1 px-2 border-2 border-[hsl(0,0%,10%)] inline-block self-start"
+                    style={{ background: AMBER }}
+                  >
+                    ${b.value} value
+                  </div>
+                </div>
+              </Reveal>
             ))}
           </div>
-          <p className="text-xs opacity-50 mt-5 font-medium">Please use your full name as the payment reference.</p>
-        </div>
+        </section>
 
-        {/* About Mentor */}
-        <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 mb-8">
-          <h3 className="text-xl font-extrabold uppercase mb-4">👤 Your Mentor</h3>
-          <p className="font-extrabold text-xl mb-1">Ahmed Ezzat</p>
-          <p className="font-semibold opacity-70 mb-4">Founder of Mentorna® | Senior PM & CTO | Startup Advisor</p>
-          <ul className="list-none space-y-2">
+        {/* ═══ VALUE STACK ═══ */}
+        <Reveal>
+          <section className="mb-12">
+            <h2 className="text-2xl font-extrabold uppercase mb-6 pb-3 border-b-4 border-[hsl(0,0%,10%)] inline-block">
+              What This Is Actually Worth
+            </h2>
+            <div className={`${brutalLg} overflow-hidden card-cream`}>
+              {VALUE_STACK.map((v, i) => (
+                <div
+                  key={i}
+                  className="flex items-start justify-between gap-4 p-5 border-b-2 border-[hsl(0,0%,88%)]"
+                >
+                  <div className="flex-1">
+                    <div className="font-extrabold text-sm md:text-base">{v.item}</div>
+                    <div className="text-xs font-medium opacity-60 mt-1">{v.detail}</div>
+                  </div>
+                  <div className="font-extrabold text-lg md:text-xl whitespace-nowrap">
+                    <CountUp to={v.value} prefix="$" />
+                  </div>
+                </div>
+              ))}
+
+              <div className="flex items-center justify-between gap-4 p-5 border-b-2 border-[hsl(0,0%,88%)]" style={{ background: "hsl(45,95%,95%)" }}>
+                <div className="font-extrabold text-sm md:text-base">
+                  ✦ Bonuses <span className="opacity-60 font-medium">(toolkit, templates, follow-up)</span>
+                </div>
+                <div className="font-extrabold text-lg md:text-xl whitespace-nowrap">
+                  <CountUp to={BONUS_TOTAL} prefix="$" />
+                </div>
+              </div>
+
+              {/* Total */}
+              <div className="flex items-center justify-between gap-4 p-5 bg-[hsl(0,0%,10%)] text-white">
+                <div className="font-extrabold uppercase text-sm md:text-lg">Total Value</div>
+                <div className="font-extrabold text-2xl md:text-3xl line-through decoration-4" style={{ textDecorationColor: PINK }}>
+                  <CountUp to={GRAND_TOTAL} prefix="$" />
+                </div>
+              </div>
+
+              {/* Your price */}
+              <div className="p-6 text-center" style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}>
+                <div className="text-xs font-extrabold uppercase tracking-widest text-white/80 mb-2">Your investment</div>
+                <div className="text-5xl md:text-6xl font-extrabold text-white leading-none">
+                  ${PRICE.toLocaleString()}
+                </div>
+                <div
+                  className="inline-block mt-4 font-extrabold text-sm py-2 px-4 border-2 border-[hsl(0,0%,10%)]"
+                  style={{ background: AMBER }}
+                >
+                  You save ${(GRAND_TOTAL - PRICE).toLocaleString()} · {Math.round((1 - PRICE / GRAND_TOTAL) * 100)}% off
+                </div>
+              </div>
+            </div>
+          </section>
+        </Reveal>
+
+        {/* ═══ ROI REFRAME ═══ */}
+        <Reveal>
+          <div className={`${brutalLg} p-8 mb-12`} style={{ background: TEAL }}>
+            <TrendingUp className="w-10 h-10 text-white mb-4" />
+            <h3 className="text-xl md:text-2xl font-extrabold uppercase mb-4 text-white">
+              This should pay for itself before Month 3
+            </h3>
+            <p className="font-semibold text-white/90 leading-relaxed mb-4">
+              You already have stock sitting in inventory. Clearing it is the very first thing we do together —
+              and that revenue alone should cover this investment. Everything after that (the sales engine, the
+              brand, the grant) is upside.
+            </p>
+            <div className="bg-white/15 backdrop-blur border-2 border-white/30 p-5">
+              <p className="font-bold text-white leading-relaxed">
+                Think of it this way: this isn't $2,500 leaving the business. It's $2,500 that unlocks the cash
+                already trapped in your inventory — and builds the system that keeps it moving.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* ═══ JOURNEY ═══ */}
+        <Reveal>
+          <section className="mb-12">
+            <h2 className="text-2xl font-extrabold uppercase mb-6 pb-3 border-b-4 border-[hsl(0,0%,10%)] inline-block">
+              The Journey
+            </h2>
+            <div className={`${brutalLg} overflow-hidden`}>
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-[hsl(0,0%,10%)] text-white">
+                    <th className="p-4 text-left font-extrabold uppercase text-sm">Phase</th>
+                    <th className="p-4 text-left font-extrabold uppercase text-sm">Weeks</th>
+                    <th className="p-4 text-left font-extrabold uppercase text-sm">Outcome</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    {
+                      phase: "Revive",
+                      weeks: "1–4",
+                      outcome:
+                        "Stock inventory & clearance plan live, brand & offer reset, weekly system running, business plan outline updated",
+                      color: PURPLE,
+                    },
+                    {
+                      phase: "Grow",
+                      weeks: "5–8",
+                      outcome:
+                        "First sales campaigns launched, regional traction building, sales engine documented, grant business plan drafted",
+                      color: BLUE,
+                    },
+                    {
+                      phase: "Fund & Scale",
+                      weeks: "9–12",
+                      outcome:
+                        "Stock cleared, grant proposal submitted, international brand roadmap set, growth system in place",
+                      color: TEAL,
+                    },
+                  ].map((row, idx) => (
+                    <tr key={idx}>
+                      <td className="p-4 border-2 border-[hsl(0,0%,10%)]" style={{ background: row.color }}>
+                        <span className="font-extrabold uppercase text-white">{row.phase}</span>
+                      </td>
+                      <td className="p-4 border-2 border-[hsl(0,0%,10%)] card-cream font-bold">{row.weeks}</td>
+                      <td className="p-4 border-2 border-[hsl(0,0%,10%)] card-cream text-sm font-medium">{row.outcome}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </Reveal>
+
+        {/* ═══ GUARANTEE ═══ */}
+        <Reveal>
+          <div className={`${brutalLg} p-8 mb-12`} style={{ background: "hsl(160,50%,85%)" }}>
+            <h3 className="text-xl font-extrabold uppercase mb-4 flex items-center gap-3">🛡️ The Guarantee</h3>
+            <p className="font-semibold mb-4 leading-relaxed">
+              Complete the program with full commitment, and if by the end of Month 3 you don't have your stock
+              clearance executed, a working sales &amp; growth system, and a grant-ready submission —{" "}
+              <strong>you get 100% of your money back.</strong>
+            </p>
+            <p className="font-bold mb-3">Commitment Requirements:</p>
             {[
-              "Founder of Mentorna — EdTech & AI venture studio",
-              "Built and scaled businesses across MENA & European markets",
-              "Advisor to early-stage startups on product, growth & fundraising",
-              "Deep expertise in AI, product strategy, and go-to-market",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-3 font-medium">
-                <span className="bg-[hsl(262,60%,62%)] w-6 h-6 flex items-center justify-center font-extrabold flex-shrink-0 border-2 border-[hsl(0,0%,15%)] mt-0.5">
+              "Attend all scheduled sessions (maximum 2 missed sessions allowed)",
+              "Complete all assigned tasks (maximum 2 incomplete tasks allowed)",
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-start gap-3 py-2">
+                <span
+                  className="w-6 h-6 flex items-center justify-center font-extrabold flex-shrink-0 border-2 border-[hsl(0,0%,10%)]"
+                  style={{ background: TEAL }}
+                >
                   <Check className="w-4 h-4 text-white" />
                 </span>
-                {item}
-              </li>
+                <span className="font-medium">{item}</span>
+              </div>
             ))}
-          </ul>
-        </div>
+            <div className="border-2 border-[hsl(0,0%,10%)] p-4 mt-5 font-semibold" style={{ background: AMBER }}>
+              ⚠️ If either condition is not met, the guarantee is void.
+            </div>
+          </div>
+        </Reveal>
 
-        {/* Past Work Reference */}
-        <div className="bg-white border-4 border-[hsl(0,0%,15%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 mb-8">
-          <span className="inline-block bg-[hsl(0,0%,15%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,15%)] mb-4">
-            Real Results
-          </span>
-          <h3 className="text-xl font-extrabold uppercase mb-3">🇫🇮 A Similar Business I Helped in Finland</h3>
-          <p className="font-semibold opacity-80 mb-5">
-            I worked with a Finnish fintech startup to help them raise funding and significantly enhance their user experience. The result speaks for itself.
-          </p>
-          <a
-            href="https://www.fisofi.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[hsl(262,60%,62%)] text-white font-extrabold uppercase px-5 py-3 border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
-          >
-            Visit Fisofi.com <ExternalLink className="w-4 h-4" />
-          </a>
-        </div>
+        {/* ═══ PAYMENT DETAILS ═══ */}
+        <Reveal>
+          <div className={`bg-[hsl(0,0%,10%)] text-white ${brutalLg} p-8 mb-12`}>
+            <span
+              className="inline-block text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-white mb-4"
+              style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
+            >
+              Payment Details
+            </span>
+            <h3 className="text-xl font-extrabold uppercase mb-5">🏦 Bank Transfer Details</h3>
+            <div className="space-y-4">
+              {[
+                { label: "IBAN", value: "ES73 1583 0001 1290 8220 1110" },
+                { label: "BIC / SWIFT", value: "REVOES M2" },
+                { label: "Bank", value: "Revolut Bank UAB" },
+                { label: "Correspondent BIC", value: "CHASDEFX" },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 border-b border-white/20 pb-3">
+                  <span className="text-xs font-extrabold uppercase tracking-widest opacity-60 sm:w-40 flex-shrink-0">
+                    {label}
+                  </span>
+                  <span className="font-mono font-bold text-lg tracking-wider">{value}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs opacity-50 mt-5 font-medium">Please use your full name as the payment reference.</p>
+          </div>
+        </Reveal>
 
-        {/* Sign-up Form */}
-        <div className="bg-[hsl(0,0%,15%)] text-white p-8 md:p-10 mb-8">
-          <h2 className="text-2xl font-extrabold uppercase mb-6 pb-3 border-b-4 border-white inline-block">
+        {/* ═══ MENTOR ═══ */}
+        <Reveal>
+          <div className={`card-cream ${brutal} p-8 mb-12`}>
+            <h3 className="text-xl font-extrabold uppercase mb-4">👤 Your Mentor</h3>
+            <p className="font-extrabold text-xl mb-1">Ahmed Ezzat</p>
+            <p className="font-semibold opacity-70 mb-4">Founder of Mentorna® | Senior PM &amp; CTO | Startup Advisor</p>
+            <ul className="list-none space-y-2">
+              {[
+                "Founder of Mentorna — EdTech & AI venture studio",
+                "Built and scaled businesses across MENA & European markets",
+                "Advisor to early-stage startups on product, growth & fundraising",
+                "Deep expertise in AI, product strategy, and go-to-market",
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-3 font-medium">
+                  <span
+                    className="w-6 h-6 flex items-center justify-center font-extrabold flex-shrink-0 border-2 border-[hsl(0,0%,10%)] mt-0.5"
+                    style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
+                  >
+                    <Check className="w-4 h-4 text-white" />
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+
+        {/* ═══ PAST WORK ═══ */}
+        <Reveal>
+          <div className={`card-cream ${brutal} p-8 mb-12`}>
+            <span className="inline-block bg-[hsl(0,0%,10%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,10%)] mb-4">
+              Real Results
+            </span>
+            <h3 className="text-xl font-extrabold uppercase mb-3">🇫🇮 A Similar Business I Helped in Finland</h3>
+            <p className="font-semibold opacity-80 mb-5">
+              I worked with a Finnish fintech startup to help them raise funding and significantly enhance their user
+              experience. The result speaks for itself.
+            </p>
+            <a
+              href="https://www.fisofi.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-white font-extrabold uppercase px-5 py-3 border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+              style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
+            >
+              Visit Fisofi.com <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        </Reveal>
+
+        {/* ═══ SIGN-UP FORM ═══ */}
+        <div id="secure-spot" className={`bg-[hsl(0,0%,10%)] text-white ${brutalLg} p-8 md:p-10 mb-8 scroll-mt-6`}>
+          <h2 className="text-2xl font-extrabold uppercase mb-2 pb-3 border-b-4 border-white inline-block">
             Secure Your Spot
           </h2>
+          <p className="font-semibold text-white/60 mb-6">
+            ${GRAND_TOTAL.toLocaleString()} of value · ${PRICE.toLocaleString()} one-time · 100% money-back guarantee
+          </p>
           <form onSubmit={handleFormSubmit}>
             {[
               { label: "Full Name", key: "fullName", type: "text", placeholder: "Enter your full name" },
@@ -447,33 +947,34 @@ const JaidaOffer = () => {
                   type={field.type}
                   required
                   placeholder={field.placeholder}
-                  className="w-full p-4 text-[hsl(0,0%,15%)] font-semibold border-4 border-[hsl(0,0%,15%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
+                  className="w-full p-4 text-[hsl(0,0%,10%)] font-semibold border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none"
                   value={formData[field.key as keyof typeof formData] as string}
                   onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
                 />
               </div>
             ))}
 
-            {/* Signature */}
-            <div className="bg-white border-4 border-[hsl(0,0%,15%)] p-5 mb-5">
-              <div className="text-sm font-bold uppercase text-[hsl(0,0%,15%)] mb-3">Your Signature</div>
+            <div className="card-cream border-4 border-[hsl(0,0%,10%)] p-5 mb-5">
+              <div className="text-sm font-bold uppercase text-[hsl(0,0%,10%)] mb-3">Your Signature</div>
               <input
                 type="text"
                 required
                 placeholder="Type your full name"
-                className="w-full p-5 text-3xl text-center border-none border-b-[3px] border-[hsl(0,0%,15%)] bg-transparent text-[hsl(0,0%,15%)] outline-none"
+                className="w-full p-5 text-3xl text-center border-none border-b-[3px] border-[hsl(0,0%,10%)] bg-transparent text-[hsl(0,0%,10%)] outline-none"
                 style={{ fontFamily: "'Brush Script MT', cursive" }}
                 value={formData.signature}
                 onChange={(e) => setFormData({ ...formData, signature: e.target.value })}
               />
-              <div className="text-right text-sm text-[hsl(0,0%,15%)] mt-3 font-semibold">Date: {today}</div>
+              <div className="text-right text-sm text-[hsl(0,0%,10%)] mt-3 font-semibold">Date: {today}</div>
             </div>
 
-            {/* Agreements */}
             <div className="bg-white/10 p-5 mb-5 border-2 border-white/30">
               <p className="text-sm mb-4">By signing above and submitting this form, I agree to the following:</p>
               {[
-                { id: "agree1", text: "I understand the program covers: stock clearance & sales for my kids' products business, a sales & growth system, regional & international brand building, and grant-ready preparation for my sanitary pad manufacturing business." },
+                {
+                  id: "agree1",
+                  text: "I understand the program covers: stock clearance & sales for my kids' products business, a sales & growth system, regional & international brand building, and grant-ready preparation for my sanitary pad manufacturing business.",
+                },
                 { id: "agree2", text: "I commit to attending coaching sessions and completing assigned tasks in a timely manner." },
                 { id: "agree3", text: "I agree to pay $2,500 USD as a one-time payment before the program begins." },
               ].map((cb) => (
@@ -486,7 +987,9 @@ const JaidaOffer = () => {
                     checked={formData[cb.id as keyof typeof formData] as boolean}
                     onChange={(e) => setFormData({ ...formData, [cb.id]: e.target.checked })}
                   />
-                  <label htmlFor={cb.id} className="font-semibold cursor-pointer">{cb.text}</label>
+                  <label htmlFor={cb.id} className="font-semibold cursor-pointer">
+                    {cb.text}
+                  </label>
                 </div>
               ))}
             </div>
@@ -494,24 +997,51 @@ const JaidaOffer = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-5 px-10 text-xl font-extrabold uppercase bg-[hsl(262,60%,62%)] text-white border-4 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)] active:translate-x-1.5 active:translate-y-1.5 active:shadow-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-5 px-10 text-xl font-extrabold uppercase text-white border-4 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)] active:translate-x-1.5 active:translate-y-1.5 active:shadow-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
             >
               {isSubmitting ? "Submitting..." : "🚀 I'm In — Let's Grow!"}
             </button>
           </form>
         </div>
 
-        {/* Footer */}
-        <footer className="text-center py-10 border-t-4 border-[hsl(0,0%,15%)]">
+        {/* ═══ FOOTER ═══ */}
+        <footer className="text-center py-10 border-t-4 border-[hsl(0,0%,10%)] pb-28">
           <p className="italic text-lg font-medium opacity-80 mb-5">
             "Your discipline is already there. Let's add the structure that turns it into results."
           </p>
           <div className="font-bold">
             <p className="text-xl font-extrabold">— Ahmed Ezzat</p>
-            <p className="text-sm opacity-70">Founder, Mentorna® | Startup Advisor & Growth Coach</p>
+            <p className="text-sm opacity-70">Founder, Mentorna® | Startup Advisor &amp; Growth Coach</p>
           </div>
         </footer>
       </main>
+
+      {/* ═══ STICKY PRICE BAR ═══ */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-[hsl(0,0%,10%)] border-t-4 border-[hsl(0,0%,10%)] transition-transform duration-300 ${
+          showBar ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-baseline gap-2">
+              <span className="text-xl md:text-2xl font-extrabold text-white">${PRICE.toLocaleString()}</span>
+              <span className="text-sm font-bold text-white/40 line-through">${GRAND_TOTAL.toLocaleString()}</span>
+            </div>
+            <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider" style={{ color: AMBER }}>
+              Save ${(GRAND_TOTAL - PRICE).toLocaleString()} · 48h only
+            </div>
+          </div>
+          <button
+            onClick={scrollToForm}
+            className="flex items-center gap-2 py-3 px-5 md:px-7 text-sm md:text-base font-extrabold uppercase text-white border-2 border-white hover:translate-x-0.5 hover:translate-y-0.5 transition-all whitespace-nowrap"
+            style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
+          >
+            Claim Spot <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
