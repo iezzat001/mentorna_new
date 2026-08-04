@@ -16,6 +16,65 @@ const BLUE = "hsl(210,85%,60%)";
 const brutal = "border-4 border-[hsl(0,0%,10%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]";
 const brutalLg = "border-4 border-[hsl(0,0%,10%)] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]";
 
+/* Warm surfaces — never flat white (matches the pitch-deck language) */
+const CREAM = "linear-gradient(160deg,#FDF6EC 0%,#F6E2C9 55%,#EFD6B8 100%)";
+const CREAM_SOFT = "linear-gradient(150deg,#FFFBF4 0%,#F9EAD7 100%)";
+const PAGE_BG = "linear-gradient(180deg,#F7E9D6 0%,#F3E0CB 25%,#F6E5D2 55%,#EFDAC2 100%)";
+
+/* Organic blob radii, borrowed from the deck */
+const BLOB_A = "46% 54% 48% 52% / 54% 46% 54% 46%";
+const BLOB_B = "50% 50% 46% 54% / 52% 48% 52% 48%";
+const BLOB_C = "52% 48% 52% 48% / 50% 50% 50% 50%";
+
+/* Dot-grid pattern overlay */
+const DOTS = {
+  backgroundImage: "radial-gradient(rgba(0,0,0,.16) 1.4px, transparent 1.4px)",
+  backgroundSize: "18px 18px",
+};
+
+/* Global styles — rendered on every branch (gate, expired, main) */
+const GlobalStyles = () => (
+  <style>{`
+    @keyframes floatBlob { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.1)} 66%{transform:translate(-20px,20px) scale(.95)} }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes drift { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-26px) rotate(6deg)} }
+    .blob { animation: floatBlob 16s ease-in-out infinite; }
+    .drift { animation: drift 11s ease-in-out infinite; }
+    .card-cream { background: linear-gradient(150deg,#FFFBF4 0%,#F9EAD7 55%,#F3DEC6 100%); }
+    .card-cream-soft { background: linear-gradient(155deg,#FFFDF9 0%,#FBF0E1 100%); }
+  `}</style>
+);
+
+/* Floating decorative blob */
+const Blob = ({
+  color,
+  size,
+  radius,
+  className,
+  delay = 0,
+  opacity = 0.5,
+}: {
+  color: string;
+  size: number;
+  radius: string;
+  className?: string;
+  delay?: number;
+  opacity?: number;
+}) => (
+  <div
+    aria-hidden
+    className={`blob pointer-events-none absolute blur-2xl ${className ?? ""}`}
+    style={{
+      width: size,
+      height: size,
+      background: color,
+      borderRadius: radius,
+      opacity,
+      animationDelay: `${delay}s`,
+    }}
+  />
+);
+
 /* ────────────────────────────────────────────────────────────
    Scroll reveal
    ──────────────────────────────────────────────────────────── */
@@ -224,13 +283,14 @@ const JaidaOffer = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-[hsl(0,0%,10%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5 relative overflow-hidden">
+        <GlobalStyles />
         <div
           className="absolute inset-0 opacity-60"
           style={{
             background: `radial-gradient(circle at 20% 20%, ${PURPLE}55, transparent 45%), radial-gradient(circle at 80% 70%, ${PINK}44, transparent 45%), radial-gradient(circle at 50% 100%, ${AMBER}33, transparent 40%)`,
           }}
         />
-        <div className={`relative bg-white ${brutalLg} p-8 md:p-12 max-w-md w-full text-center`}>
+        <div className={`relative card-cream ${brutalLg} p-8 md:p-12 max-w-md w-full text-center`}>
           <div
             className="w-16 h-16 border-4 border-[hsl(0,0%,10%)] rounded-full flex items-center justify-center mx-auto mb-6"
             style={{ background: `linear-gradient(135deg, ${PURPLE}, ${PINK})` }}
@@ -268,7 +328,7 @@ const JaidaOffer = () => {
 
   if (offerStatus === "loading") {
     return (
-      <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center">
+      <div style={{background:PAGE_BG}} className="min-h-screen font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center">
         <div className="animate-pulse text-lg font-bold text-[hsl(0,0%,40%)]">Loading...</div>
       </div>
     );
@@ -276,8 +336,9 @@ const JaidaOffer = () => {
 
   if (offerStatus === "expired") {
     return (
-      <div className="min-h-screen bg-[hsl(0,0%,98%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5">
-        <div className={`bg-white ${brutalLg} p-10 md:p-14 max-w-md w-full text-center`}>
+      <div style={{background:PAGE_BG}} className="min-h-screen font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5">
+        <GlobalStyles />
+        <div className={`card-cream ${brutalLg} p-10 md:p-14 max-w-md w-full text-center`}>
           <div className="w-16 h-16 bg-[hsl(0,0%,90%)] border-4 border-[hsl(0,0%,10%)] rounded-full flex items-center justify-center mx-auto mb-6">
             <Clock className="w-8 h-8 text-[hsl(0,0%,40%)]" />
           </div>
@@ -303,12 +364,22 @@ const JaidaOffer = () => {
 
   /* ── Main ── */
   return (
-    <div className="min-h-screen bg-[hsl(40,30%,97%)] font-['Plus_Jakarta_Sans',sans-serif] overflow-x-hidden">
-      <style>{`
-        @keyframes floatBlob { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.1)} 66%{transform:translate(-20px,20px) scale(.95)} }
-        @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-        .blob { animation: floatBlob 14s ease-in-out infinite; }
-      `}</style>
+    <div
+      className="relative min-h-screen font-['Plus_Jakarta_Sans',sans-serif] overflow-x-hidden"
+      style={{ background: PAGE_BG }}
+    >
+      <GlobalStyles />
+
+      {/* Ambient floating colour field behind the whole page */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden z-0">
+        <Blob color={PURPLE} size={520} radius={BLOB_A} className="-left-40 top-[12%]" opacity={0.18} />
+        <Blob color={PINK} size={460} radius={BLOB_B} className="-right-32 top-[34%]" opacity={0.16} delay={3} />
+        <Blob color={TEAL} size={480} radius={BLOB_C} className="-left-32 top-[62%]" opacity={0.15} delay={6} />
+        <Blob color={AMBER} size={420} radius={BLOB_A} className="-right-24 top-[84%]" opacity={0.18} delay={9} />
+      </div>
+
+      {/* Page-wide dot pattern */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 opacity-[0.16]" style={DOTS} />
 
       {/* ═══ HERO ═══ */}
       <header className="relative bg-[hsl(0,0%,10%)] border-b-4 border-[hsl(0,0%,10%)] overflow-hidden">
@@ -323,6 +394,24 @@ const JaidaOffer = () => {
         <div
           className="blob absolute -bottom-20 left-1/3 w-[340px] h-[340px] rounded-full opacity-30 blur-3xl"
           style={{ background: AMBER, animationDelay: "6s" }}
+        />
+
+        {/* Dot pattern + crisp floating shapes over the hero */}
+        <div aria-hidden className="absolute inset-0 opacity-[0.18]" style={DOTS} />
+        <div
+          aria-hidden
+          className="drift absolute top-16 left-[8%] w-16 h-16 border-4 border-white/25 hidden md:block"
+          style={{ borderRadius: BLOB_A }}
+        />
+        <div
+          aria-hidden
+          className="drift absolute bottom-24 right-[10%] w-12 h-12 border-4 border-white/20 hidden md:block"
+          style={{ borderRadius: BLOB_C, animationDelay: "4s" }}
+        />
+        <div
+          aria-hidden
+          className="drift absolute top-1/3 right-[6%] w-6 h-6 hidden md:block"
+          style={{ background: AMBER, borderRadius: BLOB_B, animationDelay: "2s", opacity: 0.7 }}
         />
 
         <div className="relative max-w-4xl mx-auto px-5 py-14 md:py-20 text-center">
@@ -406,7 +495,7 @@ const JaidaOffer = () => {
         </p>
       </div>
 
-      <main className="max-w-3xl mx-auto px-5 py-10">
+      <main className="relative z-10 max-w-3xl mx-auto px-5 py-10">
         {/* ═══ TRANSFORMATION ═══ */}
         <Reveal>
           <section className="mb-12">
@@ -415,7 +504,10 @@ const JaidaOffer = () => {
             </h2>
             <div className={`${brutalLg} overflow-hidden`}>
               <div className="grid grid-cols-2">
-                <div className="bg-[hsl(0,0%,90%)] p-4 border-r-4 border-[hsl(0,0%,10%)]">
+                <div
+                  className="p-4 border-r-4 border-[hsl(0,0%,10%)]"
+                  style={{ background: "linear-gradient(150deg,#E4DACE,#D6C9B8)" }}
+                >
                   <span className="text-xs font-extrabold uppercase tracking-widest opacity-60">Today</span>
                 </div>
                 <div className="p-4" style={{ background: TEAL }}>
@@ -424,10 +516,10 @@ const JaidaOffer = () => {
               </div>
               {TRANSFORM.map((row, i) => (
                 <div key={i} className="grid grid-cols-2 border-t-4 border-[hsl(0,0%,10%)]">
-                  <div className="bg-white p-4 border-r-4 border-[hsl(0,0%,10%)] font-medium text-sm opacity-60 line-through decoration-2">
+                  <div className="card-cream p-4 border-r-4 border-[hsl(0,0%,10%)] font-medium text-sm opacity-60 line-through decoration-2">
                     {row.now}
                   </div>
-                  <div className="bg-white p-4 font-bold text-sm flex items-start gap-2">
+                  <div className="card-cream p-4 font-bold text-sm flex items-start gap-2">
                     <Check className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: TEAL }} />
                     {row.then}
                   </div>
@@ -439,7 +531,7 @@ const JaidaOffer = () => {
 
         {/* ═══ PROMISE ═══ */}
         <Reveal>
-          <div className={`bg-white ${brutalLg} p-8 mb-12`}>
+          <div className={`card-cream ${brutalLg} p-8 mb-12`}>
             <h2 className="text-2xl font-extrabold uppercase mb-5 pb-3 border-b-4 border-[hsl(0,0%,10%)] inline-block">
               The Promise
             </h2>
@@ -579,7 +671,7 @@ const JaidaOffer = () => {
           <div className="grid sm:grid-cols-3 gap-4">
             {BONUSES.map((b, i) => (
               <Reveal key={i} delay={i * 80}>
-                <div className={`bg-white ${brutal} p-5 h-full flex flex-col hover:-translate-y-1 transition-transform`}>
+                <div className={`card-cream ${brutal} p-5 h-full flex flex-col hover:-translate-y-1 transition-transform`}>
                   <div className="text-3xl mb-3">{b.icon}</div>
                   <h3 className="font-extrabold uppercase text-sm mb-2 leading-tight">{b.title}</h3>
                   <p className="text-sm font-medium opacity-70 leading-relaxed flex-1">{b.desc}</p>
@@ -601,7 +693,7 @@ const JaidaOffer = () => {
             <h2 className="text-2xl font-extrabold uppercase mb-6 pb-3 border-b-4 border-[hsl(0,0%,10%)] inline-block">
               What This Is Actually Worth
             </h2>
-            <div className={`${brutalLg} overflow-hidden bg-white`}>
+            <div className={`${brutalLg} overflow-hidden card-cream`}>
               {VALUE_STACK.map((v, i) => (
                 <div
                   key={i}
@@ -715,8 +807,8 @@ const JaidaOffer = () => {
                       <td className="p-4 border-2 border-[hsl(0,0%,10%)]" style={{ background: row.color }}>
                         <span className="font-extrabold uppercase text-white">{row.phase}</span>
                       </td>
-                      <td className="p-4 border-2 border-[hsl(0,0%,10%)] bg-white font-bold">{row.weeks}</td>
-                      <td className="p-4 border-2 border-[hsl(0,0%,10%)] bg-white text-sm font-medium">{row.outcome}</td>
+                      <td className="p-4 border-2 border-[hsl(0,0%,10%)] card-cream font-bold">{row.weeks}</td>
+                      <td className="p-4 border-2 border-[hsl(0,0%,10%)] card-cream text-sm font-medium">{row.outcome}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -786,7 +878,7 @@ const JaidaOffer = () => {
 
         {/* ═══ MENTOR ═══ */}
         <Reveal>
-          <div className={`bg-white ${brutal} p-8 mb-12`}>
+          <div className={`card-cream ${brutal} p-8 mb-12`}>
             <h3 className="text-xl font-extrabold uppercase mb-4">👤 Your Mentor</h3>
             <p className="font-extrabold text-xl mb-1">Ahmed Ezzat</p>
             <p className="font-semibold opacity-70 mb-4">Founder of Mentorna® | Senior PM &amp; CTO | Startup Advisor</p>
@@ -813,7 +905,7 @@ const JaidaOffer = () => {
 
         {/* ═══ PAST WORK ═══ */}
         <Reveal>
-          <div className={`bg-white ${brutal} p-8 mb-12`}>
+          <div className={`card-cream ${brutal} p-8 mb-12`}>
             <span className="inline-block bg-[hsl(0,0%,10%)] text-white text-xs font-extrabold uppercase py-1.5 px-3 border-2 border-[hsl(0,0%,10%)] mb-4">
               Real Results
             </span>
@@ -862,7 +954,7 @@ const JaidaOffer = () => {
               </div>
             ))}
 
-            <div className="bg-white border-4 border-[hsl(0,0%,10%)] p-5 mb-5">
+            <div className="card-cream border-4 border-[hsl(0,0%,10%)] p-5 mb-5">
               <div className="text-sm font-bold uppercase text-[hsl(0,0%,10%)] mb-3">Your Signature</div>
               <input
                 type="text"
