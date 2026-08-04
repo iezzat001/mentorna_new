@@ -19,6 +19,7 @@ import OneFeature from "./pages/OneFeature";
 import MohamedOffer from "./pages/MohamedOffer";
 import JassimOffer from "./pages/JassimOffer";
 import JaidaOffer from "./pages/JaidaOffer";
+import YoussefOffer from "./pages/YoussefOffer";
 import Dashboard from "./pages/Dashboard";
 import Investment from "./pages/Investment";
 import WorkshopDeck from "./pages/WorkshopDeck";
@@ -103,6 +104,7 @@ const App = () => {
                   {/* Mohamed Offer page */}
                   <Route path="/offer/mohamed" element={<MohamedOffer />} />
                   <Route path="/offer/jaida" element={<JaidaOffer />} />
+                  <Route path="/offer/youssef" element={<YoussefOffer />} />
                   <Route path="/mentorship-offer" element={<JassimOffer />} />
 
                   {/* Admin dashboard */}
