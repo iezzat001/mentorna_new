@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Check, Lock, Clock, ArrowRight, Compass, Hammer, Rocket, HeartHandshake, TrendingUp } from "lucide-react";
+import { Check, Clock, ArrowRight, Compass, Hammer, Rocket, HeartHandshake, TrendingUp, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -65,52 +65,51 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 };
 
-const CountUp = ({ to, prefix = "", duration = 1400 }: { to: number; prefix?: string; duration?: number }) => {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      io.disconnect();
-      const start = performance.now();
-      const tick = (now: number) => {
-        const p = Math.min((now - start) / duration, 1);
-        setVal(Math.round(to * (1 - Math.pow(1 - p, 3))));
-        if (p < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    }, { threshold: 0.4 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [to, duration]);
-  return <span ref={ref}>{prefix}{val.toLocaleString()}</span>;
-};
-
 /* ────────────────────────────────────────────────────────────
    Offer data
    ──────────────────────────────────────────────────────────── */
 const PRICE = 2000;
-const VALUE_STACK = [
-  { item: "12 weekly 1:1 mentorship sessions", detail: "One focused hour a week, directly with Ahmed", value: 1800 },
-  { item: "Async support between sessions", detail: "Mon–Fri, reply within 24h — you never stay stuck", value: 600 },
-  { item: "Path diagnostic & personal roadmap", detail: "One direction chosen, with the reasoning behind it", value: 400 },
-  { item: "Hands-on build guidance", detail: "Real projects reviewed and debugged with you", value: 500 },
-  { item: "Offer & first-client playbook", detail: "How to package what you learn into paid work", value: 200 },
+const STANDARD_PRICE = 3500;
+const SESSIONS = 18;
+
+const INCLUDED = [
+  {
+    icon: "🎓",
+    title: `${SESSIONS} sessions of 1:1 mentorship`,
+    detail: "One focused hour a session, directly with Ahmed",
+  },
+  {
+    icon: "🌐",
+    title: "Access to my network",
+    detail: "Business owners and influencers who can help your business grow quickly. Subject to my evaluation of your project.",
+  },
+  {
+    icon: "💬",
+    title: "Support between sessions",
+    detail: "Mon–Fri, reply within 24h.",
+  },
+  {
+    icon: "🤖",
+    title: "Hands-on AI learning path",
+    detail: "Real projects reviewed and debugged with you",
+  },
+  {
+    icon: "🚀",
+    title: "Offer & first-client playbook",
+    detail: "How to package what you learn into paid work",
+  },
 ];
-const TOTAL_VALUE = 3500;
 
 const TRANSFORM = [
-  { now: "Torn between four different AI paths", then: "One path chosen — and you know why" },
+  { now: "Torn between four different AI paths", then: "One path chosen, and you know why" },
   { now: "Collecting courses, shipping nothing", then: "Real projects built, running and reviewed" },
   { now: '"Am I technical enough for this?"', then: "Proof you can build without a CS degree" },
   { now: "Startups are something you read about", then: "A concrete offer you can put in front of people" },
 ];
 
 const CAPABILITY = [
-  { icon: Compass, title: "You don't need to be technical", desc: "The automation track is built for non-programmers. Your accounting background already gave you structure, logic and comfort with numbers — that transfers directly." },
-  { icon: HeartHandshake, title: "We pick the path that fits YOU", desc: "Not the trendiest one. The question isn't which field is best — it's which one you can sustain. We test that properly instead of guessing." },
+  { icon: Compass, title: "You don't need to be technical", desc: "The automation track is built for non-programmers. Your background already gave you structure, logic and comfort with numbers, and all of that transfers directly." },
+  { icon: HeartHandshake, title: "We pick the path that fits YOU", desc: "Not the trendiest one. The question isn't which field is best. It's which one you can sustain, and we test that properly instead of guessing." },
   { icon: Hammer, title: "You learn by building", desc: "No theory marathons. Every week you build something small and real, because that's the only way this field actually sticks." },
   { icon: Rocket, title: "One thing at a time", desc: "The scattered feeling comes from four open doors. We close three, and go deep on one. That alone changes everything." },
 ];
@@ -121,13 +120,13 @@ const WHAT_YOU_GET = [
     items: [
       "Structured assessment of the four directions you're weighing",
       "We test your actual energy and aptitude, not just interest",
-      "You leave Week 2 with ONE path locked — and the reasoning written down",
+      "You leave Week 2 with ONE path locked, and the reasoning written down",
     ],
   },
   {
     icon: "🗺️", title: "Your Personal Learning Roadmap", color: "hsl(196,70%,88%)",
     items: [
-      "Exactly what to learn, in what order — nothing extra",
+      "Exactly what to learn, in what order, nothing extra",
       "Curated resources instead of an endless list of tutorials",
       "Weekly milestones so you always know if you're on track",
     ],
@@ -135,7 +134,7 @@ const WHAT_YOU_GET = [
   {
     icon: "🤖", title: "Hands-On AI Building", color: "hsl(160,50%,85%)",
     items: [
-      "Agentic AI & automation tools (n8n and similar) — no coding background required",
+      "Agentic AI & automation tools (n8n and similar), no coding background required",
       "Build real, working projects from week one",
       "Your work reviewed and debugged together on the call",
     ],
@@ -149,28 +148,52 @@ const WHAT_YOU_GET = [
     ],
   },
   {
-    icon: "🤝", title: "Weekly 1:1 & Accountability", color: "hsl(18,70%,89%)",
+    icon: "🤝", title: "1:1 Sessions & Accountability", color: "hsl(18,70%,89%)",
     items: [
-      "12 weekly 1:1 sessions — direct, personal, no group calls",
-      "Async support Mon–Fri, answered within 24 hours",
-      "Honest feedback — including when something isn't working",
+      `${SESSIONS} sessions of 1:1 mentorship, direct and personal, never a group call`,
+      "Support between sessions, Mon–Fri, answered within 24 hours",
+      "Honest feedback, including when something isn't working",
     ],
   },
 ];
 
 const JOURNEY = [
-  { phase: "Clarity", weeks: "1–4", color: INDIGO, outcome: "Diagnostic complete, ONE path locked with clear reasoning, roadmap built, foundations started, first small automation working end-to-end" },
+  { phase: "Clarity", weeks: "1–4", color: INDIGO, outcome: "Diagnostic complete, ONE path locked with clear reasoning, roadmap built, foundations started, first small automation working end to end" },
   { phase: "Build", weeks: "5–8", color: CYAN, outcome: "Multiple real projects shipped, core tools mastered, portfolio taking shape, comfortable building on your own" },
   { phase: "Launch", weeks: "9–12", color: TEAL, outcome: "Skills packaged into a clear offer, outreach started, first client conversations underway, plan for what comes after the program" },
+];
+
+const TESTIMONIALS = [
+  {
+    name: "Rudransh Khurana",
+    role: "Pre-DP Student, SYK IB",
+    quote: "Truly one of the most helpful and educational sessions I've ever attended. Most workshops involve a lot of theory with very little action.",
+    source: "Instagram DM",
+  },
+  {
+    name: "Sneh Patel",
+    role: "Pre-IB Student, HSYK",
+    quote: "5 high schoolers. No prior startup experience. One raw idea. The event provided practical insights into AI tools, vibe coding, and the process of turning an idea into a startup.",
+    source: "LinkedIn",
+  },
+  {
+    name: "Loan Cindy Tran",
+    role: "B2B Market Entry Specialist",
+    quote: "I walked away with a live landing page ready to capture waitlist sign-ups. Getting that level of clarity and technical output in a single evening is invaluable.",
+    source: "LinkedIn",
+  },
+  {
+    name: "Matti Tuominen",
+    role: "40-year workshop veteran",
+    quote: "This was perhaps the most interesting workshop I have ever attended during the last 40 years.",
+    source: "Luma Review",
+  },
 ];
 
 /* ────────────────────────────────────────────────────────────
    Page
    ──────────────────────────────────────────────────────────── */
 const YoussefOffer = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [passcode, setPasscode] = useState("");
-  const [error, setError] = useState("");
   const [showBar, setShowBar] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "", email: "", whatsapp: "", country: "", signature: "",
@@ -205,13 +228,6 @@ const YoussefOffer = () => {
   const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   const scrollToForm = () => document.getElementById("secure-spot")?.scrollIntoView({ behavior: "smooth" });
 
-  const handlePasscodeSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    if (passcode === "2000") setIsAuthenticated(true);
-    else { setError("Invalid passcode. Please try again."); setPasscode(""); }
-  };
-
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -244,38 +260,6 @@ const YoussefOffer = () => {
       setIsSubmitting(false);
     }
   };
-
-  /* ── Passcode gate ── */
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-[hsl(0,0%,10%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5 relative overflow-hidden">
-        <GlobalStyles />
-        <div className="absolute inset-0 opacity-60" style={{
-          background: `radial-gradient(circle at 20% 20%, ${INDIGO}55, transparent 45%), radial-gradient(circle at 80% 70%, ${CYAN}44, transparent 45%), radial-gradient(circle at 50% 100%, ${AMBER}33, transparent 40%)`,
-        }} />
-        <div className={`relative card-cream ${brutalLg} p-8 md:p-12 max-w-md w-full text-center`}>
-          <div className="w-16 h-16 border-4 border-[hsl(0,0%,10%)] rounded-full flex items-center justify-center mx-auto mb-6"
-            style={{ background: `linear-gradient(135deg, ${INDIGO}, ${CYAN})` }}>
-            <Lock className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-2xl font-extrabold uppercase mb-2">Private Offer</h1>
-          <p className="text-sm font-medium opacity-70 mb-8">Enter the passcode to access this exclusive offer</p>
-          <form onSubmit={handlePasscodeSubmit}>
-            <input type="password" inputMode="numeric" maxLength={4} placeholder="Enter 4-digit passcode"
-              className="w-full p-4 text-center text-2xl font-bold tracking-[0.5em] border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none mb-4"
-              value={passcode} onChange={(e) => setPasscode(e.target.value.replace(/\D/g, "").slice(0, 4))} autoFocus />
-            {error && <p className="text-red-600 font-semibold text-sm mb-4">{error}</p>}
-            <button type="submit" disabled={passcode.length !== 4}
-              className="w-full py-4 px-8 text-lg font-extrabold uppercase text-white border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ background: `linear-gradient(135deg, ${INDIGO}, ${CYAN})` }}>
-              Unlock Offer
-            </button>
-          </form>
-          <p className="text-xs font-medium opacity-50 mt-6">Mentorna® | Exclusive Access</p>
-        </div>
-      </div>
-    );
-  }
 
   if (offerStatus === "loading") {
     return (
@@ -345,14 +329,14 @@ const YoussefOffer = () => {
             </span>
           </h1>
           <p className="text-lg md:text-xl font-semibold text-white/80 max-w-2xl mx-auto">
-            90 days to stop guessing between four directions, commit to one, and actually build something real with AI —
+            90 days to stop guessing between four directions, commit to one, and actually build something real with AI,
             starting from zero, without a technical background.
           </p>
 
           <div className="grid grid-cols-3 gap-3 md:gap-4 mt-10 max-w-2xl mx-auto">
             {[
               { v: "90", l: "Days", c: AMBER },
-              { v: "12", l: "1:1 Sessions", c: CYAN },
+              { v: String(SESSIONS), l: "1:1 Sessions", c: CYAN },
               { v: "1", l: "Clear Path", c: TEAL },
             ].map((s) => (
               <div key={s.l} className="bg-white/10 backdrop-blur border-2 border-white/30 p-3 md:p-4">
@@ -390,9 +374,6 @@ const YoussefOffer = () => {
               Prepared For
             </span>
             <h2 className="text-3xl font-extrabold mt-3">Youssef</h2>
-            <p className="font-semibold opacity-80">
-              Iraq — accounting graduate, moving into AI from a non-technical background
-            </p>
           </section>
         </Reveal>
 
@@ -433,7 +414,7 @@ const YoussefOffer = () => {
               <span className="text-white px-1.5 py-0.5" style={{ background: `linear-gradient(120deg, ${INDIGO}, ${CYAN})` }}>
                 one clear path, real skills you've actually used, and work you can show.
               </span>{" "}
-              Not another pile of courses — a direction you've committed to and proof that you can build in it.
+              Not another pile of courses, but a direction you've committed to and proof that you can build in it.
             </p>
           </div>
         </Reveal>
@@ -448,7 +429,7 @@ const YoussefOffer = () => {
                   Let's address the real question
                 </span>
                 <h2 className="text-2xl md:text-3xl font-extrabold uppercase mb-3 text-white">
-                  "Can I actually do this — I'm not technical?"
+                  "Can I actually do this, I'm not technical?"
                 </h2>
                 <p className="font-semibold text-white/70 mb-7 leading-relaxed">
                   You said it yourself: the confusion is the problem, not the ambition. Here's how this program is built
@@ -489,37 +470,77 @@ const YoussefOffer = () => {
           ))}
         </section>
 
-        {/* ═══ VALUE STACK ═══ */}
+        {/* ═══ TESTIMONIALS ═══ */}
+        <section className="mb-12">
+          <Reveal>
+            <h2 className="text-2xl font-extrabold uppercase mb-2 pb-3 border-b-4 border-[hsl(0,0%,10%)] inline-block">
+              What People Say
+            </h2>
+            <p className="font-semibold opacity-70 mb-6">
+              From founders, students and career switchers who worked with me.
+            </p>
+          </Reveal>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {TESTIMONIALS.map((t, i) => (
+              <Reveal key={i} delay={i * 70}>
+                <div className={`card-cream ${brutal} p-5 h-full flex flex-col hover:-translate-y-1 transition-transform`}>
+                  <div className="flex gap-1 mb-3">
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <Star key={s} className="h-4 w-4" style={{ fill: AMBER, color: "hsl(0,0%,10%)" }} />
+                    ))}
+                  </div>
+                  <blockquote className="text-sm font-semibold leading-relaxed flex-1">"{t.quote}"</blockquote>
+                  <div className="flex items-end justify-between gap-2 mt-4 pt-3 border-t-2 border-[hsl(30,20%,82%)]">
+                    <div>
+                      <p className="font-extrabold text-sm">{t.name}</p>
+                      <p className="text-xs opacity-60">{t.role}</p>
+                    </div>
+                    <span className="text-[10px] font-extrabold uppercase py-1 px-2 border-2 border-[hsl(0,0%,10%)] whitespace-nowrap" style={{ background: AMBER }}>
+                      {t.source}
+                    </span>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal>
+            <a href="/testimonials" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-6 py-3 px-6 font-extrabold uppercase text-sm text-white border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+              style={{ background: `linear-gradient(135deg, ${INDIGO}, ${CYAN})` }}>
+              See All Testimonials <ArrowRight className="w-4 h-4" />
+            </a>
+          </Reveal>
+        </section>
+
+        {/* ═══ WHAT'S INCLUDED ═══ */}
         <Reveal>
           <section className="mb-12">
             <h2 className="text-2xl font-extrabold uppercase mb-6 pb-3 border-b-4 border-[hsl(0,0%,10%)] inline-block">What's Included</h2>
             <div className={`${brutalLg} overflow-hidden card-cream`}>
-              {VALUE_STACK.map((v, i) => (
-                <div key={i} className="flex items-start justify-between gap-4 p-5 border-b-2 border-[hsl(30,20%,82%)]">
+              {INCLUDED.map((v, i) => (
+                <div key={i} className="flex items-start gap-4 p-5 border-b-2 border-[hsl(30,20%,82%)]">
+                  <div className="text-2xl flex-shrink-0 leading-none mt-0.5">{v.icon}</div>
                   <div className="flex-1">
-                    <div className="font-extrabold text-sm md:text-base">{v.item}</div>
-                    <div className="text-xs font-medium opacity-60 mt-1">{v.detail}</div>
+                    <div className="font-extrabold text-sm md:text-base">{v.title}</div>
+                    <div className="text-sm font-medium opacity-65 mt-1 leading-relaxed">{v.detail}</div>
                   </div>
-                  <div className="font-extrabold text-lg md:text-xl whitespace-nowrap"><CountUp to={v.value} prefix="$" /></div>
+                  <Check className="w-5 h-5 flex-shrink-0 mt-1" style={{ color: TEAL }} />
                 </div>
               ))}
               <div className="flex items-center justify-between gap-4 p-5 bg-[hsl(0,0%,10%)] text-white">
                 <div className="font-extrabold uppercase text-sm md:text-lg">Standard Price</div>
                 <div className="font-extrabold text-2xl md:text-3xl line-through decoration-4" style={{ textDecorationColor: CORAL }}>
-                  <CountUp to={TOTAL_VALUE} prefix="$" />
+                  ${STANDARD_PRICE.toLocaleString()}
                 </div>
               </div>
               <div className="p-6 text-center" style={{ background: `linear-gradient(135deg, ${INDIGO}, ${CYAN})` }}>
                 <div className="text-xs font-extrabold uppercase tracking-widest text-white/80 mb-2">Your investment</div>
                 <div className="text-5xl md:text-6xl font-extrabold text-white leading-none">${PRICE.toLocaleString()}</div>
                 <div className="inline-block mt-4 font-extrabold text-sm py-2 px-4 border-2 border-[hsl(0,0%,10%)]" style={{ background: AMBER }}>
-                  ${(TOTAL_VALUE - PRICE).toLocaleString()} off · one-time payment
+                  ${(STANDARD_PRICE - PRICE).toLocaleString()} off · one-time payment
                 </div>
               </div>
             </div>
-            <p className="text-xs font-semibold opacity-60 mt-3 leading-relaxed">
-              This is a reduced rate offered personally to you, below the standard price for this program.
-            </p>
           </section>
         </Reveal>
 
@@ -529,13 +550,13 @@ const YoussefOffer = () => {
             <TrendingUp className="w-10 h-10 text-white mb-4" />
             <h3 className="text-xl md:text-2xl font-extrabold uppercase mb-4 text-white">Being honest with you</h3>
             <p className="font-semibold text-white/90 leading-relaxed mb-4">
-              I'm not going to promise you a salary or a specific income in 90 days — anyone who does is selling you
+              I'm not going to promise you a salary or a specific income in 90 days. Anyone who does is selling you
               something. What I can promise is that you'll stop being scattered, you'll have one direction you've
               committed to, and you'll have built real things you can show people.
             </p>
             <div className="bg-white/15 backdrop-blur border-2 border-white/30 p-5">
               <p className="font-bold text-white leading-relaxed">
-                The most expensive thing right now isn't this program — it's spending another year switching between
+                The most expensive thing right now isn't this program. It's spending another year switching between
                 four paths and finishing none of them.
               </p>
             </div>
@@ -571,33 +592,6 @@ const YoussefOffer = () => {
           </section>
         </Reveal>
 
-        {/* ═══ GUARANTEE ═══ */}
-        <Reveal>
-          <div className={`${brutalLg} p-8 mb-12`} style={{ background: "hsl(160,50%,85%)" }}>
-            <h3 className="text-xl font-extrabold uppercase mb-4 flex items-center gap-3">🛡️ The Guarantee</h3>
-            <p className="font-semibold mb-4 leading-relaxed">
-              Complete the program with full commitment, and if by the end of Month 3 you don't have a clear chosen
-              path, real projects you've built, and a packaged offer ready to take to clients —{" "}
-              <strong>you get 100% of your money back.</strong>
-            </p>
-            <p className="font-bold mb-3">Commitment Requirements:</p>
-            {[
-              "Attend all scheduled sessions (maximum 2 missed sessions allowed)",
-              "Complete all assigned tasks and builds (maximum 2 incomplete tasks allowed)",
-            ].map((item, idx) => (
-              <div key={idx} className="flex items-start gap-3 py-2">
-                <span className="w-6 h-6 flex items-center justify-center font-extrabold flex-shrink-0 border-2 border-[hsl(0,0%,10%)]" style={{ background: TEAL }}>
-                  <Check className="w-4 h-4 text-white" />
-                </span>
-                <span className="font-medium">{item}</span>
-              </div>
-            ))}
-            <div className="border-2 border-[hsl(0,0%,10%)] p-4 mt-5 font-semibold" style={{ background: AMBER }}>
-              ⚠️ If either condition is not met, the guarantee is void.
-            </div>
-          </div>
-        </Reveal>
-
         {/* ═══ PAYMENT DETAILS ═══ */}
         <Reveal>
           <div className={`bg-[hsl(0,0%,10%)] text-white ${brutalLg} p-8 mb-12`}>
@@ -630,7 +624,7 @@ const YoussefOffer = () => {
             <p className="font-semibold opacity-70 mb-4">Founder of Mentorna® | Senior PM &amp; CTO | Startup Advisor</p>
             <ul className="list-none space-y-2">
               {[
-                "Founder of Mentorna — EdTech & AI venture studio",
+                "Founder of Mentorna, an EdTech & AI venture studio",
                 "Built and scaled businesses across MENA & European markets",
                 "Advisor to early-stage startups on product, growth & fundraising",
                 "Deep expertise in AI, product strategy, and go-to-market",
@@ -650,14 +644,14 @@ const YoussefOffer = () => {
         <div id="secure-spot" className={`bg-[hsl(0,0%,10%)] text-white ${brutalLg} p-8 md:p-10 mb-8 scroll-mt-6`}>
           <h2 className="text-2xl font-extrabold uppercase mb-2 pb-3 border-b-4 border-white inline-block">Secure Your Spot</h2>
           <p className="font-semibold text-white/60 mb-6">
-            ${PRICE.toLocaleString()} one-time · 12 weekly 1:1 sessions · 100% money-back guarantee
+            ${PRICE.toLocaleString()} one-time · {SESSIONS} sessions of 1:1 mentorship · 3 months
           </p>
           <form onSubmit={handleFormSubmit}>
             {[
               { label: "Full Name", key: "fullName", type: "text", placeholder: "Enter your full name" },
               { label: "Email Address", key: "email", type: "email", placeholder: "Enter your email" },
               { label: "WhatsApp Number", key: "whatsapp", type: "tel", placeholder: "+964 xxx xxx xxxx" },
-              { label: "Country / City", key: "country", type: "text", placeholder: "Iraq — your city" },
+              { label: "Country / City", key: "country", type: "text", placeholder: "Your country and city" },
             ].map((field) => (
               <div className="mb-5" key={field.key}>
                 <label className="block font-bold uppercase text-sm mb-2 tracking-wider">{field.label}</label>
@@ -682,7 +676,7 @@ const YoussefOffer = () => {
               <p className="text-sm mb-4">By signing above and submitting this form, I agree to the following:</p>
               {[
                 { id: "agree1", text: "I understand the program covers: choosing one clear AI path, a personal learning roadmap, hands-on building with agentic AI & automation tools, and packaging my skills into an offer." },
-                { id: "agree2", text: "I commit to attending the weekly sessions and completing the assigned tasks and builds in a timely manner." },
+                { id: "agree2", text: "I commit to attending the scheduled sessions and completing the assigned tasks and builds in a timely manner." },
                 { id: "agree3", text: "I agree to pay $2,000 USD as a one-time payment before the program begins." },
               ].map((cb) => (
                 <div key={cb.id} className="flex items-start gap-3 mt-4">
@@ -697,7 +691,7 @@ const YoussefOffer = () => {
             <button type="submit" disabled={isSubmitting}
               className="w-full py-5 px-10 text-xl font-extrabold uppercase text-white border-4 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)] active:translate-x-1.5 active:translate-y-1.5 active:shadow-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ background: `linear-gradient(135deg, ${INDIGO}, ${CYAN})` }}>
-              {isSubmitting ? "Submitting..." : "🚀 I'm In — Let's Start"}
+              {isSubmitting ? "Submitting..." : "🚀 I'm In, Let's Start"}
             </button>
           </form>
         </div>
@@ -707,7 +701,7 @@ const YoussefOffer = () => {
             "The problem was never your ambition. It was having four doors open at once. Let's close three."
           </p>
           <div className="font-bold">
-            <p className="text-xl font-extrabold">— Ahmed Ezzat</p>
+            <p className="text-xl font-extrabold">Ahmed Ezzat</p>
             <p className="text-sm opacity-70">Founder, Mentorna® | Startup Advisor &amp; Growth Coach</p>
           </div>
         </footer>
@@ -719,10 +713,10 @@ const YoussefOffer = () => {
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-2">
               <span className="text-xl md:text-2xl font-extrabold text-white">${PRICE.toLocaleString()}</span>
-              <span className="text-sm font-bold text-white/40 line-through">${TOTAL_VALUE.toLocaleString()}</span>
+              <span className="text-sm font-bold text-white/40 line-through">${STANDARD_PRICE.toLocaleString()}</span>
             </div>
             <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider" style={{ color: AMBER }}>
-              3 months · 12 sessions
+              3 months · {SESSIONS} sessions
             </div>
           </div>
           <button onClick={scrollToForm}
