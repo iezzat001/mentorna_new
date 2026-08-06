@@ -3,7 +3,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, VolumeX, Volume2 } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
-import WaitingListDialog from '../WaitingListDialog';
+import WhatsAppCTA from '../WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 import MobileSwipeIndicator from './MobileSwipeIndicator';
 
 interface StoryData {
@@ -261,7 +262,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
           </div>
           
           {/* CTA Button */}
-          <WaitingListDialog>
+          <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcamp}>
             <Button className="
               w-full 
               bg-white 
@@ -275,7 +276,7 @@ const MobileStorySection = ({ story }: MobileStorySectionProps) => {
             ">
               Join Our Program 🚀
             </Button>
-          </WaitingListDialog>
+          </WhatsAppCTA>
         </div>
         
         {/* Right side - Action Bar */}

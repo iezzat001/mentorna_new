@@ -30,7 +30,9 @@ import Valuation from "./pages/Valuation";
 import ResponsiveHome from "@/components/ResponsiveHome";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 import Workshop from "./pages/Workshop";
+import Mentorship from "./pages/Mentorship";
 import Testimonials from "./pages/Testimonials";
+import Links from "./pages/Links";
 
 const queryClient = new QueryClient();
 
@@ -98,8 +100,14 @@ const App = () => {
                   {/* Workshop landing page */}
                   <Route path="/workshop" element={<Workshop />} />
 
+                  {/* 1:1 mentorship landing page */}
+                  <Route path="/mentorship" element={<Mentorship />} />
+
                   {/* Testimonials page */}
                   <Route path="/testimonials" element={<Testimonials />} />
+
+                  {/* Mobile-first link-in-bio storefront */}
+                  <Route path="/links" element={<Links />} />
 
                   {/* Mohamed Offer page */}
                   <Route path="/offer/mohamed" element={<MohamedOffer />} />

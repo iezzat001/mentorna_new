@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import WaitingListDialog from '../WaitingListDialog';
+import WhatsAppCTA from '../WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 import PhaseHeader from './PhaseHeader';
 import MobileSwipeIndicator from './MobileSwipeIndicator';
 import { ChevronRight, Clock, Target, BookOpen, Users, Presentation, Lightbulb as LightbulbIcon, CheckCircle } from 'lucide-react';
@@ -285,7 +286,7 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
 
         {/* Always Visible CTA Button */}
         <div className="pt-3 pb-4">
-          <WaitingListDialog>
+          <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcamp}>
             <Button className="
               w-full 
               bg-primary 
@@ -302,9 +303,9 @@ const MobilePhasesSection = ({ phase }: MobilePhasesSectionProps) => {
               transition-all
               active:scale-95
             ">
-              JOIN WAITING LIST 🚀
+              JOIN THE PROGRAM 🚀
             </Button>
-          </WaitingListDialog>
+          </WhatsAppCTA>
         </div>
       </div>
 

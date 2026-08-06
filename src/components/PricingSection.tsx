@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Gift, Sparkles } from 'lucide-react';
-import WaitingListDialog from './WaitingListDialog';
+import WhatsAppCTA from './WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 
 const PricingSection = () => {
   return (
@@ -61,7 +62,7 @@ const PricingSection = () => {
                     $500 USD
                   </div>
                   <div className="text-6xl font-black text-primary-foreground">
-                    $329
+                    $325
                   </div>
                 </div>
                 
@@ -97,7 +98,7 @@ const PricingSection = () => {
 
               {/* Call to Action */}
               <div className="text-center">
-                <WaitingListDialog>
+                <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcampSpot}>
                   <Button className="
                     w-full
                     bg-foreground
@@ -119,7 +120,7 @@ const PricingSection = () => {
                     <Sparkles className="h-5 w-5 mr-2" />
                     SECURE YOUR SPOT NOW!
                   </Button>
-                </WaitingListDialog>
+                </WhatsAppCTA>
                 
                 <p className="font-body text-sm font-semibold text-foreground/70 mt-4">
                   Limited Time • First 10 Families Only

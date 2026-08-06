@@ -2,7 +2,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Gift, Sparkles } from 'lucide-react';
-import MobileWaitingListDialog from './MobileWaitingListDialog';
+import WhatsAppCTA from '../WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 import MobileSwipeIndicator from './MobileSwipeIndicator';
 
 const MobilePricingSection = () => {
@@ -39,7 +40,7 @@ const MobilePricingSection = () => {
               $500 USD
             </div>
             <div className="text-foreground text-5xl font-black">
-              $329
+              $325
             </div>
           </div>
           
@@ -61,7 +62,7 @@ const MobilePricingSection = () => {
 
         {/* CTA Button */}
         <div className="space-y-3">
-          <MobileWaitingListDialog>
+          <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcampSpot}>
             <Button className="
               w-full
               bg-foreground
@@ -85,7 +86,7 @@ const MobilePricingSection = () => {
               <Sparkles className="h-4 w-4 mr-2" />
               SECURE YOUR SPOT NOW!
             </Button>
-          </MobileWaitingListDialog>
+          </WhatsAppCTA>
           
           <p className="text-foreground/70 text-xs font-semibold">
             Limited Time • First 10 Families Only
