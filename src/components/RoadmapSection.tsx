@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Lightbulb, Users, Hammer, RotateCcw, TestTube, Presentation, Rocket } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import WaitingListDialog from './WaitingListDialog';
+import WhatsAppCTA from './WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 
 const RoadmapSection = () => {
   // Background images cycling state
@@ -374,7 +375,7 @@ const RoadmapSection = () => {
 
           {/* CTA Button */}
           <div className="py-4">
-            <WaitingListDialog>
+            <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcamp}>
               <Button className="
                 bg-foreground
                 text-background
@@ -395,7 +396,7 @@ const RoadmapSection = () => {
               ">
                 START YOUR CHILD'S JOURNEY NOW!
               </Button>
-            </WaitingListDialog>
+            </WhatsAppCTA>
           </div>
 
           {/* Supporting Text Below Button */}

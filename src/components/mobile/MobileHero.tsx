@@ -3,7 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Heart, ChevronDown } from 'lucide-react';
-import MobileWaitingListDialog from './MobileWaitingListDialog';
+import WhatsAppCTA from '../WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 
 const MobileHero = () => {
   const [progress, setProgress] = useState(0);
@@ -137,11 +138,11 @@ const MobileHero = () => {
           </div>
           
           {/* CTA */}
-          <MobileWaitingListDialog>
+          <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcamp}>
             <Button className="w-full bg-white text-black font-bold py-4 rounded-full active:scale-95 transition-transform touch-manipulation min-h-[48px]">
-              Join Waiting List 🚀
+              Message Ahmed 🚀
             </Button>
-          </MobileWaitingListDialog>
+          </WhatsAppCTA>
         </div>
         
         {/* Right Action Bar (25%) */}

@@ -1,7 +1,9 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Lock } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
+import WhatsAppCTA from '@/components/WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 
 const ComingSoonCTA = () => {
   return (
@@ -26,30 +28,32 @@ const ComingSoonCTA = () => {
         </p>
       </div>
       
-      <Button 
-        variant="outline" 
-        size="lg"
-        className="
-          rounded-full 
-          border-white/30 
-          bg-transparent 
-          text-white/80 
-          hover:border-white/50 
-          hover:text-white 
-          hover:bg-white/10
-          transition-all 
-          duration-300
-          font-heading
-          font-medium
-          px-8
-          py-6
-          text-lg
-          group
-        "
-      >
-        Join Exclusive Waiting List
-        <Lock className="w-5 h-5 ml-2 group-hover:animate-pulse" />
-      </Button>
+      <WhatsAppCTA message={WHATSAPP_MESSAGES.comingSoon}>
+        <Button 
+          variant="outline" 
+          size="lg"
+          className="
+            rounded-full 
+            border-white/30 
+            bg-transparent 
+            text-white/80 
+            hover:border-white/50 
+            hover:text-white 
+            hover:bg-white/10
+            transition-all 
+            duration-300
+            font-heading
+            font-medium
+            px-8
+            py-6
+            text-lg
+            group
+          "
+        >
+          Get Early Access
+          <MessageCircle className="w-5 h-5 ml-2 group-hover:animate-pulse" />
+        </Button>
+      </WhatsAppCTA>
     </div>
   );
 };

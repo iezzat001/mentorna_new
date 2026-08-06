@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Lightbulb, Users, Hammer, RotateCcw, TestTube, Presentation, Rocket, Heart, Share, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import MobileWaitingListDialog from './MobileWaitingListDialog';
+import WhatsAppCTA from '../WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 
 const MobileRoadmapSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -224,11 +225,11 @@ const MobileRoadmapSection = () => {
           </div>
           
           {/* CTA */}
-          <MobileWaitingListDialog>
+          <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcamp}>
             <Button className="w-full bg-white text-black font-black py-4 rounded-full shadow-lg hover:scale-105 transition-transform duration-200 active:scale-95 min-h-[48px]">
               🚀 START YOUR JOURNEY
             </Button>
-          </MobileWaitingListDialog>
+          </WhatsAppCTA>
         </div>
         
         {/* Right Action Bar (25%) */}

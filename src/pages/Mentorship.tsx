@@ -2,36 +2,33 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   ArrowUpRight,
+  Brain,
   Check,
   CheckCircle2,
+  Compass,
   ExternalLink,
-  Laptop,
+  Hammer,
   MessageCircle,
   Play,
-  Rocket,
+  ShieldCheck,
   Sparkles,
   Star,
   Target,
-  Trophy,
-  Users,
   X,
-  Zap,
 } from 'lucide-react';
-import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import Footer from '@/components/Footer';
 import { whatsappUrl } from '@/lib/whatsapp';
-import { sections, tools, pitchBlock } from '@/data/workshop';
 import {
-  eventPhotos,
   testimonials,
   workshopVideoPoster,
   workshopVideoUrl,
 } from '@/data/testimonials';
 
 /* ────────────────────────────────────────────────────────────
-   Design tokens — shared language with the /links and offer pages
+   Design tokens — shared with /workshop, /links and the offer pages
    ──────────────────────────────────────────────────────────── */
 const INK = 'hsl(0,0%,10%)';
+const INDIGO = 'hsl(232,72%,58%)';
 const PURPLE = 'hsl(262,70%,60%)';
 const PINK = 'hsl(322,80%,62%)';
 const AMBER = 'hsl(38,95%,58%)';
@@ -45,92 +42,184 @@ const PAGE_BG =
 const brutal = 'border-4 border-[hsl(0,0%,10%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]';
 const brutalLg = 'border-4 border-[hsl(0,0%,10%)] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]';
 
-const SECTION_ACCENTS = [AMBER, PURPLE, CYAN, TEAL, CORAL];
+const ACCENTS = [PURPLE, CYAN, AMBER, TEAL, CORAL, INDIGO];
 
 /* ────────────────────────────────────────────────────────────
    Offer data
    ──────────────────────────────────────────────────────────── */
-const PRICE_USD = 99;
-const BOOTCAMP_PRICE_USD = 325;
+const PRICE_USD = 2500;
+const MONTHS = 3;
+const SESSIONS = 24;
+const SESSION_MINUTES = 90;
+const TOTAL_HOURS = (SESSIONS * SESSION_MINUTES) / 60;
 
-// Update this block when the next cohort is scheduled.
-const NEXT_SESSION = {
-  format: 'Live · Hands-on',
-  duration: '5 hours',
-  seats: 'Small group — limited seats',
-};
-
-const RESERVE_MESSAGE = `Hi Ahmed, I'd like to reserve a seat in the Vibe Coding 0 → 1 workshop ($${PRICE_USD}). When is the next date?`;
+const APPLY_MESSAGE = `Hi Ahmed, I'd like to apply for your 1:1 mentorship ($${PRICE_USD.toLocaleString()} — ${MONTHS} months, ${SESSIONS} sessions). Can we talk about whether it's a fit?`;
 const QUESTION_MESSAGE =
-  'Hi Ahmed, I have a question about the Vibe Coding 0 → 1 workshop.';
-const BOOTCAMP_MESSAGE = `Hi Ahmed, I'm interested in the 6-week AI Entrepreneurship Bootcamp ($${BOOTCAMP_PRICE_USD}).`;
+  "Hi Ahmed, I have a question about the 1:1 mentorship program.";
 
-const OUTCOMES = [
+const HERO_STATS = [
+  { value: `${MONTHS}`, label: 'Months' },
+  { value: `${SESSIONS}`, label: 'Sessions' },
+  { value: `${SESSION_MINUTES}m`, label: 'Each' },
+  { value: `${TOTAL_HOURS}h`, label: 'With me' },
+];
+
+const TAILORING = [
+  {
+    icon: Compass,
+    title: 'We start with a diagnostic, not a curriculum',
+    desc: 'The first two sessions map where you actually are — your skills, your constraints, your runway, and the goal you care about. Nothing gets planned before that is honest and on paper.',
+  },
   {
     icon: Target,
-    title: 'A problem worth solving',
-    desc: 'Defined precisely — who feels the pain, and why. Not a vague idea you keep circling.',
+    title: 'One goal, chosen deliberately',
+    desc: 'Most people are stuck because four directions are open at once. We close three. You leave the first month knowing which one you are building and, more importantly, why.',
   },
   {
-    icon: Sparkles,
-    title: 'An offer a stranger understands',
-    desc: 'One written statement that lands in ten seconds, built on the value equation.',
+    icon: Brain,
+    title: 'Your roadmap is written for you',
+    desc: 'Exactly what to learn and build, in what order, with nothing extra. A founder validating a B2B idea and a consultant productising their service get genuinely different plans.',
   },
   {
-    icon: Laptop,
-    title: 'A live landing page',
-    desc: 'Built with AI in the room. Hero, value proposition, and a real call to action.',
+    icon: Hammer,
+    title: 'Every session ends with a decision or a build',
+    desc: 'No lectures. We work on your real project on the call — reviewing, debugging, rewriting the offer, rehearsing the sales conversation. You leave with something changed.',
+  },
+];
+
+const INCLUDED = [
+  {
+    icon: '🎯',
+    title: `${SESSIONS} private sessions, ${SESSION_MINUTES} minutes each`,
+    color: PURPLE,
+    items: [
+      'Twice a week for 12 weeks, one-to-one with me',
+      `${TOTAL_HOURS} hours of focused work on your business`,
+      'Recorded, so you can revisit any decision we made',
+    ],
   },
   {
-    icon: Zap,
-    title: 'A way to collect signal',
-    desc: 'Email capture, waitlist, or feedback form — so you learn whether anyone actually wants it.',
+    icon: '💬',
+    title: 'Support between sessions',
+    color: CYAN,
+    items: [
+      'Direct WhatsApp access for the questions that cannot wait',
+      'Written and Loom feedback on what you build',
+      'Replies within 24 hours, Monday to Friday',
+    ],
   },
   {
-    icon: Rocket,
-    title: 'A deployed link',
-    desc: 'Shipped and shareable before you leave. Ugly but live beats perfect but imaginary.',
+    icon: '📦',
+    title: 'Frameworks and templates',
+    color: AMBER,
+    items: [
+      'Customer interview scripts and validation checklists',
+      'Offer creation framework and pricing structures',
+      'Landing page templates and launch campaign playbook',
+    ],
   },
   {
-    icon: Trophy,
-    title: 'A 7-day action plan',
-    desc: 'The exact next steps for the week after, so the momentum does not die in the parking lot.',
+    icon: '🛠️',
+    title: 'Done-with-you deliverables',
+    color: TEAL,
+    items: [
+      'A working product or MVP, built alongside you',
+      'A live landing page and a funnel that captures leads',
+      'A traction plan with the channels that fit your market',
+    ],
+  },
+  {
+    icon: '🌐',
+    title: 'Access to my network',
+    color: CORAL,
+    items: [
+      'Warm introductions to operators, founders and clients',
+      'Subject to my honest read of where your project stands',
+    ],
+  },
+  {
+    icon: '🤖',
+    title: 'An AI execution system',
+    color: INDIGO,
+    items: [
+      'The exact AI workflows I use to ship faster',
+      'Built into how you work, not handed over as a course',
+    ],
+  },
+];
+
+const JOURNEY = [
+  {
+    month: 'Month 1',
+    title: 'Clarity & Validation',
+    color: PURPLE,
+    outcome: 'Problem validated, customer defined, offer drafted',
+    items: [
+      'Diagnostic of where you are and what you actually want',
+      'One direction chosen, with the reasoning written down',
+      'Customer interviews run — real conversations, not guesses',
+      'A first offer a stranger understands in ten seconds',
+    ],
+  },
+  {
+    month: 'Month 2',
+    title: 'Build & Ship',
+    color: CYAN,
+    outcome: 'Product live, landing page up, funnel working',
+    items: [
+      'Your product built with AI, reviewed with me each session',
+      'Landing page live and collecting real signal',
+      'Pricing set and the offer tested against objections',
+      'The first version out in front of actual people',
+    ],
+  },
+  {
+    month: 'Month 3',
+    title: 'Traction & Revenue',
+    color: TEAL,
+    outcome: 'First customers, a repeatable channel, a plan that outlasts us',
+    items: [
+      'Traction channels tested, the working one doubled down on',
+      'Sales conversations rehearsed and then run for real',
+      'First paying customers and the feedback loop that follows',
+      'A written plan for the six months after we stop',
+    ],
   },
 ];
 
 const FOR_YOU = [
-  'You have an idea you keep circling but never start',
-  'You have no idea yet and want a method to find one',
-  'You are non-technical and tired of waiting on a developer',
-  'You want to test demand before sinking months into building',
+  'You are building something real and want it to actually work',
+  'You can commit to two 90-minute sessions a week for three months',
+  'You will do the work between sessions, not just attend them',
+  'You want honest feedback more than encouragement',
 ];
 
 const NOT_FOR_YOU = [
-  'You want to sit back and watch a lecture',
-  'You want someone else to build your product for you',
-  'You are here for a certificate rather than a shipped link',
+  'You want someone to build the product for you',
+  'You are looking for a course to watch at your own pace',
+  'You cannot protect three hours a week for the next three months',
 ];
 
 const FAQS = [
   {
-    q: 'Do I need to know how to code?',
-    a: 'No. That is the entire point. You bring the vision and the judgement; the AI writes the code. Non-technical founders and high-school students have both finished this workshop with a live page.',
+    q: 'Do I need an idea before we start?',
+    a: 'No. If you arrive without one, Month 1 is spent finding a problem you genuinely understand and care about. If you arrive with one, we pressure-test it before you spend another month building the wrong thing.',
   },
   {
-    q: 'What do I need to bring?',
-    a: 'A laptop and a charger. The tools we use run in the browser on free tiers, so there is nothing to install beforehand.',
+    q: 'Do I need to be technical?',
+    a: 'No. A large part of what I teach is building with AI, which is exactly what removes the need for a developer. Your background matters less than your willingness to ship badly and improve.',
   },
   {
-    q: 'What if I arrive without an idea?',
-    a: 'The first block is built for exactly that. You will scout three problems you have personally experienced and pick the one you understand best before anyone touches a keyboard.',
+    q: 'What makes this different from a course?',
+    a: 'A course is the same for everyone. This is built around your situation after a proper diagnostic, and every session works on your actual project rather than a hypothetical one.',
   },
   {
-    q: 'Is this just theory?',
-    a: 'Each of the five blocks is ten minutes of theory followed by thirty minutes of building. You spend roughly three times longer building than listening.',
+    q: 'What if I need to reschedule a session?',
+    a: 'Life happens — reschedule with reasonable notice and we move it. The guarantee allows up to two missed sessions, so there is room for the unexpected without derailing the program.',
   },
   {
-    q: 'When is the next one?',
-    a: 'Dates are announced to the list first and seats are limited. Message me on WhatsApp and I will send you the next date and hold your spot.',
+    q: 'How do payments work?',
+    a: `The program is $${PRICE_USD.toLocaleString()} for the full ${MONTHS} months. Message me and I will send the payment options, including instalments, along with the agreement.`,
   },
 ];
 
@@ -139,14 +228,14 @@ const FAQS = [
    ──────────────────────────────────────────────────────────── */
 const GlobalStyles = () => (
   <style>{`
-    @keyframes floatBlob {
+    @keyframes mentorFloat {
       0%,100% { transform: translate(0,0) scale(1); }
-      33% { transform: translate(30px,-30px) scale(1.1); }
-      66% { transform: translate(-20px,20px) scale(.95); }
+      33% { transform: translate(28px,-28px) scale(1.08); }
+      66% { transform: translate(-18px,18px) scale(.95); }
     }
-    .ws-blob { animation: floatBlob 16s ease-in-out infinite; }
+    .mentor-blob { animation: mentorFloat 17s ease-in-out infinite; }
     @media (prefers-reduced-motion: reduce) {
-      .ws-blob { animation: none; }
+      .mentor-blob { animation: none; }
     }
   `}</style>
 );
@@ -156,7 +245,7 @@ const Blob = ({
   size,
   className,
   delay = 0,
-  opacity = 0.35,
+  opacity = 0.32,
 }: {
   color: string;
   size: number;
@@ -166,7 +255,7 @@ const Blob = ({
 }) => (
   <div
     aria-hidden
-    className={`ws-blob pointer-events-none fixed rounded-full blur-3xl ${className ?? ''}`}
+    className={`mentor-blob pointer-events-none fixed rounded-full blur-3xl ${className ?? ''}`}
     style={{
       width: size,
       height: size,
@@ -241,27 +330,17 @@ const SectionHeading = ({
 /* ────────────────────────────────────────────────────────────
    Page
    ──────────────────────────────────────────────────────────── */
-const Workshop = () => {
-  const measurementId = (localStorage.getItem('google_analytics_id') || '').trim();
-  const { trackEvent } = useGoogleAnalytics({ measurementId });
-  const [videoOpen, setVideoOpen] = useState(false);
+const Mentorship = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [videoOpen, setVideoOpen] = useState(false);
 
   useEffect(() => {
     const previous = document.title;
-    document.title = 'Vibe Coding 0 → 1 Workshop | Mentorna®';
+    document.title = '1:1 Mentorship | Mentorna®';
     return () => {
       document.title = previous;
     };
   }, []);
-
-  const trackReserve = (placement: string) => {
-    trackEvent('workshop_reserve_click', {
-      page_path: window.location.pathname,
-      placement,
-      price_usd: PRICE_USD,
-    });
-  };
 
   const featured = testimonials.filter((t) => t.highlight);
   const rest = testimonials.filter((t) => !t.highlight);
@@ -281,9 +360,9 @@ const Workshop = () => {
           backgroundSize: '18px 18px',
         }}
       />
-      <Blob color={PURPLE} size={320} className="-left-24 top-24" />
-      <Blob color={CYAN} size={300} className="-right-28 top-[38%]" delay={-5} />
-      <Blob color={AMBER} size={280} className="-left-20 bottom-24" delay={-9} />
+      <Blob color={PURPLE} size={330} className="-left-24 top-20" />
+      <Blob color={INDIGO} size={300} className="-right-28 top-[36%]" delay={-6} />
+      <Blob color={AMBER} size={280} className="-left-20 bottom-28" delay={-11} />
 
       <main className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-16 sm:px-6 md:pb-24">
         {/* ── Hero ─────────────────────────────────────────── */}
@@ -293,12 +372,12 @@ const Workshop = () => {
               <span className="text-lg font-light tracking-[3px]">Mentorna®</span>
               <span className="opacity-30">/</span>
               <span className="text-xs font-extrabold uppercase tracking-[0.18em] opacity-55">
-                Workshop
+                1:1 Mentorship
               </span>
             </div>
 
             <div className="mb-5 flex flex-wrap gap-2">
-              {[NEXT_SESSION.format, NEXT_SESSION.duration, NEXT_SESSION.seats].map(
+              {['Private · One-to-one', `${MONTHS} months`, 'By application'].map(
                 (chip) => (
                   <span
                     key={chip}
@@ -310,51 +389,45 @@ const Workshop = () => {
               )}
             </div>
 
-            <h1 className="text-[2.6rem] font-extrabold uppercase leading-[0.95] sm:text-6xl md:text-7xl">
-              Vibe Coding
+            <h1 className="text-[2.5rem] font-extrabold uppercase leading-[0.96] sm:text-6xl md:text-7xl">
+              Build the thing.
               <br />
               <span
                 className="inline-block px-2"
                 style={{ background: AMBER, WebkitBoxDecorationBreak: 'clone' }}
               >
-                0 → 1
+                Get it paid for.
               </span>
             </h1>
 
             <p className="mt-5 max-w-xl text-lg font-semibold leading-relaxed opacity-75 md:text-xl">
-              From a problem in your head to a prototype on the internet — in one
-              evening. You bring the vision. AI handles the execution.
+              Three months of private mentorship built around your situation — not a
+              course, not a template. We choose one direction, build it together, and
+              put it in front of people who pay.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <a
-                href={whatsappUrl(RESERVE_MESSAGE)}
+                href={whatsappUrl(APPLY_MESSAGE)}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackReserve('hero')}
                 className={`${brutal} inline-flex min-h-14 items-center justify-center gap-2 bg-[hsl(0,0%,10%)] px-7 text-base font-extrabold uppercase text-white transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none`}
               >
-                Reserve my seat — ${PRICE_USD}
+                Apply for a place
                 <ArrowRight className="h-5 w-5" />
               </a>
               <a
-                href="#agenda"
+                href="#included"
                 className="inline-flex min-h-14 items-center justify-center gap-2 border-4 border-[hsl(0,0%,10%)] px-6 text-sm font-extrabold uppercase transition-colors hover:bg-white/60"
               >
-                See the agenda
+                See what is included
               </a>
             </div>
           </Reveal>
 
-          {/* Proof strip */}
           <Reveal delay={120}>
             <div className={`${brutal} mt-10 grid grid-cols-2 bg-white md:grid-cols-4`}>
-              {[
-                { value: '20+', label: 'Founders trained' },
-                { value: '5/5', label: 'Average rating' },
-                { value: '5', label: 'Build blocks' },
-                { value: '0→1', label: 'Idea to live link' },
-              ].map((stat, i) => (
+              {HERO_STATS.map((stat, i) => (
                 <div
                   key={stat.label}
                   className={[
@@ -374,29 +447,50 @@ const Workshop = () => {
           </Reveal>
         </header>
 
-        {/* ── Outcomes ─────────────────────────────────────── */}
+        {/* ── The promise ──────────────────────────────────── */}
+        <section className="pt-16 md:pt-24">
+          <Reveal>
+            <div className={`${brutalLg} bg-white p-7 md:p-10`}>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] opacity-45">
+                The promise
+              </p>
+              <p className="mt-4 text-xl font-semibold leading-snug md:text-2xl">
+                In {MONTHS} months you go from an idea in your head to a{' '}
+                <span className="px-1.5 py-0.5" style={{ background: AMBER }}>
+                  launched product with a clear offer
+                </span>{' '}
+                — ready to generate revenue. And if you do the work and that does not
+                happen, you get your money back.
+              </p>
+            </div>
+          </Reveal>
+        </section>
+
+        {/* ── Tailoring ────────────────────────────────────── */}
         <section className="pt-16 md:pt-24">
           <Reveal>
             <SectionHeading
-              eyebrow="What you leave with"
-              title="Six things, not a certificate"
+              eyebrow="Why this is not a course"
+              title="Built around you, deliberately"
               accent={PURPLE}
             />
+            <p className="-mt-3 mb-8 max-w-2xl text-base font-medium leading-relaxed opacity-65">
+              Two people never get the same program. What follows is the method I use
+              to make sure yours fits the situation you are actually in.
+            </p>
           </Reveal>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {OUTCOMES.map((item, i) => (
-              <Reveal key={item.title} delay={i * 70}>
-                <div
-                  className={`${brutal} h-full bg-white p-5 transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none`}
-                >
+          <div className="grid gap-4 md:grid-cols-2">
+            {TAILORING.map((item, i) => (
+              <Reveal key={item.title} delay={i * 80}>
+                <div className={`${brutal} h-full bg-white p-5 md:p-6`}>
                   <div
                     className="mb-4 flex h-12 w-12 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
-                    style={{ background: SECTION_ACCENTS[i % SECTION_ACCENTS.length] }}
+                    style={{ background: ACCENTS[i % ACCENTS.length] }}
                   >
                     <item.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-base font-extrabold uppercase leading-tight">
+                  <h3 className="text-lg font-extrabold uppercase leading-tight">
                     {item.title}
                   </h3>
                   <p className="mt-2 text-sm font-medium leading-relaxed opacity-65">
@@ -408,20 +502,115 @@ const Workshop = () => {
           </div>
         </section>
 
+        {/* ── What you get ─────────────────────────────────── */}
+        <section id="included" className="scroll-mt-6 pt-16 md:pt-24">
+          <Reveal>
+            <SectionHeading
+              eyebrow="What you get"
+              title="Everything in the program"
+              accent={CYAN}
+            />
+          </Reveal>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {INCLUDED.map((block, i) => (
+              <Reveal key={block.title} delay={i * 70}>
+                <div className={`${brutal} h-full overflow-hidden bg-white`}>
+                  <div
+                    className="flex items-center gap-3 border-b-4 border-[hsl(0,0%,10%)] p-4"
+                    style={{ background: block.color }}
+                  >
+                    <span className="text-xl">{block.icon}</span>
+                    <h3 className="text-sm font-extrabold uppercase leading-tight md:text-base">
+                      {block.title}
+                    </h3>
+                  </div>
+                  <ul className="space-y-2.5 p-5">
+                    {block.items.map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 opacity-40" />
+                        <span className="text-sm font-medium leading-relaxed opacity-75">
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Journey ──────────────────────────────────────── */}
+        <section className="pt-16 md:pt-24">
+          <Reveal>
+            <SectionHeading
+              eyebrow="The three months"
+              title="Where you will be, month by month"
+              accent={TEAL}
+            />
+          </Reveal>
+
+          <div className="space-y-4">
+            {JOURNEY.map((phase, i) => (
+              <Reveal key={phase.month} delay={i * 90}>
+                <article className={`${brutal} overflow-hidden bg-white`}>
+                  <div
+                    className="flex flex-wrap items-center gap-3 border-b-4 border-[hsl(0,0%,10%)] p-4 md:p-5"
+                    style={{ background: phase.color }}
+                  >
+                    <span className="border-2 border-[hsl(0,0%,10%)] bg-white px-2.5 py-1 text-[10px] font-extrabold uppercase">
+                      {phase.month}
+                    </span>
+                    <h3 className="text-lg font-extrabold uppercase leading-tight md:text-xl">
+                      {phase.title}
+                    </h3>
+                  </div>
+
+                  <div className="p-5 md:p-6">
+                    <ul className="grid gap-2.5 sm:grid-cols-2">
+                      {phase.items.map((item) => (
+                        <li key={item} className="flex items-start gap-3">
+                          <span
+                            className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border-2 border-[hsl(0,0%,10%)]"
+                            style={{ background: phase.color }}
+                          >
+                            <Check className="h-3 w-3" />
+                          </span>
+                          <span className="text-sm font-medium leading-relaxed opacity-75">
+                            {item}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-5 border-t-2 border-[hsl(0,0%,10%)] pt-4">
+                      <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] opacity-45">
+                        By the end of this month
+                      </p>
+                      <p className="mt-1 text-sm font-extrabold">{phase.outcome}</p>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
         {/* ── Fit ──────────────────────────────────────────── */}
         <section className="pt-16 md:pt-24">
           <Reveal>
             <SectionHeading
               eyebrow="Honest filter"
-              title="Who this is for"
-              accent={TEAL}
+              title="Who I take on"
+              accent={CORAL}
             />
           </Reveal>
 
           <div className="grid gap-4 md:grid-cols-2">
             <Reveal>
               <div className={`${brutal} h-full bg-[linear-gradient(150deg,#E4F7EE,#B9E8D2)] p-6`}>
-                <h3 className="mb-4 text-lg font-extrabold uppercase">Come if…</h3>
+                <h3 className="mb-4 text-lg font-extrabold uppercase">Apply if…</h3>
                 <ul className="space-y-3">
                   {FOR_YOU.map((line) => (
                     <li key={line} className="flex items-start gap-3">
@@ -440,7 +629,7 @@ const Workshop = () => {
 
             <Reveal delay={100}>
               <div className={`${brutal} h-full bg-white p-6`}>
-                <h3 className="mb-4 text-lg font-extrabold uppercase">Skip it if…</h3>
+                <h3 className="mb-4 text-lg font-extrabold uppercase">Do not apply if…</h3>
                 <ul className="space-y-3">
                   {NOT_FOR_YOU.map((line) => (
                     <li key={line} className="flex items-start gap-3">
@@ -458,162 +647,71 @@ const Workshop = () => {
           </div>
         </section>
 
-        {/* ── Agenda ───────────────────────────────────────── */}
-        <section id="agenda" className="scroll-mt-6 pt-16 md:pt-24">
-          <Reveal>
-            <SectionHeading
-              eyebrow="The five blocks"
-              title="10 minutes theory. 30 minutes building."
-              accent={CORAL}
-            />
-            <p className="-mt-3 mb-8 max-w-2xl text-base font-medium leading-relaxed opacity-65">
-              Every block follows the same rhythm. You listen briefly, then you build
-              the next piece of your own product while I move around the room.
-            </p>
-          </Reveal>
-
-          <div className="space-y-4">
-            {sections.map((section, i) => {
-              const accent = SECTION_ACCENTS[i % SECTION_ACCENTS.length];
-              return (
-                <Reveal key={section.id} delay={i * 60}>
-                  <article className={`${brutal} overflow-hidden bg-white`}>
-                    <div
-                      className="flex flex-wrap items-center gap-3 border-b-4 border-[hsl(0,0%,10%)] p-4 md:p-5"
-                      style={{ background: accent }}
-                    >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center border-[3px] border-[hsl(0,0%,10%)] bg-white text-lg font-extrabold">
-                        {section.id}
-                      </span>
-                      <h3 className="text-lg font-extrabold uppercase leading-tight md:text-xl">
-                        {section.theoryTitle}
-                      </h3>
-                      <span className="ml-auto border-2 border-[hsl(0,0%,10%)] bg-white/80 px-2.5 py-1 text-[10px] font-extrabold uppercase">
-                        {section.theoryDuration} + {section.buildDuration}
-                      </span>
-                    </div>
-
-                    <div className="p-5 md:p-6">
-                      <p className="text-sm font-medium leading-relaxed opacity-70">
-                        {section.brief}
-                      </p>
-
-                      <div className="mt-5 grid gap-4 md:grid-cols-2">
-                        <div className="border-l-4 pl-4" style={{ borderColor: accent }}>
-                          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] opacity-45">
-                            You build
-                          </p>
-                          <p className="mt-1 text-sm font-extrabold uppercase">
-                            {section.buildTitle}
-                          </p>
-                          <p className="mt-1.5 text-sm font-medium leading-relaxed opacity-65">
-                            {section.buildPrompt}
-                          </p>
-                        </div>
-
-                        <div className="border-l-4 border-[hsl(0,0%,10%)] pl-4">
-                          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] opacity-45">
-                            You walk away with
-                          </p>
-                          <p className="mt-1.5 text-sm font-semibold leading-relaxed">
-                            {section.outcome}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                </Reveal>
-              );
-            })}
-
-            <Reveal delay={360}>
-              <article className={`${brutal} bg-[hsl(0,0%,10%)] p-5 text-white md:p-6`}>
-                <div className="flex flex-wrap items-center gap-3">
-                  <Trophy className="h-6 w-6" style={{ color: AMBER }} />
-                  <h3 className="text-lg font-extrabold uppercase">{pitchBlock.title}</h3>
-                  <span className="ml-auto border-2 border-white/40 px-2.5 py-1 text-[10px] font-extrabold uppercase">
-                    {pitchBlock.duration}
-                  </span>
-                </div>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-white/70">
-                  {pitchBlock.description}
-                </p>
-              </article>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ── Tools ────────────────────────────────────────── */}
+        {/* ── Guarantee ────────────────────────────────────── */}
         <section className="pt-16 md:pt-24">
           <Reveal>
-            <SectionHeading
-              eyebrow="What you build with"
-              title="Three tools, one choice"
-              accent={CYAN}
-            />
-            <p className="-mt-3 mb-8 max-w-2xl text-base font-medium leading-relaxed opacity-65">
-              All three run in the browser on free tiers. You pick one in the third
-              block and stay with it for the rest of the evening.
-            </p>
-          </Reveal>
+            <div className={`${brutalLg} overflow-hidden bg-white`}>
+              <div
+                className="flex items-center gap-3 border-b-4 border-[hsl(0,0%,10%)] p-5 md:p-6"
+                style={{ background: TEAL }}
+              >
+                <ShieldCheck className="h-7 w-7 text-white" />
+                <h2 className="text-xl font-extrabold uppercase text-white md:text-2xl">
+                  The Guarantee
+                </h2>
+              </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {tools.map((tool, i) => {
-              const recommended = 'recommended' in tool && Boolean(tool.recommended);
-              return (
-                <Reveal key={tool.name} delay={i * 90}>
-                  <a
-                    href={tool.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${brutal} group flex h-full flex-col bg-white transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none`}
-                  >
-                    <div
-                      className="flex items-center justify-between border-b-4 border-[hsl(0,0%,10%)] p-4"
-                      style={{ background: SECTION_ACCENTS[i % SECTION_ACCENTS.length] }}
-                    >
-                      <span className="text-lg font-extrabold uppercase">{tool.name}</span>
-                      <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+              <div className="p-6 md:p-8">
+                <p className="text-lg font-semibold leading-relaxed">
+                  Complete the program with full commitment, and if you do not have a
+                  launched product with a clear offer by the end of Month {MONTHS} —{' '}
+                  <strong>you get 100% of your money back.</strong>
+                </p>
+
+                <p className="mt-6 text-sm font-extrabold uppercase tracking-wide">
+                  Commitment requirements
+                </p>
+                <div className="mt-3 space-y-2.5">
+                  {[
+                    `Attend all ${SESSIONS} scheduled sessions (maximum 2 missed sessions allowed)`,
+                    'Complete all assigned tasks (maximum 2 incomplete tasks allowed)',
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3">
+                      <span
+                        className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center border-2 border-[hsl(0,0%,10%)]"
+                        style={{ background: TEAL }}
+                      >
+                        <Check className="h-4 w-4 text-white" />
+                      </span>
+                      <span className="text-sm font-semibold leading-relaxed">{item}</span>
                     </div>
-                    <div className="flex flex-1 flex-col p-5">
-                      {recommended && (
-                        <span className="mb-3 w-fit border-2 border-[hsl(0,0%,10%)] bg-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase text-white">
-                          Recommended
-                        </span>
-                      )}
-                      <p className="text-xs font-extrabold uppercase tracking-wide opacity-50">
-                        {tool.easeLabel} · {tool.best}
-                      </p>
-                      <p className="mt-2 text-sm font-medium leading-relaxed opacity-70">
-                        {tool.desc}
-                      </p>
-                      <ul className="mt-4 space-y-1.5 border-t-2 border-[hsl(0,0%,10%)] pt-4">
-                        {tool.features.map((feature) => (
-                          <li
-                            key={feature}
-                            className="flex items-center gap-2 text-xs font-semibold"
-                          >
-                            <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </a>
-                </Reveal>
-              );
-            })}
-          </div>
+                  ))}
+                </div>
+
+                <div
+                  className="mt-6 border-2 border-[hsl(0,0%,10%)] p-4 text-sm font-semibold"
+                  style={{ background: AMBER }}
+                >
+                  ⚠️ If either condition is not met, the guarantee is void.
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </section>
 
         {/* ── Proof ────────────────────────────────────────── */}
         <section className="pt-16 md:pt-24">
           <Reveal>
             <SectionHeading
-              eyebrow="Helsinki XR Center · June 2026"
-              title="What people said last time"
+              eyebrow="Workshops · Programs · Mentoring"
+              title="What people say after working with me"
               accent={PINK}
             />
+            <p className="-mt-3 mb-8 max-w-2xl text-base font-medium leading-relaxed opacity-65">
+              Feedback from founders, operators and students I have taught and
+              mentored. Same approach, same directness — mentorship is simply the
+              longest version of it.
+            </p>
           </Reveal>
 
           <Reveal>
@@ -625,7 +723,7 @@ const Workshop = () => {
               <div className="relative aspect-video">
                 <img
                   src={workshopVideoPoster}
-                  alt="Participants at the Vibe Coding workshop in Helsinki"
+                  alt="Participants working with Ahmed Ezzat in Helsinki"
                   className="h-full w-full object-cover transition-transform group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/35 transition-colors group-hover:bg-black/45">
@@ -642,7 +740,7 @@ const Workshop = () => {
                     idea.”
                   </p>
                   <p className="mt-1 text-xs font-bold uppercase tracking-wide text-white/60">
-                    Workshop participants · Watch the video
+                    In their own words · Watch the video
                   </p>
                 </div>
               </div>
@@ -651,8 +749,10 @@ const Workshop = () => {
 
           <div className="grid gap-4 md:grid-cols-2">
             {featured.map((t, i) => (
-              <Reveal key={t.id} delay={i * 80}>
-                <figure className={`${brutal} h-full bg-[linear-gradient(150deg,#FFFBF4,#F4DDC2)] p-5 md:p-6`}>
+              <Reveal key={t.id} delay={i * 90}>
+                <figure
+                  className={`${brutal} h-full bg-[linear-gradient(150deg,#FFFBF4,#F4DDC2)] p-5 md:p-6`}
+                >
                   <div className="mb-3 flex gap-0.5">
                     {Array.from({ length: t.rating }).map((_, index) => (
                       <Star
@@ -717,22 +817,6 @@ const Workshop = () => {
           </div>
 
           <Reveal>
-            <div className="mt-5 grid grid-cols-3 gap-3 sm:grid-cols-6">
-              {eventPhotos.slice(0, 6).map((photo) => (
-                <div
-                  key={photo.src}
-                  className="aspect-square overflow-hidden border-[3px] border-[hsl(0,0%,10%)] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-                >
-                  <img
-                    src={photo.src}
-                    alt={photo.alt}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-
             <a
               href="/testimonials"
               className="mt-5 inline-flex items-center gap-2 text-sm font-extrabold uppercase underline decoration-2 underline-offset-4 hover:opacity-65"
@@ -743,34 +827,37 @@ const Workshop = () => {
           </Reveal>
         </section>
 
-        {/* ── Price ────────────────────────────────────────── */}
-        <section id="reserve" className="scroll-mt-6 pt-16 md:pt-24">
+        {/* ── Investment ───────────────────────────────────── */}
+        <section id="apply" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className={`${brutalLg} overflow-hidden bg-white`}>
               <div
                 className="border-b-4 border-[hsl(0,0%,10%)] p-8 text-center md:p-10"
-                style={{ background: AMBER }}
+                style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, ${PINK} 100%)` }}
               >
-                <span className="inline-block border-2 border-[hsl(0,0%,10%)] bg-[hsl(0,0%,10%)] px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white">
-                  One evening · One seat
+                <span className="inline-block border-2 border-white/50 bg-white/15 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white backdrop-blur-sm">
+                  The investment
                 </span>
-                <div className="mt-5 text-6xl font-extrabold leading-none md:text-7xl">
-                  ${PRICE_USD}
+                <div className="mt-5 text-6xl font-extrabold leading-none text-white md:text-7xl">
+                  ${PRICE_USD.toLocaleString()}
                 </div>
-                <p className="mt-3 text-base font-extrabold uppercase tracking-wide opacity-70">
-                  {NEXT_SESSION.duration} live · {NEXT_SESSION.seats}
+                <p className="mt-3 text-base font-extrabold uppercase tracking-wide text-white/80">
+                  {MONTHS} months · {SESSIONS} sessions · {SESSION_MINUTES} minutes each
+                </p>
+                <p className="mt-2 text-sm font-semibold text-white/65">
+                  That is {TOTAL_HOURS} hours of private work, backed by the guarantee
                 </p>
               </div>
 
               <div className="p-6 md:p-8">
                 <ul className="grid gap-3 sm:grid-cols-2">
                   {[
-                    'Five guided build blocks, start to finish',
-                    'Your landing page live before you leave',
-                    'Direct feedback on your problem and offer',
-                    'The full prompt and tool walkthrough',
-                    'Optional two-minute stage pitch',
-                    'A written 7-day plan for the week after',
+                    `${SESSIONS} private ${SESSION_MINUTES}-minute sessions`,
+                    'Direct WhatsApp access between sessions',
+                    'A roadmap written for your situation',
+                    'Frameworks, templates and playbooks',
+                    'Done-with-you product and landing page',
+                    'Introductions from my network',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <span
@@ -785,125 +872,20 @@ const Workshop = () => {
                 </ul>
 
                 <a
-                  href={whatsappUrl(RESERVE_MESSAGE)}
+                  href={whatsappUrl(APPLY_MESSAGE)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => trackReserve('pricing')}
                   className={`${brutal} mt-7 flex min-h-16 w-full items-center justify-center gap-2 bg-[hsl(0,0%,10%)] px-6 text-base font-extrabold uppercase text-white transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none md:text-lg`}
                 >
                   <MessageCircle className="h-5 w-5" style={{ color: TEAL }} />
-                  Reserve my seat on WhatsApp
+                  Apply on WhatsApp
                 </a>
 
                 <p className="mt-4 text-center text-xs font-semibold leading-relaxed opacity-55">
-                  Message me and I&apos;ll confirm the next date, hold your seat, and
-                  send payment details. No account, no checkout funnel.
+                  I take on a small number of people at a time. Message me and we will
+                  talk properly about whether this is the right fit before any money
+                  changes hands.
                 </p>
-              </div>
-            </div>
-          </Reveal>
-        </section>
-
-        {/* ── Bootcamp upsell ──────────────────────────────── */}
-        <section className="pt-16 md:pt-24">
-          <Reveal>
-            <SectionHeading
-              eyebrow="After the workshop"
-              title="Go deeper: the 6-week bootcamp"
-              accent={PURPLE}
-            />
-          </Reveal>
-
-          <Reveal delay={100}>
-            <div
-              className={`${brutalLg} relative overflow-hidden text-white`}
-              style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, ${PINK} 100%)` }}
-            >
-              <div
-                aria-hidden
-                className="absolute -right-16 -top-20 h-64 w-64 rounded-full border-[24px] border-white/10"
-              />
-              <div className="relative p-6 md:p-10">
-                <span className="inline-block border-2 border-white/40 bg-white/15 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider backdrop-blur-sm">
-                  AI Entrepreneurship Bootcamp
-                </span>
-
-                <h3 className="mt-5 max-w-xl text-3xl font-extrabold uppercase leading-[1.03] md:text-4xl">
-                  One evening starts it. Six weeks finishes it.
-                </h3>
-                <p className="mt-4 max-w-xl text-base font-semibold leading-relaxed text-white/80">
-                  The workshop gets you a live prototype. The bootcamp turns it into a
-                  real product with customers — across two phases, from foundations to
-                  launch day, competing for a €5,000 prize.
-                </p>
-
-                <div className="mt-7 grid gap-4 md:grid-cols-2">
-                  {[
-                    {
-                      phase: 'Phase I',
-                      title: 'Foundation Building',
-                      items: [
-                        'Problem-solving entrepreneurial mindset',
-                        'From idea to digital blueprint',
-                        'Build a real app or website',
-                        'Talk to customers',
-                      ],
-                    },
-                    {
-                      phase: 'Phase II',
-                      title: 'Advanced Implementation',
-                      items: [
-                        'Improve it with AI',
-                        'Test and get feedback',
-                        'Pitch like a CEO',
-                        'Launch day',
-                      ],
-                    },
-                  ].map((phase) => (
-                    <div
-                      key={phase.phase}
-                      className="border-2 border-white/40 bg-white/10 p-5 backdrop-blur-sm"
-                    >
-                      <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/60">
-                        {phase.phase}
-                      </p>
-                      <p className="mt-1 text-lg font-extrabold uppercase">{phase.title}</p>
-                      <ul className="mt-3 space-y-2">
-                        {phase.items.map((item) => (
-                          <li
-                            key={item}
-                            className="flex items-start gap-2 text-sm font-semibold text-white/85"
-                          >
-                            <Check className="mt-0.5 h-4 w-4 shrink-0" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-7 flex flex-col gap-4 border-t-2 border-white/30 pt-6 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <div className="text-4xl font-extrabold leading-none">
-                      ${BOOTCAMP_PRICE_USD}
-                    </div>
-                    <p className="mt-1 text-xs font-extrabold uppercase tracking-wide text-white/65">
-                      6 weeks · Online · Cohort based
-                    </p>
-                  </div>
-
-                  <a
-                    href={whatsappUrl(BOOTCAMP_MESSAGE)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-14 items-center justify-center gap-2 border-4 border-[hsl(0,0%,10%)] bg-white px-6 text-sm font-extrabold uppercase text-[hsl(0,0%,10%)] shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
-                  >
-                    <Users className="h-4 w-4" />
-                    Ask about the bootcamp
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
-                </div>
               </div>
             </div>
           </Reveal>
@@ -930,17 +912,17 @@ const Workshop = () => {
 
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] opacity-45">
-                    Your host
+                    Who you work with
                   </p>
                   <h3 className="mt-1 text-2xl font-extrabold">Ahmed Ezzat</h3>
                   <p className="mt-1 text-sm font-extrabold uppercase tracking-wide opacity-60">
                     AI Consultant &amp; Serial Entrepreneur
                   </p>
                   <p className="mt-4 text-sm font-medium leading-relaxed opacity-70">
-                    I have spent years merging entrepreneurship and AI into education —
-                    helping students secure places at top universities and helping
-                    founders turn scattered ideas into products people pay for. This
-                    workshop is the compressed version of what I teach one-to-one.
+                    I have built businesses, made the expensive mistakes, and spent
+                    years helping founders validate ideas, build MVPs and ship offers
+                    that convert. You get me directly for every one of the {SESSIONS}{' '}
+                    sessions — there is no junior coach behind this program.
                   </p>
 
                   <div className="mt-5 flex flex-wrap justify-center gap-5 md:justify-start">
@@ -966,7 +948,7 @@ const Workshop = () => {
         {/* ── FAQ ──────────────────────────────────────────── */}
         <section className="pt-16 md:pt-24">
           <Reveal>
-            <SectionHeading eyebrow="Before you ask" title="Questions" accent={CYAN} />
+            <SectionHeading eyebrow="Before you apply" title="Questions" accent={INDIGO} />
           </Reveal>
 
           <div className="space-y-3">
@@ -1005,25 +987,25 @@ const Workshop = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className={`${brutalLg} bg-[hsl(0,0%,10%)] p-8 text-center text-white md:p-12`}>
-              <h2 className="text-3xl font-extrabold uppercase leading-[1.05] md:text-5xl">
-                Stop circling
+              <Sparkles className="mx-auto h-8 w-8" style={{ color: AMBER }} />
+              <h2 className="mt-5 text-3xl font-extrabold uppercase leading-[1.05] md:text-5xl">
+                Three months
                 <br />
-                the idea.
+                from now.
               </h2>
               <p className="mx-auto mt-4 max-w-md text-base font-semibold leading-relaxed text-white/70">
-                One evening from now you could have a live link instead of another note
-                in your phone.
+                You will either be where you are today, or you will have a product,
+                an offer, and the first people paying for it.
               </p>
 
               <a
-                href={whatsappUrl(RESERVE_MESSAGE)}
+                href={whatsappUrl(APPLY_MESSAGE)}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackReserve('footer')}
                 className="mt-8 inline-flex min-h-16 items-center justify-center gap-2 border-4 border-white px-8 text-base font-extrabold uppercase text-[hsl(0,0%,10%)] shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none md:text-lg"
                 style={{ background: AMBER }}
               >
-                Reserve my seat — ${PRICE_USD}
+                Apply for a place
                 <ArrowRight className="h-5 w-5" />
               </a>
 
@@ -1047,60 +1029,57 @@ const Workshop = () => {
       <div className="fixed inset-x-0 bottom-0 z-40 border-t-4 border-[hsl(0,0%,10%)] bg-white/95 p-3 backdrop-blur md:hidden">
         <div className="flex items-center gap-3">
           <div className="shrink-0">
-            <div className="text-xl font-extrabold leading-none">${PRICE_USD}</div>
+            <div className="text-xl font-extrabold leading-none">
+              ${PRICE_USD.toLocaleString()}
+            </div>
             <div className="text-[9px] font-bold uppercase tracking-wide opacity-50">
-              {NEXT_SESSION.duration} live
+              {MONTHS} months · {SESSIONS} sessions
             </div>
           </div>
           <a
-            href={whatsappUrl(RESERVE_MESSAGE)}
+            href={whatsappUrl(APPLY_MESSAGE)}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackReserve('sticky')}
             className="flex min-h-12 flex-1 items-center justify-center gap-2 border-[3px] border-[hsl(0,0%,10%)] bg-[hsl(0,0%,10%)] text-sm font-extrabold uppercase text-white active:translate-x-0.5 active:translate-y-0.5"
           >
-            Reserve my seat
+            Apply now
             <ArrowRight className="h-4 w-4" />
           </a>
         </div>
       </div>
 
+      <Footer />
+
+      {/* Clearance so the sticky bar never covers the end of the footer */}
+      <div aria-hidden className="h-20 md:hidden" />
+
       {/* ── Video lightbox ─────────────────────────────────── */}
       {videoOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 sm:p-8"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
           onClick={() => setVideoOpen(false)}
         >
           <button
             type="button"
             onClick={() => setVideoOpen(false)}
             aria-label="Close video"
-            className="absolute right-4 top-4 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 sm:right-6 sm:top-6"
+            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center border-4 border-white text-white transition-colors hover:bg-white/15"
           >
-            <X className="h-6 w-6 sm:h-8 sm:w-8" />
+            <X className="h-5 w-5" />
           </button>
-          <div
-            className="relative aspect-video w-full max-w-5xl"
+          <video
+            controls
+            autoPlay
+            playsInline
+            src={workshopVideoUrl}
+            poster={workshopVideoPoster}
             onClick={(e) => e.stopPropagation()}
-          >
-            <video
-              src={workshopVideoUrl}
-              poster={workshopVideoPoster}
-              controls
-              autoPlay
-              playsInline
-              className="absolute inset-0 h-full w-full rounded-lg bg-black object-contain"
-            />
-          </div>
+            className="max-h-[85vh] w-full max-w-3xl border-4 border-white"
+          />
         </div>
       )}
-
-      <Footer />
-
-      {/* Clearance so the sticky bar never covers the end of the footer */}
-      <div aria-hidden className="h-20 md:hidden" />
     </div>
   );
 };
 
-export default Workshop;
+export default Mentorship;

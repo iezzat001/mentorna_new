@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Check, Clock, ArrowRight, Compass, Hammer, Rocket, HeartHandshake, TrendingUp, Star } from "lucide-react";
+import { Check, Clock, ArrowRight, Compass, Hammer, Rocket, HeartHandshake, TrendingUp, Star, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -184,7 +184,7 @@ const TESTIMONIALS = [
   },
   {
     name: "Matti Tuominen",
-    role: "40-year workshop veteran",
+    role: "Senior Advisor at Zadam Oy",
     quote: "This was perhaps the most interesting workshop I have ever attended during the last 40 years.",
     source: "Luma Review",
   },
@@ -201,6 +201,9 @@ const YoussefOffer = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [offerStatus, setOfferStatus] = useState<"loading" | "active" | "expired">("loading");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passcode, setPasscode] = useState("");
+  const [passcodeError, setPasscodeError] = useState("");
 
   useEffect(() => {
     const checkOffer = async () => {
@@ -260,6 +263,65 @@ const YoussefOffer = () => {
       setIsSubmitting(false);
     }
   };
+
+  const handlePasscodeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasscodeError("");
+    if (passcode === "2000") {
+      setIsAuthenticated(true);
+    } else {
+      setPasscodeError("Invalid passcode. Please try again.");
+      setPasscode("");
+    }
+  };
+
+  /* ── Passcode gate ── */
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[hsl(0,0%,10%)] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-5 relative overflow-hidden">
+        <GlobalStyles />
+        <div
+          className="absolute inset-0 opacity-60"
+          style={{
+            background:
+              "radial-gradient(circle at 20% 20%, hsla(232,72%,58%,.34), transparent 45%), radial-gradient(circle at 80% 70%, hsla(196,85%,52%,.27), transparent 45%), radial-gradient(circle at 50% 100%, hsla(38,95%,58%,.2), transparent 40%)",
+          }}
+        />
+        <div className={`relative card-cream ${brutalLg} p-8 md:p-12 max-w-md w-full text-center`}>
+          <div
+            className="w-16 h-16 border-4 border-[hsl(0,0%,10%)] rounded-full flex items-center justify-center mx-auto mb-6"
+            style={{ background: `linear-gradient(135deg, ${INDIGO}, ${CYAN})` }}
+          >
+            <Lock className="w-8 h-8 text-white" />
+          </div>
+          <h1 className="text-2xl font-extrabold uppercase mb-2">Private Offer</h1>
+          <p className="text-sm font-medium opacity-70 mb-8">Enter the passcode to access this exclusive offer</p>
+          <form onSubmit={handlePasscodeSubmit}>
+            <input
+              type="password"
+              inputMode="numeric"
+              maxLength={4}
+              placeholder="Enter 4-digit passcode"
+              className="w-full p-4 text-center text-2xl font-bold tracking-[0.5em] border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-none transition-all outline-none mb-4"
+              value={passcode}
+              onChange={(e) => setPasscode(e.target.value.replace(/\D/g, "").slice(0, 4))}
+              autoFocus
+            />
+            {passcodeError && <p className="text-red-600 font-semibold text-sm mb-4">{passcodeError}</p>}
+            <button
+              type="submit"
+              disabled={passcode.length !== 4}
+              className="w-full py-4 px-8 text-lg font-extrabold uppercase text-white border-4 border-[hsl(0,0%,10%)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: `linear-gradient(135deg, ${INDIGO}, ${CYAN})` }}
+            >
+              Unlock Offer
+            </button>
+          </form>
+          <p className="text-xs font-medium opacity-50 mt-6">Mentorna® | Exclusive Access</p>
+        </div>
+      </div>
+    );
+  }
 
   if (offerStatus === "loading") {
     return (

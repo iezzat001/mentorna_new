@@ -4,7 +4,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LucideIcon } from 'lucide-react';
 import VideoPlayer from './VideoPlayer';
-import WaitingListDialog from './WaitingListDialog';
+import WhatsAppCTA from './WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 
 interface SuccessStoryCardProps {
   name: string;
@@ -86,7 +87,7 @@ const SuccessStoryCard = ({
           {description}
         </p>
         
-        <WaitingListDialog>
+        <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcamp}>
           <Button className="
             bg-primary 
             border-4 
@@ -101,7 +102,7 @@ const SuccessStoryCard = ({
           ">
             WATCH STORY
           </Button>
-        </WaitingListDialog>
+        </WhatsAppCTA>
       </CardContent>
     </Card>
   );

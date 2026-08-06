@@ -287,7 +287,8 @@ const JaidaOffer = () => {
         <div
           className="absolute inset-0 opacity-60"
           style={{
-            background: `radial-gradient(circle at 20% 20%, ${PURPLE}55, transparent 45%), radial-gradient(circle at 80% 70%, ${PINK}44, transparent 45%), radial-gradient(circle at 50% 100%, ${AMBER}33, transparent 40%)`,
+            background:
+              "radial-gradient(circle at 20% 20%, hsla(262,70%,60%,.34), transparent 45%), radial-gradient(circle at 80% 70%, hsla(322,80%,62%,.27), transparent 45%), radial-gradient(circle at 50% 100%, hsla(38,95%,58%,.2), transparent 40%)",
           }}
         />
         <div className={`relative card-cream ${brutalLg} p-8 md:p-12 max-w-md w-full text-center`}>

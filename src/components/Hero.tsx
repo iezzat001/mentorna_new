@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import WaitingListDialog from './WaitingListDialog';
+import WhatsAppCTA from './WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 const Hero = () => {
   return <div className="relative min-h-screen overflow-hidden">
       {/* Video Background */}
@@ -22,7 +23,7 @@ const Hero = () => {
         
         
         {/* CTA Button */}
-        <WaitingListDialog>
+        <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcamp}>
           <Button variant="outline" className="
               rounded-full 
               border-white/30 
@@ -36,9 +37,9 @@ const Hero = () => {
               font-heading
               font-medium
             ">
-            Join the waiting list
+            Talk to Ahmed
           </Button>
-        </WaitingListDialog>
+        </WhatsAppCTA>
       </nav>
       
       {/* Main Content */}

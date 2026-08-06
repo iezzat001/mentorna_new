@@ -2,7 +2,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import PhaseCard from '@/components/PhaseCard';
-import WaitingListDialog from './WaitingListDialog';
+import WhatsAppCTA from './WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 import { useWeeksData } from '@/hooks/useWeeksData';
 import { Loader2 } from 'lucide-react';
 
@@ -117,7 +118,7 @@ const ProgramSection = () => {
 
         {/* Call to Action */}
         <div className="text-center">
-          <WaitingListDialog>
+          <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcamp}>
             <Button className="
               bg-primary 
               hover:bg-primary-hover
@@ -140,7 +141,7 @@ const ProgramSection = () => {
             ">
               START YOUR JOURNEY TODAY!
             </Button>
-          </WaitingListDialog>
+          </WhatsAppCTA>
         </div>
       </div>
     </section>

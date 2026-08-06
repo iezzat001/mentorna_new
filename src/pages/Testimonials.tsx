@@ -3,96 +3,20 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Footer from '@/components/Footer';
 import ContactDialog from '@/components/ContactDialog';
-import { Star, Play, X, ExternalLink, Mail } from 'lucide-react';
+import { Star, Play, X, ExternalLink, Mail, ArrowRight } from 'lucide-react';
+import {
+  S3_BASE,
+  eventPhotos,
+  mariamThumbnailUrl,
+  mariamVideoUrl,
+  testimonials,
+  workshopVideoUrl,
+} from '@/data/testimonials';
 
-const S3_BASE = 'https://mentorna-testimonials.s3.amazonaws.com/workshop-helsinki';
-
-const videoUrl = `${S3_BASE}/video-testimonial.MP4`;
-
-const testimonials = [
-  {
-    id: 1,
-    name: 'Matti Tuominen',
-    role: '40-year workshop veteran',
-    rating: 5,
-    quote:
-      'This was perhaps the most interesting workshop I have ever attended during the last 40 years.',
-    source: 'Luma Review',
-    highlight: true,
-  },
-  {
-    id: 2,
-    name: 'Rudransh Khurana',
-    role: 'Pre-DP Student, SYK IB',
-    rating: 5,
-    quote:
-      "Truly one of the most helpful and educational sessions I've ever attended. Most workshops involve a lot of theory with very little action.",
-    source: 'Instagram DM',
-    highlight: false,
-  },
-  {
-    id: 3,
-    name: 'Loan Cindy Tran',
-    role: 'B2B Market Entry Specialist',
-    rating: 5,
-    quote:
-      "I walked away with a live landing page ready to capture waitlist sign-ups. Getting that level of clarity and technical output in a single evening is invaluable.",
-    source: 'LinkedIn',
-    highlight: true,
-  },
-  {
-    id: 4,
-    name: 'Bambi Dang',
-    role: 'Founder @ FunFox, AI Collective',
-    rating: 5,
-    quote:
-      "Ahmed Ezzat dropped the best workshop on building startups! Hands down! A 4-hour workshop felt so short when there's so much juice.",
-    source: 'LinkedIn',
-    highlight: false,
-  },
-  {
-    id: 5,
-    name: 'Sneh Patel',
-    role: 'Pre-IB Student, HSYK',
-    rating: 5,
-    quote:
-      '5 high schoolers. No prior startup experience. One raw idea. The event provided practical insights into AI tools, vibe coding, and the process of turning an idea into a startup.',
-    source: 'LinkedIn',
-    highlight: false,
-  },
-  {
-    id: 6,
-    name: 'Lily',
-    role: 'Workshop Participant',
-    rating: 5,
-    quote: 'Thank you very much for the amazing vibe coding session!',
-    source: 'Direct Message',
-    highlight: false,
-  },
-];
-
-const eventPhotos = [
-  { src: `${S3_BASE}/20260604_174214.JPEG`, alt: 'Workshop participants at Helsinki XR Center' },
-  { src: `${S3_BASE}/20260604_182905.JPEG`, alt: 'Ahmed Ezzat presenting at the workshop' },
-  { src: `${S3_BASE}/20260604_185329.JPEG`, alt: 'Participants building their prototypes' },
-  { src: `${S3_BASE}/20260604_211945(0).JPEG`, alt: 'Workshop group session' },
-  { src: `${S3_BASE}/2c5265ca-bdcc-44f4-99e9-a33a8cc8c9b9.JPG`, alt: 'Team Unprompted presenting' },
-  { src: `${S3_BASE}/IMG_9530.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9531.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9533.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9535.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9557.jpg`, alt: 'Workshop moment' },
-  { src: `${S3_BASE}/IMG_9558.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9559.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9702.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9710.jpg`, alt: 'LinkedIn post about workshop' },
-  { src: `${S3_BASE}/IMG_9711.jpg`, alt: 'LinkedIn post about workshop' },
-  { src: `${S3_BASE}/IMG_9712.jpg`, alt: 'LinkedIn post about workshop' },
-  { src: `${S3_BASE}/IMG_9713.jpg`, alt: 'LinkedIn post about workshop' },
-];
+type ActiveVideo = 'workshop' | 'mariam' | null;
 
 const Testimonials = () => {
-  const [videoOpen, setVideoOpen] = useState(false);
+  const [activeVideo, setActiveVideo] = useState<ActiveVideo>(null);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   return (
@@ -116,41 +40,75 @@ const Testimonials = () => {
       </section>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 md:py-14">
-        {/* Video Testimonial */}
+        {/* Video Testimonials */}
         <section className="mb-14 md:mb-20">
           <h2 className="font-heading text-2xl md:text-3xl font-black uppercase mb-6 pb-3 border-b-4 border-[hsl(0,0%,15%)] inline-block">
             🎬 Hear It From Our Participants
           </h2>
 
-          <div
-            className="cursor-pointer group relative"
-            onClick={() => setVideoOpen(true)}
-          >
-            <div className="relative border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden aspect-video">
-              <img
-                src={`${S3_BASE}/20260604_182905.JPEG`}
-                alt="Video testimonial thumbnail"
-                className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform"
-              />
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-colors">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[hsl(45,95%,65%)] border-4 border-[hsl(0,0%,15%)] flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-                  <Play className="w-6 h-6 sm:w-8 sm:h-8 text-[hsl(0,0%,15%)] ml-1" fill="currentColor" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+            <div
+              className="cursor-pointer group relative"
+              onClick={() => setActiveVideo('workshop')}
+            >
+              <div className="relative border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden aspect-video">
+                <img
+                  src={`${S3_BASE}/20260604_182905.JPEG`}
+                  alt="Workshop video testimonial thumbnail"
+                  className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-colors">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[hsl(45,95%,65%)] border-4 border-[hsl(0,0%,15%)] flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+                    <Play className="w-6 h-6 sm:w-8 sm:h-8 text-[hsl(0,0%,15%)] ml-1" fill="currentColor" />
+                  </div>
                 </div>
               </div>
+              <p className="mt-3 font-heading font-black uppercase text-sm md:text-base">
+                Workshop Participants
+              </p>
+              <p className="font-body italic text-[hsl(0,0%,15%)]/70 text-sm md:text-base">
+                "I came here without an idea and I'm coming out with a solid idea."
+              </p>
             </div>
-            <p className="text-center font-body italic text-[hsl(0,0%,15%)]/70 mt-4 text-base md:text-lg px-2">
-              "I came here without an idea and I'm coming out with a solid idea."
-            </p>
+
+            <div
+              className="cursor-pointer group relative"
+              onClick={() => setActiveVideo('mariam')}
+            >
+              <div className="relative border-4 border-[hsl(0,0%,15%)] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden aspect-video bg-[hsl(260,50%,75%)]">
+                <img
+                  src={mariamThumbnailUrl}
+                  alt="Mariam Abdelaziz video testimonial thumbnail"
+                  className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-colors">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[hsl(45,95%,65%)] border-4 border-[hsl(0,0%,15%)] flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+                    <Play className="w-6 h-6 sm:w-8 sm:h-8 text-[hsl(0,0%,15%)] ml-1" fill="currentColor" />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <p className="font-heading font-black uppercase text-sm md:text-base">
+                  Mariam Abdelaziz
+                </p>
+                <Badge className="bg-accent-green text-foreground border-2 border-foreground font-bold uppercase text-[10px]">
+                  Scholarship Winner
+                </Badge>
+              </div>
+              <p className="font-body text-[hsl(0,0%,15%)]/70 text-sm md:text-base">
+                Secured a scholarship to study at Ludwig Maximilian University of Munich (LMU).
+              </p>
+            </div>
           </div>
 
-          {videoOpen && (
+          {activeVideo && (
             <div
               className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 sm:p-6 md:p-8"
-              onClick={() => setVideoOpen(false)}
+              onClick={() => setActiveVideo(null)}
             >
               <button
                 className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white bg-black/60 hover:bg-black/80 rounded-full p-2 z-10"
-                onClick={() => setVideoOpen(false)}
+                onClick={() => setActiveVideo(null)}
                 aria-label="Close video"
               >
                 <X className="w-6 h-6 sm:w-8 sm:h-8" />
@@ -159,12 +117,28 @@ const Testimonials = () => {
                 className="relative w-full max-w-5xl max-h-[85vh] aspect-video"
                 onClick={(e) => e.stopPropagation()}
               >
-                <video
-                  src={videoUrl}
-                  controls
-                  autoPlay
-                  className="absolute inset-0 w-full h-full object-contain bg-black rounded-lg"
-                />
+                {activeVideo === 'mariam' ? (
+                  <video
+                    key="mariam"
+                    controls
+                    autoPlay
+                    playsInline
+                    poster={mariamThumbnailUrl}
+                    className="absolute inset-0 w-full h-full object-contain bg-black rounded-lg"
+                  >
+                    <source src={mariamVideoUrl} type="video/quicktime" />
+                    <source src={mariamVideoUrl} type="video/mp4" />
+                  </video>
+                ) : (
+                  <video
+                    key="workshop"
+                    src={workshopVideoUrl}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-contain bg-black rounded-lg"
+                  />
+                )}
               </div>
             </div>
           )}
@@ -197,9 +171,21 @@ const Testimonials = () => {
                 </blockquote>
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div>
-                    <p className="font-heading font-bold text-[hsl(0,0%,15%)]">
-                      {t.name}
-                    </p>
+                    {t.linkedin ? (
+                      <a
+                        href={t.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-heading font-bold text-[hsl(0,0%,15%)] underline decoration-2 underline-offset-2 hover:opacity-65"
+                      >
+                        {t.name}
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </a>
+                    ) : (
+                      <p className="font-heading font-bold text-[hsl(0,0%,15%)]">
+                        {t.name}
+                      </p>
+                    )}
                     <p className="text-sm text-[hsl(0,0%,15%)]/60">{t.role}</p>
                   </div>
                   <Badge className="bg-[hsl(0,0%,15%)] text-white text-xs font-bold uppercase">
@@ -286,14 +272,22 @@ const Testimonials = () => {
             </h2>
             <p className="font-body text-base md:text-lg text-white/80 mb-8 max-w-lg mx-auto">
               Join the next Vibe Coding workshop and go from idea to prototype
-              in 4 hours.
+              in one evening.
             </p>
-            <ContactDialog>
-              <Button className="bg-[hsl(45,95%,65%)] text-[hsl(0,0%,15%)] border-4 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] font-black text-base md:text-lg py-5 md:py-6 px-6 md:px-8 uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all mb-8">
-                Send a Message
-                <Mail className="w-5 h-5 ml-2" />
-              </Button>
-            </ContactDialog>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+              <a href="/workshop">
+                <Button className="bg-[hsl(45,95%,65%)] text-[hsl(0,0%,15%)] border-4 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] font-black text-base md:text-lg py-5 md:py-6 px-6 md:px-8 uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+                  See the Workshop
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </a>
+              <ContactDialog>
+                <Button className="bg-transparent text-white border-4 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] font-black text-base md:text-lg py-5 md:py-6 px-6 md:px-8 uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+                  Send a Message
+                  <Mail className="w-5 h-5 ml-2" />
+                </Button>
+              </ContactDialog>
+            </div>
 
             <div className="border-t-2 border-white/20 pt-6">
               <p className="font-body text-sm text-white/60 uppercase tracking-wider mb-4 font-bold">

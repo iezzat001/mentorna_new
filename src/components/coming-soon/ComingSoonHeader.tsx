@@ -62,7 +62,7 @@ const ComingSoonHeader = () => {
         mx-auto 
         leading-relaxed
       ">
-        Join the exclusive waiting list for our most ambitious programs yet. 
+        Message me directly for early access to our most ambitious programs yet.
         Limited seats. Unlimited potential.
       </p>
     </div>

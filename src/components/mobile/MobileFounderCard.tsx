@@ -2,7 +2,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Instagram, Linkedin, Twitter, Users } from 'lucide-react';
-import WaitingListDialog from '../WaitingListDialog';
+import WhatsAppCTA from '../WhatsAppCTA';
+import { WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 import FounderDialog from '../FounderDialog';
 import MobileSwipeIndicator from './MobileSwipeIndicator';
 import TikTokIcon from '@/components/icons/TikTokIcon';
@@ -197,7 +198,7 @@ const MobileFounderCard = ({
 
         {/* Call to Action - Always Visible */}
         <div className="pb-4">
-          <WaitingListDialog>
+          <WhatsAppCTA message={WHATSAPP_MESSAGES.bootcamp}>
             <Button className="
               w-full
               bg-accent-yellow 
@@ -219,7 +220,7 @@ const MobileFounderCard = ({
               <Users className="h-4 w-4 mr-2" />
               JOIN THE PROGRAM
             </Button>
-          </WaitingListDialog>
+          </WhatsAppCTA>
           
           <p className="font-body text-xs font-semibold text-background/80 mt-1.5 text-center drop-shadow-md">
             Get mentored by industry experts
