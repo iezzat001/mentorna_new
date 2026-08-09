@@ -16,6 +16,8 @@ import VibeCoding from "./pages/VibeCoding";
 import SkillsIn2026 from "./pages/SkillsIn2026";
 import ProblemFinder from "./pages/ProblemFinder";
 import OneFeature from "./pages/OneFeature";
+import Startup30 from "./pages/Startup30";
+import EpisodeRedirect from "./pages/EpisodeRedirect";
 import MohamedOffer from "./pages/MohamedOffer";
 import JassimOffer from "./pages/JassimOffer";
 import JaidaOffer from "./pages/JaidaOffer";
@@ -87,6 +89,10 @@ const App = () => {
 
                   {/* Skills in 2026 page */}
                   <Route path="/skills-in-2026" element={<SkillsIn2026 />} />
+
+                  {/* "ابني Startup في 30 يوم" series hub + numbered shortcuts */}
+                  <Route path="/startup-30" element={<Startup30 />} />
+                  <Route path="/ep/:n" element={<EpisodeRedirect />} />
 
                   {/* Startup Problem Finder lead magnet (Arabic RTL) */}
                   <Route path="/problem-finder" element={<ProblemFinder />} />
