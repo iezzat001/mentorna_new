@@ -242,16 +242,6 @@ const ProblemFinder = () => {
 
       <EpisodeBreadcrumb n={EPISODE_NUMBER} />
 
-      {/* ===== Lead Capture (smart: only asks first-time visitors) ===== */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-primary via-primary/90 to-primary/80 border-b-4 border-foreground">
-        <div className="container mx-auto px-4">
-          <SmartCapture
-            episode={EPISODE}
-            blurb="نزّل الـ Problem-Finder Canvas (مجاناً) وامشي على الخطوات عشان تطلع بأول 3 مشاكل تقدر تبني عليهم فكرتك."
-          />
-        </div>
-      </section>
-
 
       {/* ===== Section 2: Concept Simplification & Analogies ===== */}
       <section className="py-12 md:py-16 bg-white border-b-4 border-foreground">
@@ -468,6 +458,16 @@ const ProblemFinder = () => {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ===== Lead Capture (smart: only asks first-time visitors) ===== */}
+      <section className="py-12 md:py-16 bg-gradient-to-br from-primary via-primary/90 to-primary/80 border-b-4 border-foreground">
+        <div className="container mx-auto px-4">
+          <SmartCapture
+            episode={EPISODE}
+            blurb="نزّل الـ Problem-Finder Canvas (مجاناً) وامشي على الخطوات عشان تطلع بأول 3 مشاكل تقدر تبني عليهم فكرتك."
+          />
         </div>
       </section>
 

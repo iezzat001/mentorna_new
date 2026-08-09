@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -56,21 +56,49 @@ const SmartCapture = ({ episode, blurb }: Props) => {
   const [question, setQuestion] = useState<EnrichmentQuestion | null>(null);
   const [enrichDone, setEnrichDone] = useState(false);
 
+  /** id of the row written for this episode, so enrichment can be attached to it */
+  const lastRowId = useRef<string | null>(null);
+
   // Recognise the visitor on mount
   useEffect(() => {
     setLead(getLead());
     setReady(true);
   }, []);
 
-  const logEngagement = async (method: ContactMethod, value: string) => {
-    const { error } = await supabase.from('magnet_leads').insert([
-      {
-        email: method === 'email' ? value.trim() : null,
-        whatsapp: method === 'whatsapp' ? value.trim() : null,
-        source: episode.source,
-      },
-    ]);
-    if (error) throw error;
+  /**
+   * Writes one magnet_leads row for this episode.
+   *
+   * `metadata` carries whatever enrichment we've collected so far. The column
+   * is added by 20260809000000_add_metadata_to_magnet_leads.sql; if that
+   * migration hasn't been applied yet the insert is retried without it, so
+   * capture never breaks on a schema mismatch.
+   */
+  const logEngagement = async (
+    method: ContactMethod,
+    value: string,
+    enrichment?: LeadMemory['enrichment']
+  ) => {
+    const base = {
+      email: method === 'email' ? value.trim() : null,
+      whatsapp: method === 'whatsapp' ? value.trim() : null,
+      source: episode.source,
+    };
+    const metadata = { ...(enrichment ?? {}), episode: episode.n };
+
+    const { data, error } = await supabase
+      .from('magnet_leads')
+      .insert([{ ...base, metadata } as never])
+      .select('id')
+      .maybeSingle();
+
+    if (!error) {
+      lastRowId.current = (data as { id?: string } | null)?.id ?? null;
+      return;
+    }
+
+    // Column not present yet -> fall back to the original shape
+    const { error: retryError } = await supabase.from('magnet_leads').insert([base]);
+    if (retryError) throw retryError;
   };
 
   /** First time capture */
@@ -103,7 +131,7 @@ const SmartCapture = ({ episode, blurb }: Props) => {
     if (!lead) return;
     const alreadyHas = lead.downloaded.includes(episode.n);
     if (!alreadyHas) {
-      logEngagement(lead.contactMethod, lead.contactValue).catch((err) =>
+      logEngagement(lead.contactMethod, lead.contactValue, lead.enrichment).catch((err) =>
         console.error('Silent engagement log failed:', err)
       );
       const updated = addDownload(episode.n);
@@ -117,6 +145,19 @@ const SmartCapture = ({ episode, blurb }: Props) => {
     setLead(updated);
     setEnrichDone(true);
     setQuestion(null);
+
+    // Best effort: attach the answer to the row we just wrote for this episode.
+    // If the column or an update policy isn't there, it fails quietly and the
+    // answer still rides along on the next episode's insert.
+    if (lastRowId.current && updated) {
+      supabase
+        .from('magnet_leads')
+        .update({ metadata: { ...(updated.enrichment ?? {}), episode: episode.n } } as never)
+        .eq('id', lastRowId.current)
+        .then(({ error }) => {
+          if (error) console.debug('Enrichment update skipped:', error.message);
+        });
+    }
   };
 
   const handleNotYou = () => {
