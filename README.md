@@ -89,13 +89,21 @@ mentorna_new/
 
 ## Documentation
 
-Comprehensive documentation is available in the root directory:
+Documentation lives in `docs/`:
+
+**Guides** (`docs/guides/`)
 
 - `PROJECT_BRIEF.md` - Business strategy and overview
 - `DESIGN_SYSTEM.md` - Neubrutalism design guidelines
 - `MOBILE_DESIGN_SYSTEM.md` - Mobile-specific patterns
+- `SEO_GUIDE.md` - SEO conventions
 - `GA4_VERIFICATION_GUIDE.md` - Analytics setup
 - `FOUNDERS_SECTION_TECHNICAL_GUIDE.md` - Technical implementation
+
+**Offers** (`docs/`) - one markdown spec per private client offer page
+
+**Lead magnets** (`docs/lead_magnet/`) - specs and the downloadable canvases
+served from CloudFront for the "ابني Startup في 30 يوم" series
 
 ## Deployment
 
