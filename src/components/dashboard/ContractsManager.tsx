@@ -16,11 +16,10 @@ interface Contract {
   currency: string;
   installment_amount: number;
   installments_count: number;
-  agreed_terms: {
-    sessions_commitment: boolean;
-    tasks_commitment: boolean;
-    payment_agreement: boolean;
-  };
+  // jsonb column. Each offer stores its own set of agreement keys
+  // (e.g. deliverables_commitment on the Jaida/Youssef offers), so this is
+  // intentionally loose rather than a fixed shape.
+  agreed_terms: Record<string, boolean> | null;
   signed_at: string;
   status: string;
 }
@@ -40,7 +39,7 @@ const ContractsManager = () => {
       toast.error('Failed to fetch contracts');
       console.error(error);
     } else {
-      setContracts(data || []);
+      setContracts((data ?? []) as unknown as Contract[]);
     }
     setLoading(false);
   };

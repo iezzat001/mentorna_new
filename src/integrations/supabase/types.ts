@@ -80,6 +80,66 @@ export type Database = {
         }
         Relationships: []
       }
+      signed_contracts: {
+        Row: {
+          address: string | null
+          agreed_terms: Json
+          created_at: string
+          currency: string
+          email: string
+          full_name: string
+          id: string
+          installment_amount: number
+          installments_count: number
+          offer_type: string
+          signature: string
+          signed_at: string | null
+          status: string
+          telegram: string | null
+          total_amount: number
+          updated_at: string
+          whatsapp: string | null
+        }
+        Insert: {
+          address?: string | null
+          agreed_terms: Json
+          created_at?: string
+          currency?: string
+          email: string
+          full_name: string
+          id?: string
+          installment_amount: number
+          installments_count?: number
+          offer_type?: string
+          signature: string
+          signed_at?: string | null
+          status?: string
+          telegram?: string | null
+          total_amount: number
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          address?: string | null
+          agreed_terms?: Json
+          created_at?: string
+          currency?: string
+          email?: string
+          full_name?: string
+          id?: string
+          installment_amount?: number
+          installments_count?: number
+          offer_type?: string
+          signature?: string
+          signed_at?: string | null
+          status?: string
+          telegram?: string | null
+          total_amount?: number
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       magnet_leads: {
         Row: {
           created_at: string
