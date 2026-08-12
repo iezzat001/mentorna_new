@@ -208,7 +208,7 @@ const Startup30 = () => {
           <p className="font-body text-xs text-background/50 mb-4">تابعني 👇</p>
           <div className="flex justify-center gap-6">
             <a
-              href="https://www.tiktok.com/@ahmed.ezzat4695"
+              href="https://www.tiktok.com/@ahmed.ezzat__"
               target="_blank"
               rel="noopener noreferrer"
               className="text-background/70 hover:text-accent-yellow transition-colors font-medium"

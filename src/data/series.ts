@@ -22,10 +22,15 @@ export type Episode = {
   hook: string;
   /** Key written to magnet_leads.source for this episode */
   source: string;
-  /** Direct canvas download URL */
-  canvasUrl: string;
-  /** Display name of the canvas */
-  canvasName: string;
+  /**
+   * Direct canvas download URL. Optional: not every episode ships a canvas,
+   * and the current funnel pages don't render them at all
+   * (see docs/series-funnel-open-items.md). Only set this once the PDF is
+   * actually live on CloudFront, so nothing can link to a missing file.
+   */
+  canvasUrl?: string;
+  /** Display name of the canvas, when there is one */
+  canvasName?: string;
 };
 
 export const SERIES_TITLE = 'ابني Startup في 30 يوم';
@@ -63,10 +68,8 @@ export const episodes: Episode[] = [
     title: 'وهم سرقة الأفكار',
     hook: 'بتخاف حد يسرق فكرتك؟ الفكرة بتساوي صفر، التنفيذ هو اللي بيساوي ملايين.',
     source: 'Idea Validation Sprint',
-    // NOTE: canvas not yet produced. The funnel pages do not render canvases
-    // right now (see docs/series-funnel-open-items.md), so nothing links to it.
-    canvasUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/Validation-Sprint-Canvas.pdf',
-    canvasName: 'Validation Sprint Canvas',
+    // No canvas for this episode. The reel's CTA points to the community
+    // instead, so there is deliberately nothing to download here.
   },
 ];
 
