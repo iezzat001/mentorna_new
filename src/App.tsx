@@ -16,6 +16,7 @@ import VibeCoding from "./pages/VibeCoding";
 import SkillsIn2026 from "./pages/SkillsIn2026";
 import ProblemFinder from "./pages/ProblemFinder";
 import OneFeature from "./pages/OneFeature";
+import Validation from "./pages/Validation";
 import Startup30 from "./pages/Startup30";
 import EpisodeRedirect from "./pages/EpisodeRedirect";
 import MohamedOffer from "./pages/MohamedOffer";
@@ -99,6 +100,9 @@ const App = () => {
 
                   {/* One-Feature Trap lead magnet — Episode 2 (Arabic RTL) */}
                   <Route path="/one-feature" element={<OneFeature />} />
+
+                  {/* Idea validation — Episode 3 (Arabic RTL). Comment word: "validation" */}
+                  <Route path="/validation" element={<Validation />} />
 
                   {/* Startup valuation calculator lead magnet */}
                   <Route path="/valuation" element={<Valuation />} />
