@@ -493,20 +493,23 @@ const Build = () => {
                   needs.
                 </p>
 
-                <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
+                <div className="mt-8 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
                   {[
-                    { v: '5', l: 'Hours, once', c: AMBER },
-                    { v: '1', l: 'Live link out', c: CYAN },
-                    { v: '0', l: 'Code required', c: TEAL },
+                    { v: '5 hours', l: 'One evening, hands-on', c: AMBER },
+                    { v: 'Your page', l: 'Live before you go home', c: CYAN },
+                    { v: 'No code', l: 'Nothing to install', c: TEAL },
                   ].map((s) => (
                     <div
-                      key={s.l}
-                      className="border-2 border-white/30 bg-white/10 p-3 backdrop-blur md:p-4"
+                      key={s.v}
+                      className="border-2 border-white/30 bg-white/10 p-4 backdrop-blur"
                     >
-                      <div className="text-3xl font-extrabold md:text-4xl" style={{ color: s.c }}>
+                      <div
+                        className="text-xl font-extrabold leading-tight md:text-2xl"
+                        style={{ color: s.c }}
+                      >
                         {s.v}
                       </div>
-                      <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-white/70 md:text-xs">
+                      <div className="mt-1 text-sm font-semibold leading-snug text-white/70">
                         {s.l}
                       </div>
                     </div>
