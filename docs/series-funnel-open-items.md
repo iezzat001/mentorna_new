@@ -38,9 +38,13 @@ Effect: "خلّصت X من Y" always shows 0. The retention hook silently does n
 
 Fix once we know the direction on item 1.
 
-## 4. Duplicated content in `series.ts`
+## 4. Canvas fields in `series.ts` are now optional
 
-`canvasUrl` and `canvasName` are still declared on every episode entry. Not used by the funnel pages anymore. Either wire them back in or drop them from the type.
+`canvasUrl` and `canvasName` are optional as of Episode 3. Episodes 1 and 2 still carry them (both PDFs are live on CloudFront); Episode 3 deliberately has none, because its reel CTA points to the community instead of a download.
+
+Rule going forward: **only set `canvasUrl` once the PDF is actually live on CloudFront.** An entry pointing at a missing file is how Episode 2 shipped a download that returned AccessDenied for weeks.
+
+Still open: the funnel pages don't render canvases at all, so even the two live ones are unreachable from the episode pages.
 
 ## 5. Vibe Coding PDF and other spec docs
 

@@ -651,7 +651,7 @@ const VibeCoding = () => {
           <p className="font-body text-sm text-background/70 mb-4">Empowering the next generation of AI builders</p>
           <p className="font-body text-xs text-background/50 mb-4">Follow me 👇</p>
           <div className="flex justify-center gap-6">
-            <a href="https://www.tiktok.com/@ahmed.ezzat4695" target="_blank" rel="noopener noreferrer" className="text-background/70 hover:text-accent-yellow transition-colors font-medium">TikTok</a>
+            <a href="https://www.tiktok.com/@ahmed.ezzat__" target="_blank" rel="noopener noreferrer" className="text-background/70 hover:text-accent-yellow transition-colors font-medium">TikTok</a>
             <a href="https://www.instagram.com/ahmedezzat_fi" target="_blank" rel="noopener noreferrer" className="text-background/70 hover:text-accent-yellow transition-colors font-medium">Instagram</a>
           </div>
         </div>
