@@ -57,6 +57,17 @@ export const episodes: Episode[] = [
     canvasUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/1-Feature-Validator-Canvas.pdf',
     canvasName: '1-Feature Validator Canvas',
   },
+  {
+    n: 3,
+    slug: 'validation',
+    title: 'وهم سرقة الأفكار',
+    hook: 'بتخاف حد يسرق فكرتك؟ الفكرة بتساوي صفر، التنفيذ هو اللي بيساوي ملايين.',
+    source: 'Idea Validation Sprint',
+    // NOTE: canvas not yet produced. The funnel pages do not render canvases
+    // right now (see docs/series-funnel-open-items.md), so nothing links to it.
+    canvasUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/Validation-Sprint-Canvas.pdf',
+    canvasName: 'Validation Sprint Canvas',
+  },
 ];
 
 /** Episodes that are actually published, ordered by number */
