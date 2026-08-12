@@ -223,19 +223,6 @@ const STEPS = [
   },
 ];
 
-/**
- * Value stack shown just before the price.
- * ⚠ PROPOSED VALUES. Kept deliberately modest so the total stays credible
- * against the ticket price. An inflated anchor reads as a scam.
- */
-const VALUE_STACK = [
-  { item: 'The 5-hour live workshop, small group', value: 200 },
-  { item: 'Your landing page, built with you in the room', value: 120 },
-  { item: `The ${FRAMEWORK} and canvas`, value: 60 },
-  { item: 'The full prompt and tool playbook', value: 40 },
-  { item: 'Your written 7-day action plan', value: 30 },
-];
-const VALUE_TOTAL = VALUE_STACK.reduce((sum, v) => sum + v.value, 0);
 
 const OUTCOMES = [
   {
@@ -496,7 +483,11 @@ const Build = () => {
                 <div className="mt-8 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
                   {[
                     { v: '5 hours', l: 'One evening, hands-on', c: AMBER },
-                    { v: 'Your page', l: 'Live before you go home', c: CYAN },
+                    {
+                      v: 'Skip $10,000',
+                      l: "The usual quote to get a prototype built. You'll build yours tonight.",
+                      c: CYAN,
+                    },
                     { v: 'No code', l: 'Nothing to install', c: TEAL },
                   ].map((s) => (
                     <div
@@ -866,71 +857,6 @@ const Build = () => {
               </div>
             </Reveal>
           </div>
-        </section>
-
-        {/* ══ VALUE STACK ══ */}
-        <section className="pt-16 md:pt-24">
-          <Reveal>
-            <Eyebrow>Everything included</Eyebrow>
-            <SectionTitle>What a seat actually contains</SectionTitle>
-          </Reveal>
-
-          <Reveal>
-            <div className={`${brutalLg} mt-8 overflow-hidden bg-white`}>
-              {VALUE_STACK.map((v) => (
-                <div
-                  key={v.item}
-                  className="flex items-center justify-between gap-4 border-b-2 border-[hsl(30,20%,90%)] p-5"
-                >
-                  <div className="flex items-start gap-3">
-                    <span
-                      className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border-2 border-[hsl(0,0%,10%)]"
-                      style={{ background: TEAL }}
-                    >
-                      <Check className="h-3 w-3 text-white" strokeWidth={3} />
-                    </span>
-                    <span className="text-sm font-extrabold md:text-base">{v.item}</span>
-                  </div>
-                  <span className="whitespace-nowrap text-base font-extrabold md:text-lg">
-                    ${v.value}
-                  </span>
-                </div>
-              ))}
-
-              <div className="flex items-center justify-between gap-4 bg-[hsl(0,0%,10%)] p-5 text-white">
-                <span className="text-sm font-extrabold uppercase tracking-wide md:text-lg">
-                  Total value
-                </span>
-                <span
-                  className="text-2xl font-extrabold line-through decoration-4 md:text-3xl"
-                  style={{ textDecorationColor: CORAL }}
-                >
-                  ${VALUE_TOTAL}
-                </span>
-              </div>
-
-              <div className="p-7 text-center" style={{ background: AMBER }}>
-                <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] opacity-60">
-                  {isEarlyBird() ? `Early bird, ${EARLY_BIRD_LABEL}` : 'Your investment'}
-                </p>
-                <div className="mt-2 flex items-baseline justify-center gap-3">
-                  <span className="text-6xl font-extrabold leading-none md:text-7xl">
-                    ${isEarlyBird() ? EARLY_BIRD_PRICE : TIERS[0].price}
-                  </span>
-                  {isEarlyBird() && (
-                    <span className="text-2xl font-extrabold opacity-40 line-through md:text-3xl">
-                      ${TIERS[0].price}
-                    </span>
-                  )}
-                </div>
-                {isEarlyBird() && (
-                  <p className="mt-3 inline-block border-2 border-[hsl(0,0%,10%)] bg-[hsl(0,0%,10%)] px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white">
-                    Save ${TIERS[0].price - EARLY_BIRD_PRICE} · Price goes back up 1 September
-                  </p>
-                )}
-              </div>
-            </div>
-          </Reveal>
         </section>
 
         {/* ══ PRICING ══ */}
