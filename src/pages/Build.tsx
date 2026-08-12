@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   BadgeCheck,
-  Brain,
   Check,
   Clock,
   Compass,
@@ -57,11 +56,25 @@ const DOTS = {
    beginner price. This page is positioned for busy professionals buying
    back time, so the anchor is higher and a follow-through tier is added.
    ──────────────────────────────────────────────────────────── */
+/**
+ * Early bird: $149 -> $99 until 1 September. Auto-expires, so the page
+ * reverts to full price on its own with no code change needed.
+ */
+const EARLY_BIRD_DEADLINE = new Date('2026-09-01T00:00:00+03:00');
+const EARLY_BIRD_PRICE = 99;
+const EARLY_BIRD_LABEL = 'until 31 August';
+const isEarlyBird = () => Date.now() < EARLY_BIRD_DEADLINE.getTime();
+
+/** The named mechanism. Everything on the page ladders back to this. */
+const MECHANISM = 'Vibe-preneurship';
+const FRAMEWORK = '3-Step Market Validation Framework';
+
 const TIERS = [
   {
     key: 'seat',
     name: 'The Seat',
     price: 149,
+    earlyBird: true,
     tagline: 'The workshop itself',
     accent: 'bg-white',
     featured: false,
@@ -156,27 +169,73 @@ const COSTS = [
   },
 ];
 
-/* The three pillars of the "unfair advantage" */
-const PILLARS = [
+/* The five failure modes. Named, numbered, so the reader recognises one. */
+const FAILURES = [
   {
-    icon: Brain,
-    accent: PURPLE,
-    title: 'Proven business systems',
-    desc: 'The same problem, offer and validation frameworks used by funded founders. Not theory, not motivation. A sequence you follow.',
+    n: 1,
+    title: 'The Tech-First Trap',
+    desc: 'You start with which stack, which platform, which tool. None of those decide whether a single person wants the thing. This is how people spend $10,000 building something nobody asked for, and it is the most expensive mistake on this list.',
   },
   {
-    icon: Zap,
-    accent: CYAN,
-    title: 'AI as the execution layer',
-    desc: 'You bring judgement, AI does the labour. What used to need a developer and six weeks now takes an afternoon in the room.',
+    n: 2,
+    title: 'The Silent Build',
+    desc: 'You keep it quiet so nobody steals it. So you get no feedback, and you find out months later that the market was never there. Hiding an idea does not protect it, it starves it.',
   },
   {
-    icon: Target,
-    accent: TEAL,
-    title: 'Compression, not information',
-    desc: 'You are not short on information, you are short on time. Five hours replaces the months you would spend assembling this yourself.',
+    n: 3,
+    title: 'The Feature Pile',
+    desc: 'You collect every competitor feature and add five more, thinking more equals better. It does not. It makes the thing impossible to explain, and a product a stranger cannot explain is a product they will not buy.',
+  },
+  {
+    n: 4,
+    title: 'The Vague Audience',
+    desc: '"Anyone who needs this" is nobody. Without a specific person in mind you cannot write the offer, price it, or find them. Every downstream decision stays fuzzy because this one was skipped.',
+  },
+  {
+    n: 5,
+    title: 'The Someday Start',
+    desc: 'You will start when work calms down. It will not. The idea keeps its shape in your head, which feels safe, because an idea that never launches can never fail. This is the one that costs you the year.',
   },
 ];
+
+/* The named mechanism, broken into its three steps */
+const STEPS = [
+  {
+    n: 1,
+    icon: Compass,
+    accent: AMBER,
+    title: 'Validate the problem',
+    desc: 'Before anything gets built, we find a pain you actually understand and confirm someone else feels it. Specific person, specific problem, written down in one line.',
+  },
+  {
+    n: 2,
+    icon: Target,
+    accent: CYAN,
+    title: 'Validate the promise',
+    desc: 'One offer a stranger understands in ten seconds. Not a feature list. The single outcome you are selling, in language your buyer already uses.',
+  },
+  {
+    n: 3,
+    icon: Rocket,
+    accent: TEAL,
+    title: 'Validate the demand',
+    desc: 'A live page and a way to collect signal, shipped before you leave the room. Real responses from real people, not opinions from friends.',
+  },
+];
+
+/**
+ * Value stack shown just before the price.
+ * ⚠ PROPOSED VALUES. Kept deliberately modest so the total stays credible
+ * against the ticket price. An inflated anchor reads as a scam.
+ */
+const VALUE_STACK = [
+  { item: 'The 5-hour live workshop, small group', value: 200 },
+  { item: 'Your landing page, built with you in the room', value: 120 },
+  { item: `The ${FRAMEWORK} and canvas`, value: 60 },
+  { item: 'The full prompt and tool playbook', value: 40 },
+  { item: 'Your written 7-day action plan', value: 30 },
+];
+const VALUE_TOTAL = VALUE_STACK.reduce((sum, v) => sum + v.value, 0);
 
 const OUTCOMES = [
   {
@@ -269,6 +328,10 @@ const FAQS = [
   {
     q: 'What is the difference between the two individual tiers?',
     a: 'The workshop is identical. Follow-Through adds a private 45-minute session two weeks later, which is when most people stall. If you have a history of starting things and losing momentum, take that one.',
+  },
+  {
+    q: 'Is the early bird price real?',
+    a: `Yes, and it expires on its own. Seats are $${EARLY_BIRD_PRICE} ${EARLY_BIRD_LABEL}, then the price returns to $${TIERS[0].price}. No countdown that resets when you reload the page.`,
   },
   {
     q: 'When is the next date?',
@@ -375,9 +438,9 @@ const Build = () => {
   const { trackEvent } = useGoogleAnalytics({ measurementId });
 
   useSEO({
-    title: 'Build It In One Evening — 5-Hour Execution Workshop | Mentorna®',
+    title: 'Turn What You Know Into A Business — 5-Hour Workshop | Mentorna®',
     description:
-      'An intensive 5-hour hands-on workshop for busy professionals. Stop the trial and error, skip the wrong questions, and use AI plus proven business systems to ship something real in a single evening.',
+      'For 9-5 domain experts. Build a profitable business in one evening using the 3-Step Market Validation Framework, without losing $10,000 on tech nobody needs.',
     canonical: 'https://mentorna.com/build',
   });
 
@@ -409,11 +472,11 @@ const Build = () => {
 
               <div className="relative">
                 <span className="inline-block border-2 border-white/40 bg-white/10 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
-                  ✦ One evening · Small group · Helsinki
+                  ✦ For 9-5 domain experts · One evening · Helsinki
                 </span>
 
                 <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
-                  Five hours that replace{' '}
+                  Turn what you already know into{' '}
                   <span
                     style={{
                       background: `linear-gradient(90deg, ${AMBER}, ${CORAL}, ${PURPLE})`,
@@ -421,14 +484,13 @@ const Build = () => {
                       WebkitTextFillColor: 'transparent',
                     }}
                   >
-                    six months of guessing
+                    a business that pays you
                   </span>
                 </h1>
 
                 <p className="mt-5 max-w-2xl text-base font-semibold leading-relaxed text-white/75 md:text-lg">
-                  An intensive, hands-on execution workshop for professionals who do not have time
-                  to waste. You will stop the trial and error, stop asking the wrong questions, and
-                  leave with something real and live, built with AI and proven business systems.
+                  In one evening, using our {FRAMEWORK}, without losing $10,000 on tech nobody
+                  needs.
                 </p>
 
                 <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
@@ -541,45 +603,107 @@ const Build = () => {
           </div>
         </section>
 
-        {/* ══ THE UNFAIR ADVANTAGE ══ */}
+        {/* ══ THE 5 FAILURES ══ */}
+        <section className="pt-16 md:pt-24">
+          <Reveal>
+            <Eyebrow>The diagnosis</Eyebrow>
+            <SectionTitle>
+              The 5 reasons your idea
+              <br />
+              is still an idea
+            </SectionTitle>
+            <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed opacity-70">
+              I have watched hundreds of smart people stall in exactly the same five places. Most
+              have three of them running at once. You will recognise at least one.
+            </p>
+          </Reveal>
+
+          <div className="mt-8 space-y-4">
+            {FAILURES.map((f, i) => (
+              <Reveal key={f.n} delay={i * 60}>
+                <div className={`${brutal} flex items-stretch overflow-hidden bg-white`}>
+                  <div
+                    className="flex w-16 shrink-0 items-center justify-center border-l-4 border-[hsl(0,0%,10%)] md:w-20"
+                    style={{ background: SECTION_ACCENTS[i % SECTION_ACCENTS.length] }}
+                  >
+                    <span className="text-3xl font-extrabold md:text-4xl">{f.n}</span>
+                  </div>
+                  <div className="flex-1 p-5 md:p-6">
+                    <h3 className="text-lg font-extrabold leading-tight md:text-xl">{f.title}</h3>
+                    <p className="mt-2 text-sm font-semibold leading-relaxed opacity-75">
+                      {f.desc}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal>
+            <p className="mt-6 text-base font-extrabold">
+              One honest question: how many of the five did you just recognise?
+            </p>
+            <p className="mt-1 text-sm font-semibold opacity-65">
+              That recognition is exactly what the workshop turns into a fix.
+            </p>
+          </Reveal>
+        </section>
+
+        {/* ══ THE MECHANISM ══ */}
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className={`${brutalLg} relative overflow-hidden bg-[hsl(0,0%,10%)] p-8 md:p-12`}>
               <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={DOTS} />
               <div className="relative">
                 <p className="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em] text-white/45">
-                  What you are actually buying
+                  The method
                 </p>
-                <h2 className="text-3xl font-extrabold leading-[1.1] text-white md:text-4xl">
-                  An unfair advantage,
-                  <br />
-                  assembled for you
+                <h2 className="text-3xl font-extrabold leading-[1.05] text-white md:text-5xl">
+                  <span
+                    style={{
+                      background: `linear-gradient(90deg, ${AMBER}, ${CORAL})`,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }}
+                  >
+                    {MECHANISM}
+                  </span>
                 </h2>
                 <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed text-white/70">
-                  Everything in this room exists publicly somewhere. The advantage is that it has
-                  been sequenced, tested and compressed, so you skip the part where you work out
-                  the order yourself.
+                  Going from <span className="font-extrabold text-white">0 → 1</span> without a
+                  developer, a co-founder, or a year of your life. You bring the domain expertise.
+                  AI does the building. The {FRAMEWORK} decides what gets built at all, and in
+                  which order.
                 </p>
 
                 <div className="mt-8 grid gap-4 md:grid-cols-3">
-                  {PILLARS.map((p) => (
+                  {STEPS.map((s) => (
                     <div
-                      key={p.title}
-                      className="border-2 border-white/25 bg-white/10 p-5 backdrop-blur"
+                      key={s.n}
+                      className="relative border-2 border-white/25 bg-white/10 p-5 backdrop-blur"
                     >
+                      <span className="absolute right-4 top-3 text-5xl font-extrabold text-white/10">
+                        {s.n}
+                      </span>
                       <div
                         className="mb-4 flex h-11 w-11 items-center justify-center border-2 border-[hsl(0,0%,10%)]"
-                        style={{ background: p.accent }}
+                        style={{ background: s.accent }}
                       >
-                        <p.icon className="h-5 w-5" />
+                        <s.icon className="h-5 w-5" />
                       </div>
-                      <h3 className="text-base font-extrabold text-white">{p.title}</h3>
+                      <h3 className="text-base font-extrabold text-white">{s.title}</h3>
                       <p className="mt-2 text-sm font-semibold leading-relaxed text-white/65">
-                        {p.desc}
+                        {s.desc}
                       </p>
                     </div>
                   ))}
                 </div>
+
+                <p className="mt-7 border-t-2 border-white/15 pt-5 text-sm font-semibold leading-relaxed text-white/60">
+                  Every one of the five failures above is something this order prevents. That is the
+                  whole point of running the steps in sequence instead of starting wherever feels
+                  most comfortable.
+                </p>
               </div>
             </div>
           </Reveal>
@@ -741,6 +865,71 @@ const Build = () => {
           </div>
         </section>
 
+        {/* ══ VALUE STACK ══ */}
+        <section className="pt-16 md:pt-24">
+          <Reveal>
+            <Eyebrow>Everything included</Eyebrow>
+            <SectionTitle>What a seat actually contains</SectionTitle>
+          </Reveal>
+
+          <Reveal>
+            <div className={`${brutalLg} mt-8 overflow-hidden bg-white`}>
+              {VALUE_STACK.map((v) => (
+                <div
+                  key={v.item}
+                  className="flex items-center justify-between gap-4 border-b-2 border-[hsl(30,20%,90%)] p-5"
+                >
+                  <div className="flex items-start gap-3">
+                    <span
+                      className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border-2 border-[hsl(0,0%,10%)]"
+                      style={{ background: TEAL }}
+                    >
+                      <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                    </span>
+                    <span className="text-sm font-extrabold md:text-base">{v.item}</span>
+                  </div>
+                  <span className="whitespace-nowrap text-base font-extrabold md:text-lg">
+                    ${v.value}
+                  </span>
+                </div>
+              ))}
+
+              <div className="flex items-center justify-between gap-4 bg-[hsl(0,0%,10%)] p-5 text-white">
+                <span className="text-sm font-extrabold uppercase tracking-wide md:text-lg">
+                  Total value
+                </span>
+                <span
+                  className="text-2xl font-extrabold line-through decoration-4 md:text-3xl"
+                  style={{ textDecorationColor: CORAL }}
+                >
+                  ${VALUE_TOTAL}
+                </span>
+              </div>
+
+              <div className="p-7 text-center" style={{ background: AMBER }}>
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] opacity-60">
+                  {isEarlyBird() ? `Early bird, ${EARLY_BIRD_LABEL}` : 'Your investment'}
+                </p>
+                <div className="mt-2 flex items-baseline justify-center gap-3">
+                  <span className="text-6xl font-extrabold leading-none md:text-7xl">
+                    ${isEarlyBird() ? EARLY_BIRD_PRICE : TIERS[0].price}
+                  </span>
+                  {isEarlyBird() && (
+                    <span className="text-2xl font-extrabold opacity-40 line-through md:text-3xl">
+                      ${TIERS[0].price}
+                    </span>
+                  )}
+                </div>
+                {isEarlyBird() && (
+                  <p className="mt-3 inline-block border-2 border-[hsl(0,0%,10%)] bg-[hsl(0,0%,10%)] px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white">
+                    Save ${TIERS[0].price - EARLY_BIRD_PRICE} · Price goes back up 1 September
+                  </p>
+                )}
+              </div>
+            </div>
+          </Reveal>
+        </section>
+
         {/* ══ PRICING ══ */}
         <section id="pricing" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
@@ -773,11 +962,25 @@ const Build = () => {
                     <h3 className="text-xl font-extrabold leading-tight">{t.name}</h3>
                     <p className="mt-1 text-sm font-semibold opacity-60">{t.tagline}</p>
 
-                    <div className="mt-5 flex items-baseline gap-2">
+                    <div className="mt-5 flex flex-wrap items-baseline gap-2">
                       <span className="text-5xl font-extrabold leading-none">
-                        {t.priceLabel ?? `$${t.price}`}
+                        {t.priceLabel ??
+                          `$${t.earlyBird && isEarlyBird() ? EARLY_BIRD_PRICE : t.price}`}
                       </span>
+                      {t.earlyBird && isEarlyBird() && (
+                        <span className="text-2xl font-extrabold opacity-35 line-through">
+                          ${t.price}
+                        </span>
+                      )}
                     </div>
+                    {t.earlyBird && isEarlyBird() && (
+                      <p
+                        className="mt-2 inline-block self-start border-2 border-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase tracking-wider"
+                        style={{ background: AMBER }}
+                      >
+                        Early bird {EARLY_BIRD_LABEL}
+                      </p>
+                    )}
 
                     <ul className="mt-6 flex-1 space-y-3">
                       {t.includes.map((item) => (
@@ -798,7 +1001,13 @@ const Build = () => {
 
                     <a
                       href={whatsappUrl(
-                        RESERVE_MESSAGE(t.name, t.priceLabel ?? `$${t.price}`),
+                        RESERVE_MESSAGE(
+                          t.name,
+                          t.priceLabel ??
+                            (t.earlyBird && isEarlyBird()
+                              ? `$${EARLY_BIRD_PRICE} early bird`
+                              : `$${t.price}`),
+                        ),
                       )}
                       target="_blank"
                       rel="noopener noreferrer"
