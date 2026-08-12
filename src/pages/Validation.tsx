@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { useSEO } from '@/hooks/useSEO';
 import {
+  BookOpen,
   Car,
   CheckCircle,
-  ChefHat,
   MessageSquare,
   RefreshCw,
   Rocket,
@@ -275,21 +275,20 @@ const Validation = () => {
       case STEP.CONCEPT_1:
         return (
           <TeachCard
-            icon={ChefHat}
+            icon={BookOpen}
             accent="bg-[hsl(45,95%,65%)]"
-            title="الوصفة عند مليون شيف.. المطعم عند واحد بس"
+            title="لو الفكرة هي كل حاجة.. كلنا كنا بقينا فورمة"
           >
             <p>
-              كل شيف في الدنيا عنده وصفة كوسة بالبشاميل. الوصفة مش سر، وما حدش بيكسب منها لوحدها.
+              كتب التخسيس كلها بتقول نفس الكلام، والمعلومة مش سر ومتاحة ببلاش لأي حد.
             </p>
             <p className="mt-3">
-              الفرق مين اللي يقدر يفتح مطعم يشتغل كل يوم، يدفع للعمّال، يرضّي العميل، ويكرّر نفس
-              الجودة.
+              أمّال ليه مش كل اللي قروا الكتاب خسّوا؟ لأن المعرفة سهلة، واللي صعب إنك تنفّذ كل يوم
+              وأنت مش فاضي ومش في مودك.
             </p>
             <p className="mt-4 font-extrabold">
-              الفكرة (الوصفة) ={' '}
-              <span className="bg-[hsl(45,95%,65%)] px-1">صفر</span> · التنفيذ (المطعم) ={' '}
-              <span className="bg-[hsl(45,95%,65%)] px-1">ملايين</span>
+              الفكرة (الكتاب) = <span className="bg-[hsl(45,95%,65%)] px-1">صفر</span> · التنفيذ
+              (إنك تلتزم) = <span className="bg-[hsl(45,95%,65%)] px-1">ملايين</span>
             </p>
           </TeachCard>
         );
@@ -299,20 +298,20 @@ const Validation = () => {
           <TeachCard
             icon={Car}
             accent="bg-[hsl(196,85%,70%)]"
-            title="أوبر ما اخترعتش فكرة «عربية تنقلني»"
+            title="محدش «بيملك» فكرة عربية تنقلني"
           >
             <p>
-              بعد أوبر بشهور طلعت Lyft بنفس الفكرة بالظبط. وبعدهم Careem في الخليج، وInDrive،
-              وYango.
+              Uber و Careem و Bolt و InDrive و Yango.. نفس الفكرة بالظبط، وكلهم موجودين مع بعض
+              دلوقتي.
             </p>
             <p className="mt-3">
-              نفس الفكرة كذا مرة. أفكار مسروقة؟ لأ.{' '}
+              أفكار مسروقة؟ لأ.{' '}
               <span className="bg-[hsl(45,95%,65%)] px-1 font-extrabold">
                 أسواق مختلفة وتنفيذ مختلف
               </span>
               ، ولسه فيه مكان للكل يكسب.
             </p>
-            <p className="mt-4 font-extrabold">الفكرة مش هي اللي بتحميك، السوق هو اللي بيقرر.</p>
+            <p className="mt-4 font-extrabold">الفكرة مش هي اللي بتحميك، التنفيذ هو اللي بيفرق.</p>
           </TeachCard>
         );
 
