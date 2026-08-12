@@ -33,6 +33,7 @@ import Valuation from "./pages/Valuation";
 import ResponsiveHome from "@/components/ResponsiveHome";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 import Workshop from "./pages/Workshop";
+import Build from "./pages/Build";
 import Mentorship from "./pages/Mentorship";
 import Testimonials from "./pages/Testimonials";
 import Links from "./pages/Links";
@@ -107,8 +108,11 @@ const App = () => {
                   {/* Startup valuation calculator lead magnet */}
                   <Route path="/valuation" element={<Valuation />} />
 
-                  {/* Workshop landing page */}
+                  {/* Workshop landing page (v1 — kept as reference) */}
                   <Route path="/workshop" element={<Workshop />} />
+
+                  {/* Workshop v2 — repositioned for busy professionals */}
+                  <Route path="/build" element={<Build />} />
 
                   {/* 1:1 mentorship landing page */}
                   <Route path="/mentorship" element={<Mentorship />} />
