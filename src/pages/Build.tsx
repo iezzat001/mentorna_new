@@ -9,6 +9,8 @@ import {
   Crown,
   Laptop,
   MessageCircle,
+  Play,
+  Quote,
   Rocket,
   Star,
   Target,
@@ -22,7 +24,12 @@ import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import Footer from '@/components/Footer';
 import { whatsappUrl } from '@/lib/whatsapp';
 import { sections } from '@/data/workshop';
-import { testimonials } from '@/data/testimonials';
+import {
+  eventPhotos,
+  testimonials,
+  workshopVideoPoster,
+  workshopVideoUrl,
+} from '@/data/testimonials';
 
 /* ────────────────────────────────────────────────────────────
    Design tokens — same language as /workshop, /links and the offer pages
@@ -104,6 +111,21 @@ const NEXT_SESSION = {
   duration: '5 hours',
   seats: 'Small group, limited seats',
 };
+
+/**
+ * VSL (video sales letter).
+ *
+ * ⚠ PLACEHOLDER. Set VSL_URL to the real sales video once it is recorded and
+ * uploaded to CloudFront, and update VSL_POSTER to its thumbnail. Until then
+ * the section falls back to real footage from the last workshop, so the slot
+ * is never empty. Everything else about the section stays the same.
+ */
+const VSL_URL: string | null = null;
+const VSL_POSTER: string | null = null;
+
+const vslSrc = VSL_URL ?? workshopVideoUrl;
+const vslPoster = VSL_POSTER ?? workshopVideoPoster;
+const vslIsPlaceholder = VSL_URL === null;
 
 const RESERVE_MESSAGE = (tier: string, price: string) =>
   `Hi Ahmed, I'd like to reserve the "${tier}" option (${price}) for the 5-hour build workshop. When is the next date?`;
@@ -298,6 +320,53 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
   <h2 className="text-3xl font-extrabold leading-[1.1] md:text-4xl">{children}</h2>
 );
 
+/** Click-to-play video. Poster first so nothing autoplays or preloads. */
+const VslPlayer = () => {
+  const [playing, setPlaying] = useState(false);
+
+  if (playing) {
+    return (
+      <video
+        src={vslSrc}
+        poster={vslPoster}
+        controls
+        autoPlay
+        playsInline
+        className="aspect-video w-full bg-black object-cover"
+      />
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setPlaying(true)}
+      aria-label="Play video"
+      className="group relative block aspect-video w-full overflow-hidden"
+    >
+      <img
+        src={vslPoster}
+        alt="Inside the workshop"
+        className="h-full w-full object-cover opacity-70 transition-opacity group-hover:opacity-85"
+      />
+      <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+      <span className="absolute inset-0 flex items-center justify-center">
+        <span
+          className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-[hsl(0,0%,10%)] shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-transform group-hover:scale-105 md:h-24 md:w-24"
+          style={{ background: AMBER }}
+        >
+          <Play className="ml-1 h-9 w-9 md:h-10 md:w-10" fill="currentColor" />
+        </span>
+      </span>
+
+      <span className="absolute bottom-4 left-4 flex items-center gap-2 border-2 border-white/40 bg-black/50 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
+        <Play className="h-3 w-3" fill="currentColor" /> Watch
+      </span>
+    </button>
+  );
+};
+
 /* ────────────────────────────────────────────────────────────
    Page
    ──────────────────────────────────────────────────────────── */
@@ -403,6 +472,38 @@ const Build = () => {
             </div>
           </Reveal>
         </header>
+
+        {/* ══ VSL ══ */}
+        <section className="pt-10 md:pt-14">
+          <Reveal>
+            <p className="mb-4 text-center text-sm font-extrabold uppercase tracking-[0.14em] opacity-60">
+              ▼ Watch this first ▼
+            </p>
+
+            <div className={`${brutalLg} overflow-hidden bg-[hsl(0,0%,10%)]`}>
+              <VslPlayer />
+            </div>
+
+            <p className="mt-4 text-center text-sm font-semibold leading-relaxed opacity-60">
+              {vslIsPlaceholder
+                ? 'Real footage from the last session. Two minutes on what the evening actually looks like.'
+                : 'Two minutes on why this works, and whether it is right for you.'}
+            </p>
+
+            <div className="mt-6 flex justify-center">
+              <a
+                href="#pricing"
+                onClick={() => track('under_vsl')}
+                className={`${brutal} inline-flex min-h-14 items-center justify-center gap-2 bg-[hsl(0,0%,10%)] px-8 text-base font-extrabold uppercase text-white transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none`}
+              >
+                Reserve my seat <ArrowRight className="h-5 w-5" />
+              </a>
+            </div>
+            <p className="mt-3 text-center text-xs font-semibold opacity-50">
+              Small group · Limited seats · Message first, pay after we confirm your date
+            </p>
+          </Reveal>
+        </section>
 
         {/* ══ THE COST OF THE SLOW WAY ══ */}
         <section className="pt-16 md:pt-24">
@@ -732,12 +833,69 @@ const Build = () => {
         {/* ══ PROOF ══ */}
         <section className="pt-16 md:pt-24">
           <Reveal>
-            <Eyebrow>From the room</Eyebrow>
-            <SectionTitle>What people said afterwards</SectionTitle>
+            <Eyebrow>Not a stock photo on this page</Eyebrow>
+            <SectionTitle>
+              This already happened,
+              <br />
+              in a real room
+            </SectionTitle>
+            <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed opacity-70">
+              Helsinki XR Center. Every person in these photos walked out with something live.
+            </p>
           </Reveal>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            {testimonials.slice(0, 4).map((t, i) => (
+          {/* Photo band */}
+          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {eventPhotos.slice(0, 4).map((p, i) => (
+              <Reveal key={p.src} delay={i * 60}>
+                <div className={`${brutal} overflow-hidden bg-white`}>
+                  <img
+                    src={p.src}
+                    alt={p.alt}
+                    loading="lazy"
+                    className="aspect-[4/5] w-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Featured quote over a photo */}
+          <Reveal>
+            <div className={`${brutalLg} relative mt-6 overflow-hidden`}>
+              <img
+                src={eventPhotos[4]?.src ?? eventPhotos[0].src}
+                alt={eventPhotos[4]?.alt ?? eventPhotos[0].alt}
+                loading="lazy"
+                className="h-[22rem] w-full object-cover md:h-[26rem]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
+                <Quote className="mb-3 h-8 w-8" style={{ color: AMBER }} />
+                <blockquote className="max-w-2xl text-xl font-extrabold leading-snug text-white md:text-3xl">
+                  &ldquo;{testimonials[0].quote}&rdquo;
+                </blockquote>
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <span className="text-sm font-extrabold text-white">
+                    {testimonials[0].name}
+                  </span>
+                  <span className="text-sm font-semibold text-white/60">
+                    {testimonials[0].role}
+                  </span>
+                  <span
+                    className="border-2 border-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase"
+                    style={{ background: AMBER }}
+                  >
+                    {testimonials[0].source}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Remaining quotes */}
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {testimonials.slice(1, 4).map((t, i) => (
               <Reveal key={t.name} delay={i * 70}>
                 <div className={`${brutal} flex h-full flex-col bg-white p-6`}>
                   <div className="mb-3 flex gap-1">
@@ -770,12 +928,21 @@ const Build = () => {
           </div>
 
           <Reveal>
-            <a
-              href="/testimonials"
-              className={`${brutal} mt-6 inline-flex items-center gap-2 bg-white px-6 py-4 text-sm font-extrabold uppercase transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none`}
-            >
-              See all testimonials <ArrowRight className="h-4 w-4" />
-            </a>
+            <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <a
+                href="#pricing"
+                onClick={() => track('under_proof')}
+                className={`${brutal} inline-flex min-h-14 items-center justify-center gap-2 bg-[hsl(0,0%,10%)] px-8 text-base font-extrabold uppercase text-white transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none`}
+              >
+                Reserve my seat <ArrowRight className="h-5 w-5" />
+              </a>
+              <a
+                href="/testimonials"
+                className={`${brutal} inline-flex min-h-14 items-center justify-center gap-2 bg-white px-6 text-sm font-extrabold uppercase transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none`}
+              >
+                See all testimonials <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
           </Reveal>
         </section>
 
