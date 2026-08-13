@@ -170,7 +170,7 @@ const TeachCard = ({
 
 const OneFeature = () => {
   useSEO({
-    title: 'فخ الـ One Feature — المنفعة الواحدة اللي هتخلي عميلك يختارك | Mentorna',
+    title: 'وهم الـ Features الكتير — المنفعة الواحدة اللي هتخلي عميلك يختارك | Mentorna',
     description:
       'اتعلم إزاي تبطل تجمع Features وتركز على المنفعة الواحدة اللي بتحل وجع حقيقي. أداة مجانية ابني Startup في 30 يوم — الحلقة التانية.',
     canonical: 'https://mentorna.com/one-feature',

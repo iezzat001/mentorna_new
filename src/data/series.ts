@@ -56,7 +56,7 @@ export const episodes: Episode[] = [
   {
     n: 2,
     slug: 'one-feature',
-    title: 'فخ الـ One Feature',
+    title: 'وهم الـ Features الكتير',
     hook: 'متجمعش مميزات المنافسين. اكتشف الـ Benefit الواحدة اللي هتخلي العميل يختارك.',
     source: 'One Feature Trap',
     canvasUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/1-Feature-Validator-Canvas.pdf',
