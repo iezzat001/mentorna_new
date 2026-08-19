@@ -323,7 +323,13 @@ const VslPlayer = () => {
         controls
         autoPlay
         playsInline
-        className="aspect-video w-full bg-black object-cover"
+        /*
+         * object-contain, not cover. The source may be vertical (phone
+         * footage) or landscape (a proper VSL). Cover crops a portrait video
+         * to its middle and cuts off the speaker's head. Contain letterboxes
+         * instead, so any aspect ratio plays back whole.
+         */
+        className="aspect-video w-full bg-black object-contain"
       />
     );
   }
