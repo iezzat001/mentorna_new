@@ -262,12 +262,10 @@
       var canon = document.querySelector('link[rel="canonical"]');
       if (canon) canon.setAttribute('href', url);
 
+      // Homepage JSON-LD describes the kids bootcamp. None of it is this offer.
       var scripts = document.querySelectorAll('script[type="application/ld+json"]');
       for (var i = 0; i < scripts.length; i++) {
-        var text = scripts[i].textContent || '';
-        if (/8-week|ages 8-18|\\u20ac5,000|\u20ac5,000|Python|children|teenagers|coding for kids/i.test(text)) {
-          scripts[i].parentNode && scripts[i].parentNode.removeChild(scripts[i]);
-        }
+        scripts[i].parentNode && scripts[i].parentNode.removeChild(scripts[i]);
       }
     })();
   </script>
