@@ -33,12 +33,15 @@ const SEO_TITLE = 'حاجتك. موجودة يوم الاثنين | Mentorna';
 const SEO_DESCRIPTION =
   'التكلفة $275. البداية أول سبتمبر، جمعة بعد الويبينار. refund كامل بعد 2 sessions. سجّل في الـ workshop على WhatsApp.';
 
-/** Ashraf, locked — do not rewrite. No trailing period. */
+/** Ashraf, locked — do not rewrite. Ends with استفدتش. */
 const ASHRAF_SUB =
-  'التكلفة $275. البداية أول سبتمبر، يوم جمعة مساء بعد معاد الويبينار. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش';
+  'التكلفة $275. البداية أول سبتمبر، يوم جمعة مساء بعد معاد الويبينار. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.';
 
 /** Ashraf, locked — do not rewrite. */
-const ASHRAF_REFUND = 'بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش';
+const ASHRAF_REFUND = 'بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.';
+
+const CTA_RESTATE =
+  'التكلفة $275. البداية أول سبتمبر. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.';
 
 const CTA_LABEL = 'سجّل في الـ workshop';
 const CTA_MICRO = 'لو مهتم تحجز هبعتلك رابط الدفع.';
@@ -56,20 +59,31 @@ const ATF_FACTS = [
   { q: 'Refund؟', a: ASHRAF_REFUND },
 ];
 
-const OUTCOMES = ['بتاعتك.', 'موجودة يوم الاثنين.'];
+const OUTCOMES = [
+  'تفهمي السيكونس ماشي إزاي والميندست بتاعت البزنس',
+  'ابدأ بfeature واحدة (المشكلة كلها too much features)',
+  'أول client',
+  'ليه دلوقتي: الأفكار ما بقتش مستحيلة.',
+];
+
+const FRIDAYS = [
+  { n: 1, label: 'person+problem' },
+  { n: 2, label: 'offer+v1 of one feature' },
+  { n: 3, label: 'on the ground in front of people' },
+  { n: 4, label: 'price + first client' },
+];
 
 const FOR_YOU = [
-  'Full-time technical، أفكار في دماغك، ومفيش business sense',
-  'عايز your own thing',
-  'سمعت "one feature" ولسه ما عملتهاش',
-  'تقدر الجمعة 3 ساعات × 4',
+  'فول تايم، أفكار في راسك، وعايز حاجة ليا مش شغل الشركة',
+  'مش حاسس إن عندك business sense، وعايز تفهم السيكونس',
+  'تقدر الجمعة، 3 ساعات، 4 مرات',
 ];
 
 const NOT_FOR_YOU = [
   'مستني الـ tool الصح',
-  'عايز webinar من غير ما تبني',
+  'عايز تسمع من غير ما تبني',
   'عايز حد يبنيهالك',
-  'عايز 1-on-1',
+  'عايز 1-on-1 — مش الصفحة دي',
 ];
 
 /* ────────────────────────────────────────────────────────────
@@ -264,8 +278,7 @@ const Build = () => {
             <SectionTitle>جمعة تبني. الاثنين موجودة.</SectionTitle>
             <div className={`${brutal} mt-5 bg-white px-4 py-4 md:px-5`}>
               <p className="text-base font-semibold leading-relaxed opacity-80">
-                الناس التكنيكل مش عندها مشكلة في الأداة. لما تعرف الدنيا ماشية إزاي، تستخدمها. الـ
-                tool بتساعدك. اللي بيفرّق: إيه اللي بعده، تبيع لمين، distribution.
+                يوم الاثنين تبقى موجودة. بتاعتك.
               </p>
               <p className="mt-3 text-base font-semibold leading-relaxed opacity-80">
                 4 sessions × 3 ساعات. Hands-on، مش ويبنار. الشغل جوه الـ session.
@@ -273,6 +286,10 @@ const Build = () => {
               <p className="mt-3 text-base font-semibold leading-relaxed opacity-80">
                 أول جمعة: 4 سبتمبر، حوالي 7 مساءً بعد الويبينار 6. لو مسافرة، حضورك من هناك ينفع.
                 فيه recording. الحضور هو الأساس.
+              </p>
+              <p className="mt-3 text-base font-semibold leading-relaxed opacity-80">
+                الناس التكنيكل مش عندها مشكلة في الأداة. لما تعرف الدنيا ماشية إزاي، تستخدمها. الـ
+                tool بتساعدك. اللي بيفرّق: إيه اللي بعده، تبيع لمين، distribution.
               </p>
             </div>
           </Reveal>
@@ -293,6 +310,23 @@ const Build = () => {
               </Reveal>
             ))}
           </ul>
+          <Reveal>
+            <div className={`${brutal} mt-4 bg-white px-4 py-3`}>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] opacity-50">
+                الأربع جمع
+              </p>
+              <ol className="mt-2 space-y-1.5">
+                {FRIDAYS.map((f) => (
+                  <li key={f.n} className="flex items-baseline gap-2 text-sm font-semibold">
+                    <span className="font-extrabold" style={{ color: CORAL }}>
+                      {f.n}.
+                    </span>
+                    <span>{f.label}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </Reveal>
         </section>
 
         <section className="pt-10 md:pt-12">
@@ -429,6 +463,9 @@ const Build = () => {
                 <h2 className="text-3xl font-extrabold leading-[1.15] md:text-4xl">
                   سجّل في الـ workshop.
                 </h2>
+                <p className="mx-auto mt-4 max-w-xl text-sm font-semibold leading-relaxed opacity-80">
+                  {CTA_RESTATE}
+                </p>
                 <div className="mt-6">
                   <ApplyBlock where="footer" align="center" />
                 </div>

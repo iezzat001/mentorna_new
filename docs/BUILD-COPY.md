@@ -15,7 +15,7 @@ H1: حاجتك.
 حتى لو صغيرة.
 Benefit line: يوم الاثنين تبقى موجودة. بتاعتك.
 Obstacle line: مش تفضل قاعد بتفجوليز مع نفسك ومفيش حاجة على الأرض.
-Sub (Ashraf, locked — do not rewrite): التكلفة $275. البداية أول سبتمبر، يوم جمعة مساء بعد معاد الويبينار. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش
+Sub (Ashraf, locked — do not rewrite): التكلفة $275. البداية أول سبتمبر، يوم جمعة مساء بعد معاد الويبينار. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.
 Fact chips:
 - فري ولا paid؟ مدفوع. $275
 - نبدء امتى؟ أول سبتمبر، جمعة مساء بعد الويبينار
@@ -27,16 +27,20 @@ Micro: لو مهتم تحجز هبعتلك رابط الدفع.
 ## 2. What it is
 Eyebrow: الـ workshop
 H2: جمعة تبني. الاثنين موجودة.
-Body: الناس التكنيكل مش عندها مشكلة في الأداة. لما تعرف الدنيا ماشية إزاي، تستخدمها. الـ tool بتساعدك. اللي بيفرّق: إيه اللي بعده، تبيع لمين، distribution.
-Under the benefit: 4 sessions × 3 ساعات. Hands-on، مش ويبنار. الشغل جوه الـ session.
+Body leads with Monday benefit: يوم الاثنين تبقى موجودة. بتاعتك.
+Then: 4 sessions × 3 ساعات. Hands-on، مش ويبنار. الشغل جوه الـ session.
+Tools/distribution sits under that, not the lead.
 أول جمعة: 4 سبتمبر، حوالي 7 مساءً بعد الويبينار 6. لو مسافرة، حضورك من هناك ينفع. فيه recording. الحضور هو الأساس.
 
 ## 3. Leave with
 Eyebrow: بتطلع بإيه
 H2: بتاعتك. وموجودة.
-Benefits (not a stack):
-- بتاعتك.
-- موجودة يوم الاثنين.
+Benefits:
+- تفهمي السيكونس ماشي إزاي والميندست بتاعت البزنس
+- ابدأ بfeature واحدة (المشكلة كلها too much features)
+- أول client
+- ليه دلوقتي: الأفكار ما بقتش مستحيلة.
+الأربع جمع (Friday outcomes, not a syllabus): 1 person+problem, 2 offer+v1 of one feature, 3 on the ground in front of people, 4 price + first client.
 
 ## 4. Price
 Eyebrow: السعر
@@ -48,8 +52,15 @@ Payment: لينك على الواتساب. فيزا/كارد، تحويل، Inst
 
 ## 5. Who
 Obstacle test (H2): دي بتاعتي؟ هتفضل موجودة يوم الاثنين؟
-Yes: full-time technical, ideas in their head, no business sense; wants their own thing; heard "one feature" and still hasn't; can do Friday 3h × 4.
-No: waiting for the right tool; wants a webinar without building; wants someone to build it for them; wants 1-on-1 — not this page.
+Yes:
+- فول تايم، أفكار في راسك، وعايز حاجة ليا مش شغل الشركة
+- مش حاسس إن عندك business sense، وعايز تفهم السيكونس
+- تقدر الجمعة، 3 ساعات، 4 مرات
+No:
+- مستني الـ tool الصح
+- عايز تسمع من غير ما تبني
+- عايز حد يبنيهالك
+- عايز 1-on-1 — مش الصفحة دي
 
 ## 6. Founding
 H2: دخلت، أنت in على طول.
@@ -57,6 +68,7 @@ H2: دخلت، أنت in على طول.
 
 ## 7. Final CTA
 H2: سجّل في الـ workshop.
+Restate: التكلفة $275. البداية أول سبتمبر. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.
 Button: سجّل في الـ workshop
 Under button: لو مهتم تحجز هبعتلك رابط الدفع.
 Second button: أو اسأل سؤال الأول.
