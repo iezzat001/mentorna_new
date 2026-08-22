@@ -102,13 +102,13 @@
       var path = (location.pathname || '/').replace(/\/+$/, '') || '/';
       if (path !== '/build') return;
 
-      var title = '\u062D\u0627\u062C\u062A\u0643. \u0645\u0648\u062C\u0648\u062F\u0629 \u064A\u0648\u0645 \u0627\u0644\u0627\u062B\u0646\u064A\u0646 | Mentorna';
-      var desc = '\u0627\u0644\u062A\u0643\u0644\u0641\u0629 $275. \u0627\u0644\u0628\u062F\u0627\u064A\u0629 \u0623\u0648\u0644 \u0633\u0628\u062A\u0645\u0628\u0631\u060C \u062C\u0645\u0639\u0629 \u0628\u0639\u062F \u0627\u0644\u0648\u064A\u0628\u064A\u0646\u0627\u0631. refund \u0643\u0627\u0645\u0644 \u0628\u0639\u062F 2 sessions. \u0633\u062C\u0651\u0644 \u0641\u064A \u0627\u0644\u0640 workshop \u0639\u0644\u0649 WhatsApp.';
+      var title = 'Your own thing. It exists on Monday | Mentorna';
+      var desc = '$275. Starts Friday 4 September, after the webinar. Full refund after 2 sessions. Register for the workshop on WhatsApp.';
       var url = 'https://mentorna.com/build';
 
       document.title = title;
-      document.documentElement.lang = 'ar';
-      document.documentElement.dir = 'rtl';
+      document.documentElement.lang = 'en';
+      document.documentElement.dir = 'ltr';
 
       function setMeta(attr, key, content) {
         var el = document.querySelector('meta[' + attr + '="' + key + '"]');
@@ -128,7 +128,7 @@
       setMeta('property', 'og:description', desc);
       setMeta('property', 'og:url', url);
       setMeta('property', 'og:site_name', 'Mentorna');
-      setMeta('property', 'og:locale', 'ar_EG');
+      setMeta('property', 'og:locale', 'en_US');
       setMeta('name', 'twitter:title', title);
       setMeta('name', 'twitter:description', desc);
 

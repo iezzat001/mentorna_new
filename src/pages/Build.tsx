@@ -3,7 +3,7 @@ import { Check, MessageCircle, X } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import { whatsappUrl } from '@/lib/whatsapp';
-import { eventPhotos } from '@/data/testimonials';
+import { eventPhotos, workshopVideoPoster } from '@/data/testimonials';
 
 /* ────────────────────────────────────────────────────────────
    Design tokens — same language as /workshop, /links, offer pages
@@ -28,69 +28,66 @@ const DOTS = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   Locked offer — docs/BUILD-COPY.md. Do not rewrite Ashraf lines.
+   Locked English — docs/BUILD-COPY.md. Do not rewrite.
    ──────────────────────────────────────────────────────────── */
-const PRICE = 275;
-const SEATS = 10;
-
-const SEO_TITLE = 'حاجتك. موجودة يوم الاثنين | Mentorna';
+const SEO_TITLE = 'Your own thing. It exists on Monday | Mentorna';
 const SEO_DESCRIPTION =
-  'التكلفة $275. البداية أول سبتمبر، جمعة بعد الويبينار. refund كامل بعد 2 sessions. سجّل في الـ workshop على WhatsApp.';
+  '$275. Starts Friday 4 September, after the webinar. Full refund after 2 sessions. Register for the workshop on WhatsApp.';
 
-/** Ashraf, locked — do not rewrite. Ends with استفدتش. */
-const ASHRAF_SUB =
-  'التكلفة $275. البداية أول سبتمبر، يوم جمعة مساء بعد معاد الويبينار. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.';
+const SUB =
+  '$275. Starts Friday 4 September, after the webinar. Full refund after 2 sessions if you didn\'t get anything from it.';
 
-/** Ashraf, locked — do not rewrite. */
-const ASHRAF_REFUND = 'بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.';
+const REFUND = 'Full refund after 2 sessions if you didn\'t get anything from it.';
 
 const CTA_RESTATE =
-  'التكلفة $275. البداية أول سبتمبر. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.';
+  '$275. Starts Friday 4 September. Full refund after 2 sessions if you didn\'t get anything from it.';
 
-const CTA_LABEL = 'سجّل في الـ workshop';
-const CTA_MICRO = 'لو مهتم تحجز هبعتلك رابط الدفع.';
+const CTA_LABEL = 'Register for the workshop';
+const CTA_MICRO = 'If you want a seat, I\'ll send the payment link.';
 
-const APPLY_MESSAGE = `سلام أحمد، عايز أسجّل في الـ workshop — أول سبتمبر، $275
-1) ببني إيه، أو الفكرة اللي في دماغي:
-2) بشتغل إيه دلوقتي (الشغلانة، مش bio):
-3) ليه دلوقتي:`;
+const APPLY_MESSAGE = [
+  'Hi Ahmed, I want to register for the workshop — 4 September, $275',
+  '1) What I\'m building, or the idea in my head:',
+  '2) What I do right now (the job, not a bio):',
+  '3) Why now:',
+].join('\n');
 
-const QUESTION_MESSAGE = 'سلام أحمد — سؤال على الـ workshop (لسه مش بسجّل):';
+const QUESTION_MESSAGE = 'Hi Ahmed — a question about the workshop (not registering yet):';
 
 const ATF_FACTS = [
-  { q: 'فري ولا paid؟', a: 'مدفوع. $275' },
-  { q: 'نبدء امتى؟', a: 'أول سبتمبر، جمعة مساء بعد الويبينار' },
-  { q: 'Refund؟', a: ASHRAF_REFUND },
+  { q: 'Free or paid?', a: 'Paid. $275' },
+  { q: 'When do we start?', a: 'Friday 4 September, evening after the webinar' },
+  { q: 'Refund?', a: REFUND },
 ];
 
 const OUTCOMES = [
-  'تفهمي السيكونس ماشي إزاي والميندست بتاعت البزنس',
-  'ابدأ بfeature واحدة (المشكلة كلها too much features)',
-  'أول client',
-  'ليه دلوقتي: الأفكار ما بقتش مستحيلة.',
+  'You understand the sequence and the business mindset',
+  'Start with one feature (the whole problem is too many features)',
+  'First client',
+  'Why now: ideas aren\'t impossible anymore.',
 ];
 
 const FRIDAYS = [
-  { n: 1, label: 'تعرف هي بتاعت مين، ولو مش تستاهلك تقتلها بدري.' },
-  { n: 2, label: 'حاجة واحدة شغالة، في الـ session، تقدر تفتحها الاثنين.' },
-  { n: 3, label: 'ناس حقيقيين يشوفوها.' },
-  { n: 4, label: 'سعر، طريق لأول client، والـ 9 الباقيين يشوفوا إنها بتاعتك.' },
+  { n: 1, label: 'You know who it\'s for, and if it isn\'t worth you, you kill it early.' },
+  { n: 2, label: 'One thing that works, in the session, you can open on Monday.' },
+  { n: 3, label: 'Real people see it.' },
+  { n: 4, label: 'A price, a path to the first client, and the other 9 see that it\'s yours.' },
 ];
 
 const FOR_YOU = [
-  'فول تايم، أفكار في راسك، وعايز حاجة ليا مش شغل الشركة',
-  'مش حاسس إن عندك business sense، وعايز تفهم السيكونس',
-  'تقدر الجمعة، 3 ساعات، 4 مرات',
+  'Full-time, ideas in your head, and you want something that\'s yours — not the company\'s',
+  'You don\'t feel like you have business sense, and you want to understand the sequence',
+  'You can do Friday, 3 hours, 4 times',
 ];
 
 const NOT_FOR_YOU = [
-  'مستني الـ tool الصح',
-  'عايز تسمع من غير ما تبني',
-  'عايز حد يبنيهالك',
-  'عايز 1-on-1 — مش الصفحة دي',
+  'Waiting for the right tool',
+  'You want to listen without building',
+  'You want someone else to build it',
+  'You want 1-on-1 — not this page',
 ];
 
-const PAY_MARKS = ['WhatsApp', 'فيزا', 'تحويل', 'Instapay'];
+const PAY_MARKS = ['WhatsApp', 'Visa', 'Transfer', 'Instapay'];
 
 const Eyebrow = ({ children }: { children: React.ReactNode }) => (
   <p className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.18em] opacity-50">
@@ -109,7 +106,7 @@ const Build = () => {
   useSEO({
     title: SEO_TITLE,
     description: SEO_DESCRIPTION,
-    keywords: 'workshop 0→1, Mentorna, حاجتك, $275',
+    keywords: 'workshop 0→1, Mentorna, $275',
     ogTitle: SEO_TITLE,
     ogDescription: SEO_DESCRIPTION,
     ogUrl: 'https://mentorna.com/build',
@@ -122,8 +119,8 @@ const Build = () => {
     const html = document.documentElement;
     const prevLang = html.lang;
     const prevDir = html.dir;
-    html.lang = 'ar';
-    html.dir = 'rtl';
+    html.lang = 'en';
+    html.dir = 'ltr';
     return () => {
       html.lang = prevLang;
       html.dir = prevDir;
@@ -157,32 +154,32 @@ const Build = () => {
 
   return (
     <div className="min-h-screen font-body text-[hsl(0,0%,10%)]" style={{ background: PAGE_BG }}>
-      <main className="mx-auto max-w-5xl px-4 pb-0" dir="rtl">
+      <main className="mx-auto max-w-5xl px-4 pb-0" dir="ltr">
         {/* 1. Internshala fold — button in first viewport. No extra $275. */}
         <header className="relative pt-3 md:pt-4">
           <div className={`${brutalLg} relative overflow-hidden bg-[hsl(0,0%,10%)] px-4 py-4 md:px-8 md:py-6`}>
             <div aria-hidden className="absolute inset-0 opacity-[0.16]" style={DOTS} />
             <div className="relative">
               <span className="inline-block border-2 border-white/40 bg-white/10 px-3 py-1 text-[11px] font-extrabold tracking-wider text-white">
-                ${PRICE} · أول سبتمبر · {SEATS} مقاعد
+                $275 · 4 September · 10 seats
               </span>
 
               <h1 className="mt-3 text-[2rem] font-extrabold leading-[1.05] text-white md:text-5xl">
-                حاجتك.
+                Your own thing.
                 <br />
-                حتى لو صغيرة.
+                Even if it's small.
               </h1>
 
               <p className="mt-3 max-w-2xl text-base font-semibold leading-snug text-white/85 md:text-lg">
-                يوم الاثنين تبقى موجودة. بتاعتك.
+                Monday, it still exists. It's yours.
               </p>
 
               <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-white/75 md:text-base">
-                مش تفضل قاعد بتفجوليز مع نفسك ومفيش حاجة على الأرض.
+                Not another week visualizing it with nothing on the ground.
               </p>
 
               <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-white/60">
-                {ASHRAF_SUB}
+                {SUB}
               </p>
 
               <div className="mt-3 flex flex-wrap gap-1.5">
@@ -204,45 +201,44 @@ const Build = () => {
           </div>
         </header>
 
-        {/* Real player — testimonial video. No Reveal / opacity-0. */}
-        <section className="pt-8 md:pt-10">
+        {/* Real player — under the hero. No Reveal / opacity-0. No name. */}
+        <section className="pt-6 md:pt-8">
           <div className={`${brutalLg} overflow-hidden bg-[hsl(0,0%,10%)]`}>
             <video
               src={VIDEO_SRC}
+              poster={workshopVideoPoster}
               controls
               playsInline
               preload="metadata"
               className="aspect-video w-full bg-black object-contain"
             />
             <div className="grid grid-cols-3 divide-x-2 divide-[hsl(0,0%,10%)] border-t-4 border-[hsl(0,0%,10%)] bg-white text-center">
-              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">{ASHRAF_REFUND}</p>
-              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">{SEATS} مقاعد</p>
-              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">هيروح ~$500</p>
+              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">{REFUND}</p>
+              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">10 seats</p>
+              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">Price goes to ~$500</p>
             </div>
           </div>
         </section>
 
         {/* 2. Kennedy look-inside cards — 4×3h lives here */}
         <section className="pt-8 md:pt-10">
-          <Eyebrow>الـ workshop</Eyebrow>
-          <SectionTitle>جمعة تبني. الاثنين موجودة.</SectionTitle>
+          <Eyebrow>The workshop</Eyebrow>
+          <SectionTitle>Build Friday. It exists on Monday.</SectionTitle>
           <div className="mt-4 grid items-start gap-3 md:grid-cols-2">
             <div className={`${brutal} bg-[hsl(0,0%,10%)] px-4 py-4`}>
               <p className="text-base font-extrabold leading-snug text-white">
-                يوم الاثنين تبقى موجودة. بتاعتك.
+                Monday, it still exists. It's yours.
               </p>
               <p className="mt-2 text-sm font-semibold leading-snug text-white/75">
-                4 sessions × 3 ساعات. Hands-on، مش ويبنار. الشغل جوه الـ session.
+                4 sessions × 3 hours. Hands-on, not a webinar. The work happens in the session.
               </p>
             </div>
             <div className={`${brutal} bg-white px-4 py-4`}>
               <p className="text-sm font-semibold leading-snug opacity-80">
-                أول جمعة: 4 سبتمبر، حوالي 7 مساءً بعد الويبينار 6. لو مسافرة، حضورك من هناك ينفع.
-                فيه recording. الحضور هو الأساس.
+                First Friday: 4 September, around 7pm after the 6pm webinar. If you're travelling, you can join from there. There's a recording. Showing up is the point.
               </p>
               <p className="mt-2 text-sm font-semibold leading-snug opacity-70">
-                الناس التكنيكل مش عندها مشكلة في الأداة. لما تعرف الدنيا ماشية إزاي، تستخدمها. الـ
-                tool بتساعدك. اللي بيفرّق: إيه اللي بعده، تبيع لمين، distribution.
+                Technical people don't have a tool problem. Once they see how it works, they use it. The tool helps. What differs: what comes next, who you sell to, distribution.
               </p>
             </div>
           </div>
@@ -250,8 +246,8 @@ const Build = () => {
 
         {/* 3. Strategyzer outcomes — image-hugs-paragraph + Friday rows */}
         <section className="pt-8 md:pt-10">
-          <Eyebrow>بتطلع بإيه</Eyebrow>
-          <SectionTitle>بتاعتك. وموجودة.</SectionTitle>
+          <Eyebrow>What you leave with</Eyebrow>
+          <SectionTitle>Yours. And it exists.</SectionTitle>
           <ul className="mt-4 grid items-start gap-3 sm:grid-cols-2">
             {OUTCOMES.map((item, i) => (
               <li key={item} className={`${brutal} bg-white px-3 py-3`}>
@@ -267,7 +263,7 @@ const Build = () => {
           </ul>
           <div className={`${brutal} mt-3 bg-white px-3 py-3`}>
             <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] opacity-50">
-              الأربع جمع
+              The four Fridays
             </p>
             <ol className="mt-2 grid gap-1.5 sm:grid-cols-2">
               {FRIDAYS.map((f) => (
@@ -286,21 +282,17 @@ const Build = () => {
         <section id="apply" className="scroll-mt-6 pt-8 md:pt-10">
           <div className={`${brutalLg} mx-auto max-w-xl overflow-hidden bg-white`}>
             <div className="px-4 py-4">
-              <Eyebrow>السعر</Eyebrow>
-              <h2 className="text-2xl font-extrabold md:text-3xl">
-                التكلفة ${PRICE}. {SEATS} مقاعد.
-              </h2>
+              <Eyebrow>Price</Eyebrow>
+              <h2 className="text-2xl font-extrabold md:text-3xl">$275. 10 seats.</h2>
               <p className="mt-1 text-sm font-extrabold opacity-70">
-                4 sessions × 3 ساعات · الجمعة 4 سبتمبر
+                4 sessions × 3 hours · Friday 4 September
               </p>
-              <p className="mt-4 text-5xl font-extrabold leading-none">${PRICE}</p>
-              <p className="mt-3 text-sm font-extrabold leading-snug">{ASHRAF_REFUND}</p>
+              <p className="mt-3 text-sm font-extrabold leading-snug">{REFUND}</p>
               <p className="mt-2 text-sm font-semibold leading-snug opacity-80">
-                مش غالي خالص. بالمصري عامل 14,000 أو 13,900. في كورس بـ 20 ألف على sessionين. ده
-                نص السعر، وبعدين هيروح ~$500. أول ناس تدخل، access على كل اللي جاي.
+                Not expensive. In EGP that's 14,000 or 13,900. There's a course at 20k for two sessions. This is half the price, then it goes to ~$500. First people in get access to everything that comes next.
               </p>
               <p className="mt-2 text-sm font-semibold leading-snug opacity-70">
-                لينك على الواتساب. فيزا/كارد، تحويل، Instapay من مصر.
+                Link on WhatsApp. Visa/card, transfer, Instapay from Egypt.
               </p>
               <div className="mt-4">
                 <ApplyButton where="pricing" />
@@ -320,13 +312,13 @@ const Build = () => {
           </div>
         </section>
 
-        {/* 5. Al-Tayseer RTL who */}
+        {/* 5. Al-Tayseer who */}
         <section className="pt-8 md:pt-10">
-          <SectionTitle>دي بتاعتي؟ هتفضل موجودة يوم الاثنين؟</SectionTitle>
+          <SectionTitle>is this mine? Will it still exist on Monday?</SectionTitle>
           <div className="mt-4 grid items-start gap-3 md:grid-cols-2">
             <div className={`${brutal} bg-white px-4 py-3`}>
               <h3 className="text-base font-extrabold" style={{ color: TEAL }}>
-                ينفع ليك لو
+                This is for you if
               </h3>
               <ul className="mt-2 space-y-1.5">
                 {FOR_YOU.map((f) => (
@@ -338,7 +330,7 @@ const Build = () => {
               </ul>
             </div>
             <div className={`${brutal} bg-[hsl(0,0%,96%)] px-4 py-3`}>
-              <h3 className="text-base font-extrabold opacity-70">مش ليك لو</h3>
+              <h3 className="text-base font-extrabold opacity-70">Not for you if</h3>
               <ul className="mt-2 space-y-1.5">
                 {NOT_FOR_YOU.map((f) => (
                   <li key={f} className="flex items-start gap-2">
@@ -368,10 +360,10 @@ const Build = () => {
               <div aria-hidden className="absolute inset-0 opacity-[0.12]" style={DOTS} />
               <div className="relative">
                 <h2 className="text-2xl font-extrabold leading-[1.15] text-white md:text-3xl">
-                  دخلت، أنت in على طول.
+                  You're in. You're in immediately.
                 </h2>
                 <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-white/85">
-                  أول دفعة. السعر هيروح ~$500. Access على كل اللي بعده. مش timer.
+                  First cohort. Price goes to ~$500. Access to everything after. Not a timer.
                 </p>
               </div>
             </div>
@@ -379,12 +371,12 @@ const Build = () => {
         </section>
       </main>
 
-      {/* 7. SCATCODE close — dark band. No English footer. */}
-      <section className="mt-8 bg-[hsl(0,0%,10%)]" dir="rtl">
+      {/* 7. SCATCODE close — dark band. No English site footer. */}
+      <section className="mt-8 bg-[hsl(0,0%,10%)]" dir="ltr">
         <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-4 px-4 py-6 md:flex-row md:items-center md:py-8">
           <div>
             <h2 className="text-2xl font-extrabold leading-[1.15] text-white md:text-3xl">
-              سجّل في الـ workshop.
+              Register for the workshop
             </h2>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-snug text-white/70">
               {CTA_RESTATE}
@@ -400,7 +392,7 @@ const Build = () => {
                 rel="noopener noreferrer"
                 className="text-white underline decoration-2 underline-offset-4"
               >
-                أو اسأل سؤال الأول.
+                Or ask a question first.
               </a>
             </p>
           </div>
