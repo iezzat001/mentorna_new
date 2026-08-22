@@ -61,11 +61,14 @@ const ATF_FACTS = [
 ];
 
 const OUTCOMES = [
-  'You understand the sequence and the business mindset',
-  'Start with one feature (the whole problem is too many features)',
-  'First client',
-  'Why now: ideas aren\'t impossible anymore.',
+  'Your own thing — even if it\'s small. You build it. You can grow it. It\'s yours, not your job\'s.',
+  'It exists on Monday — not a picture in your head. Too many features is the whole problem. Start with one, so it still exists.',
+  'You understand the sequence — how the business mindset actually moves. So you can run it after the four Fridays.',
+  'A path to the first client — how you market, how you pitch. Not a new salary in four weeks.',
 ];
+
+const WHY_NOW =
+  'ideas are not impossible anymore. We have the tools in our hands. What\'s left is getting it on the ground before the week ends.';
 
 const FRIDAYS = [
   { n: 1, label: 'You know who it\'s for, and if it isn\'t worth you, you kill it early.' },
@@ -82,8 +85,8 @@ const FOR_YOU = [
 
 const NOT_FOR_YOU = [
   'Waiting for the right tool',
-  'You want to listen without building',
-  'You want someone else to build it',
+  'listen and have nothing on Monday',
+  'someone else to build it — then it isn\'t yours.',
   'You want 1-on-1 — not this page',
 ];
 
@@ -261,6 +264,7 @@ const Build = () => {
               </li>
             ))}
           </ul>
+          <p className="mt-3 text-sm font-semibold leading-snug">{WHY_NOW}</p>
           <div className={`${brutal} mt-3 bg-white px-3 py-3`}>
             <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] opacity-50">
               The four Fridays
@@ -314,7 +318,7 @@ const Build = () => {
 
         {/* 5. Al-Tayseer who */}
         <section className="pt-8 md:pt-10">
-          <SectionTitle>is this mine? Will it still exist on Monday?</SectionTitle>
+          <SectionTitle>This is for you if the question in your way is: is this mine? Will it still exist on Monday?</SectionTitle>
           <div className="mt-4 grid items-start gap-3 md:grid-cols-2">
             <div className={`${brutal} bg-white px-4 py-3`}>
               <h3 className="text-base font-extrabold" style={{ color: TEAL }}>
@@ -360,10 +364,10 @@ const Build = () => {
               <div aria-hidden className="absolute inset-0 opacity-[0.12]" style={DOTS} />
               <div className="relative">
                 <h2 className="text-2xl font-extrabold leading-[1.15] text-white md:text-3xl">
-                  You're in. You're in immediately.
+                  You're in. First group.
                 </h2>
                 <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-white/85">
-                  First cohort. Price goes to ~$500. Access to everything after. Not a timer.
+                  Price goes to ~$500. Access to everything after. Not a timer.
                 </p>
               </div>
             </div>
