@@ -71,10 +71,10 @@ const OUTCOMES = [
 ];
 
 const FRIDAYS = [
-  { n: 1, label: 'person+problem' },
-  { n: 2, label: 'offer+v1 of one feature' },
-  { n: 3, label: 'on the ground in front of people' },
-  { n: 4, label: 'price + first client' },
+  { n: 1, label: 'تعرف هي بتاعت مين، ولو مش تستاهلك تقتلها بدري.' },
+  { n: 2, label: 'حاجة واحدة شغالة، في الـ session، تقدر تفتحها الاثنين.' },
+  { n: 3, label: 'ناس حقيقيين يشوفوها.' },
+  { n: 4, label: 'سعر، طريق لأول client، والـ 9 الباقيين يشوفوا إنها بتاعتك.' },
 ];
 
 const FOR_YOU = [
