@@ -33,12 +33,15 @@ const SEO_TITLE = 'Workshop 0→1 — حاجتك على الأرض | Mentorna';
 const SEO_DESCRIPTION =
   'التكلفة $275. البداية أول سبتمبر، جمعة بعد الويبينار. refund كامل بعد 2 sessions. سجّل في الـ workshop على WhatsApp.';
 
-/** Ashraf, locked — do not rewrite. */
+/** Ashraf, locked — do not rewrite. No trailing period. */
 const ASHRAF_SUB =
-  'التكلفة $275. البداية أول سبتمبر، يوم جمعة مساء بعد معاد الويبينار. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.';
+  'التكلفة $275. البداية أول سبتمبر، يوم جمعة مساء بعد معاد الويبينار. بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش';
 
 /** Ashraf, locked — do not rewrite. */
-const ASHRAF_REFUND = 'بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش.';
+const ASHRAF_REFUND = 'بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش';
+
+const CTA_LABEL = 'سجّل في الـ workshop';
+const CTA_MICRO = 'لو مهتم تحجز هبعتلك رابط الدفع. هدفع باللينك.';
 
 const APPLY_MESSAGE = `سلام أحمد، عايز أسجّل في الـ workshop — أول سبتمبر، $275
 1) ببني إيه، أو الفكرة اللي في دماغي:
@@ -61,8 +64,8 @@ const OUTCOMES = [
 ];
 
 const FRIDAYS = [
-  { n: 1, label: 'person + problem' },
-  { n: 2, label: 'offer + v1 of one feature' },
+  { n: 1, label: 'person+problem' },
+  { n: 2, label: 'offer+v1 of one feature' },
   { n: 3, label: 'on the ground in front of people' },
   { n: 4, label: 'price + first client' },
 ];
@@ -166,15 +169,7 @@ const Build = () => {
   const applyHref = whatsappUrl(APPLY_MESSAGE);
   const questionHref = whatsappUrl(QUESTION_MESSAGE);
 
-  const ApplyButton = ({
-    where,
-    label = 'سجّل في الـ workshop',
-    dark = true,
-  }: {
-    where: string;
-    label?: string;
-    dark?: boolean;
-  }) => (
+  const ApplyButton = ({ where, dark = true }: { where: string; dark?: boolean }) => (
     <a
       href={applyHref}
       target="_blank"
@@ -185,8 +180,29 @@ const Build = () => {
       }`}
     >
       <MessageCircle className="h-5 w-5" style={{ color: dark ? TEAL : undefined }} />
-      {label}
+      {CTA_LABEL}
     </a>
+  );
+
+  const ApplyBlock = ({
+    where,
+    dark = true,
+    align = 'start',
+  }: {
+    where: string;
+    dark?: boolean;
+    align?: 'start' | 'center';
+  }) => (
+    <div className={align === 'center' ? 'text-center' : undefined}>
+      <ApplyButton where={where} dark={dark} />
+      <p
+        className={`mt-3 text-sm font-semibold ${
+          dark ? 'opacity-70' : 'text-white/50'
+        }`}
+      >
+        {CTA_MICRO}
+      </p>
+    </div>
   );
 
   return (
@@ -240,11 +256,8 @@ const Build = () => {
                 </dl>
 
                 <div className="mt-6">
-                  <ApplyButton where="hero" dark={false} />
+                  <ApplyBlock where="hero" dark={false} />
                 </div>
-                <p className="mt-3 text-sm font-semibold text-white/50">
-                  لو مهتم تحجز هبعتلك رابط الدفع. هدفع باللينك.
-                </p>
               </div>
             </div>
           </Reveal>
@@ -299,7 +312,7 @@ const Build = () => {
                   لينك على الواتساب. فيزا/كارد، تحويل، Instapay من مصر.
                 </p>
                 <div className="mt-5">
-                  <ApplyButton where="pricing" />
+                  <ApplyBlock where="pricing" align="center" />
                 </div>
               </div>
             </div>
@@ -430,11 +443,8 @@ const Build = () => {
                   سجّل في الـ workshop.
                 </h2>
                 <div className="mt-6">
-                  <ApplyButton where="footer" />
+                  <ApplyBlock where="footer" align="center" />
                 </div>
-                <p className="mt-3 text-sm font-semibold opacity-70">
-                  لو مهتم تحجز هبعتلك رابط الدفع. هدفع باللينك.
-                </p>
                 <p className="mt-3 text-sm font-semibold">
                   <a
                     href={questionHref}

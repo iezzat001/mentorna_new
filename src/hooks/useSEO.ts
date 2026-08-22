@@ -152,15 +152,18 @@ export const useSEO = ({
  * Use this as a base for page-specific SEO
  */
 export const defaultSEO: SEOProps = {
-  title: 'Mentorna AI Bootcamp - Learn Coding & Build AI Startups in 8 Weeks | €5,000 Prize',
-  description: 'Join Mentorna\'s 8-week AI & Entrepreneurship Bootcamp. Learn Python, machine learning, web development, and build your own AI startup. Expert mentors, hands-on projects, and €5,000 prize competition.',
-  keywords: 'AI bootcamp, coding bootcamp, entrepreneurship program, Python programming, machine learning, web development, AI education, startup incubator, tech skills, young entrepreneurs, AI innovation, coding for kids, STEM education, artificial intelligence training, Mentorna',
-  ogTitle: 'Mentorna AI Bootcamp - Learn Coding & Build AI Startups in 8 Weeks',
-  ogDescription: 'Master AI, coding, and entrepreneurship with expert mentors. 8-week intensive program with hands-on projects, €5,000 competition, and lifetime access to materials.',
+  title: 'Mentorna',
+  description:
+    'Helping founders validate ideas, build MVPs, and launch with repeatable AI-powered execution systems.',
+  keywords: 'Mentorna, workshop, founders, 0→1',
+  ogTitle: 'Mentorna',
+  ogDescription:
+    'Helping founders validate ideas, build MVPs, and launch with repeatable AI-powered execution systems.',
   ogImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-og-image.jpg',
   ogUrl: 'https://mentorna.com',
-  twitterTitle: 'Mentorna AI Bootcamp - Learn Coding & Build AI Startups',
-  twitterDescription: '8-week intensive AI & entrepreneurship program. Learn Python, ML, web dev, and launch your startup with expert mentors.',
+  twitterTitle: 'Mentorna',
+  twitterDescription:
+    'Helping founders validate ideas, build MVPs, and launch with repeatable AI-powered execution systems.',
   twitterImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-twitter-card.jpg',
   canonical: 'https://mentorna.com/',
   noindex: false,
