@@ -29,7 +29,7 @@ const DOTS = {
 const PRICE = 275;
 const SEATS = 10;
 
-const SEO_TITLE = 'Workshop 0→1 — حاجتك على الأرض | Mentorna';
+const SEO_TITLE = 'حاجتك. موجودة يوم الاثنين | Mentorna';
 const SEO_DESCRIPTION =
   'التكلفة $275. البداية أول سبتمبر، جمعة بعد الويبينار. refund كامل بعد 2 sessions. سجّل في الـ workshop على WhatsApp.';
 
@@ -41,7 +41,7 @@ const ASHRAF_SUB =
 const ASHRAF_REFUND = 'بعد 2 sessions من حقك تطلب refund كامل لو ما استفدتش';
 
 const CTA_LABEL = 'سجّل في الـ workshop';
-const CTA_MICRO = 'لو مهتم تحجز هبعتلك رابط الدفع. هدفع باللينك.';
+const CTA_MICRO = 'لو مهتم تحجز هبعتلك رابط الدفع.';
 
 const APPLY_MESSAGE = `سلام أحمد، عايز أسجّل في الـ workshop — أول سبتمبر، $275
 1) ببني إيه، أو الفكرة اللي في دماغي:
@@ -56,19 +56,7 @@ const ATF_FACTS = [
   { q: 'Refund؟', a: ASHRAF_REFUND },
 ];
 
-const OUTCOMES = [
-  'حاجتك / my own thing',
-  'تفهمي السيكونس ماشي إزاي والميندست بتاعت البزنس',
-  'ابدأ بfeature واحدة',
-  'أول client',
-];
-
-const FRIDAYS = [
-  { n: 1, label: 'person+problem' },
-  { n: 2, label: 'offer+v1 of one feature' },
-  { n: 3, label: 'on the ground in front of people' },
-  { n: 4, label: 'price + first client' },
-];
+const OUTCOMES = ['بتاعتك.', 'موجودة يوم الاثنين.'];
 
 const FOR_YOU = [
   'Full-time technical، أفكار في دماغك، ومفيش business sense',
@@ -233,10 +221,12 @@ const Build = () => {
                   حاجتك.
                   <br />
                   حتى لو صغيرة.
+                  <br />
+                  بتاعتك.
                 </h1>
 
                 <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed text-white/80 md:text-lg">
-                  مش تفضل قاعد بتفجوليز مع نفسك ومفيش حاجة على الأرض.
+                  يوم الاثنين تبقى موجودة. بتاعتك.
                 </p>
 
                 <p className="mt-4 max-w-2xl text-sm font-semibold leading-relaxed text-white/65 md:text-base">
@@ -267,7 +257,7 @@ const Build = () => {
         <section className="pt-10 md:pt-12">
           <Reveal>
             <Eyebrow>الـ workshop</Eyebrow>
-            <SectionTitle>Workshop. 4 أسابيع. Surround بالبزنس.</SectionTitle>
+            <SectionTitle>جمعة تبني. الاثنين موجودة.</SectionTitle>
             <div className={`${brutal} mt-5 bg-white px-4 py-4 md:px-5`}>
               <p className="text-base font-semibold leading-relaxed opacity-80">
                 الناس التكنيكل مش عندها مشكلة في الأداة. لما تعرف الدنيا ماشية إزاي، تستخدمها. الـ
@@ -323,40 +313,17 @@ const Build = () => {
         <section className="pt-10 md:pt-12">
           <Reveal>
             <Eyebrow>بتطلع بإيه</Eyebrow>
-            <SectionTitle>حاجتك. وتفهمي السيكونس.</SectionTitle>
+            <SectionTitle>بتاعتك. وموجودة.</SectionTitle>
           </Reveal>
-          <ol className="mt-5 space-y-2">
-            {OUTCOMES.map((item, i) => (
-              <Reveal key={item} delay={i * 50}>
-                <li className={`${brutal} flex items-start gap-3 bg-white px-3 py-2.5`}>
-                  <span
-                    className="flex h-7 w-7 shrink-0 items-center justify-center border-2 border-[hsl(0,0%,10%)] text-sm font-extrabold"
-                    style={{ background: AMBER }}
-                  >
-                    {i + 1}
-                  </span>
-                  <span className="pt-0.5 text-sm font-extrabold leading-snug">{item}</span>
+          <ul className="mt-5 space-y-2">
+            {OUTCOMES.map((item) => (
+              <Reveal key={item}>
+                <li className={`${brutal} bg-white px-4 py-2.5 text-sm font-extrabold leading-snug`}>
+                  {item}
                 </li>
               </Reveal>
             ))}
-          </ol>
-          <Reveal>
-            <div className={`${brutal} mt-4 bg-white px-4 py-3`}>
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] opacity-50">
-                الأربع جمع
-              </p>
-              <ol className="mt-2 space-y-1.5">
-                {FRIDAYS.map((f) => (
-                  <li key={f.n} className="flex items-baseline gap-2 text-sm font-semibold">
-                    <span className="font-extrabold" style={{ color: CORAL }}>
-                      {f.n}.
-                    </span>
-                    <span>{f.label}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </Reveal>
+          </ul>
         </section>
 
         {/* Outcomes card (main ~839–852). Video src only; no names in locked copy. */}
@@ -383,7 +350,10 @@ const Build = () => {
 
         {/* ══ 5. WHO IT IS / IS NOT ══ */}
         <section className="pt-10 md:pt-12">
-          <div className="grid items-start gap-3 md:grid-cols-2">
+          <Reveal>
+            <SectionTitle>دي بتاعتي؟ هتفضل موجودة يوم الاثنين؟</SectionTitle>
+          </Reveal>
+          <div className="mt-5 grid items-start gap-3 md:grid-cols-2">
             <Reveal>
               <div className={`${brutal} bg-white px-4 py-4`}>
                 <div className="mb-3 flex items-center gap-2">
