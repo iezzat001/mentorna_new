@@ -3,7 +3,7 @@ import { Check, MessageCircle, X } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import { whatsappUrl } from '@/lib/whatsapp';
-import { eventPhotos, workshopVideoPoster } from '@/data/testimonials';
+import { eventPhotos } from '@/data/testimonials';
 
 /* ────────────────────────────────────────────────────────────
    Design tokens — same language as /workshop, /links, offer pages
@@ -204,6 +204,24 @@ const Build = () => {
           </div>
         </header>
 
+        {/* Real player — testimonial video. No Reveal / opacity-0. */}
+        <section className="pt-8 md:pt-10">
+          <div className={`${brutalLg} overflow-hidden bg-[hsl(0,0%,10%)]`}>
+            <video
+              src={VIDEO_SRC}
+              controls
+              playsInline
+              preload="metadata"
+              className="aspect-video w-full bg-black object-contain"
+            />
+            <div className="grid grid-cols-3 divide-x-2 divide-[hsl(0,0%,10%)] border-t-4 border-[hsl(0,0%,10%)] bg-white text-center">
+              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">{ASHRAF_REFUND}</p>
+              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">{SEATS} مقاعد</p>
+              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">هيروح ~$500</p>
+            </div>
+          </div>
+        </section>
+
         {/* 2. Kennedy look-inside cards — 4×3h lives here */}
         <section className="pt-8 md:pt-10">
           <Eyebrow>الـ workshop</Eyebrow>
@@ -261,25 +279,6 @@ const Build = () => {
                 </li>
               ))}
             </ol>
-          </div>
-        </section>
-
-        {/* Real player — testimonial video. No Reveal / opacity-0. */}
-        <section className="pt-8 md:pt-10">
-          <div className={`${brutalLg} overflow-hidden bg-[hsl(0,0%,10%)]`}>
-            <video
-              src={VIDEO_SRC}
-              poster={workshopVideoPoster}
-              controls
-              playsInline
-              preload="metadata"
-              className="aspect-video w-full bg-black object-contain"
-            />
-            <div className="grid grid-cols-3 divide-x-2 divide-[hsl(0,0%,10%)] border-t-4 border-[hsl(0,0%,10%)] bg-white text-center">
-              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">{ASHRAF_REFUND}</p>
-              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">{SEATS} مقاعد</p>
-              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">هيروح ~$500</p>
-            </div>
           </div>
         </section>
 
