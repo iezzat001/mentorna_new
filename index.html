@@ -217,6 +217,61 @@
   </script>
   
     <title>Mentorna AI Bootcamp - Learn Coding & Build AI Startups in 8 Weeks | €5,000 Prize</title>
+
+  <!--
+    /build is an SPA route that otherwise inherits the homepage kids-bootcamp
+    title/meta/JSON-LD until React hydrates. This runs at the end of <head>,
+    before #root, so /build never flashes or ships that offer in the document.
+    Locked strings: docs/BUILD-COPY.md
+  -->
+  <script>
+    (function () {
+      var path = (location.pathname || '/').replace(/\/+$/, '') || '/';
+      if (path !== '/build') return;
+
+      var title = 'Workshop 0\u21921 \u2014 \u062D\u0627\u062C\u062A\u0643 \u0639\u0644\u0649 \u0627\u0644\u0623\u0631\u0636 | Mentorna';
+      var desc = '\u0627\u0644\u062A\u0643\u0644\u0641\u0629 $275. \u0627\u0644\u0628\u062F\u0627\u064A\u0629 \u0623\u0648\u0644 \u0633\u0628\u062A\u0645\u0628\u0631\u060C \u062C\u0645\u0639\u0629 \u0628\u0639\u062F \u0627\u0644\u0648\u064A\u0628\u064A\u0646\u0627\u0631. refund \u0643\u0627\u0645\u0644 \u0628\u0639\u062F 2 sessions. \u0633\u062C\u0651\u0644 \u0641\u064A \u0627\u0644\u0640 workshop \u0639\u0644\u0649 WhatsApp.';
+      var url = 'https://mentorna.com/build';
+
+      document.title = title;
+      document.documentElement.lang = 'ar';
+      document.documentElement.dir = 'rtl';
+
+      function setMeta(attr, key, content) {
+        var el = document.querySelector('meta[' + attr + '="' + key + '"]');
+        if (!el) {
+          el = document.createElement('meta');
+          el.setAttribute(attr, key);
+          document.head.appendChild(el);
+        }
+        el.setAttribute('content', content);
+      }
+
+      setMeta('name', 'description', desc);
+      setMeta('name', 'keywords', 'workshop 0\u21921, Mentorna, $275');
+      setMeta('name', 'application-name', 'Mentorna');
+      setMeta('name', 'apple-mobile-web-app-title', 'Mentorna');
+      setMeta('property', 'og:title', title);
+      setMeta('property', 'og:description', desc);
+      setMeta('property', 'og:url', url);
+      setMeta('property', 'og:site_name', 'Mentorna');
+      setMeta('property', 'og:locale', 'ar_EG');
+      setMeta('name', 'twitter:title', title);
+      setMeta('name', 'twitter:description', desc);
+
+      var canon = document.querySelector('link[rel="canonical"]');
+      if (canon) canon.setAttribute('href', url);
+
+      var scripts = document.querySelectorAll('script[type="application/ld+json"]');
+      for (var i = 0; i < scripts.length; i++) {
+        var text = scripts[i].textContent || '';
+        if (/8-week|ages 8-18|\\u20ac5,000|\u20ac5,000|Python|children|teenagers|coding for kids/i.test(text)) {
+          scripts[i].parentNode && scripts[i].parentNode.removeChild(scripts[i]);
+        }
+      }
+    })();
+  </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">

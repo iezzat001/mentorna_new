@@ -42,6 +42,12 @@ export const useSEO = ({
   canonical,
   noindex = false,
 }: SEOProps) => {
+  const resolvedOgTitle = ogTitle || title;
+  const resolvedOgDescription = ogDescription || description;
+  const resolvedTwitterTitle = twitterTitle || resolvedOgTitle;
+  const resolvedTwitterDescription = twitterDescription || resolvedOgDescription;
+  const resolvedOgUrl = ogUrl || canonical;
+
   useEffect(() => {
     // Update document title
     if (title) {
@@ -90,30 +96,31 @@ export const useSEO = ({
       updateMetaTag('meta[name="robots"]', 'name', 'index, follow');
     }
 
-    // Update Open Graph tags
-    if (ogTitle) {
-      updateMetaTag('meta[property="og:title"]', 'property', ogTitle);
+    // Update Open Graph tags. Title/description fall back so a page that
+    // only sets those does not keep homepage (kids bootcamp) social tags.
+    if (resolvedOgTitle) {
+      updateMetaTag('meta[property="og:title"]', 'property', resolvedOgTitle);
     }
 
-    if (ogDescription) {
-      updateMetaTag('meta[property="og:description"]', 'property', ogDescription);
+    if (resolvedOgDescription) {
+      updateMetaTag('meta[property="og:description"]', 'property', resolvedOgDescription);
     }
 
     if (ogImage) {
       updateMetaTag('meta[property="og:image"]', 'property', ogImage);
     }
 
-    if (ogUrl) {
-      updateMetaTag('meta[property="og:url"]', 'property', ogUrl);
+    if (resolvedOgUrl) {
+      updateMetaTag('meta[property="og:url"]', 'property', resolvedOgUrl);
     }
 
     // Update Twitter Card tags
-    if (twitterTitle) {
-      updateMetaTag('meta[name="twitter:title"]', 'name', twitterTitle);
+    if (resolvedTwitterTitle) {
+      updateMetaTag('meta[name="twitter:title"]', 'name', resolvedTwitterTitle);
     }
 
-    if (twitterDescription) {
-      updateMetaTag('meta[name="twitter:description"]', 'name', twitterDescription);
+    if (resolvedTwitterDescription) {
+      updateMetaTag('meta[name="twitter:description"]', 'name', resolvedTwitterDescription);
     }
 
     if (twitterImage) {
@@ -128,12 +135,12 @@ export const useSEO = ({
     title,
     description,
     keywords,
-    ogTitle,
-    ogDescription,
+    resolvedOgTitle,
+    resolvedOgDescription,
     ogImage,
-    ogUrl,
-    twitterTitle,
-    twitterDescription,
+    resolvedOgUrl,
+    resolvedTwitterTitle,
+    resolvedTwitterDescription,
     twitterImage,
     canonical,
     noindex,
