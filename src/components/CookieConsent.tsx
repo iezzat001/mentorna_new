@@ -44,6 +44,16 @@ const CookieConsent = () => {
   useEffect(() => {
     const consent = localStorage.getItem('cookie_consent');
     if (!consent) {
+      const path = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+      // /build first screen must stay clear. Bottom strip after first scroll.
+      if (path === '/build') {
+        const onScroll = () => {
+          setShowBanner(true);
+          window.removeEventListener('scroll', onScroll);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+      }
       setShowBanner(true);
     } else {
       try {

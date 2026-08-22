@@ -111,7 +111,7 @@ const App = () => {
                   {/* Workshop landing page (v1 — kept as reference) */}
                   <Route path="/workshop" element={<Workshop />} />
 
-                  {/* Workshop v2 — repositioned for busy professionals */}
+                  {/* 0→1 workshop offer — locked copy in docs/BUILD-COPY.md */}
                   <Route path="/build" element={<Build />} />
 
                   {/* 1:1 mentorship landing page */}

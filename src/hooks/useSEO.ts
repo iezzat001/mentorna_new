@@ -42,6 +42,12 @@ export const useSEO = ({
   canonical,
   noindex = false,
 }: SEOProps) => {
+  const resolvedOgTitle = ogTitle || title;
+  const resolvedOgDescription = ogDescription || description;
+  const resolvedTwitterTitle = twitterTitle || resolvedOgTitle;
+  const resolvedTwitterDescription = twitterDescription || resolvedOgDescription;
+  const resolvedOgUrl = ogUrl || canonical;
+
   useEffect(() => {
     // Update document title
     if (title) {
@@ -90,30 +96,31 @@ export const useSEO = ({
       updateMetaTag('meta[name="robots"]', 'name', 'index, follow');
     }
 
-    // Update Open Graph tags
-    if (ogTitle) {
-      updateMetaTag('meta[property="og:title"]', 'property', ogTitle);
+    // Update Open Graph tags. Title/description fall back so a page that
+    // only sets those does not keep homepage (kids bootcamp) social tags.
+    if (resolvedOgTitle) {
+      updateMetaTag('meta[property="og:title"]', 'property', resolvedOgTitle);
     }
 
-    if (ogDescription) {
-      updateMetaTag('meta[property="og:description"]', 'property', ogDescription);
+    if (resolvedOgDescription) {
+      updateMetaTag('meta[property="og:description"]', 'property', resolvedOgDescription);
     }
 
     if (ogImage) {
       updateMetaTag('meta[property="og:image"]', 'property', ogImage);
     }
 
-    if (ogUrl) {
-      updateMetaTag('meta[property="og:url"]', 'property', ogUrl);
+    if (resolvedOgUrl) {
+      updateMetaTag('meta[property="og:url"]', 'property', resolvedOgUrl);
     }
 
     // Update Twitter Card tags
-    if (twitterTitle) {
-      updateMetaTag('meta[name="twitter:title"]', 'name', twitterTitle);
+    if (resolvedTwitterTitle) {
+      updateMetaTag('meta[name="twitter:title"]', 'name', resolvedTwitterTitle);
     }
 
-    if (twitterDescription) {
-      updateMetaTag('meta[name="twitter:description"]', 'name', twitterDescription);
+    if (resolvedTwitterDescription) {
+      updateMetaTag('meta[name="twitter:description"]', 'name', resolvedTwitterDescription);
     }
 
     if (twitterImage) {
@@ -128,12 +135,12 @@ export const useSEO = ({
     title,
     description,
     keywords,
-    ogTitle,
-    ogDescription,
+    resolvedOgTitle,
+    resolvedOgDescription,
     ogImage,
-    ogUrl,
-    twitterTitle,
-    twitterDescription,
+    resolvedOgUrl,
+    resolvedTwitterTitle,
+    resolvedTwitterDescription,
     twitterImage,
     canonical,
     noindex,
@@ -145,15 +152,18 @@ export const useSEO = ({
  * Use this as a base for page-specific SEO
  */
 export const defaultSEO: SEOProps = {
-  title: 'Mentorna AI Bootcamp - Learn Coding & Build AI Startups in 8 Weeks | €5,000 Prize',
-  description: 'Join Mentorna\'s 8-week AI & Entrepreneurship Bootcamp. Learn Python, machine learning, web development, and build your own AI startup. Expert mentors, hands-on projects, and €5,000 prize competition.',
-  keywords: 'AI bootcamp, coding bootcamp, entrepreneurship program, Python programming, machine learning, web development, AI education, startup incubator, tech skills, young entrepreneurs, AI innovation, coding for kids, STEM education, artificial intelligence training, Mentorna',
-  ogTitle: 'Mentorna AI Bootcamp - Learn Coding & Build AI Startups in 8 Weeks',
-  ogDescription: 'Master AI, coding, and entrepreneurship with expert mentors. 8-week intensive program with hands-on projects, €5,000 competition, and lifetime access to materials.',
+  title: 'Mentorna',
+  description:
+    'Helping founders validate ideas, build MVPs, and launch with repeatable AI-powered execution systems.',
+  keywords: 'Mentorna, workshop, founders, 0→1',
+  ogTitle: 'Mentorna',
+  ogDescription:
+    'Helping founders validate ideas, build MVPs, and launch with repeatable AI-powered execution systems.',
   ogImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-og-image.jpg',
   ogUrl: 'https://mentorna.com',
-  twitterTitle: 'Mentorna AI Bootcamp - Learn Coding & Build AI Startups',
-  twitterDescription: '8-week intensive AI & entrepreneurship program. Learn Python, ML, web dev, and launch your startup with expert mentors.',
+  twitterTitle: 'Mentorna',
+  twitterDescription:
+    'Helping founders validate ideas, build MVPs, and launch with repeatable AI-powered execution systems.',
   twitterImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-twitter-card.jpg',
   canonical: 'https://mentorna.com/',
   noindex: false,
