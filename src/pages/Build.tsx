@@ -295,6 +295,19 @@ const Build = () => {
           </ul>
         </section>
 
+        <section className="pt-10 md:pt-12">
+          <Reveal>
+            <div className={`${brutal} overflow-hidden bg-white`}>
+              <video
+                src="https://mentorna-testimonials.s3.amazonaws.com/testimonials/karla.mp4"
+                controls
+                playsInline
+                className="aspect-video w-full bg-black object-contain"
+              />
+            </div>
+          </Reveal>
+        </section>
+
         {/* ══ 4. PRICE ══ */}
         <section id="apply" className="scroll-mt-6 pt-10 md:pt-12">
           <Reveal>
