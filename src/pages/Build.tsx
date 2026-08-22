@@ -197,9 +197,8 @@ const Build = () => {
     <div className="min-h-screen font-body text-[hsl(0,0%,10%)]" style={{ background: PAGE_BG }}>
       <main className="mx-auto max-w-5xl px-4 pb-16" dir="rtl">
         {/* ══ 1. HEADLINE + SUB ══ */}
-        <header className="relative pt-8 md:pt-12">
-          <Reveal>
-            <div className={`${brutalLg} relative overflow-hidden bg-[hsl(0,0%,10%)] p-6 md:p-10`}>
+        <header className="relative pt-4 md:pt-6">
+          <div className={`${brutalLg} relative overflow-hidden bg-[hsl(0,0%,10%)] p-5 md:p-8`}>
               <div aria-hidden className="absolute inset-0 opacity-[0.16]" style={DOTS} />
               <div
                 aria-hidden
@@ -221,19 +220,21 @@ const Build = () => {
                   حاجتك.
                   <br />
                   حتى لو صغيرة.
-                  <br />
-                  بتاعتك.
                 </h1>
 
                 <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed text-white/80 md:text-lg">
                   يوم الاثنين تبقى موجودة. بتاعتك.
                 </p>
 
+                <p className="mt-3 max-w-2xl text-base font-semibold leading-relaxed text-white/75 md:text-lg">
+                  مش تفضل قاعد بتفجوليز مع نفسك ومفيش حاجة على الأرض.
+                </p>
+
                 <p className="mt-4 max-w-2xl text-sm font-semibold leading-relaxed text-white/65 md:text-base">
                   {ASHRAF_SUB}
                 </p>
 
-                <dl className="mt-6 max-w-xl space-y-2">
+                <dl className="mt-5 max-w-xl space-y-2">
                   {ATF_FACTS.map((f) => (
                     <div
                       key={f.q}
@@ -245,12 +246,15 @@ const Build = () => {
                   ))}
                 </dl>
 
-                <div className="mt-6">
+                <p className="mt-5 text-5xl font-extrabold leading-none text-white md:text-6xl">
+                  ${PRICE}
+                </p>
+
+                <div className="mt-5">
                   <ApplyBlock where="hero" dark={false} />
                 </div>
               </div>
             </div>
-          </Reveal>
         </header>
 
         {/* ══ 2. WHAT IT IS ══ */}
@@ -274,7 +278,24 @@ const Build = () => {
           </Reveal>
         </section>
 
-        {/* ══ 3. PRICE, REFUND, DATE ══ */}
+        {/* ══ 3. LEAVE WITH ══ */}
+        <section className="pt-10 md:pt-12">
+          <Reveal>
+            <Eyebrow>بتطلع بإيه</Eyebrow>
+            <SectionTitle>بتاعتك. وموجودة.</SectionTitle>
+          </Reveal>
+          <ul className="mt-5 space-y-2">
+            {OUTCOMES.map((item) => (
+              <Reveal key={item}>
+                <li className={`${brutal} bg-white px-4 py-2.5 text-sm font-extrabold leading-snug`}>
+                  {item}
+                </li>
+              </Reveal>
+            ))}
+          </ul>
+        </section>
+
+        {/* ══ 4. PRICE ══ */}
         <section id="apply" className="scroll-mt-6 pt-10 md:pt-12">
           <Reveal>
             <div className={`${brutalLg} overflow-hidden bg-white`}>
@@ -305,45 +326,6 @@ const Build = () => {
                   <ApplyBlock where="pricing" align="center" />
                 </div>
               </div>
-            </div>
-          </Reveal>
-        </section>
-
-        {/* ══ 4. WHAT THEY LEAVE WITH ══ */}
-        <section className="pt-10 md:pt-12">
-          <Reveal>
-            <Eyebrow>بتطلع بإيه</Eyebrow>
-            <SectionTitle>بتاعتك. وموجودة.</SectionTitle>
-          </Reveal>
-          <ul className="mt-5 space-y-2">
-            {OUTCOMES.map((item) => (
-              <Reveal key={item}>
-                <li className={`${brutal} bg-white px-4 py-2.5 text-sm font-extrabold leading-snug`}>
-                  {item}
-                </li>
-              </Reveal>
-            ))}
-          </ul>
-        </section>
-
-        {/* Outcomes card (main ~839–852). Video src only; no names in locked copy. */}
-        <section className="pt-10 md:pt-12">
-          <Reveal>
-            <div className={`${brutal} overflow-hidden bg-white`}>
-              <div className="px-4 py-3 md:px-6">
-                <span
-                  className="inline-block border-2 border-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase"
-                  style={{ background: TEAL, color: 'white' }}
-                >
-                  Shipped
-                </span>
-              </div>
-              <video
-                src="https://mentorna-testimonials.s3.amazonaws.com/testimonials/karla.mp4"
-                controls
-                playsInline
-                className="aspect-video w-full bg-black object-contain"
-              />
             </div>
           </Reveal>
         </section>
