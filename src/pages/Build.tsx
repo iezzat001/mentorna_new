@@ -359,6 +359,28 @@ const Build = () => {
           </Reveal>
         </section>
 
+        {/* Outcomes card (main ~839–852). Video src only; no names in locked copy. */}
+        <section className="pt-10 md:pt-12">
+          <Reveal>
+            <div className={`${brutal} overflow-hidden bg-white`}>
+              <div className="px-4 py-3 md:px-6">
+                <span
+                  className="inline-block border-2 border-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase"
+                  style={{ background: TEAL, color: 'white' }}
+                >
+                  Shipped
+                </span>
+              </div>
+              <video
+                src="https://mentorna-testimonials.s3.amazonaws.com/testimonials/karla.mp4"
+                controls
+                playsInline
+                className="aspect-video w-full bg-black object-contain"
+              />
+            </div>
+          </Reveal>
+        </section>
+
         {/* ══ 5. WHO IT IS / IS NOT ══ */}
         <section className="pt-10 md:pt-12">
           <div className="grid items-start gap-3 md:grid-cols-2">
