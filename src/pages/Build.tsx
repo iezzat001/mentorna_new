@@ -276,8 +276,58 @@ const vslPoster = VSL_POSTER ?? workshopVideoPoster;
 const vslIsPlaceholder = VSL_URL === null;
 
 /* ────────────────────────────────────────────────────────────
+   Hero A/B test — Variant A (animated typewriter headline) vs Variant B
+   (the adapted "ours" line). Assignment is 50/50 on first load, persisted in
+   localStorage so returning visitors keep their variant; a ?variant=A|B query
+   param force-overrides for QA without overwriting the stored value.
+   Final copy lands from ux-writer (task #10); the strings here are approved
+   starters / current copy used as placeholders until then.
+   ──────────────────────────────────────────────────────────── */
+type HeroVariant = 'A' | 'B';
+const HERO_VARIANT_KEY = 'build_hero_variant';
+
+/* The brand gradient used on the highlighted headline word, shared by both
+   variants so they stay one system. */
+const GRADIENT_TEXT: React.CSSProperties = {
+  background: `linear-gradient(90deg, ${AMBER}, ${CORAL}, ${PURPLE})`,
+  WebkitBackgroundClip: 'text',
+  backgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+};
+
+const HERO_A = {
+  prefix: 'Build Your',
+  // ux-writer (task #10): final word list. words[0] is the static word shown to
+  // reduced-motion users and screen readers, so keep the strongest one first.
+  words: ['Career', 'Business', 'Startup'],
+  suffix: 'with AI Workers to grow revenue',
+  // PLACEHOLDER — ux-writer supplies Variant A's final subhead.
+  subhead: 'AI does the building. You bring what you already know — four weeks, live.',
+};
+
+// Variant B keeps the current approved "ours" headline (rendered inline in the
+// hero) plus this subhead. ux-writer may adapt the wording (task #10).
+const HERO_B_SUBHEAD = `In four weeks, using ${FRAMEWORK}, without losing $10,000 on tech nobody needs.`;
+
+/* ────────────────────────────────────────────────────────────
    Helpers
    ──────────────────────────────────────────────────────────── */
+/* SSR-safe reduced-motion guard, reused by Reveal and the typewriter. */
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+/* True only when the visitor granted analytics consent — the same source
+   PageTracker reads. A/B events are gated on this; the variant renders
+   regardless of consent. */
+const analyticsConsentGranted = (): boolean => {
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem('cookie_consent') : null;
+    return raw ? JSON.parse(raw).analytics === true : false;
+  } catch {
+    return false;
+  }
+};
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -289,10 +339,7 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
    */
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
-    if (
-      typeof window !== 'undefined' &&
-      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    ) {
+    if (prefersReducedMotion()) {
       setReduced(true);
       setShown(true);
       return;
@@ -325,6 +372,74 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
     >
       {children}
     </div>
+  );
+};
+
+/*
+ * TypewriterWord — cycles a list of words with a type → hold → erase → next
+ * loop and a blinking caret. prefers-reduced-motion users get ONE static word
+ * (words[0]) with no animation and no caret; the guard is read synchronously in
+ * a lazy initializer so there is no flash of the animated state on first paint.
+ * The animated text is aria-hidden — the full, stable headline is provided once
+ * as sr-only text in the hero, so screen readers and crawlers get real copy.
+ */
+const TypewriterWord = ({
+  words,
+  textStyle,
+  cursorColor,
+}: {
+  words: string[];
+  textStyle?: React.CSSProperties;
+  cursorColor?: string;
+}) => {
+  const [reduced] = useState(prefersReducedMotion);
+  const [display, setDisplay] = useState(() => (prefersReducedMotion() ? words[0] ?? '' : ''));
+  const [wordIndex, setWordIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (reduced || words.length === 0) return;
+    const current = words[wordIndex % words.length] ?? '';
+    let timer: number;
+    if (!deleting) {
+      // typing forward, then a hold once the word is complete
+      timer = window.setTimeout(
+        () =>
+          display.length < current.length
+            ? setDisplay(current.slice(0, display.length + 1))
+            : setDeleting(true),
+        display.length < current.length ? 95 : 1500,
+      );
+    } else {
+      // erasing back, then advance to the next word
+      timer = window.setTimeout(
+        () => {
+          if (display.length > 0) {
+            setDisplay(current.slice(0, display.length - 1));
+          } else {
+            setDeleting(false);
+            setWordIndex((i) => (i + 1) % words.length);
+          }
+        },
+        display.length > 0 ? 45 : 350,
+      );
+    }
+    return () => window.clearTimeout(timer);
+  }, [display, deleting, wordIndex, words, reduced]);
+
+  return (
+    <span className="whitespace-nowrap">
+      <span style={textStyle}>{display || ' '}</span>
+      {!reduced && (
+        <span
+          aria-hidden="true"
+          className="build-hero-cursor ml-0.5 inline-block font-normal"
+          style={{ color: cursorColor }}
+        >
+          |
+        </span>
+      )}
+    </span>
   );
 };
 
@@ -388,7 +503,32 @@ const VslPlayer = () => {
    ──────────────────────────────────────────────────────────── */
 const Build = () => {
   const measurementId = (localStorage.getItem('google_analytics_id') || '').trim();
-  const { trackEvent } = useGoogleAnalytics({ measurementId });
+  const { trackEvent, isInitialized } = useGoogleAnalytics({ measurementId });
+
+  /*
+   * Hero A/B variant, resolved once and synchronously so the right headline is
+   * present on first paint (no flash): a ?variant=A|B override wins (QA), else
+   * the stored assignment, else a fresh 50/50 draw.
+   */
+  const [variant] = useState<HeroVariant>(() => {
+    if (typeof window === 'undefined') return 'A';
+    const forced = new URLSearchParams(window.location.search).get('variant');
+    if (forced === 'A' || forced === 'B') return forced;
+    const stored = localStorage.getItem(HERO_VARIANT_KEY);
+    if (stored === 'A' || stored === 'B') return stored;
+    return Math.random() < 0.5 ? 'A' : 'B';
+  });
+
+  // Persist the assignment so returning visitors keep it — but a QA override
+  // (?variant=) must never overwrite the stored value.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const forced = new URLSearchParams(window.location.search).get('variant');
+    if (forced === 'A' || forced === 'B') return;
+    if (localStorage.getItem(HERO_VARIANT_KEY) !== variant) {
+      localStorage.setItem(HERO_VARIANT_KEY, variant);
+    }
+  }, [variant]);
 
   useSEO({
     title: 'The 0→1 Cohort — 4 Weeks, 10 Seats | Mentorna®',
@@ -397,12 +537,28 @@ const Build = () => {
     canonical: 'https://mentorna.com/build',
   });
 
-  const track = (placement: string) =>
+  // hero_variant_view — once per pageview, only after GA is ready and analytics
+  // consent is granted (the variant itself renders regardless of consent).
+  const viewTracked = useRef(false);
+  useEffect(() => {
+    if (viewTracked.current || !isInitialized || !analyticsConsentGranted()) return;
+    viewTracked.current = true;
+    trackEvent('hero_variant_view', { variant });
+  }, [isInitialized, variant, trackEvent]);
+
+  const track = (placement: string) => {
+    // Existing funnel event — now variant-aware so every apply CTA carries it.
     trackEvent('cohort_apply_click', {
       page_path: window.location.pathname,
       placement,
       variant: 'build_v3',
+      hero_variant: variant,
     });
+    // A/B metric event, consent-gated.
+    if (analyticsConsentGranted()) {
+      trackEvent('hero_apply_click', { variant, placement });
+    }
+  };
 
   const applyHref = whatsappUrl(APPLY_MESSAGE);
 
@@ -463,22 +619,45 @@ const Build = () => {
                   ✦ For 9-to-5 domain experts · 4 weeks · {SEATS} seats
                 </span>
 
-                <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
-                  Turn what you already know into{' '}
-                  <span
-                    style={{
-                      background: `linear-gradient(90deg, ${AMBER}, ${CORAL}, ${PURPLE})`,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                    }}
-                  >
-                    a business that pays you
-                  </span>
-                </h1>
+                {variant === 'A' ? (
+                  <>
+                    <style>{`
+                      @keyframes buildHeroCaret { 0%, 45% { opacity: 1 } 55%, 100% { opacity: 0 } }
+                      .build-hero-cursor { animation: buildHeroCaret 1.05s steps(1) infinite; }
+                      @media (prefers-reduced-motion: reduce) { .build-hero-cursor { animation: none } }
+                    `}</style>
+                    <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
+                      <span className="sr-only">
+                        {HERO_A.prefix} {HERO_A.words[0]} {HERO_A.suffix}
+                      </span>
+                      <span aria-hidden="true">
+                        {HERO_A.prefix}{' '}
+                        <TypewriterWord
+                          words={HERO_A.words}
+                          textStyle={GRADIENT_TEXT}
+                          cursorColor={AMBER}
+                        />
+                        <br />
+                        {HERO_A.suffix}
+                      </span>
+                    </h1>
 
-                <p className="mt-5 max-w-2xl text-base font-semibold leading-relaxed text-white/75 md:text-lg">
-                  In four weeks, using {FRAMEWORK}, without losing $10,000 on tech nobody needs.
-                </p>
+                    <p className="mt-5 max-w-2xl text-base font-semibold leading-relaxed text-white/75 md:text-lg">
+                      {HERO_A.subhead}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
+                      Turn what you already know into{' '}
+                      <span style={GRADIENT_TEXT}>a business that pays you</span>
+                    </h1>
+
+                    <p className="mt-5 max-w-2xl text-base font-semibold leading-relaxed text-white/75 md:text-lg">
+                      {HERO_B_SUBHEAD}
+                    </p>
+                  </>
+                )}
 
                 <div className="mt-8 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
                   {[
