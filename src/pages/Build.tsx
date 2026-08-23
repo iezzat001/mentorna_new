@@ -20,6 +20,7 @@ const brutal = 'border-4 border-[hsl(0,0%,10%)] shadow-[6px_6px_0px_0px_rgba(0,0
 const brutalLg = 'border-4 border-[hsl(0,0%,10%)] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]';
 
 const VIDEO_SRC = 'https://mentorna-testimonials.s3.amazonaws.com/testimonials/karla.mp4';
+const VIDEO_SRC_2 = 'https://mentorna-testimonials.s3.amazonaws.com/testimonials/mo.mp4';
 const STRIP_PHOTOS = eventPhotos.slice(0, 3);
 
 const DOTS = {
@@ -204,17 +205,27 @@ const Build = () => {
           </div>
         </header>
 
-        {/* Real player — under the hero. No Reveal / opacity-0. No name. */}
+        {/* Real players — under the hero. No Reveal / opacity-0. No names. */}
         <section className="pt-4 md:pt-6">
           <div className={`${brutalLg} overflow-hidden bg-[hsl(0,0%,10%)]`}>
-            <video
-              src={VIDEO_SRC}
-              poster={workshopVideoPoster}
-              controls
-              playsInline
-              preload="metadata"
-              className="aspect-video w-full bg-black object-contain"
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              <video
+                src={VIDEO_SRC}
+                poster={workshopVideoPoster}
+                controls
+                playsInline
+                preload="metadata"
+                className="aspect-video w-full bg-black object-contain"
+              />
+              <video
+                src={VIDEO_SRC_2}
+                poster={workshopVideoPoster}
+                controls
+                playsInline
+                preload="metadata"
+                className="aspect-video w-full bg-black object-contain"
+              />
+            </div>
             <div className="grid grid-cols-3 divide-x-2 divide-[hsl(0,0%,10%)] border-t-4 border-[hsl(0,0%,10%)] bg-white text-center">
               <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">{REFUND}</p>
               <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">10 seats</p>
