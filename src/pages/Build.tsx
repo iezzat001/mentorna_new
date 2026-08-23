@@ -35,10 +35,10 @@ const FACTS = [
 ];
 
 const FRIDAYS = [
-  { n: 1, when: '4 September', line: "You pick one. If it doesn't deserve you, it dies here." },
-  { n: 2, when: 'One feature', line: 'Built in the room. You open it on Monday.' },
-  { n: 3, when: 'A stranger', line: 'A stranger understands it.' },
-  { n: 4, when: 'A price', line: 'A path to the first client.' },
+  { n: 1, line: "4 September: You pick one. If it doesn't deserve you, it dies here." },
+  { n: 2, line: 'One feature. Built in the room. You open it on Monday.' },
+  { n: 3, line: 'A stranger understands it.' },
+  { n: 4, line: 'A price, and a path to the first client.' },
 ];
 
 const WATCHING = [
@@ -229,8 +229,7 @@ const Build = () => {
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[hsl(14,90%,45%)]">
                   Friday {f.n}
                 </p>
-                <p className="mt-1 text-sm font-extrabold leading-snug">{f.when}</p>
-                <p className="mt-1 text-sm font-medium leading-snug text-black/65">{f.line}</p>
+                <p className="mt-1 text-sm font-extrabold leading-snug">{f.line}</p>
               </li>
             ))}
           </ol>
@@ -313,6 +312,7 @@ const Build = () => {
           </p>
           <div className="mt-3">
             <SeatButton where="flywheel" />
+            <p className="mt-1.5 text-sm font-semibold text-black/50">{CTA_MICRO}</p>
           </div>
         </section>
 
@@ -374,9 +374,8 @@ const Build = () => {
           </div>
         </section>
 
-        {/* 8. Proof — videos may repeat. No names. */}
+        {/* 8. Proof — the two videos. No names. No fake counts. */}
         <section className="pt-8 md:pt-12">
-          <p className="mb-3 text-sm font-extrabold text-black/45">Ahmed. Ten people. Four Fridays.</p>
           <VideoPair />
         </section>
 
