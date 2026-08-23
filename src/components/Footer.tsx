@@ -46,8 +46,8 @@ const Footer = () => {
               Mentorna®
             </div>
             <p className="font-body text-background/70 text-sm md:text-base max-w-md mx-auto md:mx-0">
-              Helping founders validate ideas, build MVPs, and launch with
-              repeatable AI-powered execution systems.
+              Helping founders go from idea to a live product people pay for — in
+              weeks, not years.
             </p>
           </div>
 

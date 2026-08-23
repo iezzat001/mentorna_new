@@ -9,7 +9,6 @@ import {
   Lock,
   MessageCircle,
   Play,
-  Quote,
   Rocket,
   ShieldCheck,
   Star,
@@ -176,14 +175,14 @@ const WEEKS = [
   },
   {
     n: 2,
-    title: 'Shape the offer, build version one',
+    title: 'Write the offer, build version one',
     goal: 'Leave with an offer a stranger understands and a working first version.',
     detail:
       'Write the offer statement, then build the thing with AI in the session. Not a deck, not a wireframe. Something real that exists at the end of the three hours.',
   },
   {
     n: 3,
-    title: 'Put it in front of real people',
+    title: 'Ship it to real people',
     goal: 'Leave with your product live and the first signal coming in.',
     detail:
       'Ship it, find where your people actually are, and start collecting responses. We read what users do, not what they politely say.',
@@ -210,10 +209,17 @@ const INCLUDED = [
   'Showcase session in week 4',
 ];
 
+/*
+ * Guest sessions. Each cohort brings three guests — marketing, funding, and an
+ * investor. Names + one hard credential each are confirmed per cohort; until
+ * Ahmed supplies them, the card shows the honest "Guest confirmed per cohort"
+ * fallback rather than an anonymous archetype. SLOT: set `name` and `credential`
+ * per guest when known and the card renders them automatically.
+ */
 const GUESTS = [
-  { icon: Target, accent: AMBER, title: 'A marketing expert', desc: 'How to find where your customers actually are, and reach them without a budget.' },
-  { icon: Rocket, accent: CYAN, title: 'A funding expert', desc: 'What funding is really for, when to raise, and how to know if you should not.' },
-  { icon: BadgeCheck, accent: TEAL, title: 'An investor', desc: 'What makes them lean in, and the things founders say that end the conversation.' },
+  { icon: Target, accent: AMBER, topic: 'Marketing', name: '', credential: '', desc: 'How to find where your customers actually are, and reach them without a budget.' },
+  { icon: Rocket, accent: CYAN, topic: 'Funding', name: '', credential: '', desc: 'What funding is really for, when to raise, and how to know if you should not.' },
+  { icon: BadgeCheck, accent: TEAL, topic: 'Investor', name: '', credential: '', desc: 'What makes them lean in, and the things founders say that end the conversation.' },
 ];
 
 /* Fit */
@@ -270,12 +276,81 @@ const vslPoster = VSL_POSTER ?? workshopVideoPoster;
 const vslIsPlaceholder = VSL_URL === null;
 
 /* ────────────────────────────────────────────────────────────
+   Hero A/B test — Variant A (animated typewriter headline) vs Variant B
+   (the adapted "ours" line). Assignment is 50/50 on first load, persisted in
+   localStorage so returning visitors keep their variant; a ?variant=A|B query
+   param force-overrides for QA without overwriting the stored value.
+   Copy is final (ux-writer task #10, Ahmed-approved): Variant A cycles
+   idea → side-project → business → startup, with a decoupled static "business"
+   fallback for reduced-motion / screen readers; Variant B is the "first paying
+   customer" statement.
+   ──────────────────────────────────────────────────────────── */
+type HeroVariant = 'A' | 'B';
+const HERO_VARIANT_KEY = 'build_hero_variant';
+
+/* The brand gradient used on the highlighted headline word, shared by both
+   variants so they stay one system. */
+const GRADIENT_TEXT: React.CSSProperties = {
+  background: `linear-gradient(90deg, ${AMBER}, ${CORAL}, ${PURPLE})`,
+  WebkitBackgroundClip: 'text',
+  backgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+};
+
+const HERO_A = {
+  prefix: 'Build your',
+  // Animated cycle, in Ahmed's exact order; loops back to the start.
+  words: ['idea', 'side-project', 'business', 'startup'],
+  // Static word for reduced-motion + screen readers — deliberately DECOUPLED
+  // from the cycle order. The cycle opens on "idea" (weak standalone), so the
+  // non-motion anchor is a dedicated "business" instead of words[0].
+  staticWord: 'business',
+  connector: 'with',
+  gradient: 'a team of AI workers', // the fixed leverage hook carries the gradient
+  subhead:
+    'You bring what you already know — the AI does the building. Four weeks, live, ten seats.',
+};
+
+// Variant B — a static statement headline (gradient on "first paying customer",
+// rendered inline in the hero) plus this subhead.
+const HERO_B_SUBHEAD =
+  'Ten seats, money-back after week two. You bring the expertise; the framework turns it into a product real buyers pay for.';
+
+/* ────────────────────────────────────────────────────────────
    Helpers
    ──────────────────────────────────────────────────────────── */
+/* SSR-safe reduced-motion guard, reused by Reveal and the typewriter. */
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+/* True only when the visitor granted analytics consent — the same source
+   PageTracker reads. A/B events are gated on this; the variant renders
+   regardless of consent. */
+const analyticsConsentGranted = (): boolean => {
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem('cookie_consent') : null;
+    return raw ? JSON.parse(raw).analytics === true : false;
+  } catch {
+    return false;
+  }
+};
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
+  /*
+   * Respect prefers-reduced-motion: users who ask for less motion get the
+   * content immediately, with no translate/opacity transition at all. The
+   * scroll-reveal is the page's dominant motion, so guarding it here covers
+   * every section in one place.
+   */
+  const [reduced, setReduced] = useState(false);
   useEffect(() => {
+    if (prefersReducedMotion()) {
+      setReduced(true);
+      setShown(true);
+      return;
+    }
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
@@ -293,13 +368,87 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   return (
     <div
       ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ease-out ${
-        shown ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-      }`}
+      style={reduced ? undefined : { transitionDelay: `${delay}ms` }}
+      className={
+        reduced
+          ? ''
+          : `transition-all duration-700 ease-out ${
+              shown ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`
+      }
     >
       {children}
     </div>
+  );
+};
+
+/*
+ * TypewriterWord — cycles a list of words with a type → hold → erase → next
+ * loop and a blinking caret. prefers-reduced-motion users get ONE static word
+ * (staticWord, decoupled from the cycle order) with no animation and no caret;
+ * the guard is read synchronously so there is no flash of the animated state.
+ * The animated text is aria-hidden — the full, stable headline is provided once
+ * as sr-only text in the hero, so screen readers and crawlers get real copy.
+ */
+const TypewriterWord = ({
+  words,
+  staticWord,
+  cursorColor,
+}: {
+  words: string[];
+  staticWord?: string;
+  cursorColor?: string;
+}) => {
+  const [reduced] = useState(prefersReducedMotion);
+  const [display, setDisplay] = useState(() =>
+    prefersReducedMotion() ? staticWord ?? words[0] ?? '' : '',
+  );
+  const [wordIndex, setWordIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (reduced || words.length === 0) return;
+    const current = words[wordIndex % words.length] ?? '';
+    let timer: number;
+    if (!deleting) {
+      // typing forward, then a hold once the word is complete
+      timer = window.setTimeout(
+        () =>
+          display.length < current.length
+            ? setDisplay(current.slice(0, display.length + 1))
+            : setDeleting(true),
+        display.length < current.length ? 95 : 1500,
+      );
+    } else {
+      // erasing back, then advance to the next word
+      timer = window.setTimeout(
+        () => {
+          if (display.length > 0) {
+            setDisplay(current.slice(0, display.length - 1));
+          } else {
+            setDeleting(false);
+            setWordIndex((i) => (i + 1) % words.length);
+          }
+        },
+        display.length > 0 ? 45 : 350,
+      );
+    }
+    return () => window.clearTimeout(timer);
+  }, [display, deleting, wordIndex, words, reduced]);
+
+  return (
+    <span className="whitespace-nowrap">
+      <span>{display || ' '}</span>
+      {!reduced && (
+        <span
+          aria-hidden="true"
+          className="build-hero-cursor ml-0.5 inline-block font-normal"
+          style={{ color: cursorColor }}
+        >
+          |
+        </span>
+      )}
+    </span>
   );
 };
 
@@ -363,21 +512,62 @@ const VslPlayer = () => {
    ──────────────────────────────────────────────────────────── */
 const Build = () => {
   const measurementId = (localStorage.getItem('google_analytics_id') || '').trim();
-  const { trackEvent } = useGoogleAnalytics({ measurementId });
+  const { trackEvent, isInitialized } = useGoogleAnalytics({ measurementId });
+
+  /*
+   * Hero A/B variant, resolved once and synchronously so the right headline is
+   * present on first paint (no flash): a ?variant=A|B override wins (QA), else
+   * the stored assignment, else a fresh 50/50 draw.
+   */
+  const [variant] = useState<HeroVariant>(() => {
+    if (typeof window === 'undefined') return 'A';
+    const forced = new URLSearchParams(window.location.search).get('variant')?.toUpperCase();
+    if (forced === 'A' || forced === 'B') return forced;
+    const stored = localStorage.getItem(HERO_VARIANT_KEY);
+    if (stored === 'A' || stored === 'B') return stored;
+    return Math.random() < 0.5 ? 'A' : 'B';
+  });
+
+  // Persist the assignment so returning visitors keep it — but a QA override
+  // (?variant=) must never overwrite the stored value.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const forced = new URLSearchParams(window.location.search).get('variant')?.toUpperCase();
+    if (forced === 'A' || forced === 'B') return;
+    if (localStorage.getItem(HERO_VARIANT_KEY) !== variant) {
+      localStorage.setItem(HERO_VARIANT_KEY, variant);
+    }
+  }, [variant]);
 
   useSEO({
     title: 'The 0→1 Cohort — 4 Weeks, 10 Seats | Mentorna®',
     description:
-      'For 9-5 domain experts. Build a profitable business in four weeks using the 0→1 Framework, without losing $10,000 on tech nobody needs. 10 seats per cohort.',
+      'For 9-to-5 domain experts. Build a profitable business in four weeks using the 0→1 Framework, without losing $10,000 on tech nobody needs. 10 seats per cohort.',
     canonical: 'https://mentorna.com/build',
   });
 
-  const track = (placement: string) =>
+  // hero_variant_view — once per pageview, only after GA is ready and analytics
+  // consent is granted (the variant itself renders regardless of consent).
+  const viewTracked = useRef(false);
+  useEffect(() => {
+    if (viewTracked.current || !isInitialized || !analyticsConsentGranted()) return;
+    viewTracked.current = true;
+    trackEvent('hero_variant_view', { variant });
+  }, [isInitialized, variant, trackEvent]);
+
+  const track = (placement: string) => {
+    // Existing funnel event — now variant-aware so every apply CTA carries it.
     trackEvent('cohort_apply_click', {
       page_path: window.location.pathname,
       placement,
       variant: 'build_v3',
+      hero_variant: variant,
     });
+    // A/B metric event, consent-gated.
+    if (analyticsConsentGranted()) {
+      trackEvent('hero_apply_click', { variant, placement });
+    }
+  };
 
   const applyHref = whatsappUrl(APPLY_MESSAGE);
 
@@ -435,32 +625,56 @@ const Build = () => {
 
               <div className="relative">
                 <span className="inline-block border-2 border-white/40 bg-white/10 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
-                  ✦ For 9-5 domain experts · 4 weeks · {SEATS} seats
+                  ✦ For 9-to-5 domain experts · 4 weeks · {SEATS} seats
                 </span>
 
-                <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
-                  Turn what you already know into{' '}
-                  <span
-                    style={{
-                      background: `linear-gradient(90deg, ${AMBER}, ${CORAL}, ${PURPLE})`,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                    }}
-                  >
-                    a business that pays you
-                  </span>
-                </h1>
+                {variant === 'A' ? (
+                  <>
+                    <style>{`
+                      @keyframes buildHeroCaret { 0%, 45% { opacity: 1 } 55%, 100% { opacity: 0 } }
+                      .build-hero-cursor { animation: buildHeroCaret 1.05s steps(1) infinite; }
+                      @media (prefers-reduced-motion: reduce) { .build-hero-cursor { animation: none } }
+                    `}</style>
+                    <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
+                      <span className="sr-only">
+                        {HERO_A.prefix} {HERO_A.staticWord} {HERO_A.connector} {HERO_A.gradient}
+                      </span>
+                      <span aria-hidden="true">
+                        {HERO_A.prefix}{' '}
+                        <TypewriterWord
+                          words={HERO_A.words}
+                          staticWord={HERO_A.staticWord}
+                          cursorColor={AMBER}
+                        />
+                        <br />
+                        {HERO_A.connector}{' '}
+                        <span style={GRADIENT_TEXT}>{HERO_A.gradient}</span>
+                      </span>
+                    </h1>
 
-                <p className="mt-5 max-w-2xl text-base font-semibold leading-relaxed text-white/75 md:text-lg">
-                  In four weeks, using {FRAMEWORK}, without losing $10,000 on tech nobody needs.
-                </p>
+                    <p className="mt-5 max-w-2xl text-base font-semibold leading-relaxed text-white/75 md:text-lg">
+                      {HERO_A.subhead}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
+                      Four weeks, live, to your{' '}
+                      <span style={GRADIENT_TEXT}>first paying customer</span>.
+                    </h1>
+
+                    <p className="mt-5 max-w-2xl text-base font-semibold leading-relaxed text-white/75 md:text-lg">
+                      {HERO_B_SUBHEAD}
+                    </p>
+                  </>
+                )}
 
                 <div className="mt-8 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
                   {[
                     { v: '4 weeks', l: '3 hours a week, live', c: AMBER },
                     {
-                      v: 'Skip $10,000',
-                      l: "The usual quote to get a product built. You'll build yours in the room.",
+                      v: 'One year in',
+                      l: "and the idea's still an idea. That's what four weeks is for.",
                       c: CYAN,
                     },
                     { v: 'No code', l: 'Nothing to install', c: TEAL },
@@ -486,18 +700,64 @@ const Build = () => {
                   <ApplyButton where="hero" dark={false} />
                 </div>
                 <p className="mt-3 text-sm font-semibold text-white/50">
-                  Opens WhatsApp with three questions. Takes two minutes.
+                  {CURRENT_COHORT.label} is full — applying joins the {NEXT_COHORT.label} waitlist.
+                  Opens WhatsApp with three questions, takes two minutes.
                 </p>
               </div>
             </div>
           </Reveal>
         </header>
 
+        {/* ══ TRUST RIBBON ══ */}
+        <section className="pt-8 md:pt-10">
+          <Reveal>
+            <div
+              className={`${brutal} grid grid-cols-1 divide-y-4 divide-[hsl(0,0%,10%)] bg-white sm:grid-cols-3 sm:divide-x-4 sm:divide-y-0`}
+            >
+              {[
+                {
+                  node: <ShieldCheck className="h-5 w-5" />,
+                  accent: TEAL,
+                  t: 'Money-back',
+                  d: 'Full refund after session two',
+                },
+                {
+                  node: <span className="text-xl font-extrabold leading-none">10</span>,
+                  accent: CORAL,
+                  t: 'Seats only',
+                  d: 'Small enough I read every one',
+                },
+                {
+                  node: <BadgeCheck className="h-5 w-5" />,
+                  accent: AMBER,
+                  t: 'Yours for life',
+                  d: 'Every recording, template and the Club',
+                },
+              ].map((item) => (
+                <div key={item.t} className="flex items-center gap-4 p-5 md:p-6">
+                  <span
+                    className="flex h-11 w-11 shrink-0 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
+                    style={{ background: item.accent }}
+                  >
+                    {item.node}
+                  </span>
+                  <div>
+                    <p className="text-sm font-extrabold uppercase leading-tight tracking-wide">
+                      {item.t}
+                    </p>
+                    <p className="mt-0.5 text-xs font-semibold leading-snug opacity-70">{item.d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </section>
+
         {/* ══ VSL ══ */}
         <section className="pt-10 md:pt-14">
           <Reveal>
             <p className="mb-4 text-center text-sm font-extrabold uppercase tracking-[0.14em] opacity-60">
-              ▼ Watch this first ▼
+              ▼ 90 seconds inside a session ▼
             </p>
             <div className={`${brutalLg} overflow-hidden bg-[hsl(0,0%,10%)]`}>
               <VslPlayer />
@@ -681,6 +941,48 @@ const Build = () => {
           </div>
         </section>
 
+        {/* ══ INSTRUCTOR ══ */}
+        <section className="pt-16 md:pt-24">
+          <Reveal>
+            <Eyebrow>Who runs it</Eyebrow>
+            <SectionTitle>Ahmed Ezzat</SectionTitle>
+            <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed opacity-75">
+              {BIO}
+            </p>
+          </Reveal>
+
+          <div className="mt-7 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {STATS.map((s, i) => (
+              <Reveal key={s.l} delay={i * 60}>
+                <div className={`${brutal} h-full bg-white p-5`}>
+                  <div className="text-3xl font-extrabold leading-none" style={{ color: s.c }}>
+                    {s.v}
+                  </div>
+                  <div className="mt-2 text-xs font-bold uppercase tracking-wide opacity-60">
+                    {s.l}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal>
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <span className="text-xs font-extrabold uppercase tracking-wide opacity-50">
+                Worked with
+              </span>
+              {ORGS.map((o) => (
+                <span
+                  key={o}
+                  className="border-2 border-[hsl(0,0%,10%)] bg-white px-3 py-1.5 text-xs font-extrabold"
+                >
+                  {o}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+        </section>
+
         {/* ══ GUEST SESSIONS ══ */}
         <section className="pt-16 md:pt-24">
           <Reveal>
@@ -692,16 +994,28 @@ const Build = () => {
           </Reveal>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {GUESTS.map((g, i) => (
-              <Reveal key={g.title} delay={i * 70}>
-                <div className={`${brutal} h-full bg-white p-6`}>
-                  <div
-                    className="mb-4 flex h-12 w-12 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
-                    style={{ background: g.accent }}
-                  >
-                    <g.icon className="h-6 w-6" />
+              <Reveal key={g.topic} delay={i * 70}>
+                <div className={`${brutal} flex h-full flex-col bg-white p-6`}>
+                  <div className="mb-5 flex items-center justify-between gap-3">
+                    <span
+                      className="flex h-12 w-12 shrink-0 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
+                      style={{ background: g.accent }}
+                    >
+                      <g.icon className="h-6 w-6" />
+                    </span>
+                    <span className="border-2 border-[hsl(0,0%,10%)] bg-[hsl(0,0%,10%)] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white">
+                      {g.topic}
+                    </span>
                   </div>
-                  <h3 className="text-base font-extrabold">{g.title}</h3>
-                  <p className="mt-2 text-sm font-semibold leading-relaxed opacity-70">{g.desc}</p>
+                  <h3 className="text-lg font-extrabold leading-tight">
+                    {g.name || 'Guest confirmed per cohort'}
+                  </h3>
+                  {g.credential && (
+                    <p className="mt-1 text-xs font-bold leading-snug opacity-70">{g.credential}</p>
+                  )}
+                  <p className="mt-3 flex-1 text-sm font-semibold leading-relaxed opacity-70">
+                    {g.desc}
+                  </p>
                 </div>
               </Reveal>
             ))}
@@ -750,52 +1064,10 @@ const Build = () => {
           </Reveal>
         </section>
 
-        {/* ══ INSTRUCTOR ══ */}
-        <section className="pt-16 md:pt-24">
-          <Reveal>
-            <Eyebrow>Who runs it</Eyebrow>
-            <SectionTitle>Ahmed Ezzat</SectionTitle>
-            <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed opacity-75">
-              {BIO}
-            </p>
-          </Reveal>
-
-          <div className="mt-7 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {STATS.map((s, i) => (
-              <Reveal key={s.l} delay={i * 60}>
-                <div className={`${brutal} h-full bg-white p-5`}>
-                  <div className="text-3xl font-extrabold leading-none" style={{ color: s.c }}>
-                    {s.v}
-                  </div>
-                  <div className="mt-2 text-xs font-bold uppercase tracking-wide opacity-60">
-                    {s.l}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal>
-            <div className="mt-5 flex flex-wrap items-center gap-2">
-              <span className="text-xs font-extrabold uppercase tracking-wide opacity-50">
-                Worked with
-              </span>
-              {ORGS.map((o) => (
-                <span
-                  key={o}
-                  className="border-2 border-[hsl(0,0%,10%)] bg-white px-3 py-1.5 text-xs font-extrabold"
-                >
-                  {o}
-                </span>
-              ))}
-            </div>
-          </Reveal>
-        </section>
-
         {/* ══ PROOF ══ */}
         <section className="pt-16 md:pt-24">
           <Reveal>
-            <Eyebrow>Not a stock photo on this page</Eyebrow>
+            <Eyebrow>From the workshops this cohort is built on</Eyebrow>
             <SectionTitle>
               50 people have been
               <br />
@@ -818,67 +1090,37 @@ const Build = () => {
             ))}
           </div>
 
-          {/* Outcomes */}
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
+          {/* One real early outcome. Kept deliberately singular — no invented
+             second card — so it reads as a spotlight, not a half-empty row.
+             Add a sibling here only when a second real outcome exists. */}
+          <div className="mt-6">
             <Reveal>
-              <div className={`${brutal} h-full bg-white p-6`}>
-                <span
-                  className="inline-block border-2 border-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase"
+              <div className={`${brutal} flex items-stretch overflow-hidden bg-white`}>
+                <div
+                  className="flex w-16 shrink-0 items-center justify-center border-r-4 border-[hsl(0,0%,10%)] md:w-24"
                   style={{ background: AMBER }}
                 >
-                  Now building
-                </span>
-                <h3 className="mt-3 text-xl font-extrabold">Faris started FOMO</h3>
-                <p className="mt-2 text-sm font-semibold leading-relaxed opacity-75">
-                  He came in with an idea and left with a direction. He is building the MVP now and
-                  validating it with potential customers.
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={80}>
-              <div className={`${brutal} h-full bg-white p-6`}>
-                <span
-                  className="inline-block border-2 border-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase"
-                  style={{ background: TEAL, color: 'white' }}
-                >
-                  Shipped
-                </span>
-                <h3 className="mt-3 text-xl font-extrabold">Karla built a donation platform</h3>
-                <p className="mt-2 text-sm font-semibold leading-relaxed opacity-75">
-                  {/* TODO: replace with Karla's testimonial when Ahmed sends it */}
-                  Her testimonial is on the way and will go here.
-                </p>
+                  <Rocket className="h-7 w-7 md:h-9 md:w-9" />
+                </div>
+                <div className="flex-1 p-5 md:p-7">
+                  <span className="inline-block border-2 border-[hsl(0,0%,10%)] bg-[hsl(0,0%,10%)] px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-white">
+                    Now building
+                  </span>
+                  <h3 className="mt-2 text-xl font-extrabold">Faris started FOMO</h3>
+                  <p className="mt-2 max-w-2xl text-sm font-semibold leading-relaxed opacity-75">
+                    He came in with an idea and left with a direction. He is building the MVP now
+                    and validating it with potential customers.
+                  </p>
+                </div>
               </div>
             </Reveal>
           </div>
 
-          {/* Featured quote over a photo */}
-          <Reveal>
-            <div className={`${brutalLg} relative mt-6 overflow-hidden`}>
-              <img
-                src={eventPhotos[4]?.src ?? eventPhotos[0].src}
-                alt={eventPhotos[4]?.alt ?? eventPhotos[0].alt}
-                loading="lazy"
-                className="h-[22rem] w-full object-cover md:h-[26rem]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
-                <Quote className="mb-3 h-8 w-8" style={{ color: AMBER }} />
-                <blockquote className="max-w-2xl text-xl font-extrabold leading-snug text-white md:text-3xl">
-                  &ldquo;{testimonials[0].quote}&rdquo;
-                </blockquote>
-                <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <span className="text-sm font-extrabold text-white">{testimonials[0].name}</span>
-                  <span className="text-sm font-semibold text-white/60">
-                    {testimonials[0].role}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {testimonials.slice(1, 4).map((t, i) => (
+          {/* Workshop quotes — kept as lineage, all equal weight. No single
+             workshop quote is elevated to headline cohort proof (the pedigree
+             above carries that); the old full-bleed featured quote was removed. */}
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {testimonials.slice(0, 4).map((t, i) => (
               <Reveal key={t.name} delay={i * 70}>
                 <div className={`${brutal} flex h-full flex-col bg-white p-6`}>
                   <div className="mb-3 flex gap-1">
@@ -914,7 +1156,6 @@ const Build = () => {
                 &ldquo;Why do I need this? I can learn it free online.&rdquo;
               </h2>
               <div className="mt-6 max-w-2xl space-y-4 text-base font-semibold leading-relaxed text-white/75">
-                {/* TODO: Ahmed to supply his own answer in his own words */}
                 <p>
                   You can. Everything in these four weeks exists somewhere online for free, and I
                   will not pretend otherwise.
@@ -1083,8 +1324,9 @@ const Build = () => {
                   The idea has waited long enough
                 </h2>
                 <p className="mx-auto mt-4 max-w-xl text-base font-semibold leading-relaxed opacity-75 md:text-lg">
-                  Four weeks, {SEATS} seats, and a product that exists at the end of it.{' '}
-                  {CURRENT_COHORT.label} is full, so this is the {NEXT_COHORT.label} list.
+                  Four weeks. {SEATS} seats — small enough that I read every application myself.
+                  A product that exists at the end of it. {CURRENT_COHORT.label} is full, so this is
+                  the {NEXT_COHORT.label} list.
                 </p>
                 <div className="mt-8">
                   <ApplyButton where="footer" />
