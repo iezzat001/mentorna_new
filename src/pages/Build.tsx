@@ -280,8 +280,10 @@ const vslIsPlaceholder = VSL_URL === null;
    (the adapted "ours" line). Assignment is 50/50 on first load, persisted in
    localStorage so returning visitors keep their variant; a ?variant=A|B query
    param force-overrides for QA without overwriting the stored value.
-   Final copy lands from ux-writer (task #10); the strings here are approved
-   starters / current copy used as placeholders until then.
+   Copy is final (ux-writer task #10, Ahmed-approved): Variant A cycles
+   idea → side-project → business → startup, with a decoupled static "business"
+   fallback for reduced-motion / screen readers; Variant B is the "first paying
+   customer" statement.
    ──────────────────────────────────────────────────────────── */
 type HeroVariant = 'A' | 'B';
 const HERO_VARIANT_KEY = 'build_hero_variant';
@@ -296,18 +298,23 @@ const GRADIENT_TEXT: React.CSSProperties = {
 };
 
 const HERO_A = {
-  prefix: 'Build Your',
-  // ux-writer (task #10): final word list. words[0] is the static word shown to
-  // reduced-motion users and screen readers, so keep the strongest one first.
-  words: ['Career', 'Business', 'Startup'],
-  suffix: 'with AI Workers to grow revenue',
-  // PLACEHOLDER — ux-writer supplies Variant A's final subhead.
-  subhead: 'AI does the building. You bring what you already know — four weeks, live.',
+  prefix: 'Build your',
+  // Animated cycle, in Ahmed's exact order; loops back to the start.
+  words: ['idea', 'side-project', 'business', 'startup'],
+  // Static word for reduced-motion + screen readers — deliberately DECOUPLED
+  // from the cycle order. The cycle opens on "idea" (weak standalone), so the
+  // non-motion anchor is a dedicated "business" instead of words[0].
+  staticWord: 'business',
+  connector: 'with',
+  gradient: 'a team of AI workers', // the fixed leverage hook carries the gradient
+  subhead:
+    'You bring what you already know — the AI does the building. Four weeks, live, ten seats.',
 };
 
-// Variant B keeps the current approved "ours" headline (rendered inline in the
-// hero) plus this subhead. ux-writer may adapt the wording (task #10).
-const HERO_B_SUBHEAD = `In four weeks, using ${FRAMEWORK}, without losing $10,000 on tech nobody needs.`;
+// Variant B — a static statement headline (gradient on "first paying customer",
+// rendered inline in the hero) plus this subhead.
+const HERO_B_SUBHEAD =
+  'Ten seats, money-back after week two. You bring the expertise; the framework turns it into a product real buyers pay for.';
 
 /* ────────────────────────────────────────────────────────────
    Helpers
@@ -378,22 +385,24 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 /*
  * TypewriterWord — cycles a list of words with a type → hold → erase → next
  * loop and a blinking caret. prefers-reduced-motion users get ONE static word
- * (words[0]) with no animation and no caret; the guard is read synchronously in
- * a lazy initializer so there is no flash of the animated state on first paint.
+ * (staticWord, decoupled from the cycle order) with no animation and no caret;
+ * the guard is read synchronously so there is no flash of the animated state.
  * The animated text is aria-hidden — the full, stable headline is provided once
  * as sr-only text in the hero, so screen readers and crawlers get real copy.
  */
 const TypewriterWord = ({
   words,
-  textStyle,
+  staticWord,
   cursorColor,
 }: {
   words: string[];
-  textStyle?: React.CSSProperties;
+  staticWord?: string;
   cursorColor?: string;
 }) => {
   const [reduced] = useState(prefersReducedMotion);
-  const [display, setDisplay] = useState(() => (prefersReducedMotion() ? words[0] ?? '' : ''));
+  const [display, setDisplay] = useState(() =>
+    prefersReducedMotion() ? staticWord ?? words[0] ?? '' : '',
+  );
   const [wordIndex, setWordIndex] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
@@ -429,7 +438,7 @@ const TypewriterWord = ({
 
   return (
     <span className="whitespace-nowrap">
-      <span style={textStyle}>{display || ' '}</span>
+      <span>{display || ' '}</span>
       {!reduced && (
         <span
           aria-hidden="true"
@@ -512,7 +521,7 @@ const Build = () => {
    */
   const [variant] = useState<HeroVariant>(() => {
     if (typeof window === 'undefined') return 'A';
-    const forced = new URLSearchParams(window.location.search).get('variant');
+    const forced = new URLSearchParams(window.location.search).get('variant')?.toUpperCase();
     if (forced === 'A' || forced === 'B') return forced;
     const stored = localStorage.getItem(HERO_VARIANT_KEY);
     if (stored === 'A' || stored === 'B') return stored;
@@ -523,7 +532,7 @@ const Build = () => {
   // (?variant=) must never overwrite the stored value.
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const forced = new URLSearchParams(window.location.search).get('variant');
+    const forced = new URLSearchParams(window.location.search).get('variant')?.toUpperCase();
     if (forced === 'A' || forced === 'B') return;
     if (localStorage.getItem(HERO_VARIANT_KEY) !== variant) {
       localStorage.setItem(HERO_VARIANT_KEY, variant);
@@ -628,17 +637,18 @@ const Build = () => {
                     `}</style>
                     <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
                       <span className="sr-only">
-                        {HERO_A.prefix} {HERO_A.words[0]} {HERO_A.suffix}
+                        {HERO_A.prefix} {HERO_A.staticWord} {HERO_A.connector} {HERO_A.gradient}
                       </span>
                       <span aria-hidden="true">
                         {HERO_A.prefix}{' '}
                         <TypewriterWord
                           words={HERO_A.words}
-                          textStyle={GRADIENT_TEXT}
+                          staticWord={HERO_A.staticWord}
                           cursorColor={AMBER}
                         />
                         <br />
-                        {HERO_A.suffix}
+                        {HERO_A.connector}{' '}
+                        <span style={GRADIENT_TEXT}>{HERO_A.gradient}</span>
                       </span>
                     </h1>
 
@@ -649,8 +659,8 @@ const Build = () => {
                 ) : (
                   <>
                     <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
-                      Turn what you already know into{' '}
-                      <span style={GRADIENT_TEXT}>a business that pays you</span>
+                      Four weeks, live, to your{' '}
+                      <span style={GRADIENT_TEXT}>first paying customer</span>.
                     </h1>
 
                     <p className="mt-5 max-w-2xl text-base font-semibold leading-relaxed text-white/75 md:text-lg">
