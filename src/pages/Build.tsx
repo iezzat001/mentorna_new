@@ -5,102 +5,126 @@ import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import { whatsappUrl } from '@/lib/whatsapp';
 import { eventPhotos, workshopVideoPoster } from '@/data/testimonials';
 
-/* ────────────────────────────────────────────────────────────
-   Design tokens — same language as /workshop, /links, offer pages
-   ──────────────────────────────────────────────────────────── */
-const AMBER = 'hsl(38,95%,58%)';
-const PURPLE = 'hsl(262,70%,60%)';
-const CYAN = 'hsl(196,85%,52%)';
-const TEAL = 'hsl(160,70%,45%)';
-const CORAL = 'hsl(18,80%,63%)';
-const SECTION_ACCENTS = [AMBER, PURPLE, CYAN, TEAL];
+/* Mentorna restyle of CodeFast rhythm. Not a coding course. Copy: docs/BUILD-COPY.md */
 
-const PAGE_BG = 'linear-gradient(180deg,#F7E9D6 0%,#F3E0CB 25%,#F6E5D2 55%,#EFDAC2 100%)';
-const brutal = 'border-4 border-[hsl(0,0%,10%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]';
-const brutalLg = 'border-4 border-[hsl(0,0%,10%)] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]';
-
-const VIDEO_SRC = 'https://mentorna-testimonials.s3.amazonaws.com/testimonials/karla.mp4';
-const VIDEO_SRC_2 = 'https://mentorna-testimonials.s3.amazonaws.com/testimonials/mo.mp4';
+const VIDEO_KARLA = 'https://mentorna-testimonials.s3.amazonaws.com/testimonials/karla.mp4';
+const VIDEO_MO = 'https://mentorna-testimonials.s3.amazonaws.com/testimonials/mo.mp4';
 const STRIP_PHOTOS = eventPhotos.slice(0, 3);
 
-const DOTS = {
-  backgroundImage: 'radial-gradient(rgba(0,0,0,.18) 1.3px, transparent 1.3px)',
-  backgroundSize: '18px 18px',
-};
-
-/* ────────────────────────────────────────────────────────────
-   Locked English — docs/BUILD-COPY.md. Do not rewrite.
-   ──────────────────────────────────────────────────────────── */
-const SEO_TITLE = 'Your own thing. It exists on Monday | Mentorna';
+const SEO_TITLE = 'Four weeks to something of yours | Mentorna';
 const SEO_DESCRIPTION =
-  '$275. Starts Friday 4 September, after the webinar. Full refund after 2 sessions. Register for the workshop on WhatsApp.';
+  '$275. Starts Friday 4 September after the webinar. Full refund after 2 sessions. Take a seat on WhatsApp.';
 
-const SUB =
-  '$275. Starts Friday 4 September, after the webinar. Full refund after 2 sessions if you didn\'t get anything from it.';
-
-const REFUND = 'Full refund after 2 sessions if you didn\'t get anything from it.';
-
-const CTA_RESTATE =
-  '$275. Starts Friday 4 September. Full refund after 2 sessions if you didn\'t get anything from it.';
-
-const CTA_LABEL = 'Register for the workshop';
-const CTA_MICRO = 'If you want a seat, I\'ll send the payment link.';
+const CTA_LABEL = 'Take a seat';
+const CTA_MICRO = "WhatsApp. I'll send the payment link.";
+const REFUND = "Full refund after 2 sessions if you didn't get anything from it";
 
 const APPLY_MESSAGE = [
-  'Hi Ahmed, I want to register for the workshop — 4 September, $275',
-  '1) What I\'m building, or the idea in my head:',
-  '2) What I do right now (the job, not a bio):',
+  'Hi Ahmed, I want a seat — 4 September, $275',
+  "1) What I'm building, or the idea in my head:",
+  '2) What I do all day (the job, not a bio):',
   '3) Why now:',
 ].join('\n');
 
-const QUESTION_MESSAGE = 'Hi Ahmed — a question about the workshop (not registering yet):';
+const QUESTION_MESSAGE = 'Hi Ahmed — a question on the workshop (not taking a seat yet):';
 
-const ATF_FACTS = [
-  { q: 'Free or paid?', a: 'Paid. $275' },
-  { q: 'When do we start?', a: 'Friday 4 September, evening after the webinar' },
-  { q: 'Refund?', a: REFUND },
+const FACTS = [
+  'Paid. $275',
+  'Starts Friday 4 September, after the webinar',
+  REFUND,
 ];
-
-const OUTCOMES = [
-  'Your own thing — even if it\'s small. You build it. You can grow it. It\'s yours, not your job\'s.',
-  'It exists on Monday — not a picture in your head. Too many features is the whole problem. Start with one, so it still exists.',
-  'You understand the sequence — how the business mindset actually moves. So you can run it after the four Fridays.',
-  'A path to the first client — how you market, how you pitch. Not a new salary in four weeks.',
-];
-
-const WHY_NOW =
-  'ideas are not impossible anymore. We have the tools in our hands. What\'s left is getting it on the ground before the week ends.';
 
 const FRIDAYS = [
-  { n: 1, label: 'You know who it\'s for, and if it isn\'t worth you, you kill it early.' },
-  { n: 2, label: 'One thing that works, in the session, you can open on Monday.' },
-  { n: 3, label: 'Real people see it.' },
-  { n: 4, label: 'A price, a path to the first client, and the other 9 see that it\'s yours.' },
+  { n: 1, when: '4 September', line: "You pick one. If it doesn't deserve you, it dies here." },
+  { n: 2, when: 'One feature', line: 'Built in the room. You open it on Monday.' },
+  { n: 3, when: 'A stranger', line: 'A stranger understands it.' },
+  { n: 4, when: 'A price', line: 'A path to the first client.' },
+];
+
+const WATCHING = [
+  'Another Friday of notes',
+  'Two ideas, too many features',
+  'YouTube when the week slides',
+  "Monday it's gone",
+  'Tell yourself the webinar is enough',
+];
+
+const COACHED = [
+  'One idea. One feature.',
+  'A trainer who knows you',
+  'A room that will not let the week slide',
+  'Monday it still exists',
+  'A path to the first client',
 ];
 
 const FOR_YOU = [
-  'Full-time, ideas in your head, and you want something that\'s yours — not the company\'s',
-  'You don\'t feel like you have business sense, and you want to understand the sequence',
-  'You can do Friday, 3 hours, 4 times',
+  "Full-time. Ideas in your head. You want something that's yours, not the company's.",
+  "You can already build. You don't have a business sequence.",
+  'You can keep Friday, 3 hours, four times.',
 ];
 
 const NOT_FOR_YOU = [
-  'Waiting for the right tool',
-  'listen and have nothing on Monday',
-  'someone else to build it — then it isn\'t yours.',
-  'You want 1-on-1 — not this page',
+  "You're waiting for the right tool",
+  'You want to listen and have nothing on Monday',
+  'You want someone else to build it',
+  "You want 1-on-1 — that's not this page",
 ];
 
-const PAY_MARKS = ['WhatsApp', 'Visa', 'Transfer', 'Instapay'];
+const FLYWHEEL = ['Pick one', 'Build one feature', 'Put it in front of someone', 'Learn'];
 
-const Eyebrow = ({ children }: { children: React.ReactNode }) => (
-  <p className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.18em] opacity-50">
-    {children}
-  </p>
-);
+const SEQUENCE = [
+  { n: 1, title: 'The pick', body: "Whose is this. If it doesn't deserve you, kill it early." },
+  { n: 2, title: 'One feature', body: 'Too many features is the whole problem. One, so it still exists on Monday.' },
+  { n: 3, title: 'A stranger', body: 'Someone who is not you has to understand it.' },
+  { n: 4, title: 'A price', body: 'How you talk about it. How you get to the first client. Not a new salary in four weeks.' },
+];
 
-const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="text-3xl font-extrabold leading-[1.15] md:text-4xl">{children}</h2>
+const FAQ = [
+  {
+    q: 'What if I miss that Friday?',
+    a: "There's a recording. Traveling that Friday is fine. Showing up is still the point.",
+  },
+  {
+    q: "Isn't the webinar enough?",
+    a: "Friday already feels like enough. That's the stall. Watching is the gym at home. This is a trainer and a plan.",
+  },
+  {
+    q: 'I need to think.',
+    a: "Think. 10 seats. First Friday is 4 September. After 2 sessions you can take the money back if you didn't get anything from it.",
+  },
+  {
+    q: 'How do I pay?',
+    a: "WhatsApp me. Card, transfer, or Instapay from Egypt. I'll send the link.",
+  },
+  {
+    q: 'Is this 1-on-1?',
+    a: 'No. This page is the group. 10 seats.',
+  },
+  {
+    q: 'Do I need to be technical?',
+    a: 'You already build. This is the business sequence, not another tools course.',
+  },
+];
+
+const VideoPair = () => (
+  <div className="grid grid-cols-1 overflow-hidden rounded-xl border border-black/10 md:grid-cols-2">
+    <video
+      src={VIDEO_KARLA}
+      poster={workshopVideoPoster}
+      controls
+      playsInline
+      preload="metadata"
+      className="aspect-video w-full bg-black object-contain"
+    />
+    <video
+      src={VIDEO_MO}
+      poster={workshopVideoPoster}
+      controls
+      playsInline
+      preload="metadata"
+      className="aspect-video w-full bg-black object-contain"
+    />
+  </div>
 );
 
 const Build = () => {
@@ -141,264 +165,265 @@ const Build = () => {
   const applyHref = whatsappUrl(APPLY_MESSAGE);
   const questionHref = whatsappUrl(QUESTION_MESSAGE);
 
-  const ApplyButton = ({ where, dark = true }: { where: string; dark?: boolean }) => (
+  const SeatButton = ({ where, light = false }: { where: string; light?: boolean }) => (
     <a
       href={applyHref}
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => track(where)}
-      className={`${brutal} inline-flex min-h-11 items-center justify-center gap-2 px-5 text-sm font-extrabold transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none md:min-h-14 md:px-6 md:text-lg ${
-        dark ? 'bg-[hsl(0,0%,10%)] text-white' : 'bg-white'
+      className={`inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-5 text-sm font-extrabold md:min-h-12 md:text-base ${
+        light ? 'bg-white text-[hsl(0,0%,10%)]' : 'bg-[hsl(14,90%,65%)] text-white'
       }`}
     >
-      <MessageCircle className="h-5 w-5" style={{ color: dark ? TEAL : undefined }} />
+      <MessageCircle className="h-4 w-4" />
       {CTA_LABEL}
     </a>
   );
 
   return (
-    <div className="min-h-screen font-body text-[hsl(0,0%,10%)]" style={{ background: PAGE_BG }}>
+    <div className="min-h-screen bg-[#FAFAF8] font-body text-[hsl(0,0%,10%)]">
       <main className="mx-auto max-w-5xl px-4 pb-0" dir="ltr">
-        {/* 1. Internshala fold — button in first viewport. No extra $275. */}
-        <header className="relative pt-2">
-          <div className={`${brutalLg} relative overflow-hidden bg-[hsl(0,0%,10%)] px-3 py-3 md:px-8 md:py-5`}>
-            <div aria-hidden className="absolute inset-0 opacity-[0.16]" style={DOTS} />
-            <div className="relative">
-              <span className="inline-block border-2 border-white/40 bg-white/10 px-2.5 py-0.5 text-[11px] font-extrabold tracking-wider text-white">
-                $275 · 4 September · 10 seats
+        {/* 1. Hero — fold only. Button in first viewport. Videos under. */}
+        <header className="pt-3 md:pt-8">
+          <p className="text-[11px] font-extrabold tracking-[0.14em] text-black/50">
+            $275 · 4 September · 10 seats
+          </p>
+          <h1 className="mt-2 max-w-3xl text-[1.7rem] font-extrabold leading-[1.08] tracking-tight md:text-5xl">
+            Four weeks to something of yours.
+            <br />
+            Not more months of notes.
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-black/75 md:text-base">
+            Even if Friday already feels like enough. Even if you can learn this online.
+          </p>
+          <p className="mt-1.5 max-w-2xl text-sm font-medium leading-snug text-black/60">
+            You can already build. What's missing is the sequence, and a room that will not let the week slide.
+          </p>
+          <div className="mt-2 flex flex-wrap gap-1">
+            {FACTS.map((f) => (
+              <span
+                key={f}
+                className="rounded-full border border-black/15 bg-white px-2 py-0.5 text-[11px] font-bold leading-snug text-black/70"
+              >
+                {f}
               </span>
-
-              <h1 className="mt-2 text-[1.75rem] font-extrabold leading-[1.05] text-white md:text-5xl">
-                Your own thing.
-                <br />
-                Even if it's small.
-              </h1>
-
-              <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-white/85 md:text-lg">
-                Monday, it still exists. It's yours.
-              </p>
-
-              <p className="mt-1.5 max-w-2xl text-sm font-semibold leading-snug text-white/75">
-                Not another week visualizing it with nothing on the ground.
-              </p>
-
-              <p className="mt-1.5 max-w-2xl text-sm font-semibold leading-snug text-white/60">
-                {SUB}
-              </p>
-
-              <div className="mt-2 flex flex-wrap gap-1">
-                {ATF_FACTS.map((f) => (
-                  <span
-                    key={f.q}
-                    className="border-2 border-white/25 bg-white/10 px-2 py-0.5 text-[11px] font-extrabold leading-snug text-white/80"
-                  >
-                    {f.q} {f.a}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-3">
-                <ApplyButton where="hero" dark={false} />
-                <p className="mt-1.5 text-sm font-semibold text-white/50">{CTA_MICRO}</p>
-              </div>
-            </div>
+            ))}
+          </div>
+          <div className="mt-3">
+            <SeatButton where="hero" />
+            <p className="mt-1.5 text-sm font-semibold text-black/50">{CTA_MICRO}</p>
+            <p className="mt-0.5 text-xs font-semibold text-black/40">First room of 10.</p>
           </div>
         </header>
 
-        {/* Real players — under the hero. No Reveal / opacity-0. No names. */}
         <section className="pt-4 md:pt-6">
-          <div className={`${brutalLg} overflow-hidden bg-[hsl(0,0%,10%)]`}>
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <video
-                src={VIDEO_SRC}
-                poster={workshopVideoPoster}
-                controls
-                playsInline
-                preload="metadata"
-                className="aspect-video w-full bg-black object-contain"
-              />
-              <video
-                src={VIDEO_SRC_2}
-                poster={workshopVideoPoster}
-                controls
-                playsInline
-                preload="metadata"
-                className="aspect-video w-full bg-black object-contain"
-              />
-            </div>
-            <div className="grid grid-cols-3 divide-x-2 divide-[hsl(0,0%,10%)] border-t-4 border-[hsl(0,0%,10%)] bg-white text-center">
-              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">{REFUND}</p>
-              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">10 seats</p>
-              <p className="px-2 py-2 text-[11px] font-extrabold leading-snug">Price goes to ~$500</p>
-            </div>
-          </div>
+          <VideoPair />
         </section>
 
-        {/* 2. Kennedy look-inside cards — 4×3h lives here */}
-        <section className="pt-8 md:pt-10">
-          <Eyebrow>The workshop</Eyebrow>
-          <SectionTitle>Build Friday. It exists on Monday.</SectionTitle>
-          <div className="mt-4 grid items-start gap-3 md:grid-cols-2">
-            <div className={`${brutal} bg-[hsl(0,0%,10%)] px-4 py-4`}>
-              <p className="text-base font-extrabold leading-snug text-white">
-                Monday, it still exists. It's yours.
-              </p>
-              <p className="mt-2 text-sm font-semibold leading-snug text-white/75">
-                4 sessions × 3 hours. Hands-on, not a webinar. The work happens in the session.
-              </p>
-            </div>
-            <div className={`${brutal} bg-white px-4 py-4`}>
-              <p className="text-sm font-semibold leading-snug opacity-80">
-                First Friday: 4 September, around 7pm after the 6pm webinar. If you're travelling, you can join from there. There's a recording. Showing up is the point.
-              </p>
-              <p className="mt-2 text-sm font-semibold leading-snug opacity-70">
-                Technical people don't have a tool problem. Once they see how it works, they use it. The tool helps. What differs: what comes next, who you sell to, distribution.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 3. Strategyzer outcomes — image-hugs-paragraph + Friday rows */}
-        <section className="pt-8 md:pt-10">
-          <Eyebrow>What you leave with</Eyebrow>
-          <SectionTitle>Yours. And it exists.</SectionTitle>
-          <ul className="mt-4 grid items-start gap-3 sm:grid-cols-2">
-            {OUTCOMES.map((item, i) => (
-              <li key={item} className={`${brutal} bg-white px-3 py-3`}>
-                <span
-                  className="mb-2 inline-flex h-8 w-8 items-center justify-center border-2 border-[hsl(0,0%,10%)] text-sm font-extrabold"
-                  style={{ background: SECTION_ACCENTS[i] }}
-                >
-                  {i + 1}
-                </span>
-                <p className="text-sm font-extrabold leading-snug">{item}</p>
+        {/* 2. Timeline — CodeFast Day 1/4/9/14 rhythm */}
+        <section className="pt-8 md:pt-12">
+          <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">Four Fridays. Then it exists.</h2>
+          <ol className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+            {FRIDAYS.map((f) => (
+              <li key={f.n} className="rounded-xl border border-black/10 bg-white px-3 py-3">
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[hsl(14,90%,45%)]">
+                  Friday {f.n}
+                </p>
+                <p className="mt-1 text-sm font-extrabold leading-snug">{f.when}</p>
+                <p className="mt-1 text-sm font-medium leading-snug text-black/65">{f.line}</p>
               </li>
             ))}
-          </ul>
-          <p className="mt-3 text-sm font-semibold leading-snug">{WHY_NOW}</p>
-          <div className={`${brutal} mt-3 bg-white px-3 py-3`}>
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] opacity-50">
-              The four Fridays
+          </ol>
+        </section>
+
+        {/* 3. Enemy — watching vs coached. Who under it. */}
+        <section className="pt-8 md:pt-12">
+          <h2 className="max-w-3xl text-2xl font-extrabold tracking-tight md:text-3xl">
+            Friday notes are for watching. This room is not.
+          </h2>
+          <div className="mt-4 grid items-start gap-2 md:grid-cols-2">
+            <div className="rounded-xl border border-black/10 bg-white px-4 py-3">
+              <h3 className="text-sm font-extrabold text-black/45">Watching</h3>
+              <ul className="mt-2 space-y-1.5">
+                {WATCHING.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm font-semibold leading-snug text-black/70">
+                    <X className="mt-0.5 h-4 w-4 shrink-0 text-black/30" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-xl border border-black/10 bg-white px-4 py-3">
+              <h3 className="text-sm font-extrabold text-[hsl(14,90%,45%)]">Being coached</h3>
+              <ul className="mt-2 space-y-1.5">
+                {COACHED.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm font-semibold leading-snug">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[hsl(14,90%,45%)]" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <p className="mt-3 text-sm font-semibold leading-snug text-black/60">
+            People who already know still sit in a room. Same reason.
+          </p>
+          <div className="mt-4 grid items-start gap-2 md:grid-cols-2">
+            <div className="rounded-xl border border-black/10 bg-white px-4 py-3">
+              <h3 className="text-sm font-extrabold">For you if</h3>
+              <ul className="mt-2 space-y-1.5">
+                {FOR_YOU.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm font-semibold leading-snug">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[hsl(14,90%,45%)]" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-xl border border-black/10 bg-[#F3F3F0] px-4 py-3">
+              <h3 className="text-sm font-extrabold text-black/50">Not for you if</h3>
+              <ul className="mt-2 space-y-1.5">
+                {NOT_FOR_YOU.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm font-semibold leading-snug text-black/60">
+                    <X className="mt-0.5 h-4 w-4 shrink-0 text-black/30" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Flywheel */}
+        <section className="pt-8 md:pt-12">
+          <p className="text-sm font-extrabold text-black/45">
+            Instead of another year of Friday notes and YouTube...
+          </p>
+          <ol className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4">
+            {FLYWHEEL.map((step, i) => (
+              <li key={step} className="rounded-xl border border-black/10 bg-white px-3 py-3">
+                <span className="text-[11px] font-extrabold text-[hsl(14,90%,45%)]">{i + 1}</span>
+                <p className="mt-1 text-sm font-extrabold leading-snug">{step}</p>
+              </li>
+            ))}
+          </ol>
+          <h2 className="mt-5 text-2xl font-extrabold tracking-tight md:text-3xl">Start a shipping flywheel</h2>
+          <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-black/70">
+            Four weeks. Something of yours on the ground, even if it's small. Then you have something real to learn from.
+          </p>
+          <div className="mt-3">
+            <SeatButton where="flywheel" />
+          </div>
+        </section>
+
+        {/* 5. Sequence */}
+        <section className="pt-8 md:pt-12">
+          <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">The sequence. Not the tools.</h2>
+          <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-black/70">
+            The technical part is the easy part. You already have the tools. What changes you is the order: who it's for, one feature, a stranger, a price.
+          </p>
+          <ol className="mt-4 grid items-start gap-2 sm:grid-cols-2">
+            {SEQUENCE.map((s) => (
+              <li key={s.n} className="rounded-xl border border-black/10 bg-white px-3 py-3">
+                <p className="text-sm font-extrabold leading-snug">
+                  {s.n}. {s.title}
+                </p>
+                <p className="mt-1 text-sm font-medium leading-snug text-black/65">{s.body}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-3 text-sm font-semibold text-black/55">
+            4 sessions × 3 hours, after the webinar. The work happens in the session.
+          </p>
+        </section>
+
+        {/* 6. Speed objection */}
+        <section className="pt-8 md:pt-12">
+          <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">Is four Friday nights enough?</h2>
+          <div className="mt-4 grid items-start gap-2 md:grid-cols-2">
+            <p className="rounded-xl border border-black/10 bg-white px-4 py-3 text-sm font-semibold leading-snug text-black/70">
+              The old way has no end. Another webinar. Another YouTube tab. Another week of notes and nothing a stranger has used.
             </p>
-            <ol className="mt-2 grid gap-1.5 sm:grid-cols-2">
-              {FRIDAYS.map((f) => (
-                <li key={f.n} className="flex items-baseline gap-2 text-sm font-semibold leading-snug">
-                  <span className="font-extrabold" style={{ color: CORAL }}>
-                    {f.n}.
-                  </span>
-                  <span>{f.label}</span>
-                </li>
-              ))}
-            </ol>
+            <p className="rounded-xl border border-black/10 bg-white px-4 py-3 text-sm font-semibold leading-snug">
+              The new way is 4 sessions × 3 hours, and a trainer who knows your name.
+            </p>
           </div>
+          <p className="mt-3 max-w-2xl text-sm font-extrabold leading-snug">
+            You do not need more information. You need someone who will not let the week slide.
+          </p>
         </section>
 
-        {/* 4. Figma Expert price card + payment row */}
-        <section id="apply" className="scroll-mt-6 pt-8 md:pt-10">
-          <div className={`${brutalLg} mx-auto max-w-xl overflow-hidden bg-white`}>
-            <div className="px-4 py-4">
-              <Eyebrow>Price</Eyebrow>
-              <h2 className="text-2xl font-extrabold md:text-3xl">$275. 10 seats.</h2>
-              <p className="mt-1 text-sm font-extrabold opacity-70">
-                4 sessions × 3 hours · Friday 4 September
-              </p>
-              <p className="mt-3 text-sm font-extrabold leading-snug">{REFUND}</p>
-              <p className="mt-2 text-sm font-semibold leading-snug opacity-80">
-                Not expensive. In EGP that's 14,000 or 13,900. There's a course at 20k for two sessions. This is half the price, then it goes to ~$500. First people in get access to everything that comes next.
-              </p>
-              <p className="mt-2 text-sm font-semibold leading-snug opacity-70">
-                Link on WhatsApp. Visa/card, transfer, Instapay from Egypt.
-              </p>
-              <div className="mt-4">
-                <ApplyButton where="pricing" />
-                <p className="mt-2 text-sm font-semibold opacity-70">{CTA_MICRO}</p>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-2 border-t-4 border-[hsl(0,0%,10%)] bg-[hsl(0,0%,96%)] px-3 py-2">
-              {PAY_MARKS.map((m) => (
-                <span
-                  key={m}
-                  className="border-2 border-[hsl(0,0%,10%)] bg-white px-2 py-0.5 text-[11px] font-extrabold"
-                >
-                  {m}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Al-Tayseer who */}
-        <section className="pt-8 md:pt-10">
-          <SectionTitle>This is for you if the question in your way is: is this mine? Will it still exist on Monday?</SectionTitle>
-          <div className="mt-4 grid items-start gap-3 md:grid-cols-2">
-            <div className={`${brutal} bg-white px-4 py-3`}>
-              <h3 className="text-base font-extrabold" style={{ color: TEAL }}>
-                This is for you if
-              </h3>
-              <ul className="mt-2 space-y-1.5">
-                {FOR_YOU.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: TEAL }} />
-                    <span className="text-sm font-semibold leading-snug">{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className={`${brutal} bg-[hsl(0,0%,96%)] px-4 py-3`}>
-              <h3 className="text-base font-extrabold opacity-70">Not for you if</h3>
-              <ul className="mt-2 space-y-1.5">
-                {NOT_FOR_YOU.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <X className="mt-0.5 h-4 w-4 shrink-0 opacity-45" />
-                    <span className="text-sm font-semibold leading-snug opacity-70">{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* 6. Aida founder strip — real photos, not a bio / timer */}
-        <section className="pt-8 md:pt-10">
-          <div className={`${brutalLg} overflow-hidden bg-[hsl(0,0%,10%)]`}>
+        {/* 7. Founder — short. Unnamed photos. */}
+        <section className="pt-8 md:pt-12">
+          <div className="overflow-hidden rounded-xl border border-black/10">
             <div className="grid grid-cols-3">
               {STRIP_PHOTOS.map((p) => (
-                <img
-                  key={p.src}
-                  src={p.src}
-                  alt=""
-                  className="aspect-[4/5] w-full object-cover"
-                />
+                <img key={p.src} src={p.src} alt="" className="aspect-[4/5] w-full object-cover" />
               ))}
             </div>
-            <div className="relative px-4 py-4 md:px-6">
-              <div aria-hidden className="absolute inset-0 opacity-[0.12]" style={DOTS} />
-              <div className="relative">
-                <h2 className="text-2xl font-extrabold leading-[1.15] text-white md:text-3xl">
-                  You're in. First group.
-                </h2>
-                <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-white/85">
-                  Price goes to ~$500. Access to everything after. Not a timer.
-                </p>
-              </div>
+            <div className="bg-white px-4 py-4">
+              <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">Hey, it's Ahmed.</h2>
+              <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-black/70">
+                I already taught the tool side. Building with AI, before people called it vibe coding.
+              </p>
+              <p className="mt-2 max-w-2xl text-sm font-semibold leading-snug text-black/70">
+                The people in the room can already ship pixels. What they don't have is the business sequence.
+              </p>
+              <p className="mt-2 text-sm font-extrabold">This is the room I wish I had.</p>
             </div>
+          </div>
+        </section>
+
+        {/* 8. Proof — videos may repeat. No names. */}
+        <section className="pt-8 md:pt-12">
+          <p className="mb-3 text-sm font-extrabold text-black/45">Ahmed. Ten people. Four Fridays.</p>
+          <VideoPair />
+        </section>
+
+        {/* 9. Price — one card. No timer. No bundle. */}
+        <section id="apply" className="scroll-mt-6 pt-8 md:pt-12">
+          <div className="mx-auto max-w-md rounded-xl border border-black/10 bg-white px-5 py-5">
+            <h2 className="text-2xl font-extrabold tracking-tight">$275. 10 seats.</h2>
+            <p className="mt-1 text-sm font-semibold text-black/60">
+              4 sessions × 3 hours. First Friday 4 September, after the webinar.
+            </p>
+            <p className="mt-3 text-sm font-extrabold leading-snug">{REFUND}.</p>
+            <p className="mt-2 text-sm font-medium leading-snug text-black/65">
+              No discount. Pay on WhatsApp: card, transfer, or Instapay from Egypt.
+            </p>
+            <div className="mt-4">
+              <SeatButton where="pricing" />
+              <p className="mt-2 text-sm font-semibold text-black/50">{CTA_MICRO}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 10. FAQ — copy visible, no accordion hide */}
+        <section className="pt-8 md:pt-12">
+          <div className="mx-auto max-w-2xl space-y-2">
+            {FAQ.map((item) => (
+              <div key={item.q} className="rounded-xl border border-black/10 bg-white px-4 py-3">
+                <p className="text-sm font-extrabold leading-snug">{item.q}</p>
+                <p className="mt-1 text-sm font-medium leading-snug text-black/65">{item.a}</p>
+              </div>
+            ))}
           </div>
         </section>
       </main>
 
-      {/* 7. SCATCODE close — dark band. No English site footer. */}
-      <section className="mt-8 bg-[hsl(0,0%,10%)]" dir="ltr">
-        <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-4 px-4 py-6 md:flex-row md:items-center md:py-8">
+      {/* 11. Close — dark band. No site footer. */}
+      <section className="mt-10 bg-[hsl(0,0%,10%)]" dir="ltr">
+        <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-4 px-4 py-8 md:flex-row md:items-center">
           <div>
-            <h2 className="text-2xl font-extrabold leading-[1.15] text-white md:text-3xl">
-              Register for the workshop
+            <h2 className="max-w-xl text-2xl font-extrabold leading-[1.15] tracking-tight text-white md:text-3xl">
+              Four weeks to something of yours. Or more months of notes.
             </h2>
-            <p className="mt-2 max-w-xl text-sm font-semibold leading-snug text-white/70">
-              {CTA_RESTATE}
+            <p className="mt-2 max-w-xl text-sm font-semibold leading-snug text-white/65">
+              $275. Starts 4 September. Full refund after 2 sessions if you didn't get anything from it.
             </p>
           </div>
           <div>
-            <ApplyButton where="footer" dark={false} />
+            <SeatButton where="footer" light />
             <p className="mt-2 text-sm font-semibold text-white/50">{CTA_MICRO}</p>
             <p className="mt-2 text-sm font-semibold">
               <a
