@@ -28,12 +28,6 @@ const APPLY_MESSAGE = [
 
 const QUESTION_MESSAGE = 'Hi Ahmed — a question on the workshop (not taking a seat yet):';
 
-const FACTS = [
-  'Paid. $275',
-  'Starts Friday 4 September, after the webinar',
-  REFUND,
-];
-
 const FRIDAYS = [
   { n: 1, line: "4 September: You pick one. If it doesn't deserve you, it dies here." },
   { n: 2, line: 'One feature. Built in the room. You open it on Monday.' },
@@ -183,12 +177,12 @@ const Build = () => {
   return (
     <div className="min-h-screen bg-[#FAFAF8] font-body text-[hsl(0,0%,10%)]">
       <main className="mx-auto max-w-5xl px-4 pb-0" dir="ltr">
-        {/* 1. Hero — fold only. Button in first viewport. Videos under. */}
-        <header className="pt-3 md:pt-8">
+        {/* 1. Hero — two-line H1. Take a seat in first viewport. No extra chips. Videos under. */}
+        <header className="pt-2 md:pt-8">
           <p className="text-[11px] font-extrabold tracking-[0.14em] text-black/50">
             $275 · 4 September · 10 seats
           </p>
-          <h1 className="mt-2 max-w-3xl text-[1.7rem] font-extrabold leading-[1.08] tracking-tight md:text-5xl">
+          <h1 className="mt-2 max-w-3xl text-[1.65rem] font-extrabold leading-[1.08] tracking-tight md:text-5xl">
             Four weeks to something of yours.
             <br />
             Not more months of notes.
@@ -199,20 +193,9 @@ const Build = () => {
           <p className="mt-1.5 max-w-2xl text-sm font-medium leading-snug text-black/60">
             You can already build. What's missing is the sequence, and a room that will not let the week slide.
           </p>
-          <div className="mt-2 flex flex-wrap gap-1">
-            {FACTS.map((f) => (
-              <span
-                key={f}
-                className="rounded-full border border-black/15 bg-white px-2 py-0.5 text-[11px] font-bold leading-snug text-black/70"
-              >
-                {f}
-              </span>
-            ))}
-          </div>
           <div className="mt-3">
             <SeatButton where="hero" />
             <p className="mt-1.5 text-sm font-semibold text-black/50">{CTA_MICRO}</p>
-            <p className="mt-0.5 text-xs font-semibold text-black/40">First room of 10.</p>
           </div>
         </header>
 
