@@ -9,7 +9,6 @@ import {
   Lock,
   MessageCircle,
   Play,
-  Quote,
   Rocket,
   ShieldCheck,
   Star,
@@ -282,7 +281,22 @@ const vslIsPlaceholder = VSL_URL === null;
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
+  /*
+   * Respect prefers-reduced-motion: users who ask for less motion get the
+   * content immediately, with no translate/opacity transition at all. The
+   * scroll-reveal is the page's dominant motion, so guarding it here covers
+   * every section in one place.
+   */
+  const [reduced, setReduced] = useState(false);
   useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    ) {
+      setReduced(true);
+      setShown(true);
+      return;
+    }
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
@@ -300,10 +314,14 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   return (
     <div
       ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ease-out ${
-        shown ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-      }`}
+      style={reduced ? undefined : { transitionDelay: `${delay}ms` }}
+      className={
+        reduced
+          ? ''
+          : `transition-all duration-700 ease-out ${
+              shown ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`
+      }
     >
       {children}
     </div>
@@ -501,6 +519,51 @@ const Build = () => {
           </Reveal>
         </header>
 
+        {/* ══ TRUST RIBBON ══ */}
+        <section className="pt-8 md:pt-10">
+          <Reveal>
+            <div
+              className={`${brutal} grid grid-cols-1 divide-y-4 divide-[hsl(0,0%,10%)] bg-white sm:grid-cols-3 sm:divide-x-4 sm:divide-y-0`}
+            >
+              {[
+                {
+                  node: <ShieldCheck className="h-5 w-5" />,
+                  accent: TEAL,
+                  t: 'Money-back',
+                  d: 'Full refund after session two',
+                },
+                {
+                  node: <span className="text-xl font-extrabold leading-none">10</span>,
+                  accent: CORAL,
+                  t: 'Seats only',
+                  d: 'Small enough I read every one',
+                },
+                {
+                  node: <BadgeCheck className="h-5 w-5" />,
+                  accent: AMBER,
+                  t: 'Yours for life',
+                  d: 'Every recording, template and the Club',
+                },
+              ].map((item) => (
+                <div key={item.t} className="flex items-center gap-4 p-5 md:p-6">
+                  <span
+                    className="flex h-11 w-11 shrink-0 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
+                    style={{ background: item.accent }}
+                  >
+                    {item.node}
+                  </span>
+                  <div>
+                    <p className="text-sm font-extrabold uppercase leading-tight tracking-wide">
+                      {item.t}
+                    </p>
+                    <p className="mt-0.5 text-xs font-semibold leading-snug opacity-70">{item.d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </section>
+
         {/* ══ VSL ══ */}
         <section className="pt-10 md:pt-14">
           <Reveal>
@@ -689,6 +752,48 @@ const Build = () => {
           </div>
         </section>
 
+        {/* ══ INSTRUCTOR ══ */}
+        <section className="pt-16 md:pt-24">
+          <Reveal>
+            <Eyebrow>Who runs it</Eyebrow>
+            <SectionTitle>Ahmed Ezzat</SectionTitle>
+            <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed opacity-75">
+              {BIO}
+            </p>
+          </Reveal>
+
+          <div className="mt-7 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {STATS.map((s, i) => (
+              <Reveal key={s.l} delay={i * 60}>
+                <div className={`${brutal} h-full bg-white p-5`}>
+                  <div className="text-3xl font-extrabold leading-none" style={{ color: s.c }}>
+                    {s.v}
+                  </div>
+                  <div className="mt-2 text-xs font-bold uppercase tracking-wide opacity-60">
+                    {s.l}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal>
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <span className="text-xs font-extrabold uppercase tracking-wide opacity-50">
+                Worked with
+              </span>
+              {ORGS.map((o) => (
+                <span
+                  key={o}
+                  className="border-2 border-[hsl(0,0%,10%)] bg-white px-3 py-1.5 text-xs font-extrabold"
+                >
+                  {o}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+        </section>
+
         {/* ══ GUEST SESSIONS ══ */}
         <section className="pt-16 md:pt-24">
           <Reveal>
@@ -701,23 +806,27 @@ const Build = () => {
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {GUESTS.map((g, i) => (
               <Reveal key={g.topic} delay={i * 70}>
-                <div className={`${brutal} h-full bg-white p-6`}>
-                  <div
-                    className="mb-4 flex h-12 w-12 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
-                    style={{ background: g.accent }}
-                  >
-                    <g.icon className="h-6 w-6" />
+                <div className={`${brutal} flex h-full flex-col bg-white p-6`}>
+                  <div className="mb-5 flex items-center justify-between gap-3">
+                    <span
+                      className="flex h-12 w-12 shrink-0 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
+                      style={{ background: g.accent }}
+                    >
+                      <g.icon className="h-6 w-6" />
+                    </span>
+                    <span className="border-2 border-[hsl(0,0%,10%)] bg-[hsl(0,0%,10%)] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white">
+                      {g.topic}
+                    </span>
                   </div>
-                  <p className="text-[11px] font-extrabold uppercase tracking-wide opacity-50">
-                    {g.topic}
-                  </p>
-                  <h3 className="mt-1 text-base font-extrabold">
+                  <h3 className="text-lg font-extrabold leading-tight">
                     {g.name || 'Guest confirmed per cohort'}
                   </h3>
                   {g.credential && (
-                    <p className="mt-0.5 text-xs font-bold opacity-60">{g.credential}</p>
+                    <p className="mt-1 text-xs font-bold leading-snug opacity-70">{g.credential}</p>
                   )}
-                  <p className="mt-2 text-sm font-semibold leading-relaxed opacity-70">{g.desc}</p>
+                  <p className="mt-3 flex-1 text-sm font-semibold leading-relaxed opacity-70">
+                    {g.desc}
+                  </p>
                 </div>
               </Reveal>
             ))}
@@ -766,48 +875,6 @@ const Build = () => {
           </Reveal>
         </section>
 
-        {/* ══ INSTRUCTOR ══ */}
-        <section className="pt-16 md:pt-24">
-          <Reveal>
-            <Eyebrow>Who runs it</Eyebrow>
-            <SectionTitle>Ahmed Ezzat</SectionTitle>
-            <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed opacity-75">
-              {BIO}
-            </p>
-          </Reveal>
-
-          <div className="mt-7 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {STATS.map((s, i) => (
-              <Reveal key={s.l} delay={i * 60}>
-                <div className={`${brutal} h-full bg-white p-5`}>
-                  <div className="text-3xl font-extrabold leading-none" style={{ color: s.c }}>
-                    {s.v}
-                  </div>
-                  <div className="mt-2 text-xs font-bold uppercase tracking-wide opacity-60">
-                    {s.l}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal>
-            <div className="mt-5 flex flex-wrap items-center gap-2">
-              <span className="text-xs font-extrabold uppercase tracking-wide opacity-50">
-                Worked with
-              </span>
-              {ORGS.map((o) => (
-                <span
-                  key={o}
-                  className="border-2 border-[hsl(0,0%,10%)] bg-white px-3 py-1.5 text-xs font-extrabold"
-                >
-                  {o}
-                </span>
-              ))}
-            </div>
-          </Reveal>
-        </section>
-
         {/* ══ PROOF ══ */}
         <section className="pt-16 md:pt-24">
           <Reveal>
@@ -834,54 +901,37 @@ const Build = () => {
             ))}
           </div>
 
-          {/* Outcomes — one real outcome. The second card was removed until a
-             real testimonial exists (no placeholder proof); designer may
-             rebalance this row when more outcomes land. */}
+          {/* One real early outcome. Kept deliberately singular — no invented
+             second card — so it reads as a spotlight, not a half-empty row.
+             Add a sibling here only when a second real outcome exists. */}
           <div className="mt-6">
             <Reveal>
-              <div className={`${brutal} bg-white p-6 md:p-8`}>
-                <span
-                  className="inline-block border-2 border-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase"
+              <div className={`${brutal} flex items-stretch overflow-hidden bg-white`}>
+                <div
+                  className="flex w-16 shrink-0 items-center justify-center border-r-4 border-[hsl(0,0%,10%)] md:w-24"
                   style={{ background: AMBER }}
                 >
-                  Now building
-                </span>
-                <h3 className="mt-3 text-xl font-extrabold">Faris started FOMO</h3>
-                <p className="mt-2 text-sm font-semibold leading-relaxed opacity-75">
-                  He came in with an idea and left with a direction. He is building the MVP now and
-                  validating it with potential customers.
-                </p>
+                  <Rocket className="h-7 w-7 md:h-9 md:w-9" />
+                </div>
+                <div className="flex-1 p-5 md:p-7">
+                  <span className="inline-block border-2 border-[hsl(0,0%,10%)] bg-[hsl(0,0%,10%)] px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-white">
+                    Now building
+                  </span>
+                  <h3 className="mt-2 text-xl font-extrabold">Faris started FOMO</h3>
+                  <p className="mt-2 max-w-2xl text-sm font-semibold leading-relaxed opacity-75">
+                    He came in with an idea and left with a direction. He is building the MVP now
+                    and validating it with potential customers.
+                  </p>
+                </div>
               </div>
             </Reveal>
           </div>
 
-          {/* Featured quote over a photo */}
-          <Reveal>
-            <div className={`${brutalLg} relative mt-6 overflow-hidden`}>
-              <img
-                src={eventPhotos[4]?.src ?? eventPhotos[0].src}
-                alt={eventPhotos[4]?.alt ?? eventPhotos[0].alt}
-                loading="lazy"
-                className="h-[22rem] w-full object-cover md:h-[26rem]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
-                <Quote className="mb-3 h-8 w-8" style={{ color: AMBER }} />
-                <blockquote className="max-w-2xl text-xl font-extrabold leading-snug text-white md:text-3xl">
-                  &ldquo;{testimonials[0].quote}&rdquo;
-                </blockquote>
-                <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <span className="text-sm font-extrabold text-white">{testimonials[0].name}</span>
-                  <span className="text-sm font-semibold text-white/60">
-                    {testimonials[0].role}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {testimonials.slice(1, 4).map((t, i) => (
+          {/* Workshop quotes — kept as lineage, all equal weight. No single
+             workshop quote is elevated to headline cohort proof (the pedigree
+             above carries that); the old full-bleed featured quote was removed. */}
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {testimonials.slice(0, 4).map((t, i) => (
               <Reveal key={t.name} delay={i * 70}>
                 <div className={`${brutal} flex h-full flex-col bg-white p-6`}>
                   <div className="mb-3 flex gap-1">
