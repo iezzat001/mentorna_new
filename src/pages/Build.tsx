@@ -176,14 +176,14 @@ const WEEKS = [
   },
   {
     n: 2,
-    title: 'Shape the offer, build version one',
+    title: 'Write the offer, build version one',
     goal: 'Leave with an offer a stranger understands and a working first version.',
     detail:
       'Write the offer statement, then build the thing with AI in the session. Not a deck, not a wireframe. Something real that exists at the end of the three hours.',
   },
   {
     n: 3,
-    title: 'Put it in front of real people',
+    title: 'Ship it to real people',
     goal: 'Leave with your product live and the first signal coming in.',
     detail:
       'Ship it, find where your people actually are, and start collecting responses. We read what users do, not what they politely say.',
@@ -210,10 +210,17 @@ const INCLUDED = [
   'Showcase session in week 4',
 ];
 
+/*
+ * Guest sessions. Each cohort brings three guests — marketing, funding, and an
+ * investor. Names + one hard credential each are confirmed per cohort; until
+ * Ahmed supplies them, the card shows the honest "Guest confirmed per cohort"
+ * fallback rather than an anonymous archetype. SLOT: set `name` and `credential`
+ * per guest when known and the card renders them automatically.
+ */
 const GUESTS = [
-  { icon: Target, accent: AMBER, title: 'A marketing expert', desc: 'How to find where your customers actually are, and reach them without a budget.' },
-  { icon: Rocket, accent: CYAN, title: 'A funding expert', desc: 'What funding is really for, when to raise, and how to know if you should not.' },
-  { icon: BadgeCheck, accent: TEAL, title: 'An investor', desc: 'What makes them lean in, and the things founders say that end the conversation.' },
+  { icon: Target, accent: AMBER, topic: 'Marketing', name: '', credential: '', desc: 'How to find where your customers actually are, and reach them without a budget.' },
+  { icon: Rocket, accent: CYAN, topic: 'Funding', name: '', credential: '', desc: 'What funding is really for, when to raise, and how to know if you should not.' },
+  { icon: BadgeCheck, accent: TEAL, topic: 'Investor', name: '', credential: '', desc: 'What makes them lean in, and the things founders say that end the conversation.' },
 ];
 
 /* Fit */
@@ -368,7 +375,7 @@ const Build = () => {
   useSEO({
     title: 'The 0→1 Cohort — 4 Weeks, 10 Seats | Mentorna®',
     description:
-      'For 9-5 domain experts. Build a profitable business in four weeks using the 0→1 Framework, without losing $10,000 on tech nobody needs. 10 seats per cohort.',
+      'For 9-to-5 domain experts. Build a profitable business in four weeks using the 0→1 Framework, without losing $10,000 on tech nobody needs. 10 seats per cohort.',
     canonical: 'https://mentorna.com/build',
   });
 
@@ -435,7 +442,7 @@ const Build = () => {
 
               <div className="relative">
                 <span className="inline-block border-2 border-white/40 bg-white/10 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
-                  ✦ For 9-5 domain experts · 4 weeks · {SEATS} seats
+                  ✦ For 9-to-5 domain experts · 4 weeks · {SEATS} seats
                 </span>
 
                 <h1 className="mt-5 text-4xl font-extrabold leading-[0.98] text-white md:text-6xl">
@@ -459,8 +466,8 @@ const Build = () => {
                   {[
                     { v: '4 weeks', l: '3 hours a week, live', c: AMBER },
                     {
-                      v: 'Skip $10,000',
-                      l: "The usual quote to get a product built. You'll build yours in the room.",
+                      v: 'One year in',
+                      l: "and the idea's still an idea. That's what four weeks is for.",
                       c: CYAN,
                     },
                     { v: 'No code', l: 'Nothing to install', c: TEAL },
@@ -486,7 +493,8 @@ const Build = () => {
                   <ApplyButton where="hero" dark={false} />
                 </div>
                 <p className="mt-3 text-sm font-semibold text-white/50">
-                  Opens WhatsApp with three questions. Takes two minutes.
+                  {CURRENT_COHORT.label} is full — applying joins the {NEXT_COHORT.label} waitlist.
+                  Opens WhatsApp with three questions, takes two minutes.
                 </p>
               </div>
             </div>
@@ -497,7 +505,7 @@ const Build = () => {
         <section className="pt-10 md:pt-14">
           <Reveal>
             <p className="mb-4 text-center text-sm font-extrabold uppercase tracking-[0.14em] opacity-60">
-              ▼ Watch this first ▼
+              ▼ 90 seconds inside a session ▼
             </p>
             <div className={`${brutalLg} overflow-hidden bg-[hsl(0,0%,10%)]`}>
               <VslPlayer />
@@ -692,7 +700,7 @@ const Build = () => {
           </Reveal>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {GUESTS.map((g, i) => (
-              <Reveal key={g.title} delay={i * 70}>
+              <Reveal key={g.topic} delay={i * 70}>
                 <div className={`${brutal} h-full bg-white p-6`}>
                   <div
                     className="mb-4 flex h-12 w-12 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
@@ -700,7 +708,15 @@ const Build = () => {
                   >
                     <g.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-base font-extrabold">{g.title}</h3>
+                  <p className="text-[11px] font-extrabold uppercase tracking-wide opacity-50">
+                    {g.topic}
+                  </p>
+                  <h3 className="mt-1 text-base font-extrabold">
+                    {g.name || 'Guest confirmed per cohort'}
+                  </h3>
+                  {g.credential && (
+                    <p className="mt-0.5 text-xs font-bold opacity-60">{g.credential}</p>
+                  )}
                   <p className="mt-2 text-sm font-semibold leading-relaxed opacity-70">{g.desc}</p>
                 </div>
               </Reveal>
@@ -795,7 +811,7 @@ const Build = () => {
         {/* ══ PROOF ══ */}
         <section className="pt-16 md:pt-24">
           <Reveal>
-            <Eyebrow>Not a stock photo on this page</Eyebrow>
+            <Eyebrow>From the workshops this cohort is built on</Eyebrow>
             <SectionTitle>
               50 people have been
               <br />
@@ -818,10 +834,12 @@ const Build = () => {
             ))}
           </div>
 
-          {/* Outcomes */}
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
+          {/* Outcomes — one real outcome. The second card was removed until a
+             real testimonial exists (no placeholder proof); designer may
+             rebalance this row when more outcomes land. */}
+          <div className="mt-6">
             <Reveal>
-              <div className={`${brutal} h-full bg-white p-6`}>
+              <div className={`${brutal} bg-white p-6 md:p-8`}>
                 <span
                   className="inline-block border-2 border-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase"
                   style={{ background: AMBER }}
@@ -832,21 +850,6 @@ const Build = () => {
                 <p className="mt-2 text-sm font-semibold leading-relaxed opacity-75">
                   He came in with an idea and left with a direction. He is building the MVP now and
                   validating it with potential customers.
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={80}>
-              <div className={`${brutal} h-full bg-white p-6`}>
-                <span
-                  className="inline-block border-2 border-[hsl(0,0%,10%)] px-2 py-1 text-[10px] font-extrabold uppercase"
-                  style={{ background: TEAL, color: 'white' }}
-                >
-                  Shipped
-                </span>
-                <h3 className="mt-3 text-xl font-extrabold">Karla built a donation platform</h3>
-                <p className="mt-2 text-sm font-semibold leading-relaxed opacity-75">
-                  {/* TODO: replace with Karla's testimonial when Ahmed sends it */}
-                  Her testimonial is on the way and will go here.
                 </p>
               </div>
             </Reveal>
@@ -914,7 +917,6 @@ const Build = () => {
                 &ldquo;Why do I need this? I can learn it free online.&rdquo;
               </h2>
               <div className="mt-6 max-w-2xl space-y-4 text-base font-semibold leading-relaxed text-white/75">
-                {/* TODO: Ahmed to supply his own answer in his own words */}
                 <p>
                   You can. Everything in these four weeks exists somewhere online for free, and I
                   will not pretend otherwise.
@@ -1083,8 +1085,9 @@ const Build = () => {
                   The idea has waited long enough
                 </h2>
                 <p className="mx-auto mt-4 max-w-xl text-base font-semibold leading-relaxed opacity-75 md:text-lg">
-                  Four weeks, {SEATS} seats, and a product that exists at the end of it.{' '}
-                  {CURRENT_COHORT.label} is full, so this is the {NEXT_COHORT.label} list.
+                  Four weeks. {SEATS} seats — small enough that I read every application myself.
+                  A product that exists at the end of it. {CURRENT_COHORT.label} is full, so this is
+                  the {NEXT_COHORT.label} list.
                 </p>
                 <div className="mt-8">
                   <ApplyButton where="footer" />
