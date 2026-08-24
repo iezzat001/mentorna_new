@@ -37,6 +37,7 @@ import Build from "./pages/Build";
 import Mentorship from "./pages/Mentorship";
 import Testimonials from "./pages/Testimonials";
 import Links from "./pages/Links";
+import BookACall from "./pages/BookACall";
 
 const queryClient = new QueryClient();
 
@@ -122,6 +123,9 @@ const App = () => {
 
                   {/* Mobile-first link-in-bio storefront */}
                   <Route path="/links" element={<Links />} />
+
+                  {/* Consultation-only booking page */}
+                  <Route path="/book-a-call" element={<BookACall />} />
 
                   {/* Mohamed Offer page */}
                   <Route path="/offer/mohamed" element={<MohamedOffer />} />
