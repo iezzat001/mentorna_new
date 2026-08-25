@@ -515,17 +515,18 @@ const Build = () => {
   const { trackEvent, isInitialized } = useGoogleAnalytics({ measurementId });
 
   /*
-   * Hero A/B variant, resolved once and synchronously so the right headline is
-   * present on first paint (no flash): a ?variant=A|B override wins (QA), else
-   * the stored assignment, else a fresh 50/50 draw.
+   * Hero A/B test concluded: Variant A is now the default hero for all
+   * visitors. Variant B stays parked in the code, reachable only via an
+   * explicit ?variant=B override (QA), so the test can be re-run later without
+   * rebuilding the machinery. Resolved once and synchronously so the right
+   * headline is present on first paint (no flash): a ?variant=A|B override wins
+   * (QA), otherwise everyone — including visitors previously assigned B — gets A.
    */
   const [variant] = useState<HeroVariant>(() => {
     if (typeof window === 'undefined') return 'A';
     const forced = new URLSearchParams(window.location.search).get('variant')?.toUpperCase();
     if (forced === 'A' || forced === 'B') return forced;
-    const stored = localStorage.getItem(HERO_VARIANT_KEY);
-    if (stored === 'A' || stored === 'B') return stored;
-    return Math.random() < 0.5 ? 'A' : 'B';
+    return 'A';
   });
 
   // Persist the assignment so returning visitors keep it — but a QA override
