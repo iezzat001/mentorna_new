@@ -1,11 +1,17 @@
 export const S3_BASE =
   'https://mentorna-testimonials.s3.amazonaws.com/workshop-helsinki';
 
+/* Local pre-compressed WebP copies of the workshop photos.
+ * The S3 originals are multi-megabyte JPEGs (poster alone was 3.35 MB),
+ * which hurt LCP on /build. These WebP versions are served from /public.
+ * Video files are large and still stream from S3 on demand. */
+const PHOTO_BASE = '/workshop-helsinki';
+
 export const workshopVideoUrl = `${S3_BASE}/video-testimonial.MP4`;
 export const mariamVideoUrl = 'https://d2mp3ttz3u5gci.cloudfront.net/mariam.MOV';
 export const mariamThumbnailUrl =
   'https://d2mp3ttz3u5gci.cloudfront.net/mariam_thumbnail.png';
-export const workshopVideoPoster = `${S3_BASE}/20260604_182905.JPEG`;
+export const workshopVideoPoster = `${PHOTO_BASE}/poster-182905.webp`;
 
 export type Testimonial = {
   id: number;
@@ -82,21 +88,21 @@ export const testimonials: Testimonial[] = [
 ];
 
 export const eventPhotos = [
-  { src: `${S3_BASE}/20260604_174214.JPEG`, alt: 'Workshop participants at Helsinki XR Center' },
-  { src: `${S3_BASE}/20260604_182905.JPEG`, alt: 'Ahmed Ezzat presenting at the workshop' },
-  { src: `${S3_BASE}/20260604_185329.JPEG`, alt: 'Participants building their prototypes' },
-  { src: `${S3_BASE}/20260604_211945(0).JPEG`, alt: 'Workshop group session' },
-  { src: `${S3_BASE}/2c5265ca-bdcc-44f4-99e9-a33a8cc8c9b9.JPG`, alt: 'Team Unprompted presenting' },
-  { src: `${S3_BASE}/IMG_9530.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9531.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9533.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9535.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9557.jpg`, alt: 'Workshop moment' },
-  { src: `${S3_BASE}/IMG_9558.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9559.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9702.jpg`, alt: 'Written feedback' },
-  { src: `${S3_BASE}/IMG_9710.jpg`, alt: 'LinkedIn post about workshop' },
-  { src: `${S3_BASE}/IMG_9711.jpg`, alt: 'LinkedIn post about workshop' },
-  { src: `${S3_BASE}/IMG_9712.jpg`, alt: 'LinkedIn post about workshop' },
-  { src: `${S3_BASE}/IMG_9713.jpg`, alt: 'LinkedIn post about workshop' },
+  { src: `${PHOTO_BASE}/photo-174214.webp`,    alt: 'Workshop participants at Helsinki XR Center' },
+  { src: `${PHOTO_BASE}/poster-182905.webp`,   alt: 'Ahmed Ezzat presenting at the workshop' },
+  { src: `${PHOTO_BASE}/photo-185329.webp`,    alt: 'Participants building their prototypes' },
+  { src: `${PHOTO_BASE}/photo-211945.webp`,    alt: 'Workshop group session' },
+  { src: `${PHOTO_BASE}/photo-unprompted.webp`, alt: 'Team Unprompted presenting' },
+  { src: `${PHOTO_BASE}/photo-IMG_9530.webp`,  alt: 'Written feedback' },
+  { src: `${PHOTO_BASE}/photo-IMG_9531.webp`,  alt: 'Written feedback' },
+  { src: `${PHOTO_BASE}/photo-IMG_9533.webp`,  alt: 'Written feedback' },
+  { src: `${PHOTO_BASE}/photo-IMG_9535.webp`,  alt: 'Written feedback' },
+  { src: `${PHOTO_BASE}/photo-IMG_9557.webp`,  alt: 'Workshop moment' },
+  { src: `${PHOTO_BASE}/photo-IMG_9558.webp`,  alt: 'Written feedback' },
+  { src: `${PHOTO_BASE}/photo-IMG_9559.webp`,  alt: 'Written feedback' },
+  { src: `${PHOTO_BASE}/photo-IMG_9702.webp`,  alt: 'Written feedback' },
+  { src: `${PHOTO_BASE}/photo-IMG_9710.webp`,  alt: 'LinkedIn post about workshop' },
+  { src: `${PHOTO_BASE}/photo-IMG_9711.webp`,  alt: 'LinkedIn post about workshop' },
+  { src: `${PHOTO_BASE}/photo-IMG_9712.webp`,  alt: 'LinkedIn post about workshop' },
+  { src: `${PHOTO_BASE}/photo-IMG_9713.webp`,  alt: 'LinkedIn post about workshop' },
 ];
