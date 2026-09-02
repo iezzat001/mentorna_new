@@ -7,7 +7,9 @@ export interface SEOProps {
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  ogType?: string;
   ogUrl?: string;
+  twitterCard?: string;
   twitterTitle?: string;
   twitterDescription?: string;
   twitterImage?: string;
@@ -35,7 +37,9 @@ export const useSEO = ({
   ogTitle,
   ogDescription,
   ogImage,
+  ogType,
   ogUrl,
+  twitterCard,
   twitterTitle,
   twitterDescription,
   twitterImage,
@@ -103,11 +107,19 @@ export const useSEO = ({
       updateMetaTag('meta[property="og:image"]', 'property', ogImage);
     }
 
+    if (ogType) {
+      updateMetaTag('meta[property="og:type"]', 'property', ogType);
+    }
+
     if (ogUrl) {
       updateMetaTag('meta[property="og:url"]', 'property', ogUrl);
     }
 
     // Update Twitter Card tags
+    if (twitterCard) {
+      updateMetaTag('meta[name="twitter:card"]', 'name', twitterCard);
+    }
+
     if (twitterTitle) {
       updateMetaTag('meta[name="twitter:title"]', 'name', twitterTitle);
     }
@@ -131,7 +143,9 @@ export const useSEO = ({
     ogTitle,
     ogDescription,
     ogImage,
+    ogType,
     ogUrl,
+    twitterCard,
     twitterTitle,
     twitterDescription,
     twitterImage,
