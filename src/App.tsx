@@ -38,6 +38,7 @@ import Mentorship from "./pages/Mentorship";
 import Testimonials from "./pages/Testimonials";
 import Links from "./pages/Links";
 import BookACall from "./pages/BookACall";
+import Community from "./pages/Community";
 
 const queryClient = new QueryClient();
 
@@ -126,6 +127,9 @@ const App = () => {
 
                   {/* Consultation-only booking page */}
                   <Route path="/book-a-call" element={<BookACall />} />
+
+                  {/* Community webinar recordings */}
+                  <Route path="/community" element={<Community />} />
 
                   {/* Mohamed Offer page */}
                   <Route path="/offer/mohamed" element={<MohamedOffer />} />

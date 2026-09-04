@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      webinar_watch_events: {
+        Row: {
+          id: string
+          session_id: string
+          webinar_id: string
+          event_type: string
+          position_seconds: number
+          watched_seconds: number
+          video_duration: number | null
+          device_type: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          session_id: string
+          webinar_id: string
+          event_type?: string
+          position_seconds?: number
+          watched_seconds?: number
+          video_duration?: number | null
+          device_type?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          session_id?: string
+          webinar_id?: string
+          event_type?: string
+          position_seconds?: number
+          watched_seconds?: number
+          video_duration?: number | null
+          device_type?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
       offer_settings: {
         Row: {
           id: string
