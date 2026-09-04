@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { useWebinarWatchTracking } from "@/hooks/useWebinarWatchTracking";
 import { webinarMediaUrl, type Webinar } from "@/data/webinars";
@@ -11,11 +11,29 @@ interface WebinarPlayerProps {
 const WebinarPlayer: React.FC<WebinarPlayerProps> = ({ webinar, className = "" }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [errored, setErrored] = useState(false);
+  // Only use a poster once we've confirmed it loads; otherwise let the video
+  // fall back to its first frame (posters may not be uploaded yet).
+  const [poster, setPoster] = useState<string | undefined>(undefined);
 
   useWebinarWatchTracking(videoRef, webinar.id);
 
   const videoUrl = webinarMediaUrl(webinar.videoFile);
-  const posterUrl = webinar.posterFile ? webinarMediaUrl(webinar.posterFile) : undefined;
+
+  useEffect(() => {
+    if (!webinar.posterFile) {
+      setPoster(undefined);
+      return;
+    }
+    const url = webinarMediaUrl(webinar.posterFile);
+    const img = new Image();
+    img.onload = () => setPoster(url);
+    img.onerror = () => setPoster(undefined);
+    img.src = url;
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+    };
+  }, [webinar.posterFile]);
 
   return (
     <div
@@ -36,7 +54,7 @@ const WebinarPlayer: React.FC<WebinarPlayerProps> = ({ webinar, className = "" }
           playsInline
           preload="metadata"
           className="w-full aspect-video bg-black"
-          poster={posterUrl}
+          poster={poster}
           onError={() => setErrored(true)}
         >
           <source src={videoUrl} type="video/mp4" />

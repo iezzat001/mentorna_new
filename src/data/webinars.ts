@@ -42,6 +42,19 @@ export const webinarMediaUrl = (file: string): string => `${MEDIA_BASE}/${file}`
  */
 export const webinars: Webinar[] = [
   {
+    id: "webinar-2026-08-28",
+    title: "AI Agents at Work: Subagents & Agent Teams",
+    description:
+      "How agentic AI workflows actually get things done — a lead agent spawning subagents, and \"agent teams\" coordinating through a shared task list. Practical patterns for building faster with AI coding tools.",
+    date: "2026-08-28",
+    durationSeconds: 5695,
+    videoFile: "2026-08-28-community-webinar.mp4",
+    posterFile: "2026-08-28-community-webinar.jpg",
+    published: true,
+    dir: "ltr",
+    tags: ["AI Agents", "Cursor", "Workflows"],
+  },
+  {
     id: "webinar-2026-08-21",
     title: "Live Pitch Deck Review: Building a LegalTech Startup with AI",
     description:
