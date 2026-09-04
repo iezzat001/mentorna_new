@@ -133,16 +133,27 @@ export const flushRetryQueue = async (): Promise<void> => {
 };
 
 /**
+ * How far back the dashboard queries watch events. Keeps the query bounded as
+ * the table grows (heartbeats accumulate quickly during long recordings).
+ */
+const FETCH_WINDOW_DAYS = 90;
+
+/**
  * Fetch watch events for aggregation. Queries the hosted table; in development
  * it falls back to (and merges) the local buffer so the dashboard can be
  * demonstrated before the migration is applied.
  */
 export const fetchWatchEvents = async (): Promise<WebinarWatchEvent[]> => {
+  const since = new Date(
+    Date.now() - FETCH_WINDOW_DAYS * 24 * 60 * 60 * 1000
+  ).toISOString();
+
   const { data, error } = await supabase
     .from("webinar_watch_events")
     .select(
       "session_id, webinar_id, event_type, position_seconds, watched_seconds, video_duration, device_type, created_at"
     )
+    .gte("created_at", since)
     .order("created_at", { ascending: true });
 
   const remote = (!error && data ? (data as WebinarWatchEvent[]) : []);
@@ -218,15 +229,10 @@ export const aggregateWebinarAnalytics = (
 
     // Watched seconds accumulated per session.
     const watchedBySession = new Map<string, number>();
-    const maxPositionBySession = new Map<string, number>();
     for (const e of list) {
       watchedBySession.set(
         e.session_id,
         (watchedBySession.get(e.session_id) ?? 0) + (e.watched_seconds || 0)
-      );
-      maxPositionBySession.set(
-        e.session_id,
-        Math.max(maxPositionBySession.get(e.session_id) ?? 0, e.position_seconds || 0)
       );
     }
 
