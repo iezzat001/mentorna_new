@@ -67,7 +67,7 @@ export const webinars: Webinar[] = [
     description:
       "Ahmed walks through a real startup pitch deck live — how to structure your story, validate the problem, and use AI tools to build and present faster. Recorded during our weekly community webinar.",
     date: "2026-08-21",
-    durationSeconds: 5281,
+    durationSeconds: 5280,
     videoFile: "2026-08-21-community-webinar.mp4",
     posterFile: "2026-08-21-community-webinar.jpg",
     published: true,
@@ -80,7 +80,7 @@ export const webinars: Webinar[] = [
     description:
       "Third session of our weekly community webinar series — live discussion, Q&A, and member pitch reviews. Recorded during our weekly community webinar.",
     date: "2026-09-04",
-    durationSeconds: 7528,
+    durationSeconds: 7527,
     videoFile: "2026-09-04-community-webinar.mp4",
     posterFile: "2026-09-04-community-webinar.jpg",
     published: true,

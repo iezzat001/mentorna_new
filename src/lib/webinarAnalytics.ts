@@ -334,3 +334,19 @@ export const formatDuration = (totalSeconds: number): string => {
   if (m > 0) return `${m}m ${sec}s`;
   return `${sec}s`;
 };
+
+/**
+ * Precise runtime for a recording, matching the video player's timeline
+ * (e.g. "1:28:00", "2:05:27", or "12:34" when under an hour). Unlike
+ * formatDuration this never drops seconds, so the label always matches the
+ * actual video length.
+ */
+export const formatRuntime = (totalSeconds: number): string => {
+  const s = Math.max(0, Math.round(totalSeconds));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  const mm = m.toString().padStart(2, "0");
+  const ss = sec.toString().padStart(2, "0");
+  return h > 0 ? `${h}:${mm}:${ss}` : `${m}:${ss}`;
+};

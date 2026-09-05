@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import WebinarPlayer from "@/components/community/WebinarPlayer";
 import { getPublishedWebinars } from "@/data/webinars";
-import { flushRetryQueue, formatDuration } from "@/lib/webinarAnalytics";
+import { flushRetryQueue, formatRuntime } from "@/lib/webinarAnalytics";
 import { useSEO } from "@/hooks/useSEO";
 
 const formatDate = (iso: string): string => {
@@ -87,7 +87,7 @@ const Community: React.FC = () => {
                       {webinar.durationSeconds ? (
                         <span className="inline-flex items-center gap-1">
                           <Clock className="h-4 w-4" />
-                          {formatDuration(webinar.durationSeconds)}
+                          {formatRuntime(webinar.durationSeconds)}
                         </span>
                       ) : null}
                     </div>
