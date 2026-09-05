@@ -120,7 +120,10 @@ dashboard (**Webinar Analytics** tab).
    ```
    This uploads to `webinars/<name>` and the file becomes available at
    `https://d2mp3ttz3u5gci.cloudfront.net/webinars/<name>`.
-2. **Register it** by adding an entry to `webinars` in `src/data/webinars.ts`
+2. **Add a poster thumbnail** to `public/webinars/<name>.jpg` (a 1280×720 frame
+   works well). Posters are committed to the app rather than the CDN, so they
+   render without a separate upload.
+3. **Register it** by adding an entry to `webinars` in `src/data/webinars.ts`
    (`id`, `title`, `description`, `date`, `durationSeconds`, `videoFile`,
    `posterFile`). Keep `id` stable so analytics keep matching.
 

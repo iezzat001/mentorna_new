@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { useWebinarWatchTracking } from "@/hooks/useWebinarWatchTracking";
-import { webinarMediaUrl, type Webinar } from "@/data/webinars";
+import { webinarMediaUrl, webinarPosterUrl, type Webinar } from "@/data/webinars";
 
 interface WebinarPlayerProps {
   webinar: Webinar;
@@ -24,7 +24,7 @@ const WebinarPlayer: React.FC<WebinarPlayerProps> = ({ webinar, className = "" }
       setPoster(undefined);
       return;
     }
-    const url = webinarMediaUrl(webinar.posterFile);
+    const url = webinarPosterUrl(webinar.posterFile);
     const img = new Image();
     img.onload = () => setPoster(url);
     img.onerror = () => setPoster(undefined);

@@ -34,6 +34,13 @@ const MEDIA_BASE = (
 export const webinarMediaUrl = (file: string): string => `${MEDIA_BASE}/${file}`;
 
 /**
+ * Poster images are committed to the app (public/webinars/) rather than the
+ * CDN, so thumbnails work without a separate upload. Resolves to a root path.
+ */
+export const webinarPosterUrl = (file: string): string =>
+  `${import.meta.env.BASE_URL}webinars/${file}`;
+
+/**
  * Weekly community webinar recordings.
  *
  * NOTE: The title/description below are drawn from the recording's content
