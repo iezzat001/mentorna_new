@@ -75,18 +75,6 @@ export const webinars: Webinar[] = [
     tags: ["AI", "Pitching", "Entrepreneurship"],
   },
   {
-    id: "webinar-2026-08-28",
-    title: "Community Webinar #2",
-    description:
-      "Second session of our weekly community webinar series — live discussion, Q&A, and member pitch reviews. Recorded during our weekly community webinar.",
-    date: "2026-08-28",
-    durationSeconds: 5695,
-    videoFile: "2026-08-28-community-webinar.mp4",
-    published: true,
-    dir: "ltr",
-    tags: ["Community", "Q&A"],
-  },
-  {
     id: "webinar-2026-09-04",
     title: "Community Webinar #3",
     description:
