@@ -15,6 +15,7 @@ import {
   Tag,
   TrendingUp,
   Users,
+  Video,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -105,6 +106,11 @@ export default function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) 
       title: "Reels Analysis",
       url: "reels-analysis",
       icon: Film,
+    },
+    {
+      title: "Webinar Analytics",
+      url: "webinar-analytics",
+      icon: Video,
     },
     {
       title: "Workshops",

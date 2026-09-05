@@ -105,6 +105,36 @@ Documentation lives in `docs/`:
 **Lead magnets** (`docs/lead_magnet/`) - specs and the downloadable canvases
 served from CloudFront for the "ابني Startup في 30 يوم" series
 
+## Community Webinars
+
+The `/community` page hosts recordings of the weekly community webinars with the
+date, topic, and a short brief, plus per-webinar watch analytics in the admin
+dashboard (**Webinar Analytics** tab).
+
+### Adding a new webinar
+
+1. **Upload the recording to S3/CloudFront.** Use the helper script:
+   ```sh
+   export WEBINAR_S3_BUCKET=your-bucket-name
+   scripts/upload-webinar-to-s3.sh ./recording.mp4 2026-08-21-community-webinar.mp4 ./poster.jpg
+   ```
+   This uploads to `webinars/<name>` and the file becomes available at
+   `https://d2mp3ttz3u5gci.cloudfront.net/webinars/<name>`.
+2. **Register it** by adding an entry to `webinars` in `src/data/webinars.ts`
+   (`id`, `title`, `description`, `date`, `durationSeconds`, `videoFile`,
+   `posterFile`). Keep `id` stable so analytics keep matching.
+
+To point the app at a different media host during local development, set
+`VITE_WEBINAR_MEDIA_BASE` in `.env.local`.
+
+### Watch analytics
+
+Playback progress is recorded to the `webinar_watch_events` Supabase table
+(views, watch time, retention, completion). Apply the migration in
+`supabase/migrations/20260904000000_create_webinar_watch_events.sql` to the
+Supabase project before analytics go live. Until then, the player still works
+and events are buffered client-side and retried automatically.
+
 ## Deployment
 
 This project can be deployed to any static hosting service that supports Vite applications:
