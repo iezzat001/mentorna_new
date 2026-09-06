@@ -246,9 +246,8 @@ const INCLUDED = [
   'Week 4: you show the room.',
 ];
 
-/* Guest lineup. Marina, Petri, Anton are confirmed (sources: slush.org/about-us,
-   ilabventures.tech, greenstep.fi/tilitoimisto-turku). The three after them are
-   layout placeholders — swap or drop when the lineup locks. */
+/* Guest lineup — all three confirmed (sources: slush.org/about-us,
+   ilabventures.tech, greenstep.fi/tilitoimisto-turku). */
 const GUESTS = [
   {
     topic: 'Marketing',
@@ -276,44 +275,6 @@ const GUESTS = [
       'https://greenstep.fi/wp-content/uploads/sites/2/2026/09/anton.suomalainen.jpg?v=1788494412',
     status: 'confirmed',
   },
-  {
-    topic: 'Marketing',
-    name: 'Alex Hormozi',
-    credential: 'Acquisition.com · $100M Offers',
-    punch: 'He will show you how to sell without begging.',
-    photo:
-      'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80',
-    status: 'tbd',
-  },
-  {
-    topic: 'Funding',
-    name: 'Michael Seibel',
-    credential: 'Y Combinator · Managing Director',
-    punch: 'He will tell you when to raise. And when to shut up.',
-    photo:
-      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=900&q=80',
-    status: 'tbd',
-  },
-  {
-    topic: 'Investor',
-    name: 'Sarah Guo',
-    credential: 'Conviction · Founder',
-    punch: 'She will tell you the one sentence that makes her lean in.',
-    photo:
-      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80',
-    status: 'tbd',
-  },
-];
-
-/* Real organizations behind the confirmed guest lineup (Slush, iLab Ventures,
-   Greenstep). No placeholder names — every chip is a real room a guest sits in. */
-const GUEST_ORGS = [
-  { name: 'Slush', bg: '#FF4D00', fg: '#fff' },
-  { name: 'iLab Ventures', bg: '#6D5CFF', fg: '#fff' },
-  { name: 'Greenstep', bg: '#1B7A43', fg: '#fff' },
-  { name: 'Startup Foundation', bg: '#111111', fg: '#F7E9D6' },
-  { name: 'Silicon Valley', bg: '#0c4a6e', fg: '#fff' },
-  { name: 'Nordic Founders', bg: '#FF4FA3', fg: '#fff' },
 ];
 
 const CLUB_PHOTO = {
@@ -1553,16 +1514,17 @@ const Build = () => {
                 Not just me
               </p>
               <h2 className="mx-auto mt-5 max-w-4xl text-center font-heading text-[clamp(2.4rem,7vw,5.2rem)] font-light leading-[0.95] tracking-[-0.035em] text-[#F7E9D6]">
-                Guest sessions.
+                Three names.
                 <br />
                 Same room.
               </h2>
               <p className="mx-auto mt-6 max-w-xl text-center font-heading text-lg font-light leading-relaxed text-[#F7E9D6]/70 md:text-xl">
-                Marina, Petri, and Anton are confirmed. More names drop before week one.
+                Marina, Petri, and Anton — confirmed. Each runs a session with you inside the
+                cohort.
               </p>
             </Reveal>
 
-            <div className="mt-14 grid gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+            <div className="mt-14 grid gap-5 md:grid-cols-3 md:gap-6">
               {GUESTS.map((g, i) => (
                 <Reveal key={g.name} delay={i * 90}>
                   <article>
@@ -1600,34 +1562,6 @@ const Build = () => {
                     </p>
                   </article>
                 </Reveal>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative border-t border-white/10 bg-[#0c0a0b] py-6 md:py-8">
-            <p className="mb-5 text-center font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/40">
-              Rooms they already sit in
-            </p>
-            <div className="flex flex-col gap-3 overflow-hidden">
-              {[0, 1].map((row) => (
-                <div
-                  key={row}
-                  className={`flex w-max ${row === 0 ? 'org-marquee' : 'org-marquee-rev'}`}
-                >
-                  {[0, 1].map((dup) => (
-                    <div key={dup} className="flex">
-                      {(row === 0 ? GUEST_ORGS : [...GUEST_ORGS].reverse()).map((o) => (
-                        <span
-                          key={`${row}-${dup}-${o.name}`}
-                          className="mx-1.5 inline-flex shrink-0 items-center rounded-2xl px-6 py-3 font-heading text-base font-medium tracking-tight md:px-8 md:py-4 md:text-xl"
-                          style={{ background: o.bg, color: o.fg }}
-                        >
-                          {o.name}
-                        </span>
-                      ))}
-                    </div>
-                  ))}
-                </div>
               ))}
             </div>
           </div>
