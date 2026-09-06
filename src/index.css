@@ -215,3 +215,54 @@
   .brutal-hover { transition: all 0.15s ease; }
   .brutal-hover:hover { transform: translate(4px, 4px); box-shadow: none; }
 }
+
+/* Quiet motion for the method journey. Disabled when the user asks for less. */
+@keyframes method-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes method-dash {
+  to {
+    stroke-dashoffset: -36;
+  }
+}
+
+@keyframes org-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .method-float {
+    animation: method-float 5.5s ease-in-out infinite;
+  }
+  .method-float-late {
+    animation-delay: 0.45s;
+  }
+  .method-float-last {
+    animation-delay: 0.9s;
+  }
+  .method-path {
+    animation: method-dash 14s linear infinite;
+  }
+  .org-marquee {
+    animation: org-marquee 32s linear infinite;
+  }
+  .org-marquee-rev {
+    animation: org-marquee 40s linear infinite reverse;
+  }
+  .org-marquee:hover,
+  .org-marquee-rev:hover {
+    animation-play-state: paused;
+  }
+}
