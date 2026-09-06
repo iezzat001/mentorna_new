@@ -54,7 +54,7 @@ export const webinars: Webinar[] = [
     description:
       "How agentic AI workflows actually get things done — a lead agent spawning subagents, and \"agent teams\" coordinating through a shared task list. Practical patterns for building faster with AI coding tools.",
     date: "2026-08-28",
-    durationSeconds: 5695,
+    durationSeconds: 2160,
     videoFile: "2026-08-28-community-webinar.mp4",
     posterFile: "2026-08-28-community-webinar.jpg",
     published: true,
@@ -76,16 +76,16 @@ export const webinars: Webinar[] = [
   },
   {
     id: "webinar-2026-09-04",
-    title: "Community Webinar #3",
+    title: "Data, Career Growth & Market Validation",
     description:
-      "Third session of our weekly community webinar series — live discussion, Q&A, and member pitch reviews. Recorded during our weekly community webinar.",
+      "Three threads in one session: the technical foundations of data work — machine learning, statistics, data analysis, and SQL for structuring data. Professional growth — personal branding, portfolio building, internship prep, interview strategy, and using workshops to level up. And market research in practice — customer surveys and prospect validation for real business scenarios.",
     date: "2026-09-04",
-    durationSeconds: 7527,
+    durationSeconds: 2250,
     videoFile: "2026-09-04-community-webinar.mp4",
     posterFile: "2026-09-04-community-webinar.jpg",
     published: true,
     dir: "ltr",
-    tags: ["Community", "Q&A"],
+    tags: ["Data", "Career", "Market Research"],
   },
 ];
 
