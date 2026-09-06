@@ -8,6 +8,7 @@ import {
 import { useSEO } from '@/hooks/useSEO';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import Footer from '@/components/Footer';
+import CardFanCarousel from '@/components/ui/card-fan-carousel';
 import { whatsappUrl } from '@/lib/whatsapp';
 import {
   workshopVideoPoster,
@@ -109,6 +110,31 @@ const AHMED_PHOTOS = [
   { src: '/workshop-helsinki/photo-185329.webp', alt: 'Ahmed leading the workshop floor' },
   { src: '/workshop-helsinki/photo-211945.webp', alt: 'Ahmed with the cohort after the session' },
   { src: '/workshop-helsinki/photo-unprompted.webp', alt: 'Ahmed coaching builders at the table' },
+];
+
+/* Event photos for the fan carousel in "Who runs it" — the full set from the
+   Mentorna homepage + Helsinki workshop album. Portrait bio photo excluded
+   (it anchors the section), 16 photos in the fan. */
+const EVENT_PHOTOS = [
+  { imgUrl: '/workshop-helsinki/photo-174214.webp', alt: 'Ahmed on stage teaching the room' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_1.jpeg', alt: 'Students with their first revenue cheque' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9530.webp', alt: 'Cohort working session' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_2.jpeg', alt: 'Founders celebrating a win' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9531.webp', alt: 'Ahmed leading the workshop floor' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_3.jpeg', alt: 'Workshop session in Helsinki' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9533.webp', alt: 'Founders collaborating at the table' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_4.jpeg', alt: 'Room full of builders' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9535.webp', alt: 'Ahmed coaching at the table' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_5.jpeg', alt: 'Cohort presentation moment' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9557.webp', alt: 'Workshop crowd listening' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_6.jpeg', alt: 'Students holding their cheques' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9558.webp', alt: 'Ahmed with the cohort' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9559.webp', alt: 'Deep in the build session' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9702.webp', alt: 'One-on-one coaching moment' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9710.webp', alt: 'The room mid-session' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9711.webp', alt: 'Cohort working the framework' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9712.webp', alt: 'Founders in discussion' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9713.webp', alt: 'Workshop floor energy' },
 ];
 
 const IG_URL = 'https://www.instagram.com/ahmed.ezzat.ai';
@@ -1434,15 +1460,8 @@ const Build = () => {
               </div>
             </Reveal>
 
-            <div className="mt-8 grid grid-cols-2 gap-3 md:mt-10 md:grid-cols-4 md:gap-4">
-              {AHMED_PHOTOS.slice(1).map((p) => (
-                <div
-                  key={p.src}
-                  className="overflow-hidden rounded-[18px] ring-1 ring-white/10"
-                >
-                  <img src={p.src} alt={p.alt} className="aspect-[4/3] w-full object-cover" />
-                </div>
-              ))}
+            <div className="mt-8 md:mt-10 -mx-4 md:-mx-8">
+              <CardFanCarousel cards={EVENT_PHOTOS} />
             </div>
 
             <div className="mt-12 grid grid-cols-2 gap-y-8 md:grid-cols-5">
