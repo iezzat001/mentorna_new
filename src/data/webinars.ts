@@ -54,7 +54,7 @@ export const webinars: Webinar[] = [
     description:
       "How agentic AI workflows actually get things done — a lead agent spawning subagents, and \"agent teams\" coordinating through a shared task list. Practical patterns for building faster with AI coding tools.",
     date: "2026-08-28",
-    durationSeconds: 5695,
+    durationSeconds: 2160,
     videoFile: "2026-08-28-community-webinar.mp4",
     posterFile: "2026-08-28-community-webinar.jpg",
     published: true,
@@ -67,7 +67,7 @@ export const webinars: Webinar[] = [
     description:
       "Ahmed walks through a real startup pitch deck live — how to structure your story, validate the problem, and use AI tools to build and present faster. Recorded during our weekly community webinar.",
     date: "2026-08-21",
-    durationSeconds: 2160,
+    durationSeconds: 5280,
     videoFile: "2026-08-21-community-webinar.mp4",
     posterFile: "2026-08-21-community-webinar.jpg",
     published: true,
