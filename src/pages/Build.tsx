@@ -246,9 +246,9 @@ const INCLUDED = [
   'Week 4: you show the room.',
 ];
 
-/* Guest lineup. Marina + Petri are confirmed (source: slush.org/about-us,
-   ilabventures.tech). The three below them are layout placeholders — swap or
-   drop when the lineup locks. */
+/* Guest lineup. Marina, Petri, Anton are confirmed (sources: slush.org/about-us,
+   ilabventures.tech, greenstep.fi/tilitoimisto-turku). The three after them are
+   layout placeholders — swap or drop when the lineup locks. */
 const GUESTS = [
   {
     topic: 'Marketing',
@@ -265,6 +265,15 @@ const GUESTS = [
     credential: 'iLab Ventures · Co-Founder',
     punch: '1,500 startups through his programs. He will tell you why most pitches die in the first line.',
     photo: 'https://ilabventures.tech/assets/team-petri-C62XuPhi.jpg',
+    status: 'confirmed',
+  },
+  {
+    topic: 'Growth',
+    name: 'Anton Suomalainen',
+    credential: 'Greenstep · Area Growth Manager',
+    punch: 'He will keep the money side boring — so you can stay obsessed with the build.',
+    photo:
+      'https://greenstep.fi/wp-content/uploads/sites/2/2026/09/anton.suomalainen.jpg?v=1788494412',
     status: 'confirmed',
   },
   {
@@ -296,15 +305,15 @@ const GUESTS = [
   },
 ];
 
+/* Real organizations behind the confirmed guest lineup (Slush, iLab Ventures,
+   Greenstep). No placeholder names — every chip is a real room a guest sits in. */
 const GUEST_ORGS = [
-  { name: 'Y Combinator', bg: '#FF6600', fg: '#fff' },
-  { name: 'a16z', bg: '#6D5CFF', fg: '#fff' },
-  { name: 'Acquisition.com', bg: '#111111', fg: '#F7E9D6' },
-  { name: 'Conviction', bg: '#5B21B6', fg: '#fff' },
-  { name: 'Sequoia', bg: '#EC0000', fg: '#fff' },
-  { name: 'AngelList', bg: '#00A86B', fg: '#fff' },
-  { name: 'First Round', bg: '#FF4FA3', fg: '#fff' },
-  { name: 'SaaStr', bg: '#3D8BFF', fg: '#fff' },
+  { name: 'Slush', bg: '#FF4D00', fg: '#fff' },
+  { name: 'iLab Ventures', bg: '#6D5CFF', fg: '#fff' },
+  { name: 'Greenstep', bg: '#1B7A43', fg: '#fff' },
+  { name: 'Startup Foundation', bg: '#111111', fg: '#F7E9D6' },
+  { name: 'Silicon Valley', bg: '#0c4a6e', fg: '#fff' },
+  { name: 'Nordic Founders', bg: '#FF4FA3', fg: '#fff' },
 ];
 
 const CLUB_PHOTO = {
@@ -1549,7 +1558,7 @@ const Build = () => {
                 Same room.
               </h2>
               <p className="mx-auto mt-6 max-w-xl text-center font-heading text-lg font-light leading-relaxed text-[#F7E9D6]/70 md:text-xl">
-                Marina and Petri are confirmed. More names drop before week one.
+                Marina, Petri, and Anton are confirmed. More names drop before week one.
               </p>
             </Reveal>
 
