@@ -262,11 +262,20 @@
 .fan-layout .fan-card img {
   border-radius: inherit;
 }
+/* All cards are absolutely positioned, so the container has no intrinsic
+   height. Reserve enough for card half-height + the fan's max y-offset
+   (7.3rem) + hover lift, or the edge cards overlap the next section. */
+.fan-layout {
+  min-height: 28rem;
+}
 @media (min-width: 768px) {
   .fan-layout .fan-card {
     width: 360px;
     height: 240px;
     margin: -120px 0 0 -180px;
+  }
+  .fan-layout {
+    min-height: 32rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
