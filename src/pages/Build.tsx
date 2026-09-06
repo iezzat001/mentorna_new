@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Check,
+  ChevronDown,
   Instagram,
   MessageCircle,
   Play,
-  ShieldCheck,
-  X,
 } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
@@ -27,7 +25,6 @@ const CORAL = 'hsl(18,80%,63%)';
 
 const PAGE_BG = 'linear-gradient(180deg,#F7E9D6 0%,#F3E0CB 25%,#F6E5D2 55%,#EFDAC2 100%)';
 const brutal = 'border-4 border-[hsl(0,0%,10%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]';
-const brutalLg = 'border-4 border-[hsl(0,0%,10%)] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]';
 const SECTION_ACCENTS = [AMBER, PURPLE, CYAN, TEAL, CORAL];
 
 const DOTS = {
@@ -40,8 +37,11 @@ const DOTS = {
    ──────────────────────────────────────────────────────────── */
 const FRAMEWORK = 'The 0→1 Framework';
 const CLUB = "Founders' Club";
-const PRICE = 275;
+const PRICE = 400;
 const SEATS = 10;
+/** Seats still open in the live cohort. Update when someone joins. */
+const SEATS_LEFT = 4;
+const COHORT_LABEL = 'mid-September';
 
 /** Four proofs under the hero. Short enough to read without thinking. */
 const TRUST = [
@@ -63,17 +63,13 @@ const TRUST = [
   },
 ];
 
-/** Cohort status. Update these two when a cohort fills or a date is set. */
-const CURRENT_COHORT = { label: '1 September', status: 'full' as const };
-const NEXT_COHORT = { label: 'mid-September', status: 'waitlist' as const };
-
 /**
  * Application happens over WhatsApp: the link opens with these three
  * questions pre-filled, so the first message is already a qualification.
  */
 const APPLY_MESSAGE = `Hi Ahmed, I'd like to apply for the next 0→1 cohort.
 
-1) What I'm building or thinking of building:
+1) Idea status (none / one I cannot start / too many to pick):
 
 2) What I do right now (job / background):
 
@@ -105,11 +101,14 @@ const ORGS = [
 ];
 
 const AHMED_PHOTOS = [
+  {
+    src: 'https://d2mp3ttz3u5gci.cloudfront.net/ahmed_ezzat_ai_entrepreneur.png',
+    alt: 'Ahmed Ezzat',
+  },
   { src: '/workshop-helsinki/photo-174214.webp', alt: 'Ahmed Ezzat on stage teaching the room' },
   { src: '/workshop-helsinki/photo-185329.webp', alt: 'Ahmed leading the workshop floor' },
   { src: '/workshop-helsinki/photo-211945.webp', alt: 'Ahmed with the cohort after the session' },
   { src: '/workshop-helsinki/photo-unprompted.webp', alt: 'Ahmed coaching builders at the table' },
-  { src: '/workshop-helsinki/poster-182905.webp', alt: 'Ahmed in the room while the work happens' },
 ];
 
 const IG_URL = 'https://www.instagram.com/ahmed.ezzat.ai';
@@ -233,15 +232,14 @@ const WEEKS = [
 
 /* What is included */
 const INCLUDED = [
-  '4 live sessions, 3 hours each, capped at 10 people',
-  'Lifetime access to every session recording',
-  `The complete ${FRAMEWORK} canvases`,
-  'The full prompt and tool playbook',
-  'The complete slide deck, yours to keep',
-  '3 guest sessions: marketing, funding, and an investor',
-  `Lifetime access to the private ${CLUB}`,
-  'Direct access to me between sessions',
-  'Showcase session in week 4',
+  '4 live sessions. 3 hours. 10 people.',
+  'Every recording. Yours forever.',
+  `The ${FRAMEWORK}. The canvases.`,
+  'The prompts. The tools. The slides.',
+  '3 guests: marketing, funding, an investor.',
+  `${CLUB}. For life.`,
+  'You can still message me.',
+  'Week 4: you show the room.',
 ];
 
 /* Placeholder names + stock faces for layout. Swap when the guest lineup locks. */
@@ -321,49 +319,65 @@ const PROOF_CLIPS = [
   },
 ];
 
-/* Fit */
-const FOR_YOU = [
-  'You are established in your career and want leverage outside it',
-  'You have an idea you keep circling but never start',
-  'You are tired of waiting on a developer or an agency quote',
-  'You want to test demand before you sink months into building',
-  'You can protect three hours a week for four weeks',
+const FREE_ONLINE = [
+  { k: 'You can', v: 'It is all online. True.' },
+  { k: 'You did', v: 'A year of it. The idea is still sitting.' },
+  { k: 'This', v: 'A date. Ten people. Someone who stops you.' },
 ];
 
-const NOT_FOR_YOU = [
-  'You want to sit back and watch a lecture',
-  'You want someone else to build your product for you',
-  'You are here for a certificate rather than a shipped product',
+/* Fit — three ways in. An idea is not a ticket. */
+const FIT_PATHS = [
+  {
+    n: '01',
+    t: 'No idea',
+    d: 'You walk in empty. We find the one worth building.',
+  },
+  {
+    n: '02',
+    t: 'One idea',
+    d: 'You have it. You do not know the first move.',
+  },
+  {
+    n: '03',
+    t: 'Too many',
+    d: 'We test. We pick one. The rest wait.',
+  },
+];
+
+const FIT_SKIP = [
+  'You want to watch, not build',
+  'You want someone else to build it',
+  'You cannot keep three hours a week',
 ];
 
 const FAQS = [
   {
-    q: 'I am not technical at all. Is this really for me?',
-    a: 'Yes, and it is designed for exactly that. You describe what you want in plain language and AI does the building. Past attendees include accountants, marketers and a 40-year workshop veteran who had never shipped anything.',
+    q: 'I am not technical. Is this for me?',
+    a: 'Yes. You talk in plain words. AI does the building.',
   },
   {
-    q: 'Can I do this alongside a full-time job?',
-    a: 'That is the assumption it is built on. Three hours a week for four weeks, scheduled outside working hours. The work happens in the session, so you are not carrying homework into your week.',
+    q: 'Can I do this with a full-time job?',
+    a: 'Three hours a week. Outside work. That is the plan.',
   },
   {
-    q: 'What if I arrive without an idea?',
-    a: 'That is fine and fairly common. Week one is finding a problem worth solving. Several people have arrived empty-handed and left with a validated direction and a live product.',
+    q: 'What if I have no idea?',
+    a: 'Come anyway. No idea, one idea, or too many — we pick which.',
   },
   {
     q: 'What if I miss a session?',
-    a: 'Every session is recorded and you keep lifetime access. You also have direct access to me between sessions, so you can catch up without falling behind the group.',
+    a: 'It is recorded. Yours forever. Message me between.',
   },
   {
     q: 'What happens when the four weeks end?',
-    a: `The cohort ends, the ${CLUB} does not. You keep lifetime access to the private community, every recording, and every template. That is where people go when they get stuck in month two.`,
+    a: `The cohort ends. The ${CLUB} does not.`,
   },
   {
     q: 'What if it is not for me?',
-    a: 'Full refund. Attend the first two sessions, fill in a short feedback form telling me what did not work, and you get your money back.',
+    a: 'Come twice. If it is wrong, every dollar comes back.',
   },
   {
     q: 'How do I get in?',
-    a: `Message me on WhatsApp. The link opens with three questions already written, so your first message tells me what you are building, what you do now, and why now. Cohorts are ${SEATS} people, so I read every one.`,
+    a: `WhatsApp. Three questions. ${SEATS} seats — I read every one.`,
   },
 ];
 
@@ -544,16 +558,6 @@ const TypewriterWord = ({
     </span>
   );
 };
-
-const Eyebrow = ({ children }: { children: React.ReactNode }) => (
-  <p className="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em] opacity-50">
-    {children}
-  </p>
-);
-
-const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="text-3xl font-extrabold leading-[1.1] md:text-4xl">{children}</h2>
-);
 
 const HERO_POSTER = '/build-hero-poster.jpg';
 
@@ -804,7 +808,7 @@ const Build = () => {
     where: string;
     label?: string;
     dark?: boolean;
-    tone?: 'brutal' | 'hero';
+    tone?: 'brutal' | 'hero' | 'page';
   }) => (
     <a
       href={applyHref}
@@ -814,9 +818,11 @@ const Build = () => {
       className={
         tone === 'hero'
           ? 'inline-flex min-h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-medium tracking-wide text-[hsl(0,0%,8%)] transition-colors hover:bg-white/90 md:min-h-[3.25rem] md:px-9 md:text-base'
-          : `${brutal} inline-flex min-h-16 items-center justify-center gap-2 px-8 text-base font-extrabold uppercase transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none md:text-lg ${
-              dark ? 'bg-[hsl(0,0%,10%)] text-white' : 'bg-white'
-            }`
+          : tone === 'page'
+            ? 'inline-flex min-h-12 items-center justify-center rounded-full bg-[hsl(0,0%,10%)] px-8 text-sm font-medium tracking-wide text-[#F7E9D6] transition-transform hover:scale-[1.03] md:min-h-[3.25rem] md:px-9 md:text-base'
+            : `${brutal} inline-flex min-h-16 items-center justify-center gap-2 px-8 text-base font-extrabold uppercase transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none md:text-lg ${
+                dark ? 'bg-[hsl(0,0%,10%)] text-white' : 'bg-white'
+              }`
       }
     >
       {tone !== 'hero' && (
@@ -874,7 +880,7 @@ const Build = () => {
                 Mentorna®
               </a>
               <p className="text-[11px] font-medium tracking-wide text-white/55 md:text-xs">
-                {CURRENT_COHORT.label} full · {NEXT_COHORT.label} waitlist
+                {SEATS_LEFT} seats left · {COHORT_LABEL}
               </p>
             </nav>
 
@@ -930,7 +936,7 @@ const Build = () => {
                 <ApplyButton where="hero" tone="hero" />
               </div>
               <p className="mt-3 text-sm font-light text-white/45">
-                {CURRENT_COHORT.label} is full — applying joins the {NEXT_COHORT.label} waitlist.
+                {SEATS_LEFT} seats left in the {COHORT_LABEL} cohort.
               </p>
             </div>
 
@@ -1356,7 +1362,7 @@ const Build = () => {
                   <img
                     src={AHMED_PHOTOS[0].src}
                     alt={AHMED_PHOTOS[0].alt}
-                    className="aspect-[4/5] w-full object-cover md:aspect-[4/5]"
+                    className="aspect-[4/5] w-full object-cover object-[center_18%] md:aspect-[4/5]"
                   />
                 </div>
                 <div className="text-left">
@@ -1637,161 +1643,162 @@ const Build = () => {
         {/* ══ FREE ONLINE OBJECTION ══ */}
         <section className="pt-16 md:pt-24">
           <Reveal>
-            <div className={`${brutalLg} bg-[hsl(0,0%,10%)] p-8 md:p-12`}>
-              <p className="mb-3 text-[11px] font-extrabold uppercase tracking-[0.18em] text-white/45">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
                 The question everyone asks
               </p>
-              <h2 className="text-3xl font-extrabold leading-[1.1] text-white md:text-4xl">
-                &ldquo;Why do I need this? I can learn it free online.&rdquo;
+              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
+                I can learn this free.
               </h2>
-              <div className="mt-6 max-w-2xl space-y-4 text-base font-semibold leading-relaxed text-white/75">
-                <p>
-                  You can. Everything in these four weeks exists somewhere online for free, and I
-                  will not pretend otherwise.
-                </p>
-                <p>
-                  You have also had free access to all of it for the last year. The idea is still an
-                  idea.
-                </p>
-                <p className="font-extrabold text-white">
-                  What you are paying for is not information. It is a deadline, ten people watching,
-                  and someone telling you which of the five failures you are currently running.
-                </p>
-              </div>
+              <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/70 md:text-2xl">
+                You already could.
+              </p>
             </div>
           </Reveal>
+          <div className="mt-12 grid grid-cols-1 gap-y-10 md:grid-cols-3">
+            {FREE_ONLINE.map((c, i) => (
+              <Reveal key={c.k} delay={i * 80}>
+                <div
+                  className={`px-2 text-center md:px-8 ${
+                    i > 0 ? 'md:border-l md:border-[hsl(0,0%,10%)]/10' : ''
+                  }`}
+                >
+                  <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[1.85rem]">
+                    {c.k}
+                  </p>
+                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                    {c.v}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </section>
 
         {/* ══ FIT ══ */}
         <section className="pt-16 md:pt-24">
-          <div className="grid gap-4 md:grid-cols-2">
-            <Reveal>
-              <div className={`${brutal} h-full bg-white p-6 md:p-8`}>
-                <div className="mb-5 flex items-center gap-3">
-                  <div
-                    className="flex h-10 w-10 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
-                    style={{ background: TEAL }}
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+                Who this is for
+              </p>
+              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
+                You do not need an idea.
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-lg">
+                You have a job. You want something of your own. I take you through which thing — and
+                we start.
+              </p>
+            </div>
+          </Reveal>
+
+          <ol className="mt-12 grid gap-10 md:mt-16 md:grid-cols-3 md:gap-8">
+            {FIT_PATHS.map((p, i) => (
+              <Reveal key={p.n} delay={i * 80}>
+                <li className="text-center">
+                  <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#C4893A]">
+                    {p.n}
+                  </p>
+                  <h3 className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.85rem]">
+                    {p.t}
+                  </h3>
+                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/50 md:text-[15px]">
+                    {p.d}
+                  </p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
+
+          <Reveal>
+            <div className="mx-auto mt-14 max-w-2xl border-t border-[hsl(0,0%,10%)]/10 pt-10 text-center md:mt-16">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/40">
+                Skip this if
+              </p>
+              <ul className="mt-5 space-y-2">
+                {FIT_SKIP.map((f) => (
+                  <li
+                    key={f}
+                    className="font-heading text-base font-light text-[hsl(0,0%,10%)]/45"
                   >
-                    <Check className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 className="text-xl font-extrabold">Apply if</h3>
-                </div>
-                <ul className="space-y-3">
-                  {FOR_YOU.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: TEAL }} />
-                      <span className="text-sm font-semibold leading-relaxed">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-            <Reveal delay={80}>
-              <div className={`${brutal} h-full bg-[hsl(0,0%,96%)] p-6 md:p-8`}>
-                <div className="mb-5 flex items-center gap-3">
-                  <div
-                    className="flex h-10 w-10 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
-                    style={{ background: CORAL }}
-                  >
-                    <X className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 className="text-xl font-extrabold">Do not apply if</h3>
-                </div>
-                <ul className="space-y-3">
-                  {NOT_FOR_YOU.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
-                      <X className="mt-0.5 h-4 w-4 shrink-0 opacity-45" />
-                      <span className="text-sm font-semibold leading-relaxed opacity-65">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          </div>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
         </section>
 
         {/* ══ PRICE + GUARANTEE ══ */}
         <section id="apply" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
-            <div className={`${brutalLg} overflow-hidden bg-white`}>
-              <div className="p-6 md:p-8">
-                <Eyebrow>Everything included</Eyebrow>
-                <h2 className="text-2xl font-extrabold md:text-3xl">What a seat gets you</h2>
-                <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                  {INCLUDED.map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <span
-                        className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border-2 border-[hsl(0,0%,10%)]"
-                        style={{ background: TEAL }}
-                      >
-                        <Check className="h-3 w-3 text-white" strokeWidth={3} />
-                      </span>
-                      <span className="text-sm font-semibold leading-relaxed">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="p-8 text-center" style={{ background: AMBER }}>
-                <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] opacity-60">
-                  One price, no tiers
-                </p>
-                <div className="mt-2 text-6xl font-extrabold leading-none md:text-7xl">
-                  ${PRICE}
-                </div>
-                <p className="mt-3 text-sm font-extrabold uppercase tracking-wide opacity-70">
-                  4 weeks · 12 hours live · {SEATS} seats
-                </p>
-                <div className="mt-6">
-                  <ApplyButton where="pricing" />
-                </div>
-                <p className="mt-3 text-xs font-semibold opacity-60">
-                  {CURRENT_COHORT.label} is full. Applying joins the {NEXT_COHORT.label} waitlist.
-                </p>
-              </div>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+                The offer
+              </p>
+              <h2 className="mt-3 font-heading text-[clamp(4.2rem,16vw,8rem)] font-light leading-none tracking-[-0.04em]">
+                ${PRICE}
+              </h2>
+              <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-2xl">
+                One seat. Four weeks. {SEATS} people.
+              </p>
             </div>
           </Reveal>
 
+          <ul className="mx-auto mt-12 grid max-w-2xl gap-x-12 gap-y-4 sm:grid-cols-2 md:mt-16">
+            {INCLUDED.map((item, i) => (
+              <Reveal key={item} delay={i * 40}>
+                <li className="font-heading text-base font-light leading-snug text-[hsl(0,0%,10%)]/70">
+                  {item}
+                </li>
+              </Reveal>
+            ))}
+          </ul>
+
           <Reveal>
-            <div className={`${brutal} mt-5 flex items-start gap-4 bg-white p-6`}>
-              <div
-                className="flex h-12 w-12 shrink-0 items-center justify-center border-[3px] border-[hsl(0,0%,10%)]"
-                style={{ background: TEAL }}
-              >
-                <ShieldCheck className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-extrabold">Full refund after session two</h3>
-                <p className="mt-2 text-sm font-semibold leading-relaxed opacity-75">
-                  Come to the first two sessions. If it is not what you expected, fill in a short
-                  feedback form telling me what did not work and you get your money back in full. I
-                  would rather refund you than have you sit through four weeks you do not want.
-                </p>
-              </div>
+            <div className="mt-12 text-center md:mt-16">
+              <ApplyButton where="pricing" tone="page" />
+              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/45">
+                {SEATS_LEFT} seats left in the {COHORT_LABEL} cohort.
+              </p>
+              <p className="mx-auto mt-8 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55">
+                Come twice. If it is not for you, you get every dollar back.
+              </p>
             </div>
           </Reveal>
         </section>
 
-        {/* ══ FAQ ══ */}
+        {/* ══ FAQ ══
+            Fora pattern: soft chip, quiet headline, rounded accordion rows
+            with a circular chevron — no brutal boxes. */}
         <section className="pt-16 md:pt-24">
           <Reveal>
-            <Eyebrow>Before you apply</Eyebrow>
-            <SectionTitle>Questions people actually have</SectionTitle>
+            <div className="mx-auto max-w-2xl">
+              <p className="inline-flex rounded-full bg-[hsl(0,0%,10%)]/[0.06] px-3.5 py-1 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/55">
+                FAQ
+              </p>
+              <h2 className="mt-5 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
+                Answers to the questions that come up most.
+              </h2>
+              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[17px]">
+                Who it is for. What happens in the room. What you keep after.
+              </p>
+            </div>
           </Reveal>
-          <div className="mt-8 space-y-3">
+
+          <div className="mx-auto mt-10 max-w-2xl space-y-3 md:mt-12">
             {FAQS.map((f, i) => (
-              <Reveal key={f.q} delay={i * 50}>
-                <details className={`${brutal} group bg-white`}>
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5">
-                    <span className="text-base font-extrabold leading-tight">{f.q}</span>
-                    <span
-                      className="flex h-7 w-7 shrink-0 items-center justify-center border-2 border-[hsl(0,0%,10%)] text-lg font-extrabold transition-transform group-open:rotate-45"
-                      style={{ background: AMBER }}
-                    >
-                      +
+              <Reveal key={f.q} delay={i * 40}>
+                <details className="group overflow-hidden rounded-[22px] bg-[#FFF8EE] ring-1 ring-[hsl(0,0%,10%)]/8 open:bg-white open:shadow-[0_18px_40px_-28px_rgba(60,30,10,0.35)] open:ring-[hsl(0,0%,10%)]/12">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 md:px-6 md:py-5 [&::-webkit-details-marker]:hidden">
+                    <span className="font-heading text-base font-light leading-snug tracking-tight text-[hsl(0,0%,10%)] md:text-lg">
+                      {f.q}
+                    </span>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[hsl(0,0%,10%)]/[0.06] text-[hsl(0,0%,10%)]/70 transition-transform duration-300 group-open:rotate-180">
+                      <ChevronDown className="h-4 w-4" strokeWidth={1.75} />
                     </span>
                   </summary>
-                  <p className="border-t-2 border-[hsl(30,20%,88%)] p-5 pt-4 text-sm font-semibold leading-relaxed opacity-75">
+                  <p className="px-5 pb-5 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:px-6 md:pb-6 md:text-[15px]">
                     {f.a}
                   </p>
                 </details>
@@ -1800,43 +1807,64 @@ const Build = () => {
           </div>
         </section>
 
-        {/* ══ FINAL CTA ══ */}
-        <section className="pt-16 md:pt-24">
-          <Reveal>
-            <div
-              className={`${brutalLg} relative overflow-hidden p-8 text-center md:p-14`}
-              style={{ background: AMBER }}
-            >
-              <div aria-hidden className="absolute inset-0 opacity-[0.12]" style={DOTS} />
-              <div className="relative">
-                <h2 className="text-3xl font-extrabold leading-[1.05] md:text-5xl">
-                  The idea has waited long enough
-                </h2>
-                <p className="mx-auto mt-4 max-w-xl text-base font-semibold leading-relaxed opacity-75 md:text-lg">
-                  Four weeks. {SEATS} seats — small enough that I read every application myself.
-                  A product that exists at the end of it. {CURRENT_COHORT.label} is full, so this is
-                  the {NEXT_COHORT.label} list.
-                </p>
-                <div className="mt-8">
-                  <ApplyButton where="footer" />
-                </div>
-                <p className="mt-3 text-xs font-semibold opacity-60">
-                  Or{' '}
-                  <a
-                    href={whatsappUrl(QUESTION_MESSAGE)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline decoration-2 underline-offset-4"
-                  >
-                    ask a question first
-                  </a>
-                  .
-                </p>
+        {/* ══ FINAL CTA ══
+            Dark closer after the cream FAQ. Same family as Who runs it. */}
+      </div>
+
+        <section className="relative mt-16 overflow-hidden text-[#F7E9D6] md:mt-24">
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse 90% 50% at 50% 0%, #3a2418 0%, #16110f 46%, #0c0a0b 78%)',
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-[42%] blur-3xl"
+            style={{
+              background:
+                'radial-gradient(ellipse at 50% 0%, rgba(232,168,90,0.28), transparent 68%)',
+            }}
+          />
+          <div className="relative mx-auto max-w-3xl px-4 py-20 text-center md:py-28">
+            <Reveal>
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
+                {SEATS_LEFT} seats left · {COHORT_LABEL}
+              </p>
+              <h2 className="mt-5 font-heading text-[clamp(2.4rem,7vw,4.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#F7E9D6]">
+                The idea has waited long enough.
+              </h2>
+              <p className="mx-auto mt-5 max-w-lg font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60 md:text-lg">
+                Four weeks. Ten seats. I read every application. A product at the end — not notes.
+              </p>
+              <div className="mt-9">
+                <a
+                  href={applyHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track('footer')}
+                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#F7E9D6] px-8 text-sm font-medium tracking-wide text-[#0c0a0b] transition-transform hover:scale-[1.03] md:min-h-[3.25rem] md:px-9 md:text-base"
+                >
+                  Apply for the next cohort
+                </a>
               </div>
-            </div>
-          </Reveal>
+              <p className="mt-5 font-heading text-sm font-light text-[#F7E9D6]/45">
+                Or{' '}
+                <a
+                  href={whatsappUrl(QUESTION_MESSAGE)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-[#F7E9D6]/30 underline-offset-4 hover:decoration-[#F7E9D6]/60"
+                >
+                  ask a question first
+                </a>
+                .
+              </p>
+            </Reveal>
+          </div>
         </section>
-        </div>
       </main>
 
       <Footer />
