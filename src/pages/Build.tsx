@@ -8,6 +8,7 @@ import {
 import { useSEO } from '@/hooks/useSEO';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import Footer from '@/components/Footer';
+import CardFanCarousel from '@/components/ui/card-fan-carousel';
 import { whatsappUrl } from '@/lib/whatsapp';
 import {
   workshopVideoPoster,
@@ -79,11 +80,11 @@ const QUESTION_MESSAGE = 'Hi Ahmed, I have a question about the 0→1 cohort.';
 
 /* Instructor */
 const BIO =
-  'You already follow him. 10,000 people found Ahmed on Instagram in two months. Underneath the camera: $600K raised, two startups exited, communities of 100,000, and $100K revenue in ninety days. He does not lecture. He builds in the room with you.';
+  'You already follow him. 10,000 people found Ahmed on Instagram in two months. Underneath the camera: startups he created worth over $5 million, $1.1M raised, two exits, communities of 100,000, and $100K revenue in ninety days. He does not lecture. He builds in the room with you.';
 
 const STATS = [
-  { v: '10K', l: 'Followers in 2 months' },
-  { v: '$600K', l: 'Raised' },
+  { v: '$5M+', l: 'Total valuation of startups he created' },
+  { v: '$1.1M', l: 'Raised' },
   { v: '2', l: 'Startup exits' },
   { v: '100K', l: 'People in communities he built' },
   { v: '$100K', l: 'Revenue in 3 months' },
@@ -109,6 +110,31 @@ const AHMED_PHOTOS = [
   { src: '/workshop-helsinki/photo-185329.webp', alt: 'Ahmed leading the workshop floor' },
   { src: '/workshop-helsinki/photo-211945.webp', alt: 'Ahmed with the cohort after the session' },
   { src: '/workshop-helsinki/photo-unprompted.webp', alt: 'Ahmed coaching builders at the table' },
+];
+
+/* Event photos for the fan carousel in "Who runs it" — the full set from the
+   Mentorna homepage + Helsinki workshop album. Portrait bio photo excluded
+   (it anchors the section), 16 photos in the fan. */
+const EVENT_PHOTOS = [
+  { imgUrl: '/workshop-helsinki/photo-174214.webp', alt: 'Ahmed on stage teaching the room' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_1.jpeg', alt: 'Students with their first revenue cheque' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9530.webp', alt: 'Cohort working session' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_2.jpeg', alt: 'Founders celebrating a win' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9531.webp', alt: 'Ahmed leading the workshop floor' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_3.jpeg', alt: 'Workshop session in Helsinki' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9533.webp', alt: 'Founders collaborating at the table' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_4.jpeg', alt: 'Room full of builders' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9535.webp', alt: 'Ahmed coaching at the table' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_5.jpeg', alt: 'Cohort presentation moment' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9557.webp', alt: 'Workshop crowd listening' },
+  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_6.jpeg', alt: 'Students holding their cheques' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9558.webp', alt: 'Ahmed with the cohort' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9559.webp', alt: 'Deep in the build session' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9702.webp', alt: 'One-on-one coaching moment' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9710.webp', alt: 'The room mid-session' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9711.webp', alt: 'Cohort working the framework' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9712.webp', alt: 'Founders in discussion' },
+  { imgUrl: '/workshop-helsinki/photo-IMG_9713.webp', alt: 'Workshop floor energy' },
 ];
 
 const IG_URL = 'https://www.instagram.com/ahmed.ezzat.ai';
@@ -191,6 +217,7 @@ const WEEKS = [
   {
     n: '01',
     chapter: 'Who',
+    accent: AMBER,
     title: 'Design the buyer first.',
     body: 'You do not start with a tool. You start with one person and one pain. In the room, your AI teammates help you write it so sharp a stranger could repeat it. Until that line exists, nothing gets built.',
     punch: 'If you cannot name them, you are not ready to ship.',
@@ -201,6 +228,7 @@ const WEEKS = [
   {
     n: '02',
     chapter: 'Make',
+    accent: CORAL,
     title: 'You direct. The agents build.',
     body: 'You write the offer — the one promise a stranger understands. Then you run AI-agent teammates, live, to build version one in the three hours. Not a freelancer waiting on a brief. Not a course you watch on the train. You are the founder. They are the shop.',
     punch: 'A founder leaves with a thing. A student leaves with notes.',
@@ -211,6 +239,7 @@ const WEEKS = [
   {
     n: '03',
     chapter: 'Ship',
+    accent: CYAN,
     title: 'Live is the only test that counts.',
     body: 'You put it in front of real people before it feels ready. Entrepreneurs collect signal. Hobbyists hide the work so nobody can steal it — and nobody can buy it either. Your teammates keep shipping while you watch what humans actually do.',
     punch: 'Hidden work cannot earn.',
@@ -221,6 +250,7 @@ const WEEKS = [
   {
     n: '04',
     chapter: 'Own',
+    accent: TEAL,
     title: 'Build it so it can run beside your life.',
     body: 'A product is not a business until someone can pay, and until it can live next to your job. You set a price, a path to the first customer, and a system the agents can keep running. Then you show the room what you made.',
     punch: 'Freedom is designed into the work. It is not a prize at the end.',
@@ -236,49 +266,41 @@ const INCLUDED = [
   'Every recording. Yours forever.',
   `The ${FRAMEWORK}. The canvases.`,
   'The prompts. The tools. The slides.',
-  '3 guests: marketing, funding, an investor.',
+  'Guest sessions: marketing, funding, an investor.',
   `${CLUB}. For life.`,
   'You can still message me.',
   'Week 4: you show the room.',
 ];
 
-/* Placeholder names + stock faces for layout. Swap when the guest lineup locks. */
+/* Guest lineup — all three confirmed (sources: slush.org/about-us,
+   ilabventures.tech, greenstep.fi/tilitoimisto-turku). */
 const GUESTS = [
   {
     topic: 'Marketing',
-    name: 'Alex Hormozi',
-    credential: 'Acquisition.com · $100M Offers',
-    punch: 'He will show you how to sell without begging.',
+    name: 'Marina Yurchenko',
+    credential: 'Slush · Head of Marketing',
+    punch: 'She grew the world’s loudest startup event. She will show you how attention turns into buyers.',
     photo:
-      'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80',
+      'https://cdn.prod.website-files.com/680cd45512772b4040d78def/69ef1877c33ad7be773c3089_Marina%20(1).JPG',
+    status: 'confirmed',
   },
   {
     topic: 'Funding',
-    name: 'Michael Seibel',
-    credential: 'Y Combinator · Managing Director',
-    punch: 'He will tell you when to raise. And when to shut up.',
-    photo:
-      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=900&q=80',
+    name: 'Petri Saarinen',
+    credential: 'iLab Ventures · Co-Founder',
+    punch: '1,500 startups through his programs. He will tell you why most pitches die in the first line.',
+    photo: 'https://ilabventures.tech/assets/team-petri-C62XuPhi.jpg',
+    status: 'confirmed',
   },
   {
-    topic: 'Investor',
-    name: 'Sarah Guo',
-    credential: 'Conviction · Founder',
-    punch: 'She will tell you the one sentence that makes her lean in.',
+    topic: 'Growth',
+    name: 'Anton Suomalainen',
+    credential: 'Greenstep · Area Growth Manager',
+    punch: 'He will keep the money side boring — so you can stay obsessed with the build.',
     photo:
-      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80',
+      'https://greenstep.fi/wp-content/uploads/sites/2/2026/09/anton.suomalainen.jpg?v=1788494412',
+    status: 'confirmed',
   },
-];
-
-const GUEST_ORGS = [
-  { name: 'Y Combinator', bg: '#FF6600', fg: '#fff' },
-  { name: 'a16z', bg: '#6D5CFF', fg: '#fff' },
-  { name: 'Acquisition.com', bg: '#111111', fg: '#F7E9D6' },
-  { name: 'Conviction', bg: '#5B21B6', fg: '#fff' },
-  { name: 'Sequoia', bg: '#EC0000', fg: '#fff' },
-  { name: 'AngelList', bg: '#00A86B', fg: '#fff' },
-  { name: 'First Round', bg: '#FF4FA3', fg: '#fff' },
-  { name: 'SaaStr', bg: '#3D8BFF', fg: '#fff' },
 ];
 
 const CLUB_PHOTO = {
@@ -431,6 +453,23 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+/*
+ * Phase easing for the hero exit — Fora-style choreography. Each element of
+ * the hero (copy, video, dunes, seal) gets its own window [from, to] inside
+ * the scroll progress, with a cubic ease-in-out inside the window:
+ *
+ *   0.00–0.42  copy dissolves up and out while video + ground hold still
+ *   0.45–0.92  dunes sweep up and the video grows + sinks into them
+ *   0.70–1.00  cream seal closes the last seam
+ *
+ * Holding the video and ground still for the first half is what removes the
+ * stretching void mid-scroll — the composition stays packed until the tuck.
+ */
+const phase = (t: number, from: number, to: number) => {
+  const x = Math.max(0, Math.min(1, (t - from) / (to - from)));
+  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+};
+
 /* True only when the visitor granted analytics consent — the same source
    PageTracker reads. A/B events are gated on this; the variant renders
    regardless of consent. */
@@ -442,6 +481,29 @@ const analyticsConsentGranted = (): boolean => {
     return false;
   }
 };
+/*
+ * Eyebrow — section label with a small accent dot, Fora-style. The dot is the
+ * page's vividness rhythm: each cream section gets the next color from
+ * SECTION_ACCENTS so the long run reads as chapters, not one flat slab.
+ * Accent is optional; pass `color` to override the cycle.
+ */
+const Eyebrow = ({
+  children,
+  color,
+}: {
+  children: React.ReactNode;
+  color?: string;
+}) => (
+  <p className="inline-flex items-center gap-2.5 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
+    <span
+      aria-hidden
+      className="h-[7px] w-[7px] shrink-0 rounded-full"
+      style={{ background: color ?? AMBER, boxShadow: `0 0 0 3px ${color ?? AMBER}22` }}
+    />
+    {children}
+  </p>
+);
+
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -799,6 +861,11 @@ const Build = () => {
   const { trackRef, p } = useHeroScroll();
   const applyHref = whatsappUrl(APPLY_MESSAGE);
 
+  /* Phase values for the exit choreography (see `phase` above). */
+  const copyP = phase(p, 0, 0.42); // copy exits first
+  const groundP = phase(p, 0.45, 0.92); // dunes + video tuck
+  const sealP = phase(p, 0.7, 1); // cream seam finishes last
+
   const ApplyButton = ({
     where,
     label = 'Apply for the next cohort',
@@ -864,7 +931,7 @@ const Build = () => {
               viewBox="0 0 1440 420"
               preserveAspectRatio="none"
               className="pointer-events-none absolute inset-x-0 bottom-[18%] h-[42%] w-full blur-[10px]"
-              style={{ transform: `translateY(${p * 48}px)` }}
+              style={{ transform: `translateY(${groundP * 64}px)` }}
             >
               <path
                 fill="#2a1814"
@@ -880,15 +947,16 @@ const Build = () => {
                 Mentorna®
               </a>
               <p className="text-[11px] font-medium tracking-wide text-white/55 md:text-xs">
-                {SEATS_LEFT} seats left · {COHORT_LABEL}
+                <span style={{ color: AMBER }}>{SEATS_LEFT}</span> seats left · {COHORT_LABEL}
               </p>
             </nav>
 
             <div
               className="relative z-20 mx-auto flex w-full max-w-4xl flex-col items-center px-6 pt-2 text-center md:pt-4"
               style={{
-                opacity: 1 - p * 0.72,
-                transform: `translateY(${p * -36}px)`,
+                opacity: Math.max(1 - copyP, 0),
+                transform: `translateY(${copyP * -48}px)`,
+                visibility: copyP === 1 ? 'hidden' : undefined,
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
@@ -936,7 +1004,8 @@ const Build = () => {
                 <ApplyButton where="hero" tone="hero" />
               </div>
               <p className="mt-3 text-sm font-light text-white/45">
-                {SEATS_LEFT} seats left in the {COHORT_LABEL} cohort.
+                <span style={{ color: AMBER }}>{SEATS_LEFT}</span> seats left in the {COHORT_LABEL}{' '}
+                cohort.
               </p>
             </div>
 
@@ -944,7 +1013,10 @@ const Build = () => {
               <div
                 className="relative origin-bottom"
                 style={{
-                  transform: `translateY(${p * 72}px) scale(${1 + p * 0.12})`,
+                  /* Fora move: as the copy dissolves (copyP) the film grows a
+                     touch and rises to reclaim its space — the window takes
+                     center stage. Then it sinks into the rising dunes (groundP). */
+                  transform: `translateY(${groundP * 96 - copyP * 20}px) scale(${1 + copyP * 0.08 + groundP * 0.14})`,
                 }}
               >
                 <div
@@ -974,7 +1046,7 @@ const Build = () => {
               viewBox="0 0 1440 320"
               preserveAspectRatio="none"
               className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[28%] w-full blur-[2px] md:h-[32%]"
-              style={{ transform: `translateY(${p * -90}px)` }}
+              style={{ transform: `translateY(${groundP * -190}px)` }}
             >
               <path
                 fill="#3d241c"
@@ -986,7 +1058,7 @@ const Build = () => {
               viewBox="0 0 1440 280"
               preserveAspectRatio="none"
               className="pointer-events-none absolute inset-x-0 -bottom-[2%] z-30 h-[22%] w-full md:h-[26%]"
-              style={{ transform: `translateY(${p * -150}px)` }}
+              style={{ transform: `translateY(${groundP * -260}px)` }}
             >
               <path
                 fill="#1c100e"
@@ -998,17 +1070,19 @@ const Build = () => {
               aria-hidden
               className="pointer-events-none absolute inset-x-0 bottom-0 z-40 h-[42%]"
               style={{
-                background: `linear-gradient(to top, #F7E9D6 ${Math.round(p * 62)}%, transparent)`,
+                /* Seal the ground. Dunes sweep up on their own window; this
+                   gradient closes the last seam so nothing shows through. */
+                background: `linear-gradient(to top, #F7E9D6 ${Math.round(sealP * 88)}%, transparent)`,
               }}
             />
           </div>
         </div>
       </header>
 
-      <main className="pb-20">
+      <main className="-mt-[16vh] pb-20 md:-mt-[12vh]">
         <div className="mx-auto max-w-5xl px-4">
         {/* ══ TRUST RIBBON ══ */}
-        <section className="pt-6 md:pt-8">
+        <section className="pt-0 md:pt-2">
           <Reveal>
             <ul className="grid grid-cols-2 gap-y-8 md:grid-cols-4">
               {TRUST.map((item, i) => (
@@ -1021,7 +1095,7 @@ const Build = () => {
                   <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[2rem]">
                     {item.k}
                   </p>
-                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
                     {item.v}
                   </p>
                 </li>
@@ -1034,16 +1108,14 @@ const Build = () => {
         <section className="pt-14 md:pt-20">
           <Reveal>
             <div className="mx-auto max-w-[720px] text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                See the class
-              </p>
+              <Eyebrow color={CYAN}>See the class</Eyebrow>
               <p className="mt-3 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
                 This is what it looks like.
               </p>
               <div className="mt-8 overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.4)] ring-1 ring-black/10">
                 <VslPlayer />
               </div>
-              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/50">
+              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/70">
                 {vslIsPlaceholder
                   ? '90 seconds. Real people. A real room.'
                   : 'Two minutes. See if this is for you.'}
@@ -1056,15 +1128,13 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                Why most people never ship
-              </p>
+              <Eyebrow color={CORAL}>Why most people never ship</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 You are not losing money.
                 <br />
                 You are losing time.
               </h2>
-              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-lg">
+              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
                 You are busy. The idea waits. A year goes by.
               </p>
             </div>
@@ -1080,7 +1150,7 @@ const Build = () => {
                   <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[1.85rem]">
                     {c.k}
                   </p>
-                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
                     {c.v}
                   </p>
                 </div>
@@ -1175,13 +1245,11 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                The 0→1 Framework
-              </p>
+              <Eyebrow color={PURPLE}>The 0→1 Framework</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 The recipe you cannot Google.
               </h2>
-              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-lg">
+              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
                 Three moves, in this order. You are the founder. AI teammates are the shop. The order is the gem.
               </p>
             </div>
@@ -1226,13 +1294,13 @@ const Build = () => {
                         i % 2 === 1 ? 'md:text-right' : 'md:text-left'
                       }`}
                     >
-                      <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/40">
+                      <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                         {s.n}
                       </p>
                       <h3 className="mt-2 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
                         {s.title}
                       </h3>
-                      <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                      <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[15px]">
                         {s.desc}
                       </p>
                     </div>
@@ -1243,10 +1311,10 @@ const Build = () => {
           </div>
 
           <Reveal>
-            <p className="mt-14 text-center font-heading text-base font-light text-[hsl(0,0%,10%)]/55">
+            <p className="mt-14 text-center font-heading text-base font-light text-[hsl(0,0%,10%)]/75">
               This order is the part you cannot download.
             </p>
-            <p className="mt-4 text-center font-heading text-[11px] font-light tracking-wide text-[hsl(0,0%,10%)]/35">
+            <p className="mt-4 text-center font-heading text-[11px] font-light tracking-wide text-[hsl(0,0%,10%)]/55">
               3D icons from{' '}
               <a
                 href="https://www.thiings.co"
@@ -1267,13 +1335,11 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                How it works
-              </p>
+              <Eyebrow color={TEAL}>How it works</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 Four weeks inside the recipe.
               </h2>
-              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[17px]">
+              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
                 You run the company. AI-agent teammates build with you, live — Claude Code in the
                 session. Every week ends with something a founder would ship.
               </p>
@@ -1284,17 +1350,20 @@ const Build = () => {
             {WEEKS.map((w, i) => (
               <article
                 key={w.n}
-                className="sticky mb-[22vh] grid items-center gap-8 rounded-[28px] bg-[#FFF8EE] p-6 shadow-[0_24px_60px_-28px_rgba(80,40,16,0.28)] ring-1 ring-black/10 last:mb-4 md:mb-[28vh] md:grid-cols-2 md:gap-12 md:p-10 last:md:mb-6"
+                className="sticky mb-[22vh] grid items-center gap-8 rounded-[28px] border-2 border-[#1c100e]/12 bg-[#FFFDF7] p-6 shadow-[0_28px_70px_-28px_rgba(80,40,16,0.38)] md:mb-[28vh] md:grid-cols-2 md:gap-12 md:p-10 last:mb-4 last:md:mb-6"
                 style={{ top: `${18 + i * 16}px`, zIndex: i + 1 }}
               >
                 <div className="min-w-0 text-left">
-                  <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/40">
+                  <p
+                    className="font-heading text-[11px] font-medium uppercase tracking-[0.22em]"
+                    style={{ color: w.accent }}
+                  >
                     Week {w.n} — {w.chapter}
                   </p>
                   <h3 className="mt-3 font-heading text-[1.65rem] font-light leading-[1.2] tracking-tight md:text-[2rem]">
                     {w.title}
                   </h3>
-                  <p className="mt-4 font-heading text-base font-light leading-[1.65] text-[hsl(0,0%,10%)]/55">
+                  <p className="mt-4 font-heading text-base font-light leading-[1.65] text-[hsl(0,0%,10%)]/75">
                     {w.body}
                   </p>
                   <p className="mt-4 font-heading text-base font-light italic leading-[1.55] text-[hsl(0,0%,10%)]/70">
@@ -1391,15 +1460,8 @@ const Build = () => {
               </div>
             </Reveal>
 
-            <div className="mt-8 grid grid-cols-2 gap-3 md:mt-10 md:grid-cols-4 md:gap-4">
-              {AHMED_PHOTOS.slice(1).map((p) => (
-                <div
-                  key={p.src}
-                  className="overflow-hidden rounded-[18px] ring-1 ring-white/10"
-                >
-                  <img src={p.src} alt={p.alt} className="aspect-[4/3] w-full object-cover" />
-                </div>
-              ))}
+            <div className="mt-8 md:mt-10 -mx-4 md:-mx-8">
+              <CardFanCarousel cards={EVENT_PHOTOS} />
             </div>
 
             <div className="mt-12 grid grid-cols-2 gap-y-8 md:grid-cols-5">
@@ -1476,7 +1538,8 @@ const Build = () => {
                 Same room.
               </h2>
               <p className="mx-auto mt-6 max-w-xl text-center font-heading text-lg font-light leading-relaxed text-[#F7E9D6]/70 md:text-xl">
-                You know them from the industry. Now they sit in the session with you.
+                Marina, Petri, and Anton — confirmed. Each runs a session with you inside the
+                cohort.
               </p>
             </Reveal>
 
@@ -1488,12 +1551,19 @@ const Build = () => {
                       <img
                         src={g.photo}
                         alt={g.name}
+                        loading="lazy"
                         className="absolute inset-0 h-full w-full object-cover"
                       />
                       <div
                         aria-hidden
                         className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent"
                       />
+                      {g.status === 'confirmed' && (
+                        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-[#F7E9D6] px-3 py-1 font-heading text-[10px] font-medium uppercase tracking-[0.18em] text-[#0c0a0b]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#B4691E]" />
+                          Confirmed
+                        </span>
+                      )}
                       <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
                         <p className="text-[10px] font-heading font-light uppercase tracking-[0.28em] text-[#D4A574]">
                           {g.topic}
@@ -1514,34 +1584,6 @@ const Build = () => {
               ))}
             </div>
           </div>
-
-          <div className="relative border-t border-white/10 bg-[#0c0a0b] py-6 md:py-8">
-            <p className="mb-5 text-center font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/40">
-              Rooms they already sit in
-            </p>
-            <div className="flex flex-col gap-3 overflow-hidden">
-              {[0, 1].map((row) => (
-                <div
-                  key={row}
-                  className={`flex w-max ${row === 0 ? 'org-marquee' : 'org-marquee-rev'}`}
-                >
-                  {[0, 1].map((dup) => (
-                    <div key={dup} className="flex">
-                      {(row === 0 ? GUEST_ORGS : [...GUEST_ORGS].reverse()).map((o) => (
-                        <span
-                          key={`${row}-${dup}-${o.name}`}
-                          className="mx-1.5 inline-flex shrink-0 items-center rounded-2xl px-6 py-3 font-heading text-base font-medium tracking-tight md:px-8 md:py-4 md:text-xl"
-                          style={{ background: o.bg, color: o.fg }}
-                        >
-                          {o.name}
-                        </span>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
         </section>
 
         {/* ══ FOUNDERS' CLUB ══
@@ -1551,16 +1593,14 @@ const Build = () => {
           <div className="mx-auto max-w-5xl px-4">
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
-                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                  What happens after
-                </p>
+                <Eyebrow color={AMBER}>What happens after</Eyebrow>
                 <h2 className="mt-3 font-heading text-4xl font-light leading-[1.05] tracking-tight md:text-6xl">
                   {CLUB}
                 </h2>
                 <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/80 md:text-2xl">
                   The cohort ends. You do not leave.
                 </p>
-                <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[17px]">
+                <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
                   Four weeks is enough to ship. A company needs a room after that. Everyone who
                   finishes walks in and keeps the key.
                 </p>
@@ -1608,7 +1648,7 @@ const Build = () => {
                     <p className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight">
                       {b.t}
                     </p>
-                    <p className="mt-2 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/50">
+                    <p className="mt-2 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/70">
                       {b.d}
                     </p>
                   </li>
@@ -1626,13 +1666,11 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                From the workshops this cohort is built on
-              </p>
+              <Eyebrow color={CYAN}>From the workshops this cohort is built on</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 They already did this.
               </h2>
-              <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[17px]">
+              <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
                 Two students. Their phones. Press play.
               </p>
             </div>
@@ -1644,9 +1682,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                The question everyone asks
-              </p>
+              <Eyebrow color={CORAL}>The question everyone asks</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 I can learn this free.
               </h2>
@@ -1666,7 +1702,7 @@ const Build = () => {
                   <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[1.85rem]">
                     {c.k}
                   </p>
-                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
                     {c.v}
                   </p>
                 </div>
@@ -1679,13 +1715,11 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                Who this is for
-              </p>
+              <Eyebrow color={AMBER}>Who this is for</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 You do not need an idea.
               </h2>
-              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-lg">
+              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
                 You have a job. You want something of your own. I take you through which thing — and
                 we start.
               </p>
@@ -1702,7 +1736,7 @@ const Build = () => {
                   <h3 className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.85rem]">
                     {p.t}
                   </h3>
-                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/50 md:text-[15px]">
+                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/70 md:text-[15px]">
                     {p.d}
                   </p>
                 </li>
@@ -1712,14 +1746,14 @@ const Build = () => {
 
           <Reveal>
             <div className="mx-auto mt-14 max-w-2xl border-t border-[hsl(0,0%,10%)]/10 pt-10 text-center md:mt-16">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/40">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 Skip this if
               </p>
               <ul className="mt-5 space-y-2">
                 {FIT_SKIP.map((f) => (
                   <li
                     key={f}
-                    className="font-heading text-base font-light text-[hsl(0,0%,10%)]/45"
+                    className="font-heading text-base font-light text-[hsl(0,0%,10%)]/60"
                   >
                     {f}
                   </li>
@@ -1733,10 +1767,16 @@ const Build = () => {
         <section id="apply" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                The offer
-              </p>
-              <h2 className="mt-3 font-heading text-[clamp(4.2rem,16vw,8rem)] font-light leading-none tracking-[-0.04em]">
+              <Eyebrow color={PURPLE}>The offer</Eyebrow>
+              <h2
+                className="mt-3 font-heading text-[clamp(4.2rem,16vw,8rem)] font-light leading-none tracking-[-0.04em]"
+                style={{
+                  background: `linear-gradient(120deg, ${AMBER} 10%, #C4893A 45%, ${CORAL} 90%)`,
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}
+              >
                 ${PRICE}
               </h2>
               <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-2xl">
@@ -1758,10 +1798,11 @@ const Build = () => {
           <Reveal>
             <div className="mt-12 text-center md:mt-16">
               <ApplyButton where="pricing" tone="page" />
-              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/45">
-                {SEATS_LEFT} seats left in the {COHORT_LABEL} cohort.
+              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
+                <span style={{ color: '#B4691E' }}>{SEATS_LEFT}</span> seats left in the{' '}
+                {COHORT_LABEL} cohort.
               </p>
-              <p className="mx-auto mt-8 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55">
+              <p className="mx-auto mt-8 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75">
                 Come twice. If it is not for you, you get every dollar back.
               </p>
             </div>
@@ -1774,13 +1815,13 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl">
-              <p className="inline-flex rounded-full bg-[hsl(0,0%,10%)]/[0.06] px-3.5 py-1 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/55">
+              <p className="inline-flex rounded-full bg-[hsl(0,0%,10%)]/[0.06] px-3.5 py-1 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/75">
                 FAQ
               </p>
               <h2 className="mt-5 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 Answers to the questions that come up most.
               </h2>
-              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[17px]">
+              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
                 Who it is for. What happens in the room. What you keep after.
               </p>
             </div>
@@ -1789,7 +1830,7 @@ const Build = () => {
           <div className="mx-auto mt-10 max-w-2xl space-y-3 md:mt-12">
             {FAQS.map((f, i) => (
               <Reveal key={f.q} delay={i * 40}>
-                <details className="group overflow-hidden rounded-[22px] bg-[#FFF8EE] ring-1 ring-[hsl(0,0%,10%)]/8 open:bg-white open:shadow-[0_18px_40px_-28px_rgba(60,30,10,0.35)] open:ring-[hsl(0,0%,10%)]/12">
+                <details className="group overflow-hidden rounded-[22px] border border-[#1c100e]/10 bg-[#FFFDF7] open:border-[#1c100e]/16 open:bg-white open:shadow-[0_18px_40px_-28px_rgba(60,30,10,0.4)]">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 md:px-6 md:py-5 [&::-webkit-details-marker]:hidden">
                     <span className="font-heading text-base font-light leading-snug tracking-tight text-[hsl(0,0%,10%)] md:text-lg">
                       {f.q}
@@ -1798,7 +1839,7 @@ const Build = () => {
                       <ChevronDown className="h-4 w-4" strokeWidth={1.75} />
                     </span>
                   </summary>
-                  <p className="px-5 pb-5 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:px-6 md:pb-6 md:text-[15px]">
+                  <p className="px-5 pb-5 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:px-6 md:pb-6 md:text-[15px]">
                     {f.a}
                   </p>
                 </details>
@@ -1831,7 +1872,7 @@ const Build = () => {
           <div className="relative mx-auto max-w-3xl px-4 py-20 text-center md:py-28">
             <Reveal>
               <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
-                {SEATS_LEFT} seats left · {COHORT_LABEL}
+                <span className="text-[#F7E9D6]">{SEATS_LEFT}</span> seats left · {COHORT_LABEL}
               </p>
               <h2 className="mt-5 font-heading text-[clamp(2.4rem,7vw,4.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#F7E9D6]">
                 The idea has waited long enough.

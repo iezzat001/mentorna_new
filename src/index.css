@@ -242,6 +242,49 @@
   }
 }
 
+/* ── Card fan carousel (card-fan-carousel.tsx) ───────────────────────
+   Cards are absolutely positioned inside the flex container and moved
+   exclusively by GSAP transforms. Landscape sizing for event photos. */
+.fan-layout .fan-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 300px;
+  height: 200px;
+  margin: -100px 0 0 -150px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #16110f;
+  box-shadow: 0 28px 70px -24px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+.fan-layout .fan-card img {
+  border-radius: inherit;
+}
+/* All cards are absolutely positioned, so the container has no intrinsic
+   height. Reserve enough for card half-height + the fan's max y-offset
+   (7.3rem) + hover lift, or the edge cards overlap the next section. */
+.fan-layout {
+  min-height: 28rem;
+}
+@media (min-width: 768px) {
+  .fan-layout .fan-card {
+    width: 360px;
+    height: 240px;
+    margin: -120px 0 0 -180px;
+  }
+  .fan-layout {
+    min-height: 32rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fan-layout .fan-card {
+    transition: none;
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .method-float {
     animation: method-float 5.5s ease-in-out infinite;
