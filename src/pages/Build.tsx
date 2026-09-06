@@ -240,14 +240,33 @@ const INCLUDED = [
   'Every recording. Yours forever.',
   `The ${FRAMEWORK}. The canvases.`,
   'The prompts. The tools. The slides.',
-  '3 guests: marketing, funding, an investor.',
+  'Guest sessions: marketing, funding, an investor.',
   `${CLUB}. For life.`,
   'You can still message me.',
   'Week 4: you show the room.',
 ];
 
-/* Placeholder names + stock faces for layout. Swap when the guest lineup locks. */
+/* Guest lineup. Marina + Petri are confirmed (source: slush.org/about-us,
+   ilabventures.tech). The three below them are layout placeholders — swap or
+   drop when the lineup locks. */
 const GUESTS = [
+  {
+    topic: 'Marketing',
+    name: 'Marina Yurchenko',
+    credential: 'Slush · Head of Marketing',
+    punch: 'She grew the world’s loudest startup event. She will show you how attention turns into buyers.',
+    photo:
+      'https://cdn.prod.website-files.com/680cd45512772b4040d78def/69ef1877c33ad7be773c3089_Marina%20(1).JPG',
+    status: 'confirmed',
+  },
+  {
+    topic: 'Funding',
+    name: 'Petri Saarinen',
+    credential: 'iLab Ventures · Co-Founder',
+    punch: '1,500 startups through his programs. He will tell you why most pitches die in the first line.',
+    photo: 'https://ilabventures.tech/assets/team-petri-C62XuPhi.jpg',
+    status: 'confirmed',
+  },
   {
     topic: 'Marketing',
     name: 'Alex Hormozi',
@@ -255,6 +274,7 @@ const GUESTS = [
     punch: 'He will show you how to sell without begging.',
     photo:
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80',
+    status: 'tbd',
   },
   {
     topic: 'Funding',
@@ -263,6 +283,7 @@ const GUESTS = [
     punch: 'He will tell you when to raise. And when to shut up.',
     photo:
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=900&q=80',
+    status: 'tbd',
   },
   {
     topic: 'Investor',
@@ -271,6 +292,7 @@ const GUESTS = [
     punch: 'She will tell you the one sentence that makes her lean in.',
     photo:
       'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80',
+    status: 'tbd',
   },
 ];
 
@@ -1522,16 +1544,16 @@ const Build = () => {
                 Not just me
               </p>
               <h2 className="mx-auto mt-5 max-w-4xl text-center font-heading text-[clamp(2.4rem,7vw,5.2rem)] font-light leading-[0.95] tracking-[-0.035em] text-[#F7E9D6]">
-                Three names.
+                Guest sessions.
                 <br />
                 Same room.
               </h2>
               <p className="mx-auto mt-6 max-w-xl text-center font-heading text-lg font-light leading-relaxed text-[#F7E9D6]/70 md:text-xl">
-                You know them from the industry. Now they sit in the session with you.
+                Marina and Petri are confirmed. More names drop before week one.
               </p>
             </Reveal>
 
-            <div className="mt-14 grid gap-5 md:grid-cols-3 md:gap-6">
+            <div className="mt-14 grid gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
               {GUESTS.map((g, i) => (
                 <Reveal key={g.name} delay={i * 90}>
                   <article>
@@ -1539,12 +1561,19 @@ const Build = () => {
                       <img
                         src={g.photo}
                         alt={g.name}
+                        loading="lazy"
                         className="absolute inset-0 h-full w-full object-cover"
                       />
                       <div
                         aria-hidden
                         className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent"
                       />
+                      {g.status === 'confirmed' && (
+                        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-[#F7E9D6] px-3 py-1 font-heading text-[10px] font-medium uppercase tracking-[0.18em] text-[#0c0a0b]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#B4691E]" />
+                          Confirmed
+                        </span>
+                      )}
                       <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
                         <p className="text-[10px] font-heading font-light uppercase tracking-[0.28em] text-[#D4A574]">
                           {g.topic}
