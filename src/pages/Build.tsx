@@ -79,11 +79,11 @@ const QUESTION_MESSAGE = 'Hi Ahmed, I have a question about the 0→1 cohort.';
 
 /* Instructor */
 const BIO =
-  'You already follow him. 10,000 people found Ahmed on Instagram in two months. Underneath the camera: $600K raised, two startups exited, communities of 100,000, and $100K revenue in ninety days. He does not lecture. He builds in the room with you.';
+  'You already follow him. 10,000 people found Ahmed on Instagram in two months. Underneath the camera: startups he created worth over $5 million, $1.1M raised, two exits, communities of 100,000, and $100K revenue in ninety days. He does not lecture. He builds in the room with you.';
 
 const STATS = [
-  { v: '10K', l: 'Followers in 2 months' },
-  { v: '$600K', l: 'Raised' },
+  { v: '$5M+', l: 'Total valuation of startups he created' },
+  { v: '$1.1M', l: 'Raised' },
   { v: '2', l: 'Startup exits' },
   { v: '100K', l: 'People in communities he built' },
   { v: '$100K', l: 'Revenue in 3 months' },
