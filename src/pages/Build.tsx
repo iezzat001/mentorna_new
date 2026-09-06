@@ -191,6 +191,7 @@ const WEEKS = [
   {
     n: '01',
     chapter: 'Who',
+    accent: AMBER,
     title: 'Design the buyer first.',
     body: 'You do not start with a tool. You start with one person and one pain. In the room, your AI teammates help you write it so sharp a stranger could repeat it. Until that line exists, nothing gets built.',
     punch: 'If you cannot name them, you are not ready to ship.',
@@ -201,6 +202,7 @@ const WEEKS = [
   {
     n: '02',
     chapter: 'Make',
+    accent: CORAL,
     title: 'You direct. The agents build.',
     body: 'You write the offer — the one promise a stranger understands. Then you run AI-agent teammates, live, to build version one in the three hours. Not a freelancer waiting on a brief. Not a course you watch on the train. You are the founder. They are the shop.',
     punch: 'A founder leaves with a thing. A student leaves with notes.',
@@ -211,6 +213,7 @@ const WEEKS = [
   {
     n: '03',
     chapter: 'Ship',
+    accent: CYAN,
     title: 'Live is the only test that counts.',
     body: 'You put it in front of real people before it feels ready. Entrepreneurs collect signal. Hobbyists hide the work so nobody can steal it — and nobody can buy it either. Your teammates keep shipping while you watch what humans actually do.',
     punch: 'Hidden work cannot earn.',
@@ -221,6 +224,7 @@ const WEEKS = [
   {
     n: '04',
     chapter: 'Own',
+    accent: TEAL,
     title: 'Build it so it can run beside your life.',
     body: 'A product is not a business until someone can pay, and until it can live next to your job. You set a price, a path to the first customer, and a system the agents can keep running. Then you show the room what you made.',
     punch: 'Freedom is designed into the work. It is not a prize at the end.',
@@ -459,6 +463,29 @@ const analyticsConsentGranted = (): boolean => {
     return false;
   }
 };
+/*
+ * Eyebrow — section label with a small accent dot, Fora-style. The dot is the
+ * page's vividness rhythm: each cream section gets the next color from
+ * SECTION_ACCENTS so the long run reads as chapters, not one flat slab.
+ * Accent is optional; pass `color` to override the cycle.
+ */
+const Eyebrow = ({
+  children,
+  color,
+}: {
+  children: React.ReactNode;
+  color?: string;
+}) => (
+  <p className="inline-flex items-center gap-2.5 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
+    <span
+      aria-hidden
+      className="h-[7px] w-[7px] shrink-0 rounded-full"
+      style={{ background: color ?? AMBER, boxShadow: `0 0 0 3px ${color ?? AMBER}22` }}
+    />
+    {children}
+  </p>
+);
+
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -902,7 +929,7 @@ const Build = () => {
                 Mentorna®
               </a>
               <p className="text-[11px] font-medium tracking-wide text-white/55 md:text-xs">
-                {SEATS_LEFT} seats left · {COHORT_LABEL}
+                <span style={{ color: AMBER }}>{SEATS_LEFT}</span> seats left · {COHORT_LABEL}
               </p>
             </nav>
 
@@ -959,7 +986,8 @@ const Build = () => {
                 <ApplyButton where="hero" tone="hero" />
               </div>
               <p className="mt-3 text-sm font-light text-white/45">
-                {SEATS_LEFT} seats left in the {COHORT_LABEL} cohort.
+                <span style={{ color: AMBER }}>{SEATS_LEFT}</span> seats left in the {COHORT_LABEL}{' '}
+                cohort.
               </p>
             </div>
 
@@ -1062,9 +1090,7 @@ const Build = () => {
         <section className="pt-14 md:pt-20">
           <Reveal>
             <div className="mx-auto max-w-[720px] text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                See the class
-              </p>
+              <Eyebrow color={CYAN}>See the class</Eyebrow>
               <p className="mt-3 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
                 This is what it looks like.
               </p>
@@ -1084,9 +1110,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                Why most people never ship
-              </p>
+              <Eyebrow color={CORAL}>Why most people never ship</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 You are not losing money.
                 <br />
@@ -1203,9 +1227,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                The 0→1 Framework
-              </p>
+              <Eyebrow color={PURPLE}>The 0→1 Framework</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 The recipe you cannot Google.
               </h2>
@@ -1295,9 +1317,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                How it works
-              </p>
+              <Eyebrow color={TEAL}>How it works</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 Four weeks inside the recipe.
               </h2>
@@ -1316,7 +1336,10 @@ const Build = () => {
                 style={{ top: `${18 + i * 16}px`, zIndex: i + 1 }}
               >
                 <div className="min-w-0 text-left">
-                  <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
+                  <p
+                    className="font-heading text-[11px] font-medium uppercase tracking-[0.22em]"
+                    style={{ color: w.accent }}
+                  >
                     Week {w.n} — {w.chapter}
                   </p>
                   <h3 className="mt-3 font-heading text-[1.65rem] font-light leading-[1.2] tracking-tight md:text-[2rem]">
@@ -1579,9 +1602,7 @@ const Build = () => {
           <div className="mx-auto max-w-5xl px-4">
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
-                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                  What happens after
-                </p>
+                <Eyebrow color={AMBER}>What happens after</Eyebrow>
                 <h2 className="mt-3 font-heading text-4xl font-light leading-[1.05] tracking-tight md:text-6xl">
                   {CLUB}
                 </h2>
@@ -1654,9 +1675,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                From the workshops this cohort is built on
-              </p>
+              <Eyebrow color={CYAN}>From the workshops this cohort is built on</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 They already did this.
               </h2>
@@ -1672,9 +1691,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                The question everyone asks
-              </p>
+              <Eyebrow color={CORAL}>The question everyone asks</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 I can learn this free.
               </h2>
@@ -1707,9 +1724,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                Who this is for
-              </p>
+              <Eyebrow color={AMBER}>Who this is for</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 You do not need an idea.
               </h2>
@@ -1761,10 +1776,16 @@ const Build = () => {
         <section id="apply" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                The offer
-              </p>
-              <h2 className="mt-3 font-heading text-[clamp(4.2rem,16vw,8rem)] font-light leading-none tracking-[-0.04em]">
+              <Eyebrow color={PURPLE}>The offer</Eyebrow>
+              <h2
+                className="mt-3 font-heading text-[clamp(4.2rem,16vw,8rem)] font-light leading-none tracking-[-0.04em]"
+                style={{
+                  background: `linear-gradient(120deg, ${AMBER} 10%, #C4893A 45%, ${CORAL} 90%)`,
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}
+              >
                 ${PRICE}
               </h2>
               <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-2xl">
@@ -1787,7 +1808,8 @@ const Build = () => {
             <div className="mt-12 text-center md:mt-16">
               <ApplyButton where="pricing" tone="page" />
               <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
-                {SEATS_LEFT} seats left in the {COHORT_LABEL} cohort.
+                <span style={{ color: '#B4691E' }}>{SEATS_LEFT}</span> seats left in the{' '}
+                {COHORT_LABEL} cohort.
               </p>
               <p className="mx-auto mt-8 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75">
                 Come twice. If it is not for you, you get every dollar back.
@@ -1859,7 +1881,7 @@ const Build = () => {
           <div className="relative mx-auto max-w-3xl px-4 py-20 text-center md:py-28">
             <Reveal>
               <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
-                {SEATS_LEFT} seats left · {COHORT_LABEL}
+                <span className="text-[#F7E9D6]">{SEATS_LEFT}</span> seats left · {COHORT_LABEL}
               </p>
               <h2 className="mt-5 font-heading text-[clamp(2.4rem,7vw,4.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#F7E9D6]">
                 The idea has waited long enough.
