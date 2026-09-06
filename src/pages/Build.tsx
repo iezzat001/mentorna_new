@@ -431,6 +431,23 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+/*
+ * Phase easing for the hero exit — Fora-style choreography. Each element of
+ * the hero (copy, video, dunes, seal) gets its own window [from, to] inside
+ * the scroll progress, with a cubic ease-in-out inside the window:
+ *
+ *   0.00–0.42  copy dissolves up and out while video + ground hold still
+ *   0.45–0.92  dunes sweep up and the video grows + sinks into them
+ *   0.70–1.00  cream seal closes the last seam
+ *
+ * Holding the video and ground still for the first half is what removes the
+ * stretching void mid-scroll — the composition stays packed until the tuck.
+ */
+const phase = (t: number, from: number, to: number) => {
+  const x = Math.max(0, Math.min(1, (t - from) / (to - from)));
+  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+};
+
 /* True only when the visitor granted analytics consent — the same source
    PageTracker reads. A/B events are gated on this; the variant renders
    regardless of consent. */
@@ -799,6 +816,11 @@ const Build = () => {
   const { trackRef, p } = useHeroScroll();
   const applyHref = whatsappUrl(APPLY_MESSAGE);
 
+  /* Phase values for the exit choreography (see `phase` above). */
+  const copyP = phase(p, 0, 0.42); // copy exits first
+  const groundP = phase(p, 0.45, 0.92); // dunes + video tuck
+  const sealP = phase(p, 0.7, 1); // cream seam finishes last
+
   const ApplyButton = ({
     where,
     label = 'Apply for the next cohort',
@@ -864,7 +886,7 @@ const Build = () => {
               viewBox="0 0 1440 420"
               preserveAspectRatio="none"
               className="pointer-events-none absolute inset-x-0 bottom-[18%] h-[42%] w-full blur-[10px]"
-              style={{ transform: `translateY(${p * 48}px)` }}
+              style={{ transform: `translateY(${groundP * 64}px)` }}
             >
               <path
                 fill="#2a1814"
@@ -887,8 +909,9 @@ const Build = () => {
             <div
               className="relative z-20 mx-auto flex w-full max-w-4xl flex-col items-center px-6 pt-2 text-center md:pt-4"
               style={{
-                opacity: 1 - p * 0.72,
-                transform: `translateY(${p * -36}px)`,
+                opacity: Math.max(1 - copyP, 0),
+                transform: `translateY(${copyP * -48}px)`,
+                visibility: copyP === 1 ? 'hidden' : undefined,
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
@@ -944,7 +967,10 @@ const Build = () => {
               <div
                 className="relative origin-bottom"
                 style={{
-                  transform: `translateY(${p * 72}px) scale(${1 + p * 0.12})`,
+                  /* Fora move: as the copy dissolves (copyP) the film grows a
+                     touch and rises to reclaim its space — the window takes
+                     center stage. Then it sinks into the rising dunes (groundP). */
+                  transform: `translateY(${groundP * 96 - copyP * 20}px) scale(${1 + copyP * 0.08 + groundP * 0.14})`,
                 }}
               >
                 <div
@@ -974,7 +1000,7 @@ const Build = () => {
               viewBox="0 0 1440 320"
               preserveAspectRatio="none"
               className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[28%] w-full blur-[2px] md:h-[32%]"
-              style={{ transform: `translateY(${p * -90}px)` }}
+              style={{ transform: `translateY(${groundP * -190}px)` }}
             >
               <path
                 fill="#3d241c"
@@ -986,7 +1012,7 @@ const Build = () => {
               viewBox="0 0 1440 280"
               preserveAspectRatio="none"
               className="pointer-events-none absolute inset-x-0 -bottom-[2%] z-30 h-[22%] w-full md:h-[26%]"
-              style={{ transform: `translateY(${p * -150}px)` }}
+              style={{ transform: `translateY(${groundP * -260}px)` }}
             >
               <path
                 fill="#1c100e"
@@ -998,17 +1024,19 @@ const Build = () => {
               aria-hidden
               className="pointer-events-none absolute inset-x-0 bottom-0 z-40 h-[42%]"
               style={{
-                background: `linear-gradient(to top, #F7E9D6 ${Math.round(p * 62)}%, transparent)`,
+                /* Seal the ground. Dunes sweep up on their own window; this
+                   gradient closes the last seam so nothing shows through. */
+                background: `linear-gradient(to top, #F7E9D6 ${Math.round(sealP * 88)}%, transparent)`,
               }}
             />
           </div>
         </div>
       </header>
 
-      <main className="pb-20">
+      <main className="-mt-[16vh] pb-20 md:-mt-[12vh]">
         <div className="mx-auto max-w-5xl px-4">
         {/* ══ TRUST RIBBON ══ */}
-        <section className="pt-6 md:pt-8">
+        <section className="pt-0 md:pt-2">
           <Reveal>
             <ul className="grid grid-cols-2 gap-y-8 md:grid-cols-4">
               {TRUST.map((item, i) => (
