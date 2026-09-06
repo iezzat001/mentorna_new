@@ -1049,7 +1049,7 @@ const Build = () => {
                   <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[2rem]">
                     {item.k}
                   </p>
-                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
                     {item.v}
                   </p>
                 </li>
@@ -1062,7 +1062,7 @@ const Build = () => {
         <section className="pt-14 md:pt-20">
           <Reveal>
             <div className="mx-auto max-w-[720px] text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 See the class
               </p>
               <p className="mt-3 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
@@ -1071,7 +1071,7 @@ const Build = () => {
               <div className="mt-8 overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.4)] ring-1 ring-black/10">
                 <VslPlayer />
               </div>
-              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/50">
+              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/70">
                 {vslIsPlaceholder
                   ? '90 seconds. Real people. A real room.'
                   : 'Two minutes. See if this is for you.'}
@@ -1084,7 +1084,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 Why most people never ship
               </p>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
@@ -1092,7 +1092,7 @@ const Build = () => {
                 <br />
                 You are losing time.
               </h2>
-              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-lg">
+              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
                 You are busy. The idea waits. A year goes by.
               </p>
             </div>
@@ -1108,7 +1108,7 @@ const Build = () => {
                   <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[1.85rem]">
                     {c.k}
                   </p>
-                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
                     {c.v}
                   </p>
                 </div>
@@ -1203,13 +1203,13 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 The 0→1 Framework
               </p>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 The recipe you cannot Google.
               </h2>
-              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-lg">
+              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
                 Three moves, in this order. You are the founder. AI teammates are the shop. The order is the gem.
               </p>
             </div>
@@ -1254,13 +1254,13 @@ const Build = () => {
                         i % 2 === 1 ? 'md:text-right' : 'md:text-left'
                       }`}
                     >
-                      <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/40">
+                      <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                         {s.n}
                       </p>
                       <h3 className="mt-2 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
                         {s.title}
                       </h3>
-                      <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                      <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[15px]">
                         {s.desc}
                       </p>
                     </div>
@@ -1271,10 +1271,10 @@ const Build = () => {
           </div>
 
           <Reveal>
-            <p className="mt-14 text-center font-heading text-base font-light text-[hsl(0,0%,10%)]/55">
+            <p className="mt-14 text-center font-heading text-base font-light text-[hsl(0,0%,10%)]/75">
               This order is the part you cannot download.
             </p>
-            <p className="mt-4 text-center font-heading text-[11px] font-light tracking-wide text-[hsl(0,0%,10%)]/35">
+            <p className="mt-4 text-center font-heading text-[11px] font-light tracking-wide text-[hsl(0,0%,10%)]/55">
               3D icons from{' '}
               <a
                 href="https://www.thiings.co"
@@ -1295,13 +1295,13 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 How it works
               </p>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 Four weeks inside the recipe.
               </h2>
-              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[17px]">
+              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
                 You run the company. AI-agent teammates build with you, live — Claude Code in the
                 session. Every week ends with something a founder would ship.
               </p>
@@ -1312,17 +1312,17 @@ const Build = () => {
             {WEEKS.map((w, i) => (
               <article
                 key={w.n}
-                className="sticky mb-[22vh] grid items-center gap-8 rounded-[28px] bg-[#FFF8EE] p-6 shadow-[0_24px_60px_-28px_rgba(80,40,16,0.28)] ring-1 ring-black/10 last:mb-4 md:mb-[28vh] md:grid-cols-2 md:gap-12 md:p-10 last:md:mb-6"
+                className="sticky mb-[22vh] grid items-center gap-8 rounded-[28px] border-2 border-[#1c100e]/12 bg-[#FFFDF7] p-6 shadow-[0_28px_70px_-28px_rgba(80,40,16,0.38)] md:mb-[28vh] md:grid-cols-2 md:gap-12 md:p-10 last:mb-4 last:md:mb-6"
                 style={{ top: `${18 + i * 16}px`, zIndex: i + 1 }}
               >
                 <div className="min-w-0 text-left">
-                  <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/40">
+                  <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                     Week {w.n} — {w.chapter}
                   </p>
                   <h3 className="mt-3 font-heading text-[1.65rem] font-light leading-[1.2] tracking-tight md:text-[2rem]">
                     {w.title}
                   </h3>
-                  <p className="mt-4 font-heading text-base font-light leading-[1.65] text-[hsl(0,0%,10%)]/55">
+                  <p className="mt-4 font-heading text-base font-light leading-[1.65] text-[hsl(0,0%,10%)]/75">
                     {w.body}
                   </p>
                   <p className="mt-4 font-heading text-base font-light italic leading-[1.55] text-[hsl(0,0%,10%)]/70">
@@ -1579,7 +1579,7 @@ const Build = () => {
           <div className="mx-auto max-w-5xl px-4">
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
-                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                   What happens after
                 </p>
                 <h2 className="mt-3 font-heading text-4xl font-light leading-[1.05] tracking-tight md:text-6xl">
@@ -1588,7 +1588,7 @@ const Build = () => {
                 <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/80 md:text-2xl">
                   The cohort ends. You do not leave.
                 </p>
-                <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[17px]">
+                <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
                   Four weeks is enough to ship. A company needs a room after that. Everyone who
                   finishes walks in and keeps the key.
                 </p>
@@ -1636,7 +1636,7 @@ const Build = () => {
                     <p className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight">
                       {b.t}
                     </p>
-                    <p className="mt-2 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/50">
+                    <p className="mt-2 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/70">
                       {b.d}
                     </p>
                   </li>
@@ -1654,13 +1654,13 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 From the workshops this cohort is built on
               </p>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 They already did this.
               </h2>
-              <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[17px]">
+              <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
                 Two students. Their phones. Press play.
               </p>
             </div>
@@ -1672,7 +1672,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 The question everyone asks
               </p>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
@@ -1694,7 +1694,7 @@ const Build = () => {
                   <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[1.85rem]">
                     {c.k}
                   </p>
-                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
                     {c.v}
                   </p>
                 </div>
@@ -1707,13 +1707,13 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 Who this is for
               </p>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 You do not need an idea.
               </h2>
-              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-lg">
+              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
                 You have a job. You want something of your own. I take you through which thing — and
                 we start.
               </p>
@@ -1730,7 +1730,7 @@ const Build = () => {
                   <h3 className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.85rem]">
                     {p.t}
                   </h3>
-                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/50 md:text-[15px]">
+                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/70 md:text-[15px]">
                     {p.d}
                   </p>
                 </li>
@@ -1740,14 +1740,14 @@ const Build = () => {
 
           <Reveal>
             <div className="mx-auto mt-14 max-w-2xl border-t border-[hsl(0,0%,10%)]/10 pt-10 text-center md:mt-16">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/40">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 Skip this if
               </p>
               <ul className="mt-5 space-y-2">
                 {FIT_SKIP.map((f) => (
                   <li
                     key={f}
-                    className="font-heading text-base font-light text-[hsl(0,0%,10%)]/45"
+                    className="font-heading text-base font-light text-[hsl(0,0%,10%)]/60"
                   >
                     {f}
                   </li>
@@ -1761,7 +1761,7 @@ const Build = () => {
         <section id="apply" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
                 The offer
               </p>
               <h2 className="mt-3 font-heading text-[clamp(4.2rem,16vw,8rem)] font-light leading-none tracking-[-0.04em]">
@@ -1786,10 +1786,10 @@ const Build = () => {
           <Reveal>
             <div className="mt-12 text-center md:mt-16">
               <ApplyButton where="pricing" tone="page" />
-              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/45">
+              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
                 {SEATS_LEFT} seats left in the {COHORT_LABEL} cohort.
               </p>
-              <p className="mx-auto mt-8 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55">
+              <p className="mx-auto mt-8 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75">
                 Come twice. If it is not for you, you get every dollar back.
               </p>
             </div>
@@ -1802,13 +1802,13 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl">
-              <p className="inline-flex rounded-full bg-[hsl(0,0%,10%)]/[0.06] px-3.5 py-1 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/55">
+              <p className="inline-flex rounded-full bg-[hsl(0,0%,10%)]/[0.06] px-3.5 py-1 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/75">
                 FAQ
               </p>
               <h2 className="mt-5 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 Answers to the questions that come up most.
               </h2>
-              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:text-[17px]">
+              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
                 Who it is for. What happens in the room. What you keep after.
               </p>
             </div>
@@ -1817,7 +1817,7 @@ const Build = () => {
           <div className="mx-auto mt-10 max-w-2xl space-y-3 md:mt-12">
             {FAQS.map((f, i) => (
               <Reveal key={f.q} delay={i * 40}>
-                <details className="group overflow-hidden rounded-[22px] bg-[#FFF8EE] ring-1 ring-[hsl(0,0%,10%)]/8 open:bg-white open:shadow-[0_18px_40px_-28px_rgba(60,30,10,0.35)] open:ring-[hsl(0,0%,10%)]/12">
+                <details className="group overflow-hidden rounded-[22px] border border-[#1c100e]/10 bg-[#FFFDF7] open:border-[#1c100e]/16 open:bg-white open:shadow-[0_18px_40px_-28px_rgba(60,30,10,0.4)]">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 md:px-6 md:py-5 [&::-webkit-details-marker]:hidden">
                     <span className="font-heading text-base font-light leading-snug tracking-tight text-[hsl(0,0%,10%)] md:text-lg">
                       {f.q}
@@ -1826,7 +1826,7 @@ const Build = () => {
                       <ChevronDown className="h-4 w-4" strokeWidth={1.75} />
                     </span>
                   </summary>
-                  <p className="px-5 pb-5 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/55 md:px-6 md:pb-6 md:text-[15px]">
+                  <p className="px-5 pb-5 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:px-6 md:pb-6 md:text-[15px]">
                     {f.a}
                   </p>
                 </details>
