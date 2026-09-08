@@ -37,13 +37,15 @@ const WebinarPlayer: React.FC<WebinarPlayerProps> = ({ webinar, className = "" }
 
   return (
     <div
-      className={`border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-black relative ${className}`}
+      className={`relative overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.45)] ring-1 ring-black/10 ${className}`}
     >
       {errored ? (
-        <div className="flex flex-col items-center justify-center gap-3 aspect-video bg-muted text-center p-6">
-          <AlertTriangle className="h-10 w-10 text-foreground" />
-          <p className="font-black uppercase text-foreground">Recording coming soon</p>
-          <p className="text-sm font-semibold text-foreground/70 max-w-md">
+        <div className="flex aspect-video flex-col items-center justify-center gap-3 bg-black/90 p-6 text-center">
+          <AlertTriangle className="h-10 w-10 text-[#F7E9D6]/80" />
+          <p className="font-heading text-lg font-light tracking-tight text-[#F7E9D6]">
+            Recording coming soon
+          </p>
+          <p className="max-w-md font-heading text-sm font-light text-[#F7E9D6]/60">
             This webinar recording hasn't finished uploading yet. Please check back shortly.
           </p>
         </div>
@@ -53,7 +55,7 @@ const WebinarPlayer: React.FC<WebinarPlayerProps> = ({ webinar, className = "" }
           controls
           playsInline
           preload="metadata"
-          className="w-full aspect-video bg-black"
+          className="aspect-video w-full bg-black"
           poster={poster}
           onError={() => setErrored(true)}
         >
