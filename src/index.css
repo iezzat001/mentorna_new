@@ -309,19 +309,3 @@
     animation-play-state: paused;
   }
 }
-
-/* ── Community session lede ──────────────────────────────────────
-   Editorial drop-cap on the first paragraph of a session description.
-   Falls back gracefully in rtl (Arabic) where a Latin drop-cap would
-   be wrong — the accent initial only applies to ltr blocks. */
-.session-lede::first-letter {
-  font-weight: 500;
-  font-size: 1.04em;
-}
-[dir="ltr"] .session-lede::first-letter {
-  float: left;
-  margin: 0.06em 0.12em 0 0;
-  font-size: 3.05em;
-  line-height: 0.82;
-  color: hsl(38, 78%, 42%);
-}

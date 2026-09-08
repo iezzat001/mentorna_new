@@ -194,9 +194,19 @@ const Community: React.FC = () => {
                             ))}
                           </ul>
                         ) : null}
-                        <p className="session-lede max-w-3xl font-heading text-[17px] font-normal leading-[1.75] text-[hsl(0,0%,10%)]/88 md:text-[19px]">
-                          {webinar.description}
-                        </p>
+                        {/* Lede — a short accent tick + an even left edge.
+                            No drop-cap (it broke the line alignment); just a
+                            calm, consistent column. */}
+                        <div className="flex max-w-3xl gap-4">
+                          <span
+                            aria-hidden
+                            className="mt-[0.55em] h-10 w-[3px] shrink-0 rounded-full"
+                            style={{ background: accent }}
+                          />
+                          <p className="font-heading text-[17px] font-normal leading-[1.8] text-[hsl(0,0%,10%)]/88 md:text-[18px]">
+                            {webinar.description}
+                          </p>
+                        </div>
                       </div>
                     </article>
                   </li>
