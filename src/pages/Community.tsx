@@ -26,6 +26,51 @@ const PAGE_BG =
 const SESSION_ACCENTS = [AMBER, PURPLE, CYAN, TEAL, CORAL];
 const TAG_DOT = [AMBER, PURPLE, CYAN, TEAL, CORAL];
 
+/* Shared with /build so scarcity + date stay in sync. */
+const SEATS_LEFT = 4;
+const COHORT_LABEL = "18 September";
+
+/* Prisma atmosphere (media only) — same blend as the /build hero. */
+const PRISMA_BG_VIDEO =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
+const PRISMA_BG_POSTER = "/hero/prisma-bg.jpg";
+
+const CTA_AI_TOOLS = [
+  {
+    name: "Cursor",
+    src: "/ai-tools/cursor.svg",
+    className: "left-[4%] top-[18%] lg:left-[8%]",
+    float: "hero-tool-float",
+  },
+  {
+    name: "Claude",
+    src: "/ai-tools/claude.svg",
+    className: "right-[4%] top-[16%] lg:right-[8%]",
+    float: "hero-tool-float hero-tool-float-late",
+  },
+  {
+    name: "Codex",
+    src: "/ai-tools/codex.svg",
+    className: "left-[6%] bottom-[18%] lg:left-[10%]",
+    float: "hero-tool-float hero-tool-float-mid",
+  },
+  {
+    name: "Grokbot",
+    src: "/ai-tools/grokbot.svg",
+    className: "right-[5%] bottom-[16%] lg:right-[9%]",
+    float: "hero-tool-float hero-tool-float-last",
+  },
+] as const;
+
+const scrollBuildToTop = () => {
+  const toTop = () => {
+    window.scrollTo(0, 0);
+    document.getElementById("root")?.scrollTo(0, 0);
+  };
+  toTop();
+  requestAnimationFrame(() => requestAnimationFrame(toTop));
+};
+
 /* Eyebrow — section label with a small accent dot, same as /build. */
 const Eyebrow = ({
   children,
@@ -107,7 +152,7 @@ const Community: React.FC = () => {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 pb-20 md:px-8">
+      <main className="mx-auto max-w-5xl px-4 pb-16 md:px-8 md:pb-20">
         {webinars.length === 0 ? (
           <div className="rounded-[22px] bg-black/90 px-10 py-16 text-center shadow-[0_30px_70px_-24px_rgba(0,0,0,0.45)] ring-1 ring-black/10">
             <PlayCircle className="mx-auto mb-4 h-12 w-12 text-[#F7E9D6]/70" />
@@ -128,15 +173,33 @@ const Community: React.FC = () => {
               </p>
             </div>
 
-            <ol className="space-y-20 md:space-y-28">
+            <ol className="space-y-10 md:space-y-14">
               {webinars.map((webinar, i) => {
                 const accent = SESSION_ACCENTS[i % SESSION_ACCENTS.length];
                 return (
                   <li key={webinar.id}>
-                    <article className="flex flex-col">
-                      {/* Session heading block — aligned to the player's full
-                          width so the left/right edges read as one column. */}
-                      <div dir={webinar.dir ?? "ltr"} className="mb-8">
+                    <article
+                      className="relative flex flex-col overflow-hidden rounded-[28px] px-5 py-8 shadow-[0_28px_70px_-36px_rgba(60,30,10,0.35)] ring-1 md:px-8 md:py-11"
+                      style={{
+                        background: [
+                          `radial-gradient(ellipse 95% 70% at 8% -5%, color-mix(in srgb, ${accent} 48%, transparent), transparent 58%)`,
+                          `radial-gradient(ellipse 55% 55% at 100% 95%, color-mix(in srgb, ${accent} 24%, transparent), transparent 55%)`,
+                          `linear-gradient(165deg, #FFFCFA 0%, color-mix(in srgb, ${accent} 10%, #F7E9D6) 48%, color-mix(in srgb, ${accent} 14%, #E8D0B4) 100%)`,
+                        ].join(", "),
+                        boxShadow: `0 28px 70px -36px color-mix(in srgb, ${accent} 28%, rgba(60,30,10,0.35)), 0 0 0 1px color-mix(in srgb, ${accent} 22%, transparent)`,
+                      }}
+                    >
+                      {/* Soft chapter wash behind the player */}
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute -right-16 top-24 h-64 w-64 rounded-full blur-3xl md:top-28"
+                        style={{
+                          background: `color-mix(in srgb, ${accent} 35%, transparent)`,
+                        }}
+                      />
+
+                      {/* Session heading block */}
+                      <div dir={webinar.dir ?? "ltr"} className="relative mb-8">
                         <Eyebrow color={accent}>
                           Session {String(webinars.length - i).padStart(2, "0")}
                         </Eyebrow>
@@ -157,8 +220,6 @@ const Community: React.FC = () => {
                             ) : null}
                           </div>
                         </div>
-                        {/* Accent rule — a quiet editorial flourish that ties the
-                            header to the session's chapter color. */}
                         <div
                           aria-hidden
                           className="mt-6 h-px w-full"
@@ -168,18 +229,25 @@ const Community: React.FC = () => {
                         />
                       </div>
 
-                      {/* Player */}
-                      <WebinarPlayer webinar={webinar} />
+                      <div
+                        className="relative rounded-[22px]"
+                        style={{
+                          boxShadow: `0 24px 48px -12px color-mix(in srgb, ${accent} 35%, transparent), 0 0 0 1px color-mix(in srgb, ${accent} 40%, transparent)`,
+                        }}
+                      >
+                        <WebinarPlayer webinar={webinar} />
+                      </div>
 
-                      {/* Body copy — full player width (no mid-card max-width)
-                          with the editorial drop-cap lede. */}
-                      <div dir={webinar.dir ?? "ltr"} className="mt-9">
+                      <div dir={webinar.dir ?? "ltr"} className="relative mt-9">
                         {webinar.tags && webinar.tags.length > 0 ? (
                           <ul className="mb-5 flex flex-wrap gap-x-3 gap-y-2">
                             {webinar.tags.map((tag, t) => (
                               <li
                                 key={tag}
-                                className="inline-flex items-center gap-2 rounded-full border border-[hsl(0,0%,10%)]/12 bg-[hsl(0,0%,100%)]/40 px-3.5 py-1.5 font-heading text-xs font-semibold uppercase tracking-[0.14em] text-[hsl(0,0%,10%)]/80"
+                                className="inline-flex items-center gap-2 rounded-full border bg-[hsl(0,0%,100%)]/50 px-3.5 py-1.5 font-heading text-xs font-semibold uppercase tracking-[0.14em] text-[hsl(0,0%,10%)]/80"
+                                style={{
+                                  borderColor: `color-mix(in srgb, ${accent} 28%, transparent)`,
+                                }}
                               >
                                 <span
                                   aria-hidden
@@ -209,80 +277,104 @@ const Community: React.FC = () => {
                 );
               })}
             </ol>
-
-            {/* ══ COHORT CTA ══
-                Bridge from the free webinars to the paid 0→1 cohort. Warm
-                ember chamber (the same dark gradient /build uses for its
-                contrast section) so it reads as the deliberate next step,
-                not an ad. */}
-            <section className="relative mt-24 overflow-hidden rounded-[28px] md:mt-32">
-              <div
-                aria-hidden
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 90% 55% at 50% 0%, #6B2A16 0%, #2A110C 44%, #140807 78%)",
-                }}
-              />
-              <div
-                aria-hidden
-                className="absolute inset-x-0 top-0 h-[46%] blur-3xl"
-                style={{
-                  background:
-                    "radial-gradient(ellipse at 50% 0%, rgba(232,168,90,0.4), transparent 68%)",
-                }}
-              />
-
-              <div className="relative mx-auto max-w-2xl px-6 py-16 text-center md:py-24">
-                <p className="inline-flex items-center gap-2.5 font-heading text-xs font-semibold uppercase tracking-[0.22em] text-[#F7E9D6]/70">
-                  <span
-                    aria-hidden
-                    className="h-[7px] w-[7px] rounded-full"
-                    style={{
-                      background: AMBER,
-                      boxShadow: "0 0 0 3px rgba(232,168,90,0.22)",
-                    }}
-                  />
-                  The next step
-                </p>
-                <h2 className="mt-4 font-heading text-3xl font-light leading-[1.1] tracking-tight text-[#F7E9D6] md:text-5xl">
-                  Go from idea to <span style={{ color: AMBER }}>reality.</span>
-                </h2>
-                <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[#F7E9D6]/70 md:text-lg">
-                  The 0→1 cohort is four weeks, live, ten seats — for anyone who
-                  wants to go from idea to product to customer.
-                </p>
-
-                <div className="mt-9 flex flex-col items-center gap-4">
-                  <Link
-                    to="/build"
-                    onClick={() => {
-                      // Mentorna scrolls #root under 768px (body is fixed). Reset
-                      // both scrollports so /build always opens at the hero.
-                      const toTop = () => {
-                        window.scrollTo(0, 0);
-                        document.getElementById("root")?.scrollTo(0, 0);
-                      };
-                      toTop();
-                      requestAnimationFrame(() =>
-                        requestAnimationFrame(toTop),
-                      );
-                    }}
-                    className="group inline-flex items-center gap-2.5 rounded-full bg-[#F7E9D6] px-9 py-4 font-heading text-sm font-semibold tracking-wide text-[hsl(0,0%,10%)] transition-transform hover:scale-[1.04] md:text-base"
-                  >
-                    Explore the 0→1 cohort
-                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </Link>
-                  <p className="font-heading text-sm font-light text-[#F7E9D6]/55">
-                    <span style={{ color: AMBER }}>4</span> seats left ·
-                    money-back after week two
-                  </p>
-                </div>
-              </div>
-            </section>
           </>
         )}
       </main>
+
+      {/* ══ COHORT CTA ══
+          Mini /build hero: Prisma atmosphere, floating AI workers, centered
+          light type and a white pill CTA. Full-bleed so it reads as the next
+          chapter, not a card ad. */}
+      <section className="relative isolate mt-8 overflow-hidden text-white md:mt-12">
+        <div aria-hidden className="absolute inset-0 overflow-hidden">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={PRISMA_BG_POSTER}
+            className="absolute inset-0 h-full w-full scale-110 object-cover"
+            src={PRISMA_BG_VIDEO}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(58,36,24,0.55) 0%, rgba(26,16,16,0.4) 42%, rgba(12,10,11,0.82) 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-0 mix-blend-soft-light"
+            style={{
+              background:
+                "radial-gradient(ellipse 80% 55% at 50% 18%, rgba(232,168,90,0.45), transparent 62%)",
+            }}
+          />
+          <div className="noise-overlay absolute inset-0 opacity-[0.28] mix-blend-overlay" />
+        </div>
+
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[38%]"
+          style={{
+            background:
+              "linear-gradient(to top, #0c0a0b 0%, rgba(28,16,14,0.75) 40%, transparent 100%)",
+            filter: "blur(1.5px)",
+          }}
+        />
+
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[5] hidden md:block"
+        >
+          {CTA_AI_TOOLS.map((tool) => (
+            <div
+              key={tool.name}
+              className={`${tool.float} absolute ${tool.className}`}
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-[1.15rem] bg-white/[0.08] shadow-[0_20px_60px_-18px_rgba(0,0,0,0.75)] ring-1 ring-white/20 backdrop-blur-md lg:h-[4.5rem] lg:w-[4.5rem]">
+                <img
+                  src={tool.src}
+                  alt=""
+                  className="h-8 w-8 lg:h-9 lg:w-9"
+                />
+              </div>
+              <p className="mt-2 text-center font-heading text-[10px] font-medium tracking-[0.14em] text-white/50">
+                {tool.name}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="relative z-20 mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center md:py-28">
+          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
+            For 9-to-5 domain experts · Live · Fully remote · 4 weeks · 10 seats
+          </p>
+          <h2 className="mt-4 max-w-2xl font-heading text-[2.15rem] font-light leading-[1.08] tracking-tight text-white md:text-5xl lg:text-[3.25rem]">
+            Go from idea to{" "}
+            <span style={{ color: AMBER }}>reality.</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-white/65 md:text-lg">
+            Live and designed for people with a full schedule. Four weeks with AI
+            teammates, to a product people pay for.
+          </p>
+
+          <div className="mt-8">
+            <Link
+              to="/build"
+              onClick={scrollBuildToTop}
+              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-sm font-medium tracking-wide text-[hsl(0,0%,8%)] transition-colors hover:bg-white/90 md:min-h-[3.25rem] md:px-9 md:text-base"
+            >
+              Explore the 0→1 cohort
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </div>
+          <p className="mt-3 text-sm font-light text-white/45">
+            <span style={{ color: AMBER }}>{SEATS_LEFT}</span> seats left in the{" "}
+            {COHORT_LABEL} cohort.
+          </p>
+        </div>
+      </section>
 
       <Footer />
     </div>
