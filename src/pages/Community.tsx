@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { format, parseISO } from "date-fns";
-import { CalendarDays, Clock, PlayCircle } from "lucide-react";
+import { CalendarDays, Clock, PlayCircle, ArrowUpRight } from "lucide-react";
 import WebinarPlayer from "@/components/community/WebinarPlayer";
 import Footer from "@/components/Footer";
 import { getPublishedWebinars } from "@/data/webinars";
@@ -213,6 +213,68 @@ const Community: React.FC = () => {
                 );
               })}
             </ol>
+
+            {/* ══ COHORT CTA ══
+                Bridge from the free webinars to the paid 0→1 cohort. Warm
+                ember chamber (the same dark gradient /build uses for its
+                contrast section) so it reads as the deliberate next step,
+                not an ad. */}
+            <section className="relative mt-24 overflow-hidden rounded-[28px] md:mt-32">
+              <div
+                aria-hidden
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 90% 55% at 50% 0%, #6B2A16 0%, #2A110C 44%, #140807 78%)",
+                }}
+              />
+              <div
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-[46%] blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at 50% 0%, rgba(232,168,90,0.4), transparent 68%)",
+                }}
+              />
+
+              <div className="relative mx-auto max-w-2xl px-6 py-16 text-center md:py-24">
+                <p className="inline-flex items-center gap-2.5 font-heading text-xs font-semibold uppercase tracking-[0.22em] text-[#F7E9D6]/70">
+                  <span
+                    aria-hidden
+                    className="h-[7px] w-[7px] rounded-full"
+                    style={{
+                      background: AMBER,
+                      boxShadow: "0 0 0 3px rgba(232,168,90,0.22)",
+                    }}
+                  />
+                  The next step
+                </p>
+                <h2 className="mt-4 font-heading text-3xl font-light leading-[1.1] tracking-tight text-[#F7E9D6] md:text-5xl">
+                  Watching is the warm-up.
+                  <br />
+                  <span style={{ color: AMBER }}>Building is the work.</span>
+                </h2>
+                <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[#F7E9D6]/70 md:text-lg">
+                  The 0→1 cohort is four weeks, live, ten seats. You bring what
+                  you already know — a team of AI workers builds it with you, to
+                  a product real buyers pay for.
+                </p>
+
+                <div className="mt-9 flex flex-col items-center gap-4">
+                  <Link
+                    to="/build"
+                    className="group inline-flex items-center gap-2.5 rounded-full bg-[#F7E9D6] px-9 py-4 font-heading text-sm font-semibold tracking-wide text-[hsl(0,0%,10%)] transition-transform hover:scale-[1.04] md:text-base"
+                  >
+                    Explore the 0→1 cohort
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
+                  <p className="font-heading text-sm font-light text-[#F7E9D6]/55">
+                    <span style={{ color: AMBER }}>4</span> seats left ·
+                    money-back after week two
+                  </p>
+                </div>
+              </div>
+            </section>
           </>
         )}
       </main>
