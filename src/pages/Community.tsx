@@ -250,14 +250,11 @@ const Community: React.FC = () => {
                   The next step
                 </p>
                 <h2 className="mt-4 font-heading text-3xl font-light leading-[1.1] tracking-tight text-[#F7E9D6] md:text-5xl">
-                  Watching is the warm-up.
-                  <br />
-                  <span style={{ color: AMBER }}>Building is the work.</span>
+                  Go from idea to <span style={{ color: AMBER }}>reality.</span>
                 </h2>
                 <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[#F7E9D6]/70 md:text-lg">
-                  The 0→1 cohort is four weeks, live, ten seats. You bring what
-                  you already know — a team of AI workers builds it with you, to
-                  a product real buyers pay for.
+                  The 0→1 cohort is four weeks, live, ten seats — for anyone who
+                  wants to go from idea to product to customer.
                 </p>
 
                 <div className="mt-9 flex flex-col items-center gap-4">
