@@ -34,7 +34,7 @@ const Eyebrow = ({
   children: React.ReactNode;
   color?: string;
 }) => (
-  <p className="inline-flex items-center gap-2.5 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
+  <p className="inline-flex items-center gap-2.5 font-heading text-xs font-semibold uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/75">
     <span
       aria-hidden
       className="h-[7px] w-[7px] shrink-0 rounded-full"
@@ -86,27 +86,21 @@ const Community: React.FC = () => {
               "radial-gradient(ellipse at 50% 0%, rgba(232,168,90,0.35), transparent 68%)",
           }}
         />
-        <nav className="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-6 md:px-8 md:py-8">
+        <nav className="relative mx-auto flex max-w-5xl items-center px-6 py-6 md:px-8 md:py-8">
           <Link
             to="/"
-            className="font-heading text-[17px] font-light tracking-[0.06em] text-[hsl(0,0%,10%)] transition-opacity hover:opacity-60"
+            className="font-heading text-[19px] font-normal tracking-[0.06em] text-[hsl(0,0%,10%)] transition-opacity hover:opacity-60"
           >
             Mentorna®
-          </Link>
-          <Link
-            to="/"
-            className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60 transition-opacity hover:opacity-80"
-          >
-            Home
           </Link>
         </nav>
 
         <div className="relative mx-auto max-w-3xl px-6 pb-16 pt-10 text-center md:pb-24 md:pt-16">
           <Eyebrow color={AMBER}>The weekly sessions</Eyebrow>
-          <h1 className="mt-4 font-heading text-[2.5rem] font-light leading-[1.06] tracking-tight md:text-6xl">
+          <h1 className="mt-4 font-heading text-[2.6rem] font-normal leading-[1.06] tracking-tight md:text-6xl">
             Community webinars.
           </h1>
-          <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/70 md:text-lg">
+          <p className="mx-auto mt-5 max-w-xl font-heading text-lg font-normal leading-relaxed text-[hsl(0,0%,10%)]/85 md:text-xl">
             Every week we go live on AI tools, building, pitching, and shipping.
             Catch up on past sessions here.
           </p>
@@ -128,7 +122,7 @@ const Community: React.FC = () => {
           <>
             <div className="mb-10 flex items-center justify-between md:mb-14">
               <Eyebrow color={CYAN}>All sessions</Eyebrow>
-              <p className="font-heading text-sm font-light tabular-nums text-[hsl(0,0%,10%)]/55">
+              <p className="font-heading text-base font-normal tabular-nums text-[hsl(0,0%,10%)]/75">
                 {webinars.length}{" "}
                 {webinars.length === 1 ? "recording" : "recordings"}
               </p>
@@ -148,10 +142,10 @@ const Community: React.FC = () => {
                         <Eyebrow color={accent}>
                           Session {String(webinars.length - i).padStart(2, "0")}
                         </Eyebrow>
-                        <h2 className="mt-3 font-heading text-2xl font-light leading-[1.15] tracking-tight md:text-4xl">
+                        <h2 className="mt-3 font-heading text-[1.65rem] font-normal leading-[1.15] tracking-tight md:text-4xl">
                           {webinar.title}
                         </h2>
-                        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
+                        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 font-heading text-[15px] font-normal text-[hsl(0,0%,10%)]/75">
                           <span className="inline-flex items-center gap-1.5">
                             <CalendarDays className="h-4 w-4" />
                             {formatDate(webinar.date)}
@@ -178,7 +172,7 @@ const Community: React.FC = () => {
                             {webinar.tags.map((tag, t) => (
                               <li
                                 key={tag}
-                                className="inline-flex items-center gap-2 font-heading text-[11px] font-medium uppercase tracking-[0.18em] text-[hsl(0,0%,10%)]/55"
+                                className="inline-flex items-center gap-2 font-heading text-xs font-semibold uppercase tracking-[0.18em] text-[hsl(0,0%,10%)]/75"
                               >
                                 <span
                                   aria-hidden
@@ -192,7 +186,7 @@ const Community: React.FC = () => {
                             ))}
                           </ul>
                         ) : null}
-                        <p className="font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[15px]">
+                        <p className="font-heading text-[17px] font-normal leading-relaxed text-[hsl(0,0%,10%)]/90 md:text-lg">
                           {webinar.description}
                         </p>
                       </div>
