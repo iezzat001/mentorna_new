@@ -171,9 +171,8 @@ const Community: React.FC = () => {
                       {/* Player */}
                       <WebinarPlayer webinar={webinar} />
 
-                      {/* Body copy — same measure as the player above, so the
-                          text block lines up with the card instead of cutting
-                          at its mid-width. */}
+                      {/* Body copy — full player width (no mid-card max-width)
+                          with the editorial drop-cap lede. */}
                       <div dir={webinar.dir ?? "ltr"} className="mt-9">
                         {webinar.tags && webinar.tags.length > 0 ? (
                           <ul className="mb-5 flex flex-wrap gap-x-3 gap-y-2">
@@ -194,19 +193,16 @@ const Community: React.FC = () => {
                             ))}
                           </ul>
                         ) : null}
-                        {/* Lede — a short accent tick + an even left edge.
-                            No drop-cap (it broke the line alignment); just a
-                            calm, consistent column. */}
-                        <div className="flex max-w-3xl gap-4">
-                          <span
-                            aria-hidden
-                            className="mt-[0.55em] h-10 w-[3px] shrink-0 rounded-full"
-                            style={{ background: accent }}
-                          />
-                          <p className="font-heading text-[17px] font-normal leading-[1.8] text-[hsl(0,0%,10%)]/88 md:text-[18px]">
-                            {webinar.description}
-                          </p>
-                        </div>
+                        <p
+                          className="session-lede font-heading text-[17px] font-normal leading-[1.75] text-[hsl(0,0%,10%)]/88 md:text-[19px]"
+                          style={
+                            {
+                              ["--lede-accent" as string]: accent,
+                            } as React.CSSProperties
+                          }
+                        >
+                          {webinar.description}
+                        </p>
                       </div>
                     </article>
                   </li>
@@ -260,6 +256,18 @@ const Community: React.FC = () => {
                 <div className="mt-9 flex flex-col items-center gap-4">
                   <Link
                     to="/build"
+                    onClick={() => {
+                      // Mentorna scrolls #root under 768px (body is fixed). Reset
+                      // both scrollports so /build always opens at the hero.
+                      const toTop = () => {
+                        window.scrollTo(0, 0);
+                        document.getElementById("root")?.scrollTo(0, 0);
+                      };
+                      toTop();
+                      requestAnimationFrame(() =>
+                        requestAnimationFrame(toTop),
+                      );
+                    }}
                     className="group inline-flex items-center gap-2.5 rounded-full bg-[#F7E9D6] px-9 py-4 font-heading text-sm font-semibold tracking-wide text-[hsl(0,0%,10%)] transition-transform hover:scale-[1.04] md:text-base"
                   >
                     Explore the 0→1 cohort

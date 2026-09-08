@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ChevronDown,
-  Instagram,
+  ExternalLink,
   MessageCircle,
   Play,
+  Star,
 } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
@@ -11,6 +12,7 @@ import Footer from '@/components/Footer';
 import CardFanCarousel from '@/components/ui/card-fan-carousel';
 import { whatsappUrl } from '@/lib/whatsapp';
 import {
+  testimonials,
   workshopVideoPoster,
   workshopVideoUrl,
 } from '@/data/testimonials';
@@ -89,14 +91,12 @@ const QUESTION_MESSAGE = 'Hi Ahmed, I have a question about the 0→1 cohort.';
 
 /* Instructor */
 const BIO =
-  'You already follow him. 10,000 people found Ahmed on Instagram in two months. Underneath the camera: startups he created worth over $5 million, $1.1M raised, two exits, communities of 100,000, and $100K revenue in ninety days. He does not lecture. He builds in the room with you.';
+  "For 10 years, I've merged my expertise in entrepreneurship and AI into educational initiatives. I've helped students secure spots at top universities and launch innovative projects, and built startups worth over $5 million, raised $1.1M, and made two exits. I do not lecture. I build in the room with you.";
 
 const STATS = [
-  { v: '$5M+', l: 'Total valuation of startups he created' },
+  { v: '$5M+', l: 'Total valuation of startups I created' },
   { v: '$1.1M', l: 'Raised' },
   { v: '2', l: 'Startup exits' },
-  { v: '100K', l: 'People in communities he built' },
-  { v: '$100K', l: 'Revenue in 3 months' },
 ];
 
 const ORGS = [
@@ -141,7 +141,39 @@ const EVENT_PHOTOS = [
   { imgUrl: `${CDN_ABOUT}/4Q0A6803.jpg`, alt: 'Workshop winners with Ahmed at Huda Schools' },
 ];
 
-const IG_URL = 'https://www.instagram.com/ahmed.ezzat.ai';
+/* Prisma hero media only — video + poster used as a blended atmosphere layer.
+   No Prisma navbar/copy; Mentorna owns the UI. */
+const PRISMA_BG_VIDEO =
+  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4';
+const PRISMA_BG_POSTER = '/hero/prisma-bg.jpg';
+
+/* Real AI worker logos that float in the hero — tools used hands-on in the cohort. */
+const HERO_AI_TOOLS = [
+  {
+    name: 'Cursor',
+    src: '/ai-tools/cursor.svg',
+    className: 'left-[4%] top-[18%] lg:left-[8%] lg:top-[20%]',
+    float: 'hero-tool-float',
+  },
+  {
+    name: 'Claude',
+    src: '/ai-tools/claude.svg',
+    className: 'right-[4%] top-[15%] lg:right-[8%] lg:top-[17%]',
+    float: 'hero-tool-float hero-tool-float-late',
+  },
+  {
+    name: 'Codex',
+    src: '/ai-tools/codex.svg',
+    className: 'left-[6%] top-[44%] lg:left-[10%] lg:top-[46%]',
+    float: 'hero-tool-float hero-tool-float-mid',
+  },
+  {
+    name: 'Grokbot',
+    src: '/ai-tools/grokbot.svg',
+    className: 'right-[5%] top-[42%] lg:right-[9%] lg:top-[44%]',
+    float: 'hero-tool-float hero-tool-float-last',
+  },
+] as const;
 
 const FAILURES = [
   {
@@ -193,7 +225,7 @@ const STEPS = [
   {
     n: '03',
     title: 'Validate the demand',
-    desc: 'Live. Real people. The market answers — not your friends.',
+    desc: 'Live. Real people. The market answers, not your friends.',
     img: '/method/rocket.webp',
     alt: 'Rocket',
     float: 'method-float method-float-last',
@@ -201,7 +233,7 @@ const STEPS = [
   {
     n: '04',
     title: 'Build',
-    desc: 'You direct. AI teammates ship version one — live, in the room. Not a deck.',
+    desc: 'You direct. AI teammates ship version one, live, in the room. Not a deck.',
     img: '/weeks/laptop.webp',
     alt: 'Laptop',
     float: 'method-float',
@@ -217,7 +249,7 @@ const HOW_IT_WORKS = [
   },
   {
     title: 'Leave with a real product, real users, and a real community.',
-    body: 'Over the four weeks you build your idea, get meaningful feedback from real users, and meet people on the same journey — then keep the key to Founders\' Club.',
+    body: 'Over the four weeks you build your idea, get meaningful feedback from real users, and meet people on the same journey, then keep the key to Founders\' Club.',
   },
   {
     title: 'Find your channel, without the guesswork.',
@@ -261,7 +293,7 @@ const GUESTS = [
     topic: 'Growth',
     name: 'Anton Suomalainen',
     credential: 'Greenstep · Area Growth Manager',
-    punch: 'He will keep the money side boring — so you can stay obsessed with the build.',
+    punch: 'He will keep the money side boring, so you can stay obsessed with the build.',
     photo:
       'https://greenstep.fi/wp-content/uploads/sites/2/2026/09/anton.suomalainen.jpg?v=1788494412',
     status: 'confirmed',
@@ -270,7 +302,7 @@ const GUESTS = [
 
 const CLUB_PHOTO = {
   src: '/workshop-helsinki/photo-185329.webp',
-  alt: 'The room after the cohort — builders still in the work',
+  alt: 'The room after the cohort, builders still in the work',
 };
 
 const CLUB_BEATS = [
@@ -304,6 +336,18 @@ const PROOF_CLIPS = [
     src: 'https://mentorna-testimonials.s3.amazonaws.com/testimonials/karla.mp4',
     poster: '/proof/karla.jpg',
   },
+];
+
+/* Written feedback screenshots from /testimonials (Helsinki workshop). */
+const WRITTEN_PROOF = [
+  { src: '/workshop-helsinki/photo-IMG_9530.webp', alt: 'Workshop feedback message' },
+  { src: '/workshop-helsinki/photo-IMG_9533.webp', alt: 'Workshop feedback message' },
+  { src: '/workshop-helsinki/photo-IMG_9535.webp', alt: 'Workshop feedback message' },
+  { src: '/workshop-helsinki/photo-IMG_9558.webp', alt: 'Workshop feedback message' },
+  { src: '/workshop-helsinki/photo-IMG_9559.webp', alt: 'Workshop feedback message' },
+  { src: '/workshop-helsinki/photo-IMG_9702.webp', alt: 'Workshop feedback message' },
+  { src: '/workshop-helsinki/photo-IMG_9711.webp', alt: 'LinkedIn post about the workshop' },
+  { src: '/workshop-helsinki/photo-IMG_9712.webp', alt: 'LinkedIn post about the workshop' },
 ];
 
 /* Fit — three ways in. An idea is not a ticket. */
@@ -342,7 +386,7 @@ const FAQS = [
   },
   {
     q: 'What if I have no idea?',
-    a: 'Come anyway. No idea, one idea, or too many — we pick which.',
+    a: 'Come anyway. No idea, one idea, or too many. We pick which.',
   },
   {
     q: 'What if I miss a session?',
@@ -358,7 +402,7 @@ const FAQS = [
   },
   {
     q: 'How do I get in?',
-    a: `WhatsApp. Three questions. ${SEATS} seats — I read every one.`,
+    a: `WhatsApp. Three questions. ${SEATS} seats. I read every one.`,
   },
 ];
 
@@ -788,10 +832,76 @@ const SelfieClip = ({
 const ProofClips = () => {
   const [active, setActive] = useState<string | null>(null);
   return (
-    <div className="mt-10 flex justify-center gap-3 md:mt-14 md:gap-6">
-      {PROOF_CLIPS.map((clip) => (
-        <SelfieClip key={clip.id} clip={clip} active={active} onPlay={setActive} />
-      ))}
+    <div className="mt-10 md:mt-14">
+      <div className="flex justify-center gap-3 md:gap-6">
+        {PROOF_CLIPS.map((clip) => (
+          <SelfieClip key={clip.id} clip={clip} active={active} onPlay={setActive} />
+        ))}
+      </div>
+
+      <div className="mt-8 grid grid-cols-2 items-start gap-3 sm:grid-cols-3 md:mt-10 md:gap-4">
+        {WRITTEN_PROOF.map((shot) => (
+          <div
+            key={shot.src}
+            className="overflow-hidden rounded-[18px] shadow-[0_18px_40px_-28px_rgba(60,30,10,0.4)] ring-1 ring-[#1c100e]/10"
+          >
+            <img
+              src={shot.src}
+              alt={shot.alt}
+              loading="lazy"
+              className="block h-auto w-full"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 gap-4 md:mt-10 md:grid-cols-2 md:gap-5">
+        {testimonials.map((t) => (
+          <article
+            key={t.id}
+            className={`rounded-[22px] bg-white/70 p-5 shadow-[0_18px_40px_-28px_rgba(60,30,10,0.35)] ring-1 ring-[#1c100e]/10 md:p-6 ${
+              t.highlight ? 'md:col-span-2' : ''
+            }`}
+          >
+            <div className="mb-3 flex gap-1">
+              {Array.from({ length: t.rating }).map((_, i) => (
+                <Star
+                  key={i}
+                  className="h-4 w-4 fill-[hsl(38,95%,58%)] text-[hsl(38,95%,58%)] md:h-5 md:w-5"
+                />
+              ))}
+            </div>
+            <blockquote className="font-heading text-base font-normal leading-relaxed text-[hsl(0,0%,10%)]/90 md:text-lg">
+              &ldquo;{t.quote}&rdquo;
+            </blockquote>
+            <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                {t.linkedin ? (
+                  <a
+                    href={t.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 font-heading text-sm font-medium text-[hsl(0,0%,10%)] underline decoration-[#1c100e]/25 underline-offset-4 transition-opacity hover:opacity-70"
+                  >
+                    {t.name}
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                ) : (
+                  <p className="font-heading text-sm font-medium text-[hsl(0,0%,10%)]">
+                    {t.name}
+                  </p>
+                )}
+                <p className="mt-0.5 font-heading text-sm font-light text-[hsl(0,0%,10%)]/55">
+                  {t.role}
+                </p>
+              </div>
+              <span className="rounded-full bg-[hsl(0,0%,10%)]/8 px-3 py-1 font-heading text-[10px] font-medium uppercase tracking-[0.16em] text-[hsl(0,0%,10%)]/65">
+                {t.source}
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
   );
 };
@@ -830,11 +940,17 @@ const Build = () => {
   }, [variant]);
 
   useSEO({
-    title: 'The 0→1 Cohort — 4 Weeks, 10 Seats | Mentorna®',
+    title: 'The 0→1 Cohort · 4 Weeks, 10 Seats | Mentorna®',
     description:
       'For 9-to-5 domain experts. Build a profitable business in four weeks using the 0→1 Framework, without losing $10,000 on tech nobody needs. 10 seats per cohort.',
     canonical: 'https://mentorna.com/build',
   });
+
+  // Land at the hero. #root is the scrollport under 768px, so window alone is not enough.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.getElementById('root')?.scrollTo(0, 0);
+  }, []);
 
   // hero_variant_view — once per pageview, only after GA is ready and analytics
   // consent is granted (the variant itself renders regardless of consent).
@@ -909,38 +1025,86 @@ const Build = () => {
       <header className="bg-[#0c0a0b] text-white">
         <div ref={trackRef} className="relative h-[140vh]">
           <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden">
+            {/* Atmosphere — Prisma video/image blended under Mentorna grade.
+                No Prisma UI: only the vivid moving field + warm overlays. */}
             <div
               aria-hidden
-              className="absolute inset-0"
+              className="absolute inset-0 overflow-hidden"
+              style={{
+                transform: `translateY(${p * 14}px) scale(${1 + p * 0.03})`,
+              }}
+            >
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster={PRISMA_BG_POSTER}
+                className="absolute inset-0 h-full w-full scale-110 object-cover"
+                src={PRISMA_BG_VIDEO}
+              />
+              {/* Warm Mentorna grade so the field stays ember, not pale grey */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    'linear-gradient(180deg, rgba(58,36,24,0.55) 0%, rgba(26,16,16,0.35) 38%, rgba(12,10,11,0.72) 100%)',
+                }}
+              />
+              <div
+                className="absolute inset-0 mix-blend-soft-light"
+                style={{
+                  background:
+                    'radial-gradient(ellipse 80% 55% at 50% 20%, rgba(232,168,90,0.45), transparent 62%)',
+                }}
+              />
+              <div className="noise-overlay absolute inset-0 opacity-[0.28] mix-blend-overlay" />
+            </div>
+
+            {/* Soft ground haze — replaces rigid wave cutouts */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[42%]"
               style={{
                 background:
-                  'radial-gradient(ellipse 90% 55% at 50% 18%, #3a2418 0%, #1a1010 42%, #0c0a0b 78%)',
-                transform: `translateY(${p * 18}px) scale(${1 + p * 0.04})`,
+                  'linear-gradient(to top, #0c0a0b 0%, rgba(28,16,14,0.85) 28%, rgba(61,36,28,0.35) 58%, transparent 100%)',
+                transform: `translateY(${groundP * -36}px)`,
+                filter: 'blur(1.5px)',
               }}
             />
             <div
               aria-hidden
-              className="absolute inset-x-0 top-[10%] h-[45%] blur-3xl"
-              style={{
-                background:
-                  'radial-gradient(ellipse at 50% 40%, rgba(232,168,90,0.28), transparent 68%)',
-                transform: `translateY(${p * 24}px)`,
-              }}
+              className="pointer-events-none absolute inset-x-[-10%] bottom-[-8%] z-[3] h-[28%] rounded-[100%] bg-[#1c100e]/90 blur-3xl"
+              style={{ transform: `translateY(${groundP * -48}px) scaleX(1.15)` }}
             />
 
-            {/* Far dunes — soft depth behind the portal, barely moves */}
-            <svg
+            {/* Floating AI worker logos — Cursor, Codex, Grok */}
+            <div
               aria-hidden
-              viewBox="0 0 1440 420"
-              preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-x-0 bottom-[12%] z-[1] h-[36%] w-full blur-[8px]"
-              style={{ transform: `translateY(${groundP * -28}px)` }}
+              className="pointer-events-none absolute inset-0 z-[5] hidden md:block"
+              style={{
+                opacity: Math.max(1 - copyP * 1.35, 0),
+                transform: `translateY(${copyP * -40}px)`,
+              }}
             >
-              <path
-                fill="#2a1814"
-                d="M0 250C120 210 210 300 340 240C490 170 560 290 720 230C880 170 980 280 1140 220C1260 176 1360 230 1440 210V420H0Z"
-              />
-            </svg>
+              {HERO_AI_TOOLS.map((tool) => (
+                <div
+                  key={tool.name}
+                  className={`${tool.float} absolute ${tool.className}`}
+                >
+                  <div className="flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.35rem] bg-white/[0.08] shadow-[0_20px_60px_-18px_rgba(0,0,0,0.75)] ring-1 ring-white/20 backdrop-blur-md lg:h-[5.25rem] lg:w-[5.25rem]">
+                    <img
+                      src={tool.src}
+                      alt=""
+                      className="h-9 w-9 lg:h-11 lg:w-11"
+                    />
+                  </div>
+                  <p className="mt-2 text-center font-heading text-[11px] font-medium tracking-[0.14em] text-white/55">
+                    {tool.name}
+                  </p>
+                </div>
+              ))}
+            </div>
 
             <nav className="relative z-20 flex shrink-0 items-center justify-between px-6 py-5 md:px-10">
               <a
@@ -1074,31 +1238,17 @@ const Build = () => {
               </div>
             </div>
 
-            {/* Near dunes — rise only to kiss the portal's bottom edge (Fora tuck) */}
-            <svg
+            {/* Soft near ground — no hard wave silhouette */}
+            <div
               aria-hidden
-              viewBox="0 0 1440 320"
-              preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[18%] w-full md:h-[20%]"
-              style={{ transform: `translateY(${groundP * -56}px)` }}
-            >
-              <path
-                fill="#3d241c"
-                d="M0 170C160 120 280 210 430 150C590 86 700 200 860 140C1020 80 1160 170 1440 110V320H0Z"
-              />
-            </svg>
-            <svg
-              aria-hidden
-              viewBox="0 0 1440 280"
-              preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-x-0 -bottom-[1%] z-30 h-[14%] w-full md:h-[16%]"
-              style={{ transform: `translateY(${groundP * -72}px)` }}
-            >
-              <path
-                fill="#1c100e"
-                d="M0 150C200 90 340 190 520 130C700 70 820 180 1020 120C1180 76 1320 140 1440 100V280H0Z"
-              />
-            </svg>
+              className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[22%]"
+              style={{
+                background:
+                  'linear-gradient(to top, #0c0a0b 10%, rgba(28,16,14,0.75) 45%, transparent 100%)',
+                transform: `translateY(${groundP * -56}px)`,
+              }}
+            />
+
           </div>
         </div>
       </header>
@@ -1370,43 +1520,41 @@ const Build = () => {
         {/* ══ HOW IT WORKS — Alif "You have the what" layout + copy ══ */}
         <section id="how-it-works" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
-            <div className="mx-auto max-w-2xl text-center md:mx-0 md:max-w-none md:text-left">
+            <div className="mx-auto max-w-2xl text-center md:mx-0 md:max-w-3xl md:text-left">
               <Eyebrow color={TEAL}>How it works</Eyebrow>
+              <h2 className="mt-4 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-[2.65rem]">
+                You have the &ldquo;what.&rdquo; You just need the &ldquo;how.&rdquo;
+              </h2>
             </div>
           </Reveal>
 
-          <div className="mt-8 grid items-start gap-10 md:mt-12 md:grid-cols-[0.95fr_1.05fr] md:gap-14">
-            <Reveal>
-              <div className="overflow-hidden rounded-[28px] shadow-[0_28px_70px_-28px_rgba(80,40,16,0.38)] ring-1 ring-[#1c100e]/10">
-                <img
-                  src="/workshop-helsinki/photo-174214.webp"
-                  alt="Builders in the room during a live Mentorna session"
-                  className="aspect-[4/5] w-full object-cover md:aspect-[5/6]"
-                />
-              </div>
-            </Reveal>
+          {/*
+            Wide layout: text column sets the row height; photo is absolutely
+            cropped to that height so the portrait's intrinsic size can't leave
+            an empty band under the copy.
+          */}
+          <div className="mt-8 grid gap-10 md:mt-12 md:grid-cols-2 md:items-stretch md:gap-14">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] shadow-[0_28px_70px_-28px_rgba(80,40,16,0.38)] ring-1 ring-[#1c100e]/10 md:aspect-auto md:min-h-0 md:h-full">
+              <img
+                src="https://d2mp3ttz3u5gci.cloudfront.net/build/about-me/4Q0A4211.jpg"
+                alt="Ahmed teaching entrepreneurship to a packed hall"
+                className="h-full w-full object-cover object-center md:absolute md:inset-0"
+              />
+            </div>
 
-            <div>
-              <Reveal>
-                <h2 className="font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-[2.65rem]">
-                  You have the &ldquo;what.&rdquo; You just need the &ldquo;how.&rdquo;
-                </h2>
-              </Reveal>
-
-              <div className="mt-10 space-y-9 md:mt-12 md:space-y-11">
-                {HOW_IT_WORKS.map((item, i) => (
-                  <Reveal key={item.title} delay={i * 80}>
-                    <div>
-                      <h3 className="font-heading text-xl font-light tracking-tight md:text-[1.45rem]">
-                        {item.title}
-                      </h3>
-                      <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                        {item.body}
-                      </p>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
+            <div className="flex flex-col gap-8 md:justify-between md:gap-6 md:py-1">
+              {HOW_IT_WORKS.map((item, i) => (
+                <Reveal key={item.title} delay={i * 80}>
+                  <div>
+                    <h3 className="font-heading text-xl font-light tracking-tight md:text-[1.45rem]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
+                      {item.body}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>
@@ -1454,20 +1602,11 @@ const Build = () => {
                     Ahmed Ezzat
                   </h2>
                   <p className="mt-4 font-heading text-xl font-light leading-snug text-[#F7E9D6]/80 md:text-2xl">
-                    You know the face. This is the decade behind it.
+                    Founder | AI/ML Engineer | Entrepreneur | Mentorship
                   </p>
                   <p className="mt-5 font-heading text-base font-light leading-relaxed text-[#F7E9D6]/55 md:text-[17px]">
                     {BIO}
                   </p>
-                  <a
-                    href={IG_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#F7E9D6] px-5 py-2.5 font-heading text-sm font-medium text-[#0c0a0b] transition-transform hover:scale-[1.03]"
-                  >
-                    <Instagram className="h-4 w-4" />
-                    @ahmed.ezzat.ai
-                  </a>
                 </div>
               </div>
             </Reveal>
@@ -1476,7 +1615,7 @@ const Build = () => {
               <CardFanCarousel cards={EVENT_PHOTOS} scrollLinked />
             </div>
 
-            <div className="mt-12 grid grid-cols-2 gap-y-8 md:grid-cols-5">
+            <div className="mt-12 grid grid-cols-1 gap-y-8 sm:grid-cols-3">
               {STATS.map((s, i) => (
                 <div
                   key={s.l}
@@ -1561,18 +1700,9 @@ const Build = () => {
               <p className="text-center text-[11px] font-heading font-light uppercase tracking-[0.28em] text-[#F7E9D6]/45">
                 Not just me
               </p>
-              <h2 className="mx-auto mt-5 max-w-4xl text-center font-heading text-[clamp(2.4rem,7vw,5.2rem)] font-light leading-[0.95] tracking-[-0.035em] text-[#F7E9D6]">
-                Three names.
-                <br />
-                Same room.
-              </h2>
-              <p className="mx-auto mt-6 max-w-xl text-center font-heading text-lg font-light leading-relaxed text-[#F7E9D6]/70 md:text-xl">
-                Marina, Petri, and Anton — confirmed. Each runs a session with you inside the
-                cohort.
-              </p>
             </Reveal>
 
-            <div className="mt-14 grid gap-5 md:grid-cols-3 md:gap-6">
+            <div className="mt-10 grid gap-5 md:mt-14 md:grid-cols-3 md:gap-6">
               {GUESTS.map((g, i) => (
                 <Reveal key={g.name} delay={i * 90}>
                   <article>
@@ -1700,7 +1830,8 @@ const Build = () => {
                 They already did this.
               </h2>
               <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                Two students. Their phones. Press play.
+                Two students on video. The rest in writing, from the workshops this
+                cohort is built on.
               </p>
             </div>
           </Reveal>
@@ -1716,7 +1847,7 @@ const Build = () => {
                 You do not need an idea.
               </h2>
               <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
-                You have a job. You want something of your own. I take you through which thing — and
+                You have a job. You want something of your own. I take you through which thing, and
                 we start.
               </p>
             </div>
@@ -1945,7 +2076,7 @@ const Build = () => {
                 The idea has waited long enough.
               </h2>
               <p className="mx-auto mt-5 max-w-lg font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60 md:text-lg">
-                Four weeks. Ten seats. I read every application. A product at the end — not notes.
+                Four weeks. Ten seats. I read every application. A product at the end, not notes.
               </p>
               <div className="mt-9">
                 <a

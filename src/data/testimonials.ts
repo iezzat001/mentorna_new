@@ -94,7 +94,6 @@ export const eventPhotos = [
   { src: `${PHOTO_BASE}/photo-211945.webp`,    alt: 'Workshop group session' },
   { src: `${PHOTO_BASE}/photo-unprompted.webp`, alt: 'Team Unprompted presenting' },
   { src: `${PHOTO_BASE}/photo-IMG_9530.webp`,  alt: 'Written feedback' },
-  { src: `${PHOTO_BASE}/photo-IMG_9531.webp`,  alt: 'Written feedback' },
   { src: `${PHOTO_BASE}/photo-IMG_9533.webp`,  alt: 'Written feedback' },
   { src: `${PHOTO_BASE}/photo-IMG_9535.webp`,  alt: 'Written feedback' },
   { src: `${PHOTO_BASE}/photo-IMG_9557.webp`,  alt: 'Workshop moment' },

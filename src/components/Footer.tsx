@@ -55,7 +55,7 @@ const Footer = () => {
               Mentorna®
             </div>
             <p className="font-heading font-normal text-[17px] leading-relaxed max-w-md mx-auto md:mx-0" style={{ color: 'rgba(0,0,0,0.72)' }}>
-              Helping founders go from idea to a live product people pay for — in
+              Helping founders go from idea to a live product people pay for, in
               weeks, not years.
             </p>
           </div>
