@@ -42,25 +42,34 @@ const PRICE = 400;
 const SEATS = 10;
 /** Seats still open in the live cohort. Update when someone joins. */
 const SEATS_LEFT = 4;
-const COHORT_LABEL = 'mid-September';
+const COHORT_LABEL = '18 September';
 
-/** Four proofs under the hero. Short enough to read without thinking. */
+/** Four proofs under the hero. Short enough to read without thinking.
+ *  Icons: thiings.co (warranty, infinity-loop, money, handshake). */
 const TRUST = [
   {
-    k: '100% back',
-    v: 'You get all your money back.',
+    k: 'Money-back',
+    v: 'Come twice. If it is not for you, every dollar comes back.',
+    img: '/method/guarantee.webp',
+    alt: 'Guarantee',
   },
   {
     k: 'Yours forever',
     v: 'The plan, the tools, and the club. You keep them.',
+    img: '/method/infinity.webp',
+    alt: 'Infinity',
   },
   {
     k: '$10,000+',
     v: 'Made by students. In real businesses.',
+    img: '/method/money.webp',
+    alt: 'Money',
   },
   {
-    k: '200+ students',
-    v: 'Already did this. You are not first.',
+    k: 'Hands-on',
+    v: 'Not theory. Building together.',
+    img: '/method/handshake.webp',
+    alt: 'Handshake',
   },
 ];
 
@@ -91,14 +100,14 @@ const STATS = [
 ];
 
 const ORGS = [
-  { name: 'Slush', bg: '#FF4D00', fg: '#fff' },
-  { name: 'Antler', bg: '#111111', fg: '#F7E9D6' },
-  { name: 'Akadeemy', bg: '#6D5CFF', fg: '#fff' },
-  { name: 'Robot Uprising', bg: '#00E0C0', fg: '#0c0a0b' },
-  { name: 'AI Collective', bg: '#FF4FA3', fg: '#fff' },
-  { name: 'Invention Convention', bg: '#FFD23F', fg: '#0c0a0b' },
-  { name: 'Helsinki XR Center', bg: '#3D8BFF', fg: '#fff' },
-  { name: 'Predictiva', bg: '#E8A84A', fg: '#0c0a0b' },
+  { name: 'Slush', logo: '/orgs/slush.png' },
+  { name: 'Antler', logo: '/orgs/antler.png' },
+  { name: 'Akadeemy', logo: '/orgs/akadeemy.png' },
+  { name: 'Robot Uprising', logo: '/orgs/robotuprising.png' },
+  { name: 'AI Collective', logo: '/orgs/aicollective.png' },
+  { name: 'Invention Convention', logo: '/orgs/inventionconvention.png' },
+  { name: 'Helsinki XR Center', logo: '/orgs/helsinkixr.png' },
+  { name: 'Predictiva', logo: null },
 ];
 
 const AHMED_PHOTOS = [
@@ -112,48 +121,27 @@ const AHMED_PHOTOS = [
   { src: '/workshop-helsinki/photo-unprompted.webp', alt: 'Ahmed coaching builders at the table' },
 ];
 
-/* Event photos for the fan carousel in "Who runs it" — the full set from the
-   Mentorna homepage + Helsinki workshop album. Portrait bio photo excluded
-   (it anchors the section), 16 photos in the fan. */
+/* Event photos for the fan carousel in "Who runs it" — curated set from
+   Desktop/Feedback/About Me (Canon workshop / stage album). Feedback chat
+   screenshots are intentionally excluded. */
+const CDN_ABOUT = 'https://d2mp3ttz3u5gci.cloudfront.net/build/about-me';
 const EVENT_PHOTOS = [
-  { imgUrl: '/workshop-helsinki/photo-174214.webp', alt: 'Ahmed on stage teaching the room' },
-  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_1.jpeg', alt: 'Students with their first revenue cheque' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9530.webp', alt: 'Cohort working session' },
-  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_2.jpeg', alt: 'Founders celebrating a win' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9531.webp', alt: 'Ahmed leading the workshop floor' },
-  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_3.jpeg', alt: 'Workshop session in Helsinki' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9533.webp', alt: 'Founders collaborating at the table' },
-  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_4.jpeg', alt: 'Room full of builders' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9535.webp', alt: 'Ahmed coaching at the table' },
-  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_5.jpeg', alt: 'Cohort presentation moment' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9557.webp', alt: 'Workshop crowd listening' },
-  { imgUrl: 'https://d2mp3ttz3u5gci.cloudfront.net/students_with_cheque_6.jpeg', alt: 'Students holding their cheques' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9558.webp', alt: 'Ahmed with the cohort' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9559.webp', alt: 'Deep in the build session' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9702.webp', alt: 'One-on-one coaching moment' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9710.webp', alt: 'The room mid-session' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9711.webp', alt: 'Cohort working the framework' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9712.webp', alt: 'Founders in discussion' },
-  { imgUrl: '/workshop-helsinki/photo-IMG_9713.webp', alt: 'Workshop floor energy' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A4207.jpg`, alt: 'Ahmed on stage presenting to a full auditorium' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A4211.jpg`, alt: 'Ahmed teaching entrepreneurship to a packed hall' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A4267.jpg`, alt: 'Ahmed speaking with a headset mic to the room' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A4612.jpg`, alt: 'Ahmed with co-hosts at the Nanotechnology workshop' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A5319.jpg`, alt: 'Ahmed leading a hands-on workshop session' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A5327.jpg`, alt: 'Ahmed walking the workshop floor with students' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A5337.jpg`, alt: 'Ahmed mid-explanation during the workshop' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A5804.jpg`, alt: 'Ahmed speaking from the podium' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A5879.jpg`, alt: 'Ahmed answering questions from the audience' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A6354.jpg`, alt: 'Ahmed signing the Nanotechnology workshop cheque' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A6606.jpg`, alt: 'Ahmed receiving recognition at Huda Schools' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A6624.jpg`, alt: 'Ahmed on stage with award recipients' },
+  { imgUrl: `${CDN_ABOUT}/4Q0A6803.jpg`, alt: 'Workshop winners with Ahmed at Huda Schools' },
 ];
 
 const IG_URL = 'https://www.instagram.com/ahmed.ezzat.ai';
-
-/* Why people never ship */
-const COSTS = [
-  {
-    k: 'Months',
-    v: 'Read. Watch. Start over. Nothing to show.',
-  },
-  {
-    k: 'Wrong questions',
-    v: 'Which tool? Which course? Nobody asked for that.',
-  },
-  {
-    k: 'A whole year',
-    v: 'The idea sat. Someone else shipped.',
-  },
-];
 
 const FAILURES = [
   {
@@ -210,66 +198,43 @@ const STEPS = [
     alt: 'Rocket',
     float: 'method-float method-float-last',
   },
-];
-
-/* The four weeks — named chapters of the 0→1 recipe. */
-const WEEKS = [
-  {
-    n: '01',
-    chapter: 'Who',
-    accent: AMBER,
-    title: 'Design the buyer first.',
-    body: 'You do not start with a tool. You start with one person and one pain. In the room, your AI teammates help you write it so sharp a stranger could repeat it. Until that line exists, nothing gets built.',
-    punch: 'If you cannot name them, you are not ready to ship.',
-    img: '/weeks/map.webp',
-    alt: 'Map',
-    glow: 'rgba(232,168,90,0.38)',
-  },
-  {
-    n: '02',
-    chapter: 'Make',
-    accent: CORAL,
-    title: 'You direct. The agents build.',
-    body: 'You write the offer — the one promise a stranger understands. Then you run AI-agent teammates, live, to build version one in the three hours. Not a freelancer waiting on a brief. Not a course you watch on the train. You are the founder. They are the shop.',
-    punch: 'A founder leaves with a thing. A student leaves with notes.',
-    img: '/weeks/laptop.webp',
-    alt: 'Laptop',
-    glow: 'rgba(196,92,42,0.36)',
-  },
-  {
-    n: '03',
-    chapter: 'Ship',
-    accent: CYAN,
-    title: 'Live is the only test that counts.',
-    body: 'You put it in front of real people before it feels ready. Entrepreneurs collect signal. Hobbyists hide the work so nobody can steal it — and nobody can buy it either. Your teammates keep shipping while you watch what humans actually do.',
-    punch: 'Hidden work cannot earn.',
-    img: '/method/rocket.webp',
-    alt: 'Rocket',
-    glow: 'rgba(80,170,210,0.32)',
-  },
   {
     n: '04',
-    chapter: 'Own',
-    accent: TEAL,
-    title: 'Build it so it can run beside your life.',
-    body: 'A product is not a business until someone can pay, and until it can live next to your job. You set a price, a path to the first customer, and a system the agents can keep running. Then you show the room what you made.',
-    punch: 'Freedom is designed into the work. It is not a prize at the end.',
-    img: '/weeks/trophy.webp',
-    alt: 'Trophy',
-    glow: 'rgba(232,168,90,0.42)',
+    title: 'Build',
+    desc: 'You direct. AI teammates ship version one — live, in the room. Not a deck.',
+    img: '/weeks/laptop.webp',
+    alt: 'Laptop',
+    float: 'method-float',
+  },
+];
+
+/* How it works — layout + spine copy from Alif Sessions "You have the what"
+   section, adapted to four weeks. */
+const HOW_IT_WORKS = [
+  {
+    title: 'Come with an idea and an open mind.',
+    body: "You feel strongly about an idea. That is the starting point. We help you validate it: pressure-test the problem, sharpen who it is actually for, and make sure you are building the right version before you build too much of it.",
+  },
+  {
+    title: 'Leave with a real product, real users, and a real community.',
+    body: 'Over the four weeks you build your idea, get meaningful feedback from real users, and meet people on the same journey — then keep the key to Founders\' Club.',
+  },
+  {
+    title: 'Find your channel, without the guesswork.',
+    body: 'We help you identify where your customers actually live, and build a repeatable way to reach them every week.',
   },
 ];
 
 /* What is included */
 const INCLUDED = [
-  '4 live sessions. 3 hours. 10 people.',
-  'Every recording. Yours forever.',
-  `The ${FRAMEWORK}. The canvases.`,
-  'The prompts. The tools. The slides.',
-  'Guest sessions: marketing, funding, an investor.',
-  `${CLUB}. For life.`,
-  'You can still message me.',
-  'Week 4: you show the room.',
+  '4 live sessions · 3 hours · 10 people',
+  'Every recording · yours forever',
+  `${FRAMEWORK} · the canvases`,
+  'The prompts · the tools · the slides',
+  'Guest sessions: marketing, funding, an investor',
+  `${CLUB} · for life`,
+  'You can still message me',
+  'Week 4: you show the room',
 ];
 
 /* Guest lineup — all three confirmed (sources: slush.org/about-us,
@@ -341,12 +306,6 @@ const PROOF_CLIPS = [
   },
 ];
 
-const FREE_ONLINE = [
-  { k: 'You can', v: 'It is all online. True.' },
-  { k: 'You did', v: 'A year of it. The idea is still sitting.' },
-  { k: 'This', v: 'A date. Ten people. Someone who stops you.' },
-];
-
 /* Fit — three ways in. An idea is not a ticket. */
 const FIT_PATHS = [
   {
@@ -403,12 +362,9 @@ const FAQS = [
   },
 ];
 
-/* VSL. Set VSL_URL when the sales video is recorded. */
-const VSL_URL: string | null = null;
-const VSL_POSTER: string | null = null;
-const vslSrc = VSL_URL ?? workshopVideoUrl;
-const vslPoster = VSL_POSTER ?? workshopVideoPoster;
-const vslIsPlaceholder = VSL_URL === null;
+/* Main sales VSL — lives on CloudFront (S3: mybootcamp-ahmed-ezzat/build/). */
+const VSL_URL = 'https://d2mp3ttz3u5gci.cloudfront.net/build/vsl.mp4';
+const VSL_POSTER = 'https://d2mp3ttz3u5gci.cloudfront.net/build/vsl-poster.jpg';
 
 /* Same film as the Mentorna homepage hero. */
 const HERO_VIDEO_URL = 'https://d2mp3ttz3u5gci.cloudfront.net/0703.mp4';
@@ -436,8 +392,7 @@ const HERO_A = {
   staticWord: 'business',
   connector: 'with',
   gradient: 'a team of AI workers', // the fixed leverage hook carries the gradient
-  subhead:
-    'You bring what you already know — the AI does the building. Four weeks, live, ten seats.',
+  subhead: 'Live and designed for people with a full schedule.',
 };
 
 // Variant B — a static statement headline (gradient on "first paying customer",
@@ -455,15 +410,15 @@ const prefersReducedMotion = () =>
 
 /*
  * Phase easing for the hero exit — Fora-style choreography. Each element of
- * the hero (copy, video, dunes, seal) gets its own window [from, to] inside
- * the scroll progress, with a cubic ease-in-out inside the window:
+ * the hero (copy, video, dunes) gets its own window [from, to] inside the
+ * scroll progress, with a cubic ease-in-out inside the window:
  *
- *   0.00–0.42  copy dissolves up and out while video + ground hold still
- *   0.45–0.92  dunes sweep up and the video grows + sinks into them
- *   0.70–1.00  cream seal closes the last seam
+ *   0.00–0.40  copy dissolves up; film grows into the freed space
+ *   0.32–0.90  dunes rise only enough to tuck under the film's bottom edge
  *
- * Holding the video and ground still for the first half is what removes the
- * stretching void mid-scroll — the composition stays packed until the tuck.
+ * Cream <main> then slides up over the sticky frame (negative margin) — same
+ * handoff as Fora. Dunes must stay below the film's midline; earlier values
+ * put the crest through the photo.
  */
 const phase = (t: number, from: number, to: number) => {
   const x = Math.max(0, Math.min(1, (t - from) / (to - from)));
@@ -623,6 +578,27 @@ const TypewriterWord = ({
 
 const HERO_POSTER = '/build-hero-poster.jpg';
 
+/*
+ * Mentorna pins `body { position: fixed; overflow: hidden }` under 768px and
+ * scrolls `#root` instead (see index.css). Listening only to `window` never
+ * fires there, so the Fora-style sticky hero stays frozen at p=0. Walk up from
+ * the track to find the real scrollport and subscribe to that.
+ */
+const getScrollParent = (el: HTMLElement | null): HTMLElement | Window => {
+  let node = el?.parentElement ?? null;
+  while (node) {
+    const { overflowY } = getComputedStyle(node);
+    if (
+      (overflowY === 'auto' || overflowY === 'scroll' || overflowY === 'overlay') &&
+      node.scrollHeight > node.clientHeight
+    ) {
+      return node;
+    }
+    node = node.parentElement;
+  }
+  return window;
+};
+
 const useHeroScroll = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [p, setP] = useState(0);
@@ -642,12 +618,21 @@ const useHeroScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(update);
     };
+
+    const scrollParent = getScrollParent(trackRef.current);
     update();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    scrollParent.addEventListener('scroll', onScroll, { passive: true });
+    // Window still scrolls on desktop; also catch resize / orientation.
+    if (scrollParent !== window) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
     window.addEventListener('resize', onScroll);
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener('scroll', onScroll);
+      scrollParent.removeEventListener('scroll', onScroll);
+      if (scrollParent !== window) {
+        window.removeEventListener('scroll', onScroll);
+      }
       window.removeEventListener('resize', onScroll);
     };
   }, [reduced]);
@@ -692,23 +677,37 @@ const HeroFilm = ({ className }: { className?: string }) => {
   );
 };
 
-const VslPlayer = () => {
+const VideoPlayer = ({
+  src,
+  poster,
+  alt,
+  portrait = false,
+}: {
+  src: string;
+  poster: string;
+  alt: string;
+  /** Phone / vertical source — frame the player as 9:16 instead of 16:9. */
+  portrait?: boolean;
+}) => {
   const [playing, setPlaying] = useState(false);
+  const frame = portrait
+    ? 'aspect-[9/16] w-full bg-black object-contain'
+    : 'aspect-video w-full bg-black object-contain';
   if (playing) {
     return (
       <video
-        src={vslSrc}
-        poster={vslPoster}
+        src={src}
+        poster={poster}
         controls
+        controlsList="nofullscreen nodownload noremoteplayback"
+        disablePictureInPicture
         autoPlay
         playsInline
         /*
-         * object-contain, not cover. The source may be vertical (phone
-         * footage) or landscape (a proper VSL). Cover crops a portrait video
-         * to its middle and cuts off the speaker's head. Contain letterboxes
-         * instead, so any aspect ratio plays back whole.
+         * object-contain, not cover. Portrait sources letterbox in a landscape
+         * frame (and vice versa) instead of cropping the speaker's head.
          */
-        className="aspect-video w-full bg-black object-contain"
+        className={frame}
       />
     );
   }
@@ -717,18 +716,18 @@ const VslPlayer = () => {
       type="button"
       onClick={() => setPlaying(true)}
       aria-label="Play video"
-      className="group relative block aspect-video w-full overflow-hidden"
+      className={`group relative block overflow-hidden ${
+        portrait ? 'aspect-[9/16] w-full' : 'aspect-video w-full'
+      }`}
     >
       <img
-        src={vslPoster}
-        alt="Inside the cohort"
+        src={poster}
+        alt={alt}
         className="h-full w-full object-cover opacity-70 transition-opacity group-hover:opacity-85"
       />
       <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
       <span className="absolute inset-0 flex items-center justify-center">
-        <span
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-[hsl(0,0%,10%)] shadow-[0_12px_40px_rgba(0,0,0,0.35)] transition-transform group-hover:scale-105 md:h-[4.5rem] md:w-[4.5rem]"
-        >
+        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-[hsl(0,0%,10%)] shadow-[0_12px_40px_rgba(0,0,0,0.35)] transition-transform group-hover:scale-105 md:h-[4.5rem] md:w-[4.5rem]">
           <Play className="ml-0.5 h-7 w-7 md:h-8 md:w-8" fill="currentColor" />
         </span>
       </span>
@@ -754,9 +753,11 @@ const SelfieClip = ({
             src={clip.src}
             poster={clip.poster}
             controls
+            controlsList="nofullscreen nodownload noremoteplayback"
+            disablePictureInPicture
             autoPlay
             playsInline
-            className="aspect-[9/16] w-full bg-black object-cover"
+            className="aspect-[9/16] w-full bg-black object-contain"
           />
         ) : (
           <button
@@ -862,9 +863,10 @@ const Build = () => {
   const applyHref = whatsappUrl(APPLY_MESSAGE);
 
   /* Phase values for the exit choreography (see `phase` above). */
-  const copyP = phase(p, 0, 0.42); // copy exits first
-  const groundP = phase(p, 0.45, 0.92); // dunes + video tuck
-  const sealP = phase(p, 0.7, 1); // cream seam finishes last
+  const copyP = phase(p, 0, 0.4); // copy exits first
+  const filmP = phase(p, 0.05, 0.55); // film grows into freed space
+  const groundP = phase(p, 0.32, 0.9); // dunes tuck under film bottom
+  // No cream seal inside sticky — cream <main> slides up over the hero (Fora).
 
   const ApplyButton = ({
     where,
@@ -903,9 +905,9 @@ const Build = () => {
     <div className="min-h-screen font-body text-[hsl(0,0%,10%)]" style={{ background: PAGE_BG }}>
       {/* ══ HERO ══
           Fora composition: copy above, film in a floating portal, landscape
-          layers parallax on a sticky scroll so the window tucks into the ground. */}
+          layers stay at the bottom and only tuck under the portal's lower edge. */}
       <header className="bg-[#0c0a0b] text-white">
-        <div ref={trackRef} className="relative h-[185vh]">
+        <div ref={trackRef} className="relative h-[140vh]">
           <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden">
             <div
               aria-hidden
@@ -913,7 +915,7 @@ const Build = () => {
               style={{
                 background:
                   'radial-gradient(ellipse 90% 55% at 50% 18%, #3a2418 0%, #1a1010 42%, #0c0a0b 78%)',
-                transform: `translateY(${p * 28}px) scale(${1 + p * 0.06})`,
+                transform: `translateY(${p * 18}px) scale(${1 + p * 0.04})`,
               }}
             />
             <div
@@ -922,16 +924,17 @@ const Build = () => {
               style={{
                 background:
                   'radial-gradient(ellipse at 50% 40%, rgba(232,168,90,0.28), transparent 68%)',
-                transform: `translateY(${p * 40}px)`,
+                transform: `translateY(${p * 24}px)`,
               }}
             />
 
+            {/* Far dunes — soft depth behind the portal, barely moves */}
             <svg
               aria-hidden
               viewBox="0 0 1440 420"
               preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-x-0 bottom-[18%] h-[42%] w-full blur-[10px]"
-              style={{ transform: `translateY(${groundP * 64}px)` }}
+              className="pointer-events-none absolute inset-x-0 bottom-[12%] z-[1] h-[36%] w-full blur-[8px]"
+              style={{ transform: `translateY(${groundP * -28}px)` }}
             >
               <path
                 fill="#2a1814"
@@ -946,21 +949,50 @@ const Build = () => {
               >
                 Mentorna®
               </a>
-              <p className="text-[11px] font-medium tracking-wide text-white/55 md:text-xs">
-                <span style={{ color: AMBER }}>{SEATS_LEFT}</span> seats left · {COHORT_LABEL}
-              </p>
+              <div className="flex items-center gap-4 md:gap-7">
+                <a
+                  href="#framework"
+                  className="hidden text-[11px] font-medium tracking-wide text-white/55 transition-colors hover:text-white md:inline md:text-xs"
+                >
+                  Framework
+                </a>
+                <a
+                  href="#how-it-works"
+                  className="hidden text-[11px] font-medium tracking-wide text-white/55 transition-colors hover:text-white sm:inline md:text-xs"
+                >
+                  How it works
+                </a>
+                <a
+                  href="#who-runs-it"
+                  className="hidden text-[11px] font-medium tracking-wide text-white/55 transition-colors hover:text-white md:inline md:text-xs"
+                >
+                  Who runs it
+                </a>
+                <a
+                  href="#faq"
+                  className="hidden text-[11px] font-medium tracking-wide text-white/55 transition-colors hover:text-white lg:inline md:text-xs"
+                >
+                  FAQ
+                </a>
+                <a
+                  href="#apply"
+                  className="rounded-full bg-white/10 px-3.5 py-1.5 text-[11px] font-medium tracking-wide text-white/90 ring-1 ring-white/15 transition-colors hover:bg-white/15 hover:text-white md:text-xs"
+                >
+                  Apply
+                </a>
+              </div>
             </nav>
 
             <div
               className="relative z-20 mx-auto flex w-full max-w-4xl flex-col items-center px-6 pt-2 text-center md:pt-4"
               style={{
                 opacity: Math.max(1 - copyP, 0),
-                transform: `translateY(${copyP * -48}px)`,
+                transform: `translateY(${copyP * -56}px)`,
                 visibility: copyP === 1 ? 'hidden' : undefined,
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
-                For 9-to-5 domain experts · 4 weeks · {SEATS} seats
+                For 9-to-5 domain experts · Live · Fully remote · 4 weeks · {SEATS} seats
               </p>
 
               {variant === 'A' ? (
@@ -1009,16 +1041,17 @@ const Build = () => {
               </p>
             </div>
 
-            <div className="relative z-10 mx-auto mt-5 w-[min(720px,calc(100%-1.75rem))] md:mt-7">
-              <div
-                className="relative origin-bottom"
-                style={{
-                  /* Fora move: as the copy dissolves (copyP) the film grows a
-                     touch and rises to reclaim its space — the window takes
-                     center stage. Then it sinks into the rising dunes (groundP). */
-                  transform: `translateY(${groundP * 96 - copyP * 20}px) scale(${1 + copyP * 0.08 + groundP * 0.14})`,
-                }}
-              >
+            {/* Portal — grows up into freed space; stays above dune crest */}
+            <div
+              className="relative z-10 mx-auto mt-5 w-[min(720px,calc(100%-1.75rem))] md:mt-7"
+              style={{
+                /* Fade as cream <main> approaches so nothing ghosts through. */
+                opacity: Math.max(1 - groundP * 0.35, 0.65),
+                transform: `translateY(${-filmP * 88 + groundP * 12}px) scale(${1 + filmP * 0.2})`,
+                transformOrigin: 'center bottom',
+              }}
+            >
+              <div className="relative">
                 <div
                   aria-hidden
                   className="pointer-events-none absolute left-1/2 top-1/2 h-[85%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
@@ -1041,12 +1074,13 @@ const Build = () => {
               </div>
             </div>
 
+            {/* Near dunes — rise only to kiss the portal's bottom edge (Fora tuck) */}
             <svg
               aria-hidden
               viewBox="0 0 1440 320"
               preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[28%] w-full blur-[2px] md:h-[32%]"
-              style={{ transform: `translateY(${groundP * -190}px)` }}
+              className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[18%] w-full md:h-[20%]"
+              style={{ transform: `translateY(${groundP * -56}px)` }}
             >
               <path
                 fill="#3d241c"
@@ -1057,34 +1091,30 @@ const Build = () => {
               aria-hidden
               viewBox="0 0 1440 280"
               preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-x-0 -bottom-[2%] z-30 h-[22%] w-full md:h-[26%]"
-              style={{ transform: `translateY(${groundP * -260}px)` }}
+              className="pointer-events-none absolute inset-x-0 -bottom-[1%] z-30 h-[14%] w-full md:h-[16%]"
+              style={{ transform: `translateY(${groundP * -72}px)` }}
             >
               <path
                 fill="#1c100e"
                 d="M0 150C200 90 340 190 520 130C700 70 820 180 1020 120C1180 76 1320 140 1440 100V280H0Z"
               />
             </svg>
-
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-x-0 bottom-0 z-40 h-[42%]"
-              style={{
-                /* Seal the ground. Dunes sweep up on their own window; this
-                   gradient closes the last seam so nothing shows through. */
-                background: `linear-gradient(to top, #F7E9D6 ${Math.round(sealP * 88)}%, transparent)`,
-              }}
-            />
           </div>
         </div>
       </header>
 
-      <main className="-mt-[16vh] pb-20 md:-mt-[12vh]">
+      {/* Cream page slides up over the sticky hero — same handoff as Fora.
+          Negative margin overlaps the track's leftover scroll so trust arrives
+          as the dunes tuck, instead of after a empty cream void. */}
+      <main
+        className="relative z-10 -mt-[36vh] pt-10 md:-mt-[32vh] md:pt-12"
+        style={{ background: PAGE_BG }}
+      >
         <div className="mx-auto max-w-5xl px-4">
         {/* ══ TRUST RIBBON ══ */}
-        <section className="pt-0 md:pt-2">
+        <section className="pt-2 md:pt-4">
           <Reveal>
-            <ul className="grid grid-cols-2 gap-y-8 md:grid-cols-4">
+            <ul className="grid grid-cols-2 gap-y-10 md:grid-cols-4 md:gap-y-8">
               {TRUST.map((item, i) => (
                 <li
                   key={item.k}
@@ -1092,7 +1122,15 @@ const Build = () => {
                     i > 0 ? 'md:border-l md:border-[hsl(0,0%,10%)]/10' : ''
                   }`}
                 >
-                  <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[2rem]">
+                  <img
+                    src={item.img}
+                    alt={item.alt}
+                    width={88}
+                    height={88}
+                    className="mx-auto h-16 w-16 object-contain md:h-[4.5rem] md:w-[4.5rem]"
+                    style={{ filter: 'drop-shadow(0 14px 20px rgba(80, 40, 16, 0.16))' }}
+                  />
+                  <p className="mt-3 font-heading text-[1.45rem] font-light leading-none tracking-tight md:text-[1.75rem]">
                     {item.k}
                   </p>
                   <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
@@ -1104,7 +1142,29 @@ const Build = () => {
           </Reveal>
         </section>
 
-        {/* ══ VSL ══ */}
+        {/* ══ MAIN VSL ══ */}
+        <section className="pt-14 md:pt-20">
+          <Reveal>
+            <div className="mx-auto max-w-[720px] text-center">
+              <Eyebrow color={AMBER}>Watch this first</Eyebrow>
+              <p className="mt-3 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
+                How the 0→1 Framework works.
+              </p>
+              <div className="mt-8 overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.4)] ring-1 ring-black/10">
+                <VideoPlayer
+                  src={VSL_URL}
+                  poster={VSL_POSTER}
+                  alt="Ahmed explaining the 0→1 Framework"
+                />
+              </div>
+              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/70">
+                Two and a half minutes. See if this is for you.
+              </p>
+            </div>
+          </Reveal>
+        </section>
+
+        {/* ══ SEE THE CLASS ══ */}
         <section className="pt-14 md:pt-20">
           <Reveal>
             <div className="mx-auto max-w-[720px] text-center">
@@ -1112,51 +1172,19 @@ const Build = () => {
               <p className="mt-3 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
                 This is what it looks like.
               </p>
-              <div className="mt-8 overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.4)] ring-1 ring-black/10">
-                <VslPlayer />
+              <div className="mx-auto mt-8 w-full max-w-[min(100%,22rem)] overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.4)] ring-1 ring-black/10">
+                <VideoPlayer
+                  src={workshopVideoUrl}
+                  poster={workshopVideoPoster}
+                  alt="Inside the cohort"
+                  portrait
+                />
               </div>
               <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/70">
-                {vslIsPlaceholder
-                  ? '90 seconds. Real people. A real room.'
-                  : 'Two minutes. See if this is for you.'}
+                90 seconds. Real people. A real room.
               </p>
             </div>
           </Reveal>
-        </section>
-
-        {/* ══ THE COST OF THE SLOW WAY ══ */}
-        <section className="pt-16 md:pt-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={CORAL}>Why most people never ship</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                You are not losing money.
-                <br />
-                You are losing time.
-              </h2>
-              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
-                You are busy. The idea waits. A year goes by.
-              </p>
-            </div>
-          </Reveal>
-          <div className="mt-12 grid grid-cols-1 gap-y-10 md:grid-cols-3">
-            {COSTS.map((c, i) => (
-              <Reveal key={c.k} delay={i * 80}>
-                <div
-                  className={`px-2 text-center md:px-8 ${
-                    i > 0 ? 'md:border-l md:border-[hsl(0,0%,10%)]/10' : ''
-                  }`}
-                >
-                  <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[1.85rem]">
-                    {c.k}
-                  </p>
-                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
-                    {c.v}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
         </section>
         </div>
 
@@ -1242,79 +1270,90 @@ const Build = () => {
 
         <div className="mx-auto max-w-5xl px-4">
         {/* ══ THE FRAMEWORK ══ */}
-        <section className="pt-16 md:pt-24">
+        <section id="framework" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
               <Eyebrow color={PURPLE}>The 0→1 Framework</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                The recipe you cannot Google.
+                Problem. Promise. Demand. Build.
               </h2>
-              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
-                Three moves, in this order. You are the founder. AI teammates are the shop. The order is the gem.
-              </p>
             </div>
           </Reveal>
 
           <div className="relative mx-auto mt-14 max-w-3xl md:mt-20">
-            <svg
+            {/* Center spine — stays in the gutter so it never crosses copy. */}
+            <div
               aria-hidden
-              viewBox="0 0 800 900"
-              preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-0 hidden h-full w-full text-[hsl(0,0%,10%)]/16 md:block"
-            >
-              <path
-                className="method-path"
-                d="M168 90C168 210 632 190 632 330C632 470 168 450 168 590C168 730 632 710 632 840"
-                fill="none"
-                stroke="currentColor"
-                strokeDasharray="7 12"
-                strokeLinecap="round"
-                strokeWidth="1.75"
-              />
-            </svg>
+              className="pointer-events-none absolute bottom-8 left-1/2 top-8 hidden w-px -translate-x-1/2 md:block"
+              style={{
+                backgroundImage:
+                  'repeating-linear-gradient(to bottom, hsl(0 0% 10% / 0.22) 0 7px, transparent 7px 16px)',
+              }}
+            />
 
-            <ol className="relative space-y-14 md:space-y-8">
-              {STEPS.map((s, i) => (
-                <Reveal key={s.n} delay={i * 90}>
-                  <li
-                    className={`flex flex-col items-center gap-5 md:flex-row md:items-center md:gap-14 ${
-                      i % 2 === 1 ? 'md:flex-row-reverse' : ''
-                    }`}
-                  >
-                    <img
-                      src={s.img}
-                      alt={s.alt}
-                      width={176}
-                      height={176}
-                      className={`${s.float} h-36 w-36 shrink-0 object-contain md:h-44 md:w-44`}
-                      style={{ filter: 'drop-shadow(0 22px 28px rgba(80, 40, 16, 0.18))' }}
-                    />
-                    <div
-                      className={`max-w-xs text-center ${
-                        i % 2 === 1 ? 'md:text-right' : 'md:text-left'
-                      }`}
-                    >
-                      <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                        {s.n}
-                      </p>
-                      <h3 className="mt-2 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
-                        {s.title}
-                      </h3>
-                      <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[15px]">
-                        {s.desc}
-                      </p>
-                    </div>
-                  </li>
-                </Reveal>
-              ))}
+            <ol className="relative space-y-14 md:space-y-0">
+              {STEPS.map((s, i) => {
+                const textLeft = i % 2 === 1;
+                const copy = (
+                  <div className={`max-w-xs ${textLeft ? 'md:text-right' : 'md:text-left'} text-center`}>
+                    <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
+                      {s.n}
+                    </p>
+                    <h3 className="mt-2 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[15px]">
+                      {s.desc}
+                    </p>
+                  </div>
+                );
+                const icon = (
+                  <img
+                    src={s.img}
+                    alt={s.alt}
+                    width={176}
+                    height={176}
+                    className={`${s.float} h-36 w-36 object-contain md:h-44 md:w-44`}
+                    style={{ filter: 'drop-shadow(0 22px 28px rgba(80, 40, 16, 0.18))' }}
+                  />
+                );
+                return (
+                  <Reveal key={s.n} delay={i * 90}>
+                    <li className="relative">
+                      {/* Desktop roadmap: icon | spine node | copy (alternating sides) */}
+                      <div className="hidden items-center md:grid md:grid-cols-[1fr_3.25rem_1fr] md:py-10">
+                        <div className="flex justify-end pr-10">
+                          {textLeft ? copy : icon}
+                        </div>
+                        <div className="relative z-10 mx-auto flex h-5 w-5 items-center justify-center">
+                          <span
+                            className="absolute h-5 w-5 rounded-full"
+                            style={{ background: `${PURPLE}28` }}
+                          />
+                          <span
+                            className="relative h-2.5 w-2.5 rounded-full"
+                            style={{ background: PURPLE }}
+                          />
+                        </div>
+                        <div className="flex justify-start pl-10">
+                          {textLeft ? icon : copy}
+                        </div>
+                      </div>
+
+                      {/* Mobile: stacked, no spine */}
+                      <div className="flex flex-col items-center gap-4 md:hidden">
+                        {icon}
+                        {copy}
+                      </div>
+                    </li>
+                  </Reveal>
+                );
+              })}
             </ol>
           </div>
 
           <Reveal>
-            <p className="mt-14 text-center font-heading text-base font-light text-[hsl(0,0%,10%)]/75">
-              This order is the part you cannot download.
-            </p>
-            <p className="mt-4 text-center font-heading text-[11px] font-light tracking-wide text-[hsl(0,0%,10%)]/55">
+            <p className="mt-14 text-center font-heading text-[11px] font-light tracking-wide text-[hsl(0,0%,10%)]/55">
               3D icons from{' '}
               <a
                 href="https://www.thiings.co"
@@ -1328,85 +1367,58 @@ const Build = () => {
           </Reveal>
         </section>
 
-        {/* ══ THE FOUR WEEKS ══
-            Fora "What you get": sticky stacking cards. Copy always left,
-            visual right. Do not wrap these in Reveal — transform on a parent
-            breaks position:sticky. */}
-        <section className="pt-16 md:pt-24">
+        {/* ══ HOW IT WORKS — Alif "You have the what" layout + copy ══ */}
+        <section id="how-it-works" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
+            <div className="mx-auto max-w-2xl text-center md:mx-0 md:max-w-none md:text-left">
               <Eyebrow color={TEAL}>How it works</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                Four weeks inside the recipe.
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                You run the company. AI-agent teammates build with you, live — Claude Code in the
-                session. Every week ends with something a founder would ship.
-              </p>
             </div>
           </Reveal>
 
-          <div className="relative mt-14 md:mt-20">
-            {WEEKS.map((w, i) => (
-              <article
-                key={w.n}
-                className="sticky mb-[22vh] grid items-center gap-8 rounded-[28px] border-2 border-[#1c100e]/12 bg-[#FFFDF7] p-6 shadow-[0_28px_70px_-28px_rgba(80,40,16,0.38)] md:mb-[28vh] md:grid-cols-2 md:gap-12 md:p-10 last:mb-4 last:md:mb-6"
-                style={{ top: `${18 + i * 16}px`, zIndex: i + 1 }}
-              >
-                <div className="min-w-0 text-left">
-                  <p
-                    className="font-heading text-[11px] font-medium uppercase tracking-[0.22em]"
-                    style={{ color: w.accent }}
-                  >
-                    Week {w.n} — {w.chapter}
-                  </p>
-                  <h3 className="mt-3 font-heading text-[1.65rem] font-light leading-[1.2] tracking-tight md:text-[2rem]">
-                    {w.title}
-                  </h3>
-                  <p className="mt-4 font-heading text-base font-light leading-[1.65] text-[hsl(0,0%,10%)]/75">
-                    {w.body}
-                  </p>
-                  <p className="mt-4 font-heading text-base font-light italic leading-[1.55] text-[hsl(0,0%,10%)]/70">
-                    {w.punch}
-                  </p>
-                </div>
-                <div
-                  className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[22px] bg-[#16110f] md:aspect-[5/4]"
-                >
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                      background: `radial-gradient(ellipse at 50% 42%, ${w.glow}, transparent 68%)`,
-                    }}
-                  />
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute left-5 top-5 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/35"
-                  >
-                    {w.n}
-                  </span>
-                  <img
-                    src={w.img}
-                    alt={w.alt}
-                    width={208}
-                    height={208}
-                    className={`${
-                      i % 2 === 0 ? 'method-float' : 'method-float method-float-late'
-                    } relative h-32 w-32 object-contain md:h-48 md:w-48`}
-                    style={{ filter: 'drop-shadow(0 24px 32px rgba(0,0,0,0.45))' }}
-                  />
-                </div>
-              </article>
-            ))}
+          <div className="mt-8 grid items-start gap-10 md:mt-12 md:grid-cols-[0.95fr_1.05fr] md:gap-14">
+            <Reveal>
+              <div className="overflow-hidden rounded-[28px] shadow-[0_28px_70px_-28px_rgba(80,40,16,0.38)] ring-1 ring-[#1c100e]/10">
+                <img
+                  src="/workshop-helsinki/photo-174214.webp"
+                  alt="Builders in the room during a live Mentorna session"
+                  className="aspect-[4/5] w-full object-cover md:aspect-[5/6]"
+                />
+              </div>
+            </Reveal>
+
+            <div>
+              <Reveal>
+                <h2 className="font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-[2.65rem]">
+                  You have the &ldquo;what.&rdquo; You just need the &ldquo;how.&rdquo;
+                </h2>
+              </Reveal>
+
+              <div className="mt-10 space-y-9 md:mt-12 md:space-y-11">
+                {HOW_IT_WORKS.map((item, i) => (
+                  <Reveal key={item.title} delay={i * 80}>
+                    <div>
+                      <h3 className="font-heading text-xl font-light tracking-tight md:text-[1.45rem]">
+                        {item.title}
+                      </h3>
+                      <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
+                        {item.body}
+                      </p>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
         </div>
 
         {/* ══ INSTRUCTOR ══
-            Celebrity drop: photos from the Mentorna homepage / Helsinki
-            workshops as placeholders. Swap files later; keep the layout. */}
-        <section className="relative mt-16 overflow-hidden text-[#F7E9D6] md:mt-24">
+            Celebrity drop: photos from Mentorna workshops. Fan sits in-flow
+            with Who runs it and parallax-rotates as the section scrolls. */}
+        <section
+          id="who-runs-it"
+          className="relative mt-16 scroll-mt-6 overflow-hidden text-[#F7E9D6] md:mt-24"
+        >
           <div
             aria-hidden
             className="absolute inset-0"
@@ -1460,8 +1472,8 @@ const Build = () => {
               </div>
             </Reveal>
 
-            <div className="mt-8 md:mt-10 -mx-4 md:-mx-8">
-              <CardFanCarousel cards={EVENT_PHOTOS} />
+            <div className="mt-10 md:mt-14 -mx-4 md:-mx-8">
+              <CardFanCarousel cards={EVENT_PHOTOS} scrollLinked />
             </div>
 
             <div className="mt-12 grid grid-cols-2 gap-y-8 md:grid-cols-5">
@@ -1501,10 +1513,27 @@ const Build = () => {
                       {ORGS.map((o) => (
                         <span
                           key={`${row}-${dup}-${o.name}`}
-                          className="mx-1.5 inline-flex shrink-0 items-center rounded-2xl px-6 py-3 font-heading text-base font-medium tracking-tight md:px-8 md:py-4 md:text-xl"
-                          style={{ background: o.bg, color: o.fg }}
+                          className="mx-1.5 inline-flex shrink-0 items-center gap-3 rounded-2xl bg-white/[0.07] px-5 py-3 ring-1 ring-white/10 md:gap-3.5 md:px-7 md:py-3.5"
                         >
-                          {o.name}
+                          {o.logo ? (
+                            <img
+                              src={o.logo}
+                              alt=""
+                              width={28}
+                              height={28}
+                              className="h-7 w-7 rounded-md object-contain md:h-8 md:w-8"
+                            />
+                          ) : (
+                            <span
+                              aria-hidden
+                              className="flex h-7 w-7 items-center justify-center rounded-md bg-white/10 font-heading text-[10px] font-medium text-[#F7E9D6]/70 md:h-8 md:w-8"
+                            >
+                              {o.name.slice(0, 1)}
+                            </span>
+                          )}
+                          <span className="font-heading text-base font-medium tracking-tight text-[#F7E9D6] md:text-xl">
+                            {o.name}
+                          </span>
                         </span>
                       ))}
                     </div>
@@ -1678,39 +1707,6 @@ const Build = () => {
           <ProofClips />
         </section>
 
-        {/* ══ FREE ONLINE OBJECTION ══ */}
-        <section className="pt-16 md:pt-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={CORAL}>The question everyone asks</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
-                I can learn this free.
-              </h2>
-              <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/70 md:text-2xl">
-                You already could.
-              </p>
-            </div>
-          </Reveal>
-          <div className="mt-12 grid grid-cols-1 gap-y-10 md:grid-cols-3">
-            {FREE_ONLINE.map((c, i) => (
-              <Reveal key={c.k} delay={i * 80}>
-                <div
-                  className={`px-2 text-center md:px-8 ${
-                    i > 0 ? 'md:border-l md:border-[hsl(0,0%,10%)]/10' : ''
-                  }`}
-                >
-                  <p className="font-heading text-[1.7rem] font-light leading-none tracking-tight md:text-[1.85rem]">
-                    {c.k}
-                  </p>
-                  <p className="mx-auto mt-3 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
-                    {c.v}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
         {/* ══ FIT ══ */}
         <section className="pt-16 md:pt-24">
           <Reveal>
@@ -1745,74 +1741,145 @@ const Build = () => {
           </ol>
 
           <Reveal>
-            <div className="mx-auto mt-14 max-w-2xl border-t border-[hsl(0,0%,10%)]/10 pt-10 text-center md:mt-16">
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                Skip this if
-              </p>
-              <ul className="mt-5 space-y-2">
-                {FIT_SKIP.map((f) => (
-                  <li
-                    key={f}
-                    className="font-heading text-base font-light text-[hsl(0,0%,10%)]/60"
-                  >
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-        </section>
-
-        {/* ══ PRICE + GUARANTEE ══ */}
-        <section id="apply" className="scroll-mt-6 pt-16 md:pt-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={PURPLE}>The offer</Eyebrow>
-              <h2
-                className="mt-3 font-heading text-[clamp(4.2rem,16vw,8rem)] font-light leading-none tracking-[-0.04em]"
+            <div className="mx-auto mt-14 max-w-2xl md:mt-16">
+              <div
+                className="overflow-hidden rounded-[28px] px-7 py-9 text-center shadow-[0_28px_70px_-28px_rgba(80,40,16,0.35)] ring-1 ring-[#1c100e]/12 md:px-12 md:py-11"
                 style={{
-                  background: `linear-gradient(120deg, ${AMBER} 10%, #C4893A 45%, ${CORAL} 90%)`,
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  color: 'transparent',
+                  background:
+                    'radial-gradient(ellipse 90% 80% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)',
                 }}
               >
-                ${PRICE}
-              </h2>
-              <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-2xl">
-                One seat. Four weeks. {SEATS} people.
-              </p>
-            </div>
-          </Reveal>
-
-          <ul className="mx-auto mt-12 grid max-w-2xl gap-x-12 gap-y-4 sm:grid-cols-2 md:mt-16">
-            {INCLUDED.map((item, i) => (
-              <Reveal key={item} delay={i * 40}>
-                <li className="font-heading text-base font-light leading-snug text-[hsl(0,0%,10%)]/70">
-                  {item}
-                </li>
-              </Reveal>
-            ))}
-          </ul>
-
-          <Reveal>
-            <div className="mt-12 text-center md:mt-16">
-              <ApplyButton where="pricing" tone="page" />
-              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
-                <span style={{ color: '#B4691E' }}>{SEATS_LEFT}</span> seats left in the{' '}
-                {COHORT_LABEL} cohort.
-              </p>
-              <p className="mx-auto mt-8 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75">
-                Come twice. If it is not for you, you get every dollar back.
-              </p>
+                <p
+                  className="font-heading text-[11px] font-medium uppercase tracking-[0.22em]"
+                  style={{ color: CORAL }}
+                >
+                  Skip this if
+                </p>
+                <ul className="mt-6 space-y-4">
+                  {FIT_SKIP.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start justify-center gap-3 font-heading text-lg font-light leading-snug text-[#F7E9D6] md:text-xl"
+                    >
+                      <span
+                        aria-hidden
+                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                        style={{ background: CORAL }}
+                      />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </Reveal>
         </section>
+        </div>
 
+        {/* ══ PRICE + GUARANTEE ══
+            Full-bleed ivory so it breaks the cream sameness of Fit / Proof. */}
+        <section
+          id="apply"
+          className="relative mt-16 scroll-mt-6 overflow-hidden md:mt-24"
+          style={{ background: '#FFFCFA' }}
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[#1c100e]/10"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[#1c100e]/10"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full blur-3xl"
+            style={{ background: 'rgba(232,168,90,0.18)' }}
+          />
+
+          <div className="relative mx-auto max-w-5xl px-4 py-16 md:py-24">
+            <div className="grid items-start gap-12 md:grid-cols-[0.95fr_1.05fr] md:gap-16">
+              <Reveal>
+                <div className="text-center md:text-left">
+                  <Eyebrow color={PURPLE}>The offer</Eyebrow>
+                  <h2
+                    className="mt-3 font-heading text-[clamp(4.5rem,18vw,7.5rem)] font-light leading-none tracking-[-0.04em]"
+                    style={{
+                      background: `linear-gradient(120deg, ${AMBER} 10%, #C4893A 45%, ${CORAL} 90%)`,
+                      WebkitBackgroundClip: 'text',
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                    }}
+                  >
+                    ${PRICE}
+                  </h2>
+                  <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-2xl">
+                    One seat. Four weeks. {SEATS} people.
+                  </p>
+                  <p className="mt-3 font-heading text-sm font-light text-[hsl(0,0%,10%)]/55 md:text-[15px]">
+                    Live · fully remote · {COHORT_LABEL}
+                  </p>
+
+                  <div className="mt-8 hidden md:block">
+                    <ApplyButton where="pricing" tone="page" />
+                    <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
+                      <span style={{ color: '#B4691E' }}>{SEATS_LEFT}</span> seats left in the{' '}
+                      {COHORT_LABEL} cohort.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+              <Reveal delay={80}>
+                <div className="overflow-hidden rounded-[28px] border border-[#1c100e]/10 bg-white shadow-[0_28px_70px_-36px_rgba(80,40,16,0.35)]">
+                  <div className="border-b border-[#1c100e]/8 bg-[#F7E9D6]/45 px-6 py-4 md:px-8">
+                    <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/55">
+                      What you get
+                    </p>
+                  </div>
+                  <ul className="divide-y divide-[#1c100e]/8">
+                    {INCLUDED.map((item, i) => (
+                      <li
+                        key={item}
+                        className="flex items-start gap-4 px-6 py-4 md:px-8 md:py-[1.15rem]"
+                      >
+                        <span
+                          className="mt-0.5 font-heading text-[11px] font-medium tabular-nums tracking-[0.14em] text-[#B4691E]"
+                        >
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <span className="font-heading text-base font-light leading-snug text-[hsl(0,0%,10%)]/80 md:text-[17px]">
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="border-t border-[#1c100e]/8 bg-[#16110f] px-6 py-5 md:px-8">
+                    <p className="font-heading text-sm font-light leading-relaxed text-[#F7E9D6]/85 md:text-[15px]">
+                      Come twice. If it is not for you, you get every dollar back.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+
+            <Reveal>
+              <div className="mt-10 text-center md:hidden">
+                <ApplyButton where="pricing" tone="page" />
+                <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
+                  <span style={{ color: '#B4691E' }}>{SEATS_LEFT}</span> seats left in the{' '}
+                  {COHORT_LABEL} cohort.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        <div className="mx-auto max-w-5xl px-4">
         {/* ══ FAQ ══
             Fora pattern: soft chip, quiet headline, rounded accordion rows
             with a circular chevron — no brutal boxes. */}
-        <section className="pt-16 md:pt-24">
+        <section id="faq" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl">
               <p className="inline-flex rounded-full bg-[hsl(0,0%,10%)]/[0.06] px-3.5 py-1 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/75">
