@@ -134,45 +134,53 @@ const Community: React.FC = () => {
                 return (
                   <li key={webinar.id}>
                     <article className="flex flex-col">
-                      {/* Session heading block */}
-                      <div
-                        dir={webinar.dir ?? "ltr"}
-                        className="mb-7 max-w-2xl"
-                      >
+                      {/* Session heading block — aligned to the player's full
+                          width so the left/right edges read as one column. */}
+                      <div dir={webinar.dir ?? "ltr"} className="mb-8">
                         <Eyebrow color={accent}>
                           Session {String(webinars.length - i).padStart(2, "0")}
                         </Eyebrow>
-                        <h2 className="mt-3 font-heading text-[1.65rem] font-normal leading-[1.15] tracking-tight md:text-4xl">
-                          {webinar.title}
-                        </h2>
-                        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 font-heading text-[15px] font-normal text-[hsl(0,0%,10%)]/75">
-                          <span className="inline-flex items-center gap-1.5">
-                            <CalendarDays className="h-4 w-4" />
-                            {formatDate(webinar.date)}
-                          </span>
-                          {webinar.durationSeconds ? (
-                            <span className="inline-flex items-center gap-1.5 tabular-nums">
-                              <Clock className="h-4 w-4" />
-                              {formatRuntime(webinar.durationSeconds)}
+                        <div className="mt-3 flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+                          <h2 className="max-w-2xl font-heading text-[1.65rem] font-normal leading-[1.12] tracking-tight md:text-4xl">
+                            {webinar.title}
+                          </h2>
+                          <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 font-heading text-[15px] font-normal text-[hsl(0,0%,10%)]/70 md:pb-1">
+                            <span className="inline-flex items-center gap-1.5">
+                              <CalendarDays className="h-4 w-4" />
+                              {formatDate(webinar.date)}
                             </span>
-                          ) : null}
+                            {webinar.durationSeconds ? (
+                              <span className="inline-flex items-center gap-1.5 tabular-nums">
+                                <Clock className="h-4 w-4" />
+                                {formatRuntime(webinar.durationSeconds)}
+                              </span>
+                            ) : null}
+                          </div>
                         </div>
+                        {/* Accent rule — a quiet editorial flourish that ties the
+                            header to the session's chapter color. */}
+                        <div
+                          aria-hidden
+                          className="mt-6 h-px w-full"
+                          style={{
+                            background: `linear-gradient(to right, ${accent}, transparent 62%)`,
+                          }}
+                        />
                       </div>
 
                       {/* Player */}
                       <WebinarPlayer webinar={webinar} />
 
-                      {/* Body copy */}
-                      <div
-                        dir={webinar.dir ?? "ltr"}
-                        className="mt-7 max-w-2xl"
-                      >
+                      {/* Body copy — same measure as the player above, so the
+                          text block lines up with the card instead of cutting
+                          at its mid-width. */}
+                      <div dir={webinar.dir ?? "ltr"} className="mt-9">
                         {webinar.tags && webinar.tags.length > 0 ? (
-                          <ul className="mb-4 flex flex-wrap gap-x-5 gap-y-2">
+                          <ul className="mb-5 flex flex-wrap gap-x-3 gap-y-2">
                             {webinar.tags.map((tag, t) => (
                               <li
                                 key={tag}
-                                className="inline-flex items-center gap-2 font-heading text-xs font-semibold uppercase tracking-[0.18em] text-[hsl(0,0%,10%)]/75"
+                                className="inline-flex items-center gap-2 rounded-full border border-[hsl(0,0%,10%)]/12 bg-[hsl(0,0%,100%)]/40 px-3.5 py-1.5 font-heading text-xs font-semibold uppercase tracking-[0.14em] text-[hsl(0,0%,10%)]/80"
                               >
                                 <span
                                   aria-hidden
@@ -186,7 +194,7 @@ const Community: React.FC = () => {
                             ))}
                           </ul>
                         ) : null}
-                        <p className="font-heading text-[17px] font-normal leading-relaxed text-[hsl(0,0%,10%)]/90 md:text-lg">
+                        <p className="session-lede max-w-3xl font-heading text-[17px] font-normal leading-[1.75] text-[hsl(0,0%,10%)]/88 md:text-[19px]">
                           {webinar.description}
                         </p>
                       </div>
