@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Check, Lock, ExternalLink, Clock, ArrowRight, Zap, MessageCircle, Sparkles, TrendingUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useSEO } from "@/hooks/useSEO";
 
 /* ────────────────────────────────────────────────────────────
    Design tokens
@@ -187,6 +188,12 @@ const TRANSFORM = [
    Page
    ──────────────────────────────────────────────────────────── */
 const JaidaOffer = () => {
+  useSEO({
+    title: "Private offer | Mentorna",
+    description: "Private mentorship offer.",
+    canonical: "https://mentorna.com/offer/jaida",
+    noindex: true,
+  });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");

@@ -2,8 +2,16 @@ import { useState, useEffect } from "react";
 import { Check, Lock, ExternalLink, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useSEO } from "@/hooks/useSEO";
 
 const JassimOffer = () => {
+  useSEO({
+    title: "Private offer | Mentorna",
+    description: "Private mentorship offer.",
+    canonical: "https://mentorna.com/mentorship-offer",
+    noindex: true,
+  });
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");

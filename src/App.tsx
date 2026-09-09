@@ -9,8 +9,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import CookieConsent from "@/components/CookieConsent";
 import PageTracker from "@/components/PageTracker";
-import Index from "./pages/Index";
-import MobileLanding from "./pages/MobileLanding";
 import Member from "./pages/Member";
 import VibeCoding from "./pages/VibeCoding";
 import SkillsIn2026 from "./pages/SkillsIn2026";
@@ -18,7 +16,6 @@ import ProblemFinder from "./pages/ProblemFinder";
 import OneFeature from "./pages/OneFeature";
 import Validation from "./pages/Validation";
 import Startup30 from "./pages/Startup30";
-import EpisodeRedirect from "./pages/EpisodeRedirect";
 import MohamedOffer from "./pages/MohamedOffer";
 import JassimOffer from "./pages/JassimOffer";
 import JaidaOffer from "./pages/JaidaOffer";
@@ -31,6 +28,8 @@ import WorkshopSection from "./pages/WorkshopSection";
 import NotFound from "./pages/NotFound";
 import Valuation from "./pages/Valuation";
 import ResponsiveHome from "@/components/ResponsiveHome";
+import HomeHub from "./pages/HomeHub";
+import AllPages from "./pages/AllPages";
 import { useVisitorTracking } from "@/hooks/useVisitorTracking";
 import Workshop from "./pages/Workshop";
 import Build from "./pages/Build";
@@ -76,7 +75,9 @@ const App = () => {
                 // Main domain routes
                 <>
                   {/* Root path - shows desktop or mobile view based on device */}
-                  <Route path="/" element={<ResponsiveHome />} />
+                  <Route path="/" element={<HomeHub />} />
+                  {/* Old desktop/mobile bootcamp landings kept in repo; not public. */}
+                  <Route path="/legacy-home" element={<ResponsiveHome />} />
 
                   {/* Protected member area */}
                   <Route
@@ -94,9 +95,8 @@ const App = () => {
                   {/* Skills in 2026 page */}
                   <Route path="/skills-in-2026" element={<SkillsIn2026 />} />
 
-                  {/* "ابني Startup في 30 يوم" series hub + numbered shortcuts */}
+                  {/* "ابني Startup في 30 يوم" series hub */}
                   <Route path="/startup-30" element={<Startup30 />} />
-                  <Route path="/ep/:n" element={<EpisodeRedirect />} />
 
                   {/* Startup Problem Finder lead magnet (Arabic RTL) */}
                   <Route path="/problem-finder" element={<ProblemFinder />} />
@@ -131,11 +131,14 @@ const App = () => {
                   {/* Community webinar recordings */}
                   <Route path="/community" element={<Community />} />
 
-                  {/* Mohamed Offer page */}
+                  {/* Personal offer pages — live but noindex */}
                   <Route path="/offer/mohamed" element={<MohamedOffer />} />
                   <Route path="/offer/jaida" element={<JaidaOffer />} />
                   <Route path="/offer/youssef" element={<YoussefOffer />} />
                   <Route path="/mentorship-offer" element={<JassimOffer />} />
+
+                  {/* Internal route inventory */}
+                  <Route path="/all-pages" element={<AllPages />} />
 
                   {/* Admin dashboard */}
                   <Route

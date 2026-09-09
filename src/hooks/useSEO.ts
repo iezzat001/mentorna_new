@@ -159,15 +159,19 @@ export const useSEO = ({
  * Use this as a base for page-specific SEO
  */
 export const defaultSEO: SEOProps = {
-  title: 'Mentorna AI Bootcamp - Learn Coding & Build AI Startups in 8 Weeks | €5,000 Prize',
-  description: 'Join Mentorna\'s 8-week AI & Entrepreneurship Bootcamp. Learn Python, machine learning, web development, and build your own AI startup. Expert mentors, hands-on projects, and €5,000 prize competition.',
-  keywords: 'AI bootcamp, coding bootcamp, entrepreneurship program, Python programming, machine learning, web development, AI education, startup incubator, tech skills, young entrepreneurs, AI innovation, coding for kids, STEM education, artificial intelligence training, Mentorna',
-  ogTitle: 'Mentorna AI Bootcamp - Learn Coding & Build AI Startups in 8 Weeks',
-  ogDescription: 'Master AI, coding, and entrepreneurship with expert mentors. 8-week intensive program with hands-on projects, €5,000 competition, and lifetime access to materials.',
+  title: 'Mentorna® · 0→1 Cohort & Private Mentorship',
+  description:
+    'Build a business with AI teammates in four weeks, or work 1:1 mentorship with Ahmed Ezzat.',
+  keywords:
+    '0 to 1 cohort, AI entrepreneurship, private mentorship, build with AI, startup cohort, Ahmed Ezzat, Mentorna, domain experts, founder mentorship',
+  ogTitle: 'Mentorna® · 0→1 Cohort & Private Mentorship',
+  ogDescription:
+    'Build a business with AI teammates in four weeks, or work 1:1 mentorship with Ahmed Ezzat.',
   ogImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-og-image.jpg',
   ogUrl: 'https://mentorna.com',
-  twitterTitle: 'Mentorna AI Bootcamp - Learn Coding & Build AI Startups',
-  twitterDescription: '8-week intensive AI & entrepreneurship program. Learn Python, ML, web dev, and launch your startup with expert mentors.',
+  twitterTitle: 'Mentorna® · 0→1 Cohort & Private Mentorship',
+  twitterDescription:
+    'Build a business with AI teammates in four weeks, or work 1:1 mentorship with Ahmed Ezzat.',
   twitterImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-twitter-card.jpg',
   canonical: 'https://mentorna.com/',
   noindex: false,

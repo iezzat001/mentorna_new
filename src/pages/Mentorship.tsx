@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import Footer from '@/components/Footer';
 import { whatsappUrl } from '@/lib/whatsapp';
+import { useSEO } from '@/hooks/useSEO';
 import {
   testimonials,
   workshopVideoPoster,
@@ -334,13 +335,13 @@ const Mentorship = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [videoOpen, setVideoOpen] = useState(false);
 
-  useEffect(() => {
-    const previous = document.title;
-    document.title = '1:1 Mentorship | Mentorna®';
-    return () => {
-      document.title = previous;
-    };
-  }, []);
+  useSEO({
+    title: '1:1 Mentorship with Ahmed Ezzat | Mentorna®',
+    description:
+      'Private mentorship for founders who want a personal roadmap. Diagnostic-first sessions, done-with-you builds, and an AI execution system. Not a curriculum.',
+    canonical: 'https://mentorna.com/mentorship',
+    ogUrl: 'https://mentorna.com/mentorship',
+  });
 
   const featured = testimonials.filter((t) => t.highlight);
   const rest = testimonials.filter((t) => !t.highlight);

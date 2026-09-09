@@ -2,8 +2,16 @@ import { useState, useEffect } from "react";
 import { Check, Lock, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useSEO } from "@/hooks/useSEO";
 
 const MohamedOffer = () => {
+  useSEO({
+    title: "Private offer | Mentorna",
+    description: "Private mentorship offer.",
+    canonical: "https://mentorna.com/offer/mohamed",
+    noindex: true,
+  });
+
   // All hooks must be at the top, before any conditional returns
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState("");

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Check, Clock, ArrowRight, Compass, Hammer, Rocket, HeartHandshake, TrendingUp, Star, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useSEO } from "@/hooks/useSEO";
 
 /* ────────────────────────────────────────────────────────────
    Design tokens
@@ -194,6 +195,12 @@ const TESTIMONIALS = [
    Page
    ──────────────────────────────────────────────────────────── */
 const YoussefOffer = () => {
+  useSEO({
+    title: "Private offer | Mentorna",
+    description: "Private mentorship offer.",
+    canonical: "https://mentorna.com/offer/youssef",
+    noindex: true,
+  });
   const [showBar, setShowBar] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "", email: "", whatsapp: "", country: "", signature: "",
