@@ -42,9 +42,11 @@ const FRAMEWORK = 'The 0→1 Framework';
 const CLUB = "Founders' Club";
 const PRICE = 400;
 const SEATS = 10;
-/** Seats still open in the live cohort. Update when someone joins. */
-const SEATS_LEFT = 4;
-const COHORT_LABEL = '18 September';
+/** Current open cohort is full. Next date for waitlist CTAs. */
+const COHORT_FULL = true;
+const COHORT_LABEL = 'mid-October';
+const CTA_LABEL = 'Join the mid-October waitlist';
+const SCARCITY_LINE = 'This cohort is full. Next opens mid-October.';
 
 /** Four proofs under the hero. Short enough to read without thinking.
  *  Icons: thiings.co (warranty, infinity-loop, money, handshake). */
@@ -76,16 +78,11 @@ const TRUST = [
 ];
 
 /**
- * Application happens over WhatsApp: the link opens with these three
- * questions pre-filled, so the first message is already a qualification.
+ * Cohort is full: CTAs open WhatsApp onto the mid-October waitlist.
+ * When seats reopen, swap back to the three-question application message.
  */
-const APPLY_MESSAGE = `Hi Ahmed, I'd like to apply for the next 0→1 cohort.
-
-1) Idea status (none / one I cannot start / too many to pick):
-
-2) What I do right now (job / background):
-
-3) Why now:`;
+const APPLY_MESSAGE =
+  "Hi Ahmed, I'd like to join the waitlist for the mid-October 0→1 cohort.";
 
 const QUESTION_MESSAGE = 'Hi Ahmed, I have a question about the 0→1 cohort.';
 
@@ -402,7 +399,9 @@ const FAQS = [
   },
   {
     q: 'How do I get in?',
-    a: `WhatsApp. Three questions. ${SEATS} seats. I read every one.`,
+    a: COHORT_FULL
+      ? `This cohort is full. Join the ${COHORT_LABEL} waitlist on WhatsApp. I read every message.`
+      : `WhatsApp. Three questions. ${SEATS} seats. I read every one.`,
   },
 ];
 
@@ -986,7 +985,7 @@ const Build = () => {
 
   const ApplyButton = ({
     where,
-    label = 'Apply for the next cohort',
+    label = CTA_LABEL,
     dark = true,
     tone = 'brutal',
   }: {
@@ -1142,7 +1141,7 @@ const Build = () => {
                   href="#apply"
                   className="rounded-full bg-white/10 px-3.5 py-1.5 text-[11px] font-medium tracking-wide text-white/90 ring-1 ring-white/15 transition-colors hover:bg-white/15 hover:text-white md:text-xs"
                 >
-                  Apply
+                  Waitlist
                 </a>
               </div>
             </nav>
@@ -1200,8 +1199,7 @@ const Build = () => {
                 <ApplyButton where="hero" tone="hero" />
               </div>
               <p className="mt-3 text-sm font-light text-white/45">
-                <span style={{ color: AMBER }}>{SEATS_LEFT}</span> seats left in the {COHORT_LABEL}{' '}
-                cohort.
+                <span style={{ color: AMBER }}>Full.</span> {SCARCITY_LINE}
               </p>
             </div>
 
@@ -1948,14 +1946,13 @@ const Build = () => {
                     One seat. Four weeks. {SEATS} people.
                   </p>
                   <p className="mt-3 font-heading text-sm font-light text-[hsl(0,0%,10%)]/55 md:text-[15px]">
-                    Live · fully remote · {COHORT_LABEL}
+                    Live · fully remote · next cohort {COHORT_LABEL}
                   </p>
 
                   <div className="mt-8 hidden md:block">
                     <ApplyButton where="pricing" tone="page" />
                     <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
-                      <span style={{ color: '#B4691E' }}>{SEATS_LEFT}</span> seats left in the{' '}
-                      {COHORT_LABEL} cohort.
+                      <span style={{ color: '#B4691E' }}>Full.</span> {SCARCITY_LINE}
                     </p>
                   </div>
                 </div>
@@ -1998,8 +1995,7 @@ const Build = () => {
               <div className="mt-10 text-center md:hidden">
                 <ApplyButton where="pricing" tone="page" />
                 <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
-                  <span style={{ color: '#B4691E' }}>{SEATS_LEFT}</span> seats left in the{' '}
-                  {COHORT_LABEL} cohort.
+                  <span style={{ color: '#B4691E' }}>Full.</span> {SCARCITY_LINE}
                 </p>
               </div>
             </Reveal>
@@ -2070,13 +2066,14 @@ const Build = () => {
           <div className="relative mx-auto max-w-3xl px-4 py-20 text-center md:py-28">
             <Reveal>
               <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
-                <span className="text-[#F7E9D6]">{SEATS_LEFT}</span> seats left · {COHORT_LABEL}
+                <span className="text-[#F7E9D6]">Full</span> · next cohort {COHORT_LABEL}
               </p>
               <h2 className="mt-5 font-heading text-[clamp(2.4rem,7vw,4.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#F7E9D6]">
                 The idea has waited long enough.
               </h2>
               <p className="mx-auto mt-5 max-w-lg font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60 md:text-lg">
-                Four weeks. Ten seats. I read every application. A product at the end, not notes.
+                This round is closed. Join the waitlist for mid-October. Four weeks. Ten seats. A
+                product at the end, not notes.
               </p>
               <div className="mt-9">
                 <a
@@ -2086,7 +2083,7 @@ const Build = () => {
                   onClick={() => track('footer')}
                   className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#F7E9D6] px-8 text-sm font-medium tracking-wide text-[#0c0a0b] transition-transform hover:scale-[1.03] md:min-h-[3.25rem] md:px-9 md:text-base"
                 >
-                  Apply for the next cohort
+                  {CTA_LABEL}
                 </a>
               </div>
               <p className="mt-5 font-heading text-sm font-light text-[#F7E9D6]/45">

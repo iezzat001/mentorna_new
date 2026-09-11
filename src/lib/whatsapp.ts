@@ -15,5 +15,7 @@ export const WHATSAPP_MESSAGES = {
     'Hi Ahmed, I would like to reserve a seat in the Vibe Coding 0 → 1 workshop. When is the next date?',
   comingSoon:
     "Hi Ahmed, I'd like early access to the upcoming Mentorna programs.",
+  cohortWaitlist:
+    "Hi Ahmed, I'd like to join the waitlist for the mid-October 0→1 cohort.",
   general: 'Hi Ahmed, I have a question about Mentorna.',
 } as const;

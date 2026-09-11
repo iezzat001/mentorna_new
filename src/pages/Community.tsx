@@ -27,8 +27,7 @@ const SESSION_ACCENTS = [AMBER, PURPLE, CYAN, TEAL, CORAL];
 const TAG_DOT = [AMBER, PURPLE, CYAN, TEAL, CORAL];
 
 /* Shared with /build so scarcity + date stay in sync. */
-const SEATS_LEFT = 4;
-const COHORT_LABEL = "18 September";
+const SCARCITY_LINE = "This cohort is full. Next opens mid-October.";
 
 /* Prisma atmosphere (media only) — same blend as the /build hero. */
 const PRISMA_BG_VIDEO =
@@ -365,13 +364,12 @@ const Community: React.FC = () => {
               onClick={scrollBuildToTop}
               className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-sm font-medium tracking-wide text-[hsl(0,0%,8%)] transition-colors hover:bg-white/90 md:min-h-[3.25rem] md:px-9 md:text-base"
             >
-              Explore the 0→1 cohort
+              Join the mid-October waitlist
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
           <p className="mt-3 text-sm font-light text-white/45">
-            <span style={{ color: AMBER }}>{SEATS_LEFT}</span> seats left in the{" "}
-            {COHORT_LABEL} cohort.
+            <span style={{ color: AMBER }}>Full.</span> {SCARCITY_LINE}
           </p>
         </div>
       </section>
