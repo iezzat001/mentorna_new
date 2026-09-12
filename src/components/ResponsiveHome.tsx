@@ -15,7 +15,7 @@ const ResponsiveHome = () => {
   useSEO({
     title: 'Mentorna® (archive)',
     description: 'Archived Mentorna page. See mentorna.com for current programs.',
-    canonical: 'https://mentorna.com/legacy-home',
+    canonical: 'https://www.mentorna.com/legacy-home',
     noindex: true,
   });
 

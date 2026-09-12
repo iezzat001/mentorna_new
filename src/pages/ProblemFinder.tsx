@@ -177,7 +177,7 @@ const ProblemFinder = () => {
     title: 'محدد مشكلة الـ Startup — المشكلة قبل الفكرة | Mentorna',
     description:
       'اتعلم إزاي تلاقي مشكلة حقيقية ("وجع") تبني عليها الـ Startup بتاعتك بدل ما تضيّع وقتك في تدوير على فكرة عبقرية. أداة مجانية من Mentorna.',
-    canonical: 'https://mentorna.com/problem-finder',
+    canonical: 'https://www.mentorna.com/problem-finder',
   });
 
   const [step, setStep] = useState(0);

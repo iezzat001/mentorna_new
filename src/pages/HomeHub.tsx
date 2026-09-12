@@ -48,8 +48,8 @@ const HomeHub = () => {
     ...defaultSEO,
     title: 'Mentorna® · 0→1 Cohort & Private Mentorship',
     description: defaultSEO.description,
-    canonical: 'https://mentorna.com/',
-    ogUrl: 'https://mentorna.com/',
+    canonical: 'https://www.mentorna.com/',
+    ogUrl: 'https://www.mentorna.com/',
   });
 
   return (

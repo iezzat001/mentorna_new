@@ -8,7 +8,7 @@ const MohamedOffer = () => {
   useSEO({
     title: "Private offer | Mentorna",
     description: "Private mentorship offer.",
-    canonical: "https://mentorna.com/offer/mohamed",
+    canonical: "https://www.mentorna.com/offer/mohamed",
     noindex: true,
   });
 

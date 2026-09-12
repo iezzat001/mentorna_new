@@ -31,4 +31,4 @@ Disallow: /mentorship-offer
 Disallow: /dashboard
 Disallow: /member/
 
-Sitemap: https://mentorna.com/sitemap.xml
+Sitemap: https://www.mentorna.com/sitemap.xml

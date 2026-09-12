@@ -200,7 +200,7 @@ const Validation = () => {
     title: 'وهم سرقة الأفكار — الفكرة بتساوي صفر والتنفيذ بيساوي ملايين | Mentorna',
     description:
       'بتخاف حد يسرق فكرة الـ Startup بتاعتك؟ اتعلم ليه كتمان الفكرة بيقتلها، وإزاي تعمل Validation صح من أول يوم. ابني Startup في 30 يوم — الحلقة التالتة.',
-    canonical: 'https://mentorna.com/validation',
+    canonical: 'https://www.mentorna.com/validation',
   });
 
   const [step, setStep] = useState(0);

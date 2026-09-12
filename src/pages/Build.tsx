@@ -950,7 +950,7 @@ const Build = () => {
     title: 'The 0→1 Cohort · 4 Weeks, 10 Seats | Mentorna®',
     description:
       'For 9-to-5 domain experts. Build a profitable business in four weeks using the 0→1 Framework, without losing $10,000 on tech nobody needs. 10 seats per cohort.',
-    canonical: 'https://mentorna.com/build',
+    canonical: 'https://www.mentorna.com/build',
   });
 
   // Land at the hero. #root is the scrollport under 768px, so window alone is not enough.

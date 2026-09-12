@@ -26,7 +26,7 @@ export interface SEOProps {
  * useSEO({
  *   title: "Custom Page Title - Mentorna",
  *   description: "Custom description for this page",
- *   canonical: "https://mentorna.com/custom-page"
+ *   canonical: "https://www.mentorna.com/custom-page"
  * });
  * ```
  */
@@ -168,11 +168,11 @@ export const defaultSEO: SEOProps = {
   ogDescription:
     'Build a business with AI teammates in four weeks, or work 1:1 mentorship with Ahmed Ezzat.',
   ogImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-og-image.jpg',
-  ogUrl: 'https://mentorna.com',
+  ogUrl: 'https://www.mentorna.com',
   twitterTitle: 'Mentorna® · 0→1 Cohort & Private Mentorship',
   twitterDescription:
     'Build a business with AI teammates in four weeks, or work 1:1 mentorship with Ahmed Ezzat.',
   twitterImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-twitter-card.jpg',
-  canonical: 'https://mentorna.com/',
+  canonical: 'https://www.mentorna.com/',
   noindex: false,
 };

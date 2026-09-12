@@ -173,7 +173,7 @@ const OneFeature = () => {
     title: 'وهم الـ Features الكتير — المنفعة الواحدة اللي هتخلي عميلك يختارك | Mentorna',
     description:
       'اتعلم إزاي تبطل تجمع Features وتركز على المنفعة الواحدة اللي بتحل وجع حقيقي. أداة مجانية ابني Startup في 30 يوم — الحلقة التانية.',
-    canonical: 'https://mentorna.com/one-feature',
+    canonical: 'https://www.mentorna.com/one-feature',
   });
 
   const [step, setStep] = useState(0);

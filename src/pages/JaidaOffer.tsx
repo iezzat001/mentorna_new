@@ -191,7 +191,7 @@ const JaidaOffer = () => {
   useSEO({
     title: "Private offer | Mentorna",
     description: "Private mentorship offer.",
-    canonical: "https://mentorna.com/offer/jaida",
+    canonical: "https://www.mentorna.com/offer/jaida",
     noindex: true,
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);

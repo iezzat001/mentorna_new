@@ -94,7 +94,7 @@ const AllPages = () => {
   useSEO({
     title: 'All pages · Mentorna (internal)',
     description: 'Internal route inventory for Mentorna.',
-    canonical: 'https://mentorna.com/all-pages',
+    canonical: 'https://www.mentorna.com/all-pages',
     noindex: true,
   });
 

@@ -198,7 +198,7 @@ const YoussefOffer = () => {
   useSEO({
     title: "Private offer | Mentorna",
     description: "Private mentorship offer.",
-    canonical: "https://mentorna.com/offer/youssef",
+    canonical: "https://www.mentorna.com/offer/youssef",
     noindex: true,
   });
   const [showBar, setShowBar] = useState(false);

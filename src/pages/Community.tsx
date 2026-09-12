@@ -106,7 +106,7 @@ const Community: React.FC = () => {
     title: "Community Webinars — Weekly Sessions | Mentorna®",
     description:
       "Watch recordings of Mentorna's weekly community webinars on AI tools, coding, pitching, and entrepreneurship.",
-    canonical: "https://mentorna.com/community",
+    canonical: "https://www.mentorna.com/community",
   });
 
   useEffect(() => {

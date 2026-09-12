@@ -339,8 +339,8 @@ const Mentorship = () => {
     title: '1:1 Mentorship with Ahmed Ezzat | Mentorna®',
     description:
       'Private mentorship for founders who want a personal roadmap. Diagnostic-first sessions, done-with-you builds, and an AI execution system. Not a curriculum.',
-    canonical: 'https://mentorna.com/mentorship',
-    ogUrl: 'https://mentorna.com/mentorship',
+    canonical: 'https://www.mentorna.com/mentorship',
+    ogUrl: 'https://www.mentorna.com/mentorship',
   });
 
   const featured = testimonials.filter((t) => t.highlight);

@@ -25,7 +25,7 @@ const Startup30 = () => {
   useSEO({
     title: `${SERIES_TITLE} — سلسلة مجانية | Mentorna`,
     description: SERIES_TAGLINE,
-    canonical: 'https://mentorna.com/startup-30',
+    canonical: 'https://www.mentorna.com/startup-30',
   });
 
   useEffect(() => {
