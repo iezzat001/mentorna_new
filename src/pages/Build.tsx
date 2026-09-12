@@ -1708,7 +1708,10 @@ const Build = () => {
           </div>
         </section>
 
-        {/* ══ GUEST SESSIONS — cinematic, same family as Who runs it. Names/faces are layout placeholders. ══ */}
+        {/* ══ GUEST SESSIONS — cinematic, same family as Who runs it.
+            These are real, confirmed guests (see GUESTS) — not placeholders.
+            They run one session each on their own expertise; they do not
+            co-host the cohort, so keep the copy here free of "co-host". ══ */}
         <section className="relative isolate overflow-hidden bg-[#120c10] text-[#F7E9D6]">
           <div
             aria-hidden
@@ -1723,7 +1726,11 @@ const Build = () => {
           <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-8 md:py-28">
             <Reveal>
               <p className="text-center text-[11px] font-heading font-light uppercase tracking-[0.28em] text-[#F7E9D6]/45">
-                Not just me
+                Guest experts joining the cohort
+              </p>
+              <p className="mx-auto mt-4 max-w-2xl text-center font-heading text-lg font-light leading-snug text-[#F7E9D6]/70 md:text-xl">
+                Each one runs a live session on what they do best — marketing,
+                funding, and growth.
               </p>
             </Reveal>
 
