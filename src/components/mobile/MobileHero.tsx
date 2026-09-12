@@ -127,9 +127,7 @@ const MobileHero = () => {
               🚀 LIMITED LAUNCH
             </Badge>
             <h1 className="text-white text-xl font-bold leading-tight mb-2">
-            8-weeks interactive online program that transforms students into startup founders.🚀
-            
-              
+            Archived page. See mentorna.com for the 0→1 cohort and mentorship.
             </h1>
             <p className="text-white/90 text-base leading-relaxed">
             Launch real products. Solve real problems. Get your first customer

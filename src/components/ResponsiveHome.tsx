@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react';
 import Index from '@/pages/Index';
 import MobileLanding from '@/pages/MobileLanding';
+import { useSEO } from '@/hooks/useSEO';
 
 /**
- * Smart component that detects device type and shows appropriate view
- * Desktop users see the desktop landing page at "/"
- * Mobile users see the mobile-optimized TikTok-style experience at "/"
+ * Archived bootcamp homepage (desktop Index / mobile MobileLanding).
+ * Kept for reference at /legacy-home only — must stay noindex so Google
+ * does not keep quoting the old 8-week bootcamp copy in search/AI Overview.
  */
 const ResponsiveHome = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  useSEO({
+    title: 'Mentorna® (archive)',
+    description: 'Archived Mentorna page. See mentorna.com for current programs.',
+    canonical: 'https://mentorna.com/legacy-home',
+    noindex: true,
+  });
 
   useEffect(() => {
     // Detect mobile device

@@ -1,5 +1,12 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/build/google98b869b61d082af3.html",
+      "destination": "/google98b869b61d082af3.html"
+    },
+    {
+      "source": "/((?!google98b869b61d082af3\\.html|build/google98b869b61d082af3\\.html).*)",
+      "destination": "/index.html"
+    }
   ]
 }

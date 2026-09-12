@@ -27,8 +27,7 @@ const GROUPS: PageGroup[] = [
     title: 'Public hub & supporting',
     seo: 'index',
     pages: [
-      { path: '/', label: 'Home hub / waitlist', note: 'Sitewide metadata lives here' },
-      { path: '/legacy-home', label: 'Legacy bootcamp homepage', note: 'Hidden · old Index/MobileLanding' },
+      { path: '/', label: 'Home hub', note: 'Sitewide metadata lives here' },
       { path: '/community', label: 'Community webinars' },
       { path: '/book-a-call', label: 'Consultation / book a call' },
       { path: '/links', label: 'Link in bio' },
@@ -36,13 +35,15 @@ const GROUPS: PageGroup[] = [
     ],
   },
   {
-    title: 'Private offer pages (noindex)',
+    title: 'Archived / noindex',
     seo: 'noindex',
     pages: [
+      { path: '/legacy-home', label: 'Legacy bootcamp homepage', note: 'noindex · robots disallow' },
       { path: '/offer/mohamed', label: 'Offer · Mohamed' },
       { path: '/offer/jaida', label: 'Offer · Jaida' },
       { path: '/offer/youssef', label: 'Offer · Youssef' },
       { path: '/mentorship-offer', label: 'Offer · Jassim / VC mentorship' },
+      { path: '/all-pages', label: 'This inventory', note: 'noindex · for you' },
     ],
   },
   {
@@ -68,7 +69,6 @@ const GROUPS: PageGroup[] = [
       { path: '/workshop-deck', label: 'Workshop deck hub', note: 'Admin auth required' },
       { path: '/workshop-deck/all', label: 'Workshop deck · all', note: 'Admin auth required' },
       { path: '/member', label: 'Member area', note: 'Auth required' },
-      { path: '/all-pages', label: 'This inventory', note: 'noindex · for you' },
     ],
   },
 ];
