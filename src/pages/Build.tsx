@@ -418,8 +418,14 @@ const FAQS = [
   },
 ];
 
-/* Main sales VSL — lives on CloudFront (S3: mybootcamp-ahmed-ezzat/build/). */
-const VSL_URL = 'https://d2mp3ttz3u5gci.cloudfront.net/build/vsl.mp4';
+/* Main sales VSL — lives on CloudFront (S3: mybootcamp-ahmed-ezzat/build/).
+   Objects there are cached immutable for a year, so a new cut ships under a
+   new filename rather than overwriting the old key — otherwise edge and
+   browser caches would keep serving the previous video. vsl.mp4 (the cut
+   without Arabic subtitles) stays in the bucket as an instant rollback.
+   Keep this H.264: the source export was HEVC, which does not play in
+   Firefox or in Chrome on Windows/Android. */
+const VSL_URL = 'https://d2mp3ttz3u5gci.cloudfront.net/build/vsl2.mp4';
 const VSL_POSTER = 'https://d2mp3ttz3u5gci.cloudfront.net/build/vsl-poster.jpg';
 
 /* Same film as the Mentorna homepage hero. */
