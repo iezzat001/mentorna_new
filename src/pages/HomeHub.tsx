@@ -16,7 +16,7 @@ const PATHS = [
   {
     to: '/build',
     label: '0→1 Cohort',
-    blurb: 'Four weeks, live, ten seats. September is full. Waitlist for mid-October.',
+    blurb: 'Four weeks, live. Cohort 1 closed. Cohort 2 mid-October: 6 seats left.',
     accent: AMBER,
   },
   {
@@ -69,13 +69,13 @@ const HomeHub = () => {
             Mentorna®
           </span>
           <a
-            href={whatsappUrl(WHATSAPP_MESSAGES.cohortWaitlist)}
+            href={whatsappUrl(WHATSAPP_MESSAGES.cohortApply)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-[hsl(0,0%,10%)] px-4 py-2 font-heading text-xs font-medium tracking-wide text-[#F7E9D6] transition-transform hover:scale-[1.03] md:text-sm"
           >
             <MessageCircle className="h-3.5 w-3.5" />
-            Mid-October waitlist
+            Apply · 6 seats left
           </a>
         </nav>
 
@@ -86,24 +86,24 @@ const HomeHub = () => {
               className="h-[7px] w-[7px] rounded-full"
               style={{ background: AMBER, boxShadow: '0 0 0 3px rgba(232,168,90,0.22)' }}
             />
-            Coming soon · 0→1 cohort full · next mid-October
+            Cohort 2 open · mid-October · 6 seats left
           </p>
           <h1 className="mt-5 font-heading text-4xl font-light leading-[1.08] tracking-tight md:text-6xl lg:text-[4rem]">
             Mentorna®
           </h1>
           <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
             Build a business with AI teammates in four weeks, or work 1:1 mentorship
-            with Ahmed Ezzat. The September cohort is full. Join the mid-October waitlist,
-            or pick a path below.
+            with Ahmed Ezzat. Cohort 1 (September) has officially closed. Cohort 2
+            (mid-October) is open with 6 seats left.
           </p>
           <a
-            href={whatsappUrl(WHATSAPP_MESSAGES.cohortWaitlist)}
+            href={whatsappUrl(WHATSAPP_MESSAGES.cohortApply)}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[hsl(0,0%,10%)] px-8 text-sm font-medium tracking-wide text-[#F7E9D6] transition-transform hover:scale-[1.03] md:min-h-[3.25rem] md:px-9 md:text-base"
           >
             <MessageCircle className="h-4 w-4" />
-            Join the mid-October waitlist
+            Apply for the mid-October cohort
           </a>
         </div>
       </header>

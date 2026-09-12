@@ -1,11 +1,11 @@
 {
-  "name": "Mentorna AI Bootcamp - Learn Coding & Build AI Startups",
+  "name": "Mentorna® · 0→1 Cohort & Private Mentorship",
   "short_name": "Mentorna",
-  "description": "8-week intensive AI & entrepreneurship program. Learn Python, machine learning, web development, and build your own AI startup with expert mentors.",
+  "description": "Build a business with AI teammates in four weeks, or work 1:1 mentorship with Ahmed Ezzat.",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#FFD23F",
-  "background_color": "#FFFFFF",
+  "theme_color": "#0c0a0b",
+  "background_color": "#F7E9D6",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "en",
@@ -21,13 +21,5 @@
       "type": "image/png"
     }
   ],
-  "categories": ["education", "productivity", "business"],
-  "screenshots": [
-    {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
-  ]
+  "categories": ["education", "productivity", "business"]
 }

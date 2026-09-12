@@ -17,5 +17,12 @@ export const WHATSAPP_MESSAGES = {
     "Hi Ahmed, I'd like early access to the upcoming Mentorna programs.",
   cohortWaitlist:
     "Hi Ahmed, I'd like to join the waitlist for the mid-October 0→1 cohort.",
+  cohortApply: `Hi Ahmed, I'd like to apply for the mid-October 0→1 cohort (Cohort 2).
+
+1) Idea status (none / one I cannot start / too many to pick):
+
+2) What I do right now (job / background):
+
+3) Why now:`,
   general: 'Hi Ahmed, I have a question about Mentorna.',
 } as const;

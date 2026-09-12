@@ -42,11 +42,14 @@ const FRAMEWORK = 'The 0→1 Framework';
 const CLUB = "Founders' Club";
 const PRICE = 400;
 const SEATS = 10;
-/** Current open cohort is full. Next date for waitlist CTAs. */
-const COHORT_FULL = true;
+/** Seats still open in the live cohort. Update when someone joins. */
+const SEATS_LEFT = 6;
+const COHORT_FULL = false;
 const COHORT_LABEL = 'mid-October';
-const CTA_LABEL = 'Join the mid-October waitlist';
-const SCARCITY_LINE = 'This cohort is full. Next opens mid-October.';
+const CTA_LABEL = 'Apply for the mid-October cohort';
+/** Alif-style status: name the closed round, then the open one. */
+const COHORT_STATUS =
+  'Cohort 1 (September) has officially closed. Cohort 2 (mid-October) is open.';
 
 /** Four proofs under the hero. Short enough to read without thinking.
  *  Icons: thiings.co (warranty, infinity-loop, money, handshake). */
@@ -78,11 +81,16 @@ const TRUST = [
 ];
 
 /**
- * Cohort is full: CTAs open WhatsApp onto the mid-October waitlist.
- * When seats reopen, swap back to the three-question application message.
+ * Application happens over WhatsApp: the link opens with these three
+ * questions pre-filled, so the first message is already a qualification.
  */
-const APPLY_MESSAGE =
-  "Hi Ahmed, I'd like to join the waitlist for the mid-October 0→1 cohort.";
+const APPLY_MESSAGE = `Hi Ahmed, I'd like to apply for the mid-October 0→1 cohort (Cohort 2).
+
+1) Idea status (none / one I cannot start / too many to pick):
+
+2) What I do right now (job / background):
+
+3) Why now:`;
 
 const QUESTION_MESSAGE = 'Hi Ahmed, I have a question about the 0→1 cohort.';
 
@@ -401,7 +409,7 @@ const FAQS = [
     q: 'How do I get in?',
     a: COHORT_FULL
       ? `This cohort is full. Join the ${COHORT_LABEL} waitlist on WhatsApp. I read every message.`
-      : `WhatsApp. Three questions. ${SEATS} seats. I read every one.`,
+      : `WhatsApp. Three questions. ${SEATS_LEFT} of ${SEATS} seats left in Cohort 2. I read every one.`,
   },
 ];
 
@@ -1141,7 +1149,7 @@ const Build = () => {
                   href="#apply"
                   className="rounded-full bg-white/10 px-3.5 py-1.5 text-[11px] font-medium tracking-wide text-white/90 ring-1 ring-white/15 transition-colors hover:bg-white/15 hover:text-white md:text-xs"
                 >
-                  Waitlist
+                  Apply
                 </a>
               </div>
             </nav>
@@ -1155,7 +1163,7 @@ const Build = () => {
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
-                For 9-to-5 domain experts · Live · Fully remote · 4 weeks · {SEATS} seats
+                Cohort 2 · Live · Fully remote · 4 weeks · {SEATS_LEFT} of {SEATS} seats left
               </p>
 
               {variant === 'A' ? (
@@ -1198,8 +1206,9 @@ const Build = () => {
               <div className="mt-7">
                 <ApplyButton where="hero" tone="hero" />
               </div>
-              <p className="mt-3 text-sm font-light text-white/45">
-                <span style={{ color: AMBER }}>Full.</span> {SCARCITY_LINE}
+              <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/45">
+                {COHORT_STATUS}{' '}
+                <span style={{ color: AMBER }}>{SEATS_LEFT} seats left.</span>
               </p>
             </div>
 
@@ -1946,13 +1955,14 @@ const Build = () => {
                     One seat. Four weeks. {SEATS} people.
                   </p>
                   <p className="mt-3 font-heading text-sm font-light text-[hsl(0,0%,10%)]/55 md:text-[15px]">
-                    Live · fully remote · next cohort {COHORT_LABEL}
+                    Live · fully remote · Cohort 2 · {COHORT_LABEL}
                   </p>
 
                   <div className="mt-8 hidden md:block">
                     <ApplyButton where="pricing" tone="page" />
-                    <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
-                      <span style={{ color: '#B4691E' }}>Full.</span> {SCARCITY_LINE}
+                    <p className="mt-4 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/60">
+                      {COHORT_STATUS}{' '}
+                      <span style={{ color: '#B4691E' }}>{SEATS_LEFT} seats left.</span>
                     </p>
                   </div>
                 </div>
@@ -1994,8 +2004,9 @@ const Build = () => {
             <Reveal>
               <div className="mt-10 text-center md:hidden">
                 <ApplyButton where="pricing" tone="page" />
-                <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/60">
-                  <span style={{ color: '#B4691E' }}>Full.</span> {SCARCITY_LINE}
+                <p className="mt-4 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/60">
+                  {COHORT_STATUS}{' '}
+                  <span style={{ color: '#B4691E' }}>{SEATS_LEFT} seats left.</span>
                 </p>
               </div>
             </Reveal>
@@ -2066,14 +2077,14 @@ const Build = () => {
           <div className="relative mx-auto max-w-3xl px-4 py-20 text-center md:py-28">
             <Reveal>
               <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
-                <span className="text-[#F7E9D6]">Full</span> · next cohort {COHORT_LABEL}
+                <span className="text-[#F7E9D6]">{SEATS_LEFT}</span> seats left · Cohort 2 ·{' '}
+                {COHORT_LABEL}
               </p>
               <h2 className="mt-5 font-heading text-[clamp(2.4rem,7vw,4.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#F7E9D6]">
                 The idea has waited long enough.
               </h2>
               <p className="mx-auto mt-5 max-w-lg font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60 md:text-lg">
-                This round is closed. Join the waitlist for mid-October. Four weeks. Ten seats. A
-                product at the end, not notes.
+                {COHORT_STATUS} Four weeks. Ten seats. A product at the end, not notes.
               </p>
               <div className="mt-9">
                 <a

@@ -27,7 +27,9 @@ const SESSION_ACCENTS = [AMBER, PURPLE, CYAN, TEAL, CORAL];
 const TAG_DOT = [AMBER, PURPLE, CYAN, TEAL, CORAL];
 
 /* Shared with /build so scarcity + date stay in sync. */
-const SCARCITY_LINE = "This cohort is full. Next opens mid-October.";
+const SEATS_LEFT = 6;
+const COHORT_STATUS =
+  "Cohort 1 (September) has officially closed. Cohort 2 (mid-October) is open.";
 
 /* Prisma atmosphere (media only) — same blend as the /build hero. */
 const PRISMA_BG_VIDEO =
@@ -347,7 +349,7 @@ const Community: React.FC = () => {
 
         <div className="relative z-20 mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center md:py-28">
           <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
-            For 9-to-5 domain experts · Live · Fully remote · 4 weeks · 10 seats
+            Cohort 2 · Live · Fully remote · 4 weeks · {SEATS_LEFT} of 10 seats left
           </p>
           <h2 className="mt-4 max-w-2xl font-heading text-[2.15rem] font-light leading-[1.08] tracking-tight text-white md:text-5xl lg:text-[3.25rem]">
             Go from idea to{" "}
@@ -364,12 +366,13 @@ const Community: React.FC = () => {
               onClick={scrollBuildToTop}
               className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-sm font-medium tracking-wide text-[hsl(0,0%,8%)] transition-colors hover:bg-white/90 md:min-h-[3.25rem] md:px-9 md:text-base"
             >
-              Join the mid-October waitlist
+              Apply for the mid-October cohort
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
-          <p className="mt-3 text-sm font-light text-white/45">
-            <span style={{ color: AMBER }}>Full.</span> {SCARCITY_LINE}
+          <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/45">
+            {COHORT_STATUS}{" "}
+            <span style={{ color: AMBER }}>{SEATS_LEFT} seats left.</span>
           </p>
         </div>
       </section>
