@@ -114,7 +114,7 @@ const ORGS = [
   { name: 'AI Collective', logo: '/orgs/aicollective.png', url: 'https://www.aicollective.com' },
   { name: 'Invention Convention', logo: '/orgs/inventionconvention.png', url: 'https://www.cainventionconvention.org' },
   { name: 'Helsinki XR Center', logo: '/orgs/helsinkixr.png', url: 'https://helsinkixrcenter.com' },
-  { name: 'Predictiva', logo: null, url: 'https://www.predictiva.co.uk' },
+  { name: 'Predictiva', logo: '/orgs/predictiva.webp', url: 'https://www.predictiva.co.uk' },
 ];
 
 const ORG_CHIP =
