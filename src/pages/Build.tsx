@@ -104,16 +104,21 @@ const STATS = [
   { v: '2', l: 'Startup exits' },
 ];
 
+/* Companies in the marquee. `url` is the official site the chip links out to —
+   entries with url: null render as a plain, non-clickable chip. */
 const ORGS = [
-  { name: 'Slush', logo: '/orgs/slush.png' },
-  { name: 'Antler', logo: '/orgs/antler.png' },
-  { name: 'Akadeemy', logo: '/orgs/akadeemy.png' },
-  { name: 'Robot Uprising', logo: '/orgs/robotuprising.png' },
-  { name: 'AI Collective', logo: '/orgs/aicollective.png' },
-  { name: 'Invention Convention', logo: '/orgs/inventionconvention.png' },
-  { name: 'Helsinki XR Center', logo: '/orgs/helsinkixr.png' },
-  { name: 'Predictiva', logo: null },
+  { name: 'Slush', logo: '/orgs/slush.png', url: 'https://slush.org' },
+  { name: 'Antler', logo: '/orgs/antler.png', url: 'https://www.antler.co' },
+  { name: 'Akadeemy', logo: '/orgs/akadeemy.png', url: 'https://www.akadeemy.com' },
+  { name: 'Robot Uprising', logo: '/orgs/robotuprising.png', url: 'https://robotuprising.fi' },
+  { name: 'AI Collective', logo: '/orgs/aicollective.png', url: 'https://www.aicollective.com' },
+  { name: 'Invention Convention', logo: '/orgs/inventionconvention.png', url: null },
+  { name: 'Helsinki XR Center', logo: '/orgs/helsinkixr.png', url: 'https://helsinkixrcenter.com' },
+  { name: 'Predictiva', logo: null, url: null },
 ];
+
+const ORG_CHIP =
+  'mx-1.5 inline-flex shrink-0 items-center gap-3 rounded-2xl bg-white/[0.07] px-5 py-3 ring-1 ring-white/10 md:gap-3.5 md:px-7 md:py-3.5';
 
 const AHMED_PHOTOS = [
   {
@@ -1646,21 +1651,17 @@ const Build = () => {
 
           <div className="relative border-t border-white/10 bg-[#0c0a0b] py-6 md:py-8">
             <p className="mb-5 text-center font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/40">
-              Rooms he has already been in
+              Companies I worked with
             </p>
-            <div className="flex flex-col gap-3 overflow-hidden">
-              {[0, 1].map((row) => (
-                <div
-                  key={row}
-                  className={`flex w-max ${row === 0 ? 'org-marquee' : 'org-marquee-rev'}`}
-                >
-                  {[0, 1].map((dup) => (
-                    <div key={dup} className="flex">
-                      {ORGS.map((o) => (
-                        <span
-                          key={`${row}-${dup}-${o.name}`}
-                          className="mx-1.5 inline-flex shrink-0 items-center gap-3 rounded-2xl bg-white/[0.07] px-5 py-3 ring-1 ring-white/10 md:gap-3.5 md:px-7 md:py-3.5"
-                        >
+            <div className="overflow-hidden">
+              {/* Single row. The list is rendered twice so the loop is seamless —
+                  the second copy is hidden from assistive tech and tab order. */}
+              <div className="org-marquee flex w-max">
+                {[0, 1].map((dup) => (
+                  <div key={dup} className="flex" aria-hidden={dup === 1 || undefined}>
+                    {ORGS.map((o) => {
+                      const inner = (
+                        <>
                           {o.logo ? (
                             <img
                               src={o.logo}
@@ -1680,12 +1681,29 @@ const Build = () => {
                           <span className="font-heading text-base font-medium tracking-tight text-[#F7E9D6] md:text-xl">
                             {o.name}
                           </span>
+                        </>
+                      );
+
+                      return o.url ? (
+                        <a
+                          key={`${dup}-${o.name}`}
+                          href={o.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          tabIndex={dup === 1 ? -1 : undefined}
+                          className={`${ORG_CHIP} transition-colors hover:bg-white/[0.13] hover:ring-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(38,95%,58%)]`}
+                        >
+                          {inner}
+                        </a>
+                      ) : (
+                        <span key={`${dup}-${o.name}`} className={ORG_CHIP}>
+                          {inner}
                         </span>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              ))}
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>

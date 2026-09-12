@@ -332,11 +332,10 @@
   .org-marquee {
     animation: org-marquee 32s linear infinite;
   }
-  .org-marquee-rev {
-    animation: org-marquee 40s linear infinite reverse;
-  }
+  /* Pause on hover so a logo can be clicked, and on focus-within so the
+     chips stay reachable by keyboard. */
   .org-marquee:hover,
-  .org-marquee-rev:hover {
+  .org-marquee:focus-within {
     animation-play-state: paused;
   }
 }
