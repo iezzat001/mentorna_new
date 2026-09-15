@@ -33,7 +33,6 @@ export const testimonials: Testimonial[] = [
     quote:
       'This was perhaps the most interesting workshop I have ever attended during the last 40 years.',
     source: 'Luma Review',
-    linkedin: 'https://www.linkedin.com/in/matti-tuominen-b18680',
     highlight: true,
   },
   {
