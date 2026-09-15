@@ -40,10 +40,8 @@ const DOTS = {
    ──────────────────────────────────────────────────────────── */
 const FRAMEWORK = 'The 0→1 Framework';
 const CLUB = "Founders' Club";
-const PRICE = 400;
+const PRICE = 425;
 const SEATS = 10;
-/** Seats still open in the live cohort. Update when someone joins. */
-const SEATS_LEFT = 6;
 const COHORT_FULL = false;
 const COHORT_LABEL = 'mid-October';
 const CTA_LABEL = 'Apply for the mid-October cohort';
@@ -52,8 +50,17 @@ const COHORT_STATUS =
   'Cohort 1 (September) has officially closed. Cohort 2 (mid-October) is open.';
 
 /** Four proofs under the hero. Short enough to read without thinking.
- *  Icons: thiings.co (warranty, infinity-loop, money, handshake). */
-const TRUST = [
+ *  Icons: thiings.co (warranty, infinity-loop, money, handshake).
+ *  `link` is optional — only the revenue proof credits a named student. */
+type TrustItem = {
+  k: string;
+  v: string;
+  link?: { label: string; url: string };
+  img: string;
+  alt: string;
+};
+
+const TRUST: TrustItem[] = [
   {
     k: 'Money-back',
     v: 'Come twice. If it is not for you, every dollar comes back.',
@@ -68,7 +75,8 @@ const TRUST = [
   },
   {
     k: '$10,000+',
-    v: 'Made by students. In real businesses.',
+    v: 'Made by ',
+    link: { label: '@_therealsigma', url: 'https://www.instagram.com/_therealsigma/' },
     img: '/method/money.webp',
     alt: 'Money',
   },
@@ -251,7 +259,7 @@ const STEPS = [
 ];
 
 /* How it works — layout + spine copy from Alif Sessions "You have the what"
-   section, adapted to four weeks. */
+   section, adapted to six weeks. */
 const HOW_IT_WORKS = [
   {
     title: 'Come with an idea and an open mind.',
@@ -259,7 +267,7 @@ const HOW_IT_WORKS = [
   },
   {
     title: 'Leave with a real product, real users, and a real community.',
-    body: 'Over the four weeks you build your idea, get meaningful feedback from real users, and meet people on the same journey, then keep the key to Founders\' Club.',
+    body: 'Over the six weeks you build your idea, get meaningful feedback from real users, and meet people on the same journey, then keep the key to Founders\' Club.',
   },
   {
     title: 'Find your channel, without the guesswork.',
@@ -269,14 +277,14 @@ const HOW_IT_WORKS = [
 
 /* What is included */
 const INCLUDED = [
-  '4 live sessions · 3 hours · 10 people',
+  '6 live sessions · 3 hours · 10 people',
   'Every recording · yours forever',
   `${FRAMEWORK} · the canvases`,
   'The prompts · the tools · the slides',
   'Guest sessions: marketing, funding, an investor',
   `${CLUB} · for life`,
   'You can still message me',
-  'Week 4: you show the room',
+  'Week 6: you show the room',
 ];
 
 /* Guest lineup — all three confirmed (sources: slush.org/about-us,
@@ -324,7 +332,7 @@ const CLUB_BEATS = [
   {
     n: '02',
     t: 'Direct',
-    d: 'Ahmed still answers. After week four. After that too.',
+    d: 'Ahmed still answers. After week six. After that too.',
   },
   {
     n: '03',
@@ -403,7 +411,7 @@ const FAQS = [
     a: 'It is recorded. Yours forever. Message me between.',
   },
   {
-    q: 'What happens when the four weeks end?',
+    q: 'What happens when the six weeks end?',
     a: `The cohort ends. The ${CLUB} does not.`,
   },
   {
@@ -414,7 +422,7 @@ const FAQS = [
     q: 'How do I get in?',
     a: COHORT_FULL
       ? `This cohort is full. Join the ${COHORT_LABEL} waitlist on WhatsApp. I read every message.`
-      : `WhatsApp. Three questions. ${SEATS_LEFT} of ${SEATS} seats left in Cohort 2. I read every one.`,
+      : 'WhatsApp. Three questions. Ten seats. Some are gone. I read every one.',
   },
 ];
 
@@ -958,9 +966,9 @@ const Build = () => {
   }, [variant]);
 
   useSEO({
-    title: 'The 0→1 Cohort · 4 Weeks, 10 Seats | Mentorna®',
+    title: 'The 0→1 Cohort · 6 Weeks, 10 Seats | Mentorna®',
     description:
-      'For 9-to-5 domain experts. Build a profitable business in four weeks using the 0→1 Framework, without losing $10,000 on tech nobody needs. 10 seats per cohort.',
+      'For 9-to-5 domain experts. Build a profitable business in six weeks using the 0→1 Framework, without losing $10,000 on tech nobody needs. 10 seats per cohort.',
     canonical: 'https://www.mentorna.com/build',
   });
 
@@ -1174,7 +1182,7 @@ const Build = () => {
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
-                Cohort 2 · Live · Fully remote · 4 weeks · {SEATS_LEFT} of {SEATS} seats left
+                Cohort 2 · Live · Fully remote · 6 weeks
               </p>
 
               {variant === 'A' ? (
@@ -1206,7 +1214,7 @@ const Build = () => {
               ) : (
                 <>
                   <h1 className="mt-4 max-w-3xl font-heading text-[2.15rem] font-light leading-[1.08] tracking-tight md:text-5xl lg:text-[3.65rem]">
-                    Four weeks, live, to your first paying customer.
+                    Six weeks, live, to your first paying customer.
                   </h1>
                   <p className="mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-white/65 md:text-lg">
                     {HERO_B_SUBHEAD}
@@ -1218,8 +1226,7 @@ const Build = () => {
                 <ApplyButton where="hero" tone="hero" />
               </div>
               <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/45">
-                {COHORT_STATUS}{' '}
-                <span style={{ color: AMBER }}>{SEATS_LEFT} seats left.</span>
+                {COHORT_STATUS}
               </p>
             </div>
 
@@ -1303,6 +1310,16 @@ const Build = () => {
                   </p>
                   <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
                     {item.v}
+                    {item.link && (
+                      <a
+                        href={item.link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline decoration-[hsl(0,0%,10%)]/25 underline-offset-2 transition-colors hover:text-[hsl(0,0%,10%)] hover:decoration-[hsl(0,0%,10%)]/60"
+                      >
+                        {item.link.label}
+                      </a>
+                    )}
                   </p>
                 </li>
               ))}
@@ -1798,7 +1815,7 @@ const Build = () => {
                   The cohort ends. You do not leave.
                 </p>
                 <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                  Four weeks is enough to ship. A company needs a room after that. Everyone who
+                  Six weeks is enough to ship. A company needs a room after that. Everyone who
                   finishes walks in and keeps the key.
                 </p>
               </div>
@@ -1827,7 +1844,7 @@ const Build = () => {
                     </p>
                   </div>
                   <p className="hidden max-w-[12rem] text-right font-heading text-sm font-light leading-snug text-[#F7E9D6]/70 md:block">
-                    The room stays open after week four.
+                    The room stays open after week six.
                   </p>
                 </div>
               </div>
@@ -1970,7 +1987,7 @@ const Build = () => {
             <div className="grid items-start gap-12 md:grid-cols-[0.95fr_1.05fr] md:gap-16">
               <Reveal>
                 <div className="text-center md:text-left">
-                  <Eyebrow color={PURPLE}>The offer</Eyebrow>
+                  <Eyebrow color={PURPLE}>3. How much does it cost?</Eyebrow>
                   <h2
                     className="mt-3 font-heading text-[clamp(4.5rem,18vw,7.5rem)] font-light leading-none tracking-[-0.04em]"
                     style={{
@@ -1983,7 +2000,7 @@ const Build = () => {
                     ${PRICE}
                   </h2>
                   <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-2xl">
-                    One seat. Four weeks. {SEATS} people.
+                    One seat. Six weeks. {SEATS} people.
                   </p>
                   <p className="mt-3 font-heading text-sm font-light text-[hsl(0,0%,10%)]/55 md:text-[15px]">
                     Live · fully remote · Cohort 2 · {COHORT_LABEL}
@@ -1992,8 +2009,7 @@ const Build = () => {
                   <div className="mt-8 hidden md:block">
                     <ApplyButton where="pricing" tone="page" />
                     <p className="mt-4 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/60">
-                      {COHORT_STATUS}{' '}
-                      <span style={{ color: '#B4691E' }}>{SEATS_LEFT} seats left.</span>
+                      {COHORT_STATUS}
                     </p>
                   </div>
                 </div>
@@ -2036,8 +2052,7 @@ const Build = () => {
               <div className="mt-10 text-center md:hidden">
                 <ApplyButton where="pricing" tone="page" />
                 <p className="mt-4 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/60">
-                  {COHORT_STATUS}{' '}
-                  <span style={{ color: '#B4691E' }}>{SEATS_LEFT} seats left.</span>
+                  {COHORT_STATUS}
                 </p>
               </div>
             </Reveal>
@@ -2108,14 +2123,13 @@ const Build = () => {
           <div className="relative mx-auto max-w-3xl px-4 py-20 text-center md:py-28">
             <Reveal>
               <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
-                <span className="text-[#F7E9D6]">{SEATS_LEFT}</span> seats left · Cohort 2 ·{' '}
-                {COHORT_LABEL}
+                Cohort 2 · {COHORT_LABEL}
               </p>
               <h2 className="mt-5 font-heading text-[clamp(2.4rem,7vw,4.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#F7E9D6]">
                 The idea has waited long enough.
               </h2>
               <p className="mx-auto mt-5 max-w-lg font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60 md:text-lg">
-                {COHORT_STATUS} Four weeks. Ten seats. A product at the end, not notes.
+                {COHORT_STATUS} Six weeks. Ten seats. A product at the end, not notes.
               </p>
               <div className="mt-9">
                 <a
