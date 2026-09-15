@@ -1407,7 +1407,7 @@ const Build = () => {
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
                 <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/45">
-                  The diagnosis
+                  1. Can I help you?
                 </p>
                 <h2 className="mt-4 font-heading text-4xl font-light leading-[1.1] tracking-tight md:text-5xl">
                   Why the idea is still an idea
@@ -1454,144 +1454,72 @@ const Build = () => {
         </section>
 
         <div className="mx-auto max-w-5xl px-4">
-        {/* ══ THE FRAMEWORK ══ */}
-        <section id="framework" className="scroll-mt-6 pt-16 md:pt-24">
+        {/* ══ FIT ══ */}
+        <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={PURPLE}>The 0→1 Framework</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                Problem. Promise. Demand. Build.
+              <Eyebrow color={AMBER}>Who this is for</Eyebrow>
+              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
+                You do not need an idea.
               </h2>
+              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
+                You have a job. You want something of your own. I take you through which thing, and
+                we start.
+              </p>
             </div>
           </Reveal>
 
-          <div className="relative mx-auto mt-14 max-w-3xl md:mt-20">
-            {/* Center spine — stays in the gutter so it never crosses copy. */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute bottom-8 left-1/2 top-8 hidden w-px -translate-x-1/2 md:block"
-              style={{
-                backgroundImage:
-                  'repeating-linear-gradient(to bottom, hsl(0 0% 10% / 0.22) 0 7px, transparent 7px 16px)',
-              }}
-            />
-
-            <ol className="relative space-y-14 md:space-y-0">
-              {STEPS.map((s, i) => {
-                const textLeft = i % 2 === 1;
-                const copy = (
-                  <div className={`max-w-xs ${textLeft ? 'md:text-right' : 'md:text-left'} text-center`}>
-                    <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
-                      {s.n}
-                    </p>
-                    <h3 className="mt-2 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
-                      {s.title}
-                    </h3>
-                    <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[15px]">
-                      {s.desc}
-                    </p>
-                  </div>
-                );
-                const icon = (
-                  <img
-                    src={s.img}
-                    alt={s.alt}
-                    width={176}
-                    height={176}
-                    className={`${s.float} h-36 w-36 object-contain md:h-44 md:w-44`}
-                    style={{ filter: 'drop-shadow(0 22px 28px rgba(80, 40, 16, 0.18))' }}
-                  />
-                );
-                return (
-                  <Reveal key={s.n} delay={i * 90}>
-                    <li className="relative">
-                      {/* Desktop roadmap: icon | spine node | copy (alternating sides) */}
-                      <div className="hidden items-center md:grid md:grid-cols-[1fr_3.25rem_1fr] md:py-10">
-                        <div className="flex justify-end pr-10">
-                          {textLeft ? copy : icon}
-                        </div>
-                        <div className="relative z-10 mx-auto flex h-5 w-5 items-center justify-center">
-                          <span
-                            className="absolute h-5 w-5 rounded-full"
-                            style={{ background: `${PURPLE}28` }}
-                          />
-                          <span
-                            className="relative h-2.5 w-2.5 rounded-full"
-                            style={{ background: PURPLE }}
-                          />
-                        </div>
-                        <div className="flex justify-start pl-10">
-                          {textLeft ? icon : copy}
-                        </div>
-                      </div>
-
-                      {/* Mobile: stacked, no spine */}
-                      <div className="flex flex-col items-center gap-4 md:hidden">
-                        {icon}
-                        {copy}
-                      </div>
-                    </li>
-                  </Reveal>
-                );
-              })}
-            </ol>
-          </div>
+          <ol className="mt-12 grid gap-10 md:mt-16 md:grid-cols-3 md:gap-8">
+            {FIT_PATHS.map((p, i) => (
+              <Reveal key={p.n} delay={i * 80}>
+                <li className="text-center">
+                  <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#C4893A]">
+                    {p.n}
+                  </p>
+                  <h3 className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.85rem]">
+                    {p.t}
+                  </h3>
+                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/70 md:text-[15px]">
+                    {p.d}
+                  </p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
 
           <Reveal>
-            <p className="mt-14 text-center font-heading text-[11px] font-light tracking-wide text-[hsl(0,0%,10%)]/55">
-              3D icons from{' '}
-              <a
-                href="https://www.thiings.co"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-[hsl(0,0%,10%)]/25 underline-offset-4"
+            <div className="mx-auto mt-14 max-w-2xl md:mt-16">
+              <div
+                className="overflow-hidden rounded-[28px] px-7 py-9 text-center shadow-[0_28px_70px_-28px_rgba(80,40,16,0.35)] ring-1 ring-[#1c100e]/12 md:px-12 md:py-11"
+                style={{
+                  background:
+                    'radial-gradient(ellipse 90% 80% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)',
+                }}
               >
-                thiings.co
-              </a>
-            </p>
-          </Reveal>
-        </section>
-
-        {/* ══ HOW IT WORKS — Alif "You have the what" layout + copy ══ */}
-        <section id="how-it-works" className="scroll-mt-6 pt-16 md:pt-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center md:mx-0 md:max-w-3xl md:text-left">
-              <Eyebrow color={TEAL}>How it works</Eyebrow>
-              <h2 className="mt-4 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-[2.65rem]">
-                You have the &ldquo;what.&rdquo; You just need the &ldquo;how.&rdquo;
-              </h2>
+                <p
+                  className="font-heading text-[11px] font-medium uppercase tracking-[0.22em]"
+                  style={{ color: CORAL }}
+                >
+                  Skip this if
+                </p>
+                <ul className="mt-6 space-y-4">
+                  {FIT_SKIP.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start justify-center gap-3 font-heading text-lg font-light leading-snug text-[#F7E9D6] md:text-xl"
+                    >
+                      <span
+                        aria-hidden
+                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                        style={{ background: CORAL }}
+                      />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </Reveal>
-
-          {/*
-            Wide layout: text column sets the row height; photo is absolutely
-            cropped to that height so the portrait's intrinsic size can't leave
-            an empty band under the copy.
-          */}
-          <div className="mt-8 grid gap-10 md:mt-12 md:grid-cols-2 md:items-stretch md:gap-14">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] shadow-[0_28px_70px_-28px_rgba(80,40,16,0.38)] ring-1 ring-[#1c100e]/10 md:aspect-auto md:min-h-0 md:h-full">
-              <img
-                src="https://d2mp3ttz3u5gci.cloudfront.net/build/about-me/4Q0A4211.jpg"
-                alt="Ahmed teaching entrepreneurship to a packed hall"
-                className="h-full w-full object-cover object-center md:absolute md:inset-0"
-              />
-            </div>
-
-            <div className="flex flex-col gap-8 md:justify-between md:gap-6 md:py-1">
-              {HOW_IT_WORKS.map((item, i) => (
-                <Reveal key={item.title} delay={i * 80}>
-                  <div>
-                    <h3 className="font-heading text-xl font-light tracking-tight md:text-[1.45rem]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                      {item.body}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
         </section>
         </div>
 
@@ -1731,11 +1659,174 @@ const Build = () => {
           </div>
         </section>
 
+        <div className="mx-auto max-w-5xl px-4">
+        {/* ══ PROOF ══
+            Two vertical selfie testimonials. Videos stay on S3 and only
+            load after play — they are 50–90 MB HEVC phone files. */}
+        <section className="pt-16 md:pt-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <Eyebrow color={CYAN}>From the workshops this cohort is built on</Eyebrow>
+              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
+                They already did this.
+              </h2>
+              <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
+                Two students on video. The rest in writing, from the workshops this
+                cohort is built on.
+              </p>
+            </div>
+          </Reveal>
+          <ProofClips />
+        </section>
+
+        {/* ══ THE FRAMEWORK ══ */}
+        <section id="framework" className="scroll-mt-6 pt-16 md:pt-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <Eyebrow color={PURPLE}>2. How does it work?</Eyebrow>
+              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
+                {FRAMEWORK}. Problem, promise, demand, build.
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="relative mx-auto mt-14 max-w-3xl md:mt-20">
+            {/* Center spine — stays in the gutter so it never crosses copy. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute bottom-8 left-1/2 top-8 hidden w-px -translate-x-1/2 md:block"
+              style={{
+                backgroundImage:
+                  'repeating-linear-gradient(to bottom, hsl(0 0% 10% / 0.22) 0 7px, transparent 7px 16px)',
+              }}
+            />
+
+            <ol className="relative space-y-14 md:space-y-0">
+              {STEPS.map((s, i) => {
+                const textLeft = i % 2 === 1;
+                const copy = (
+                  <div className={`max-w-xs ${textLeft ? 'md:text-right' : 'md:text-left'} text-center`}>
+                    <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
+                      {s.n}
+                    </p>
+                    <h3 className="mt-2 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[15px]">
+                      {s.desc}
+                    </p>
+                  </div>
+                );
+                const icon = (
+                  <img
+                    src={s.img}
+                    alt={s.alt}
+                    width={176}
+                    height={176}
+                    className={`${s.float} h-36 w-36 object-contain md:h-44 md:w-44`}
+                    style={{ filter: 'drop-shadow(0 22px 28px rgba(80, 40, 16, 0.18))' }}
+                  />
+                );
+                return (
+                  <Reveal key={s.n} delay={i * 90}>
+                    <li className="relative">
+                      {/* Desktop roadmap: icon | spine node | copy (alternating sides) */}
+                      <div className="hidden items-center md:grid md:grid-cols-[1fr_3.25rem_1fr] md:py-10">
+                        <div className="flex justify-end pr-10">
+                          {textLeft ? copy : icon}
+                        </div>
+                        <div className="relative z-10 mx-auto flex h-5 w-5 items-center justify-center">
+                          <span
+                            className="absolute h-5 w-5 rounded-full"
+                            style={{ background: `${PURPLE}28` }}
+                          />
+                          <span
+                            className="relative h-2.5 w-2.5 rounded-full"
+                            style={{ background: PURPLE }}
+                          />
+                        </div>
+                        <div className="flex justify-start pl-10">
+                          {textLeft ? icon : copy}
+                        </div>
+                      </div>
+
+                      {/* Mobile: stacked, no spine */}
+                      <div className="flex flex-col items-center gap-4 md:hidden">
+                        {icon}
+                        {copy}
+                      </div>
+                    </li>
+                  </Reveal>
+                );
+              })}
+            </ol>
+          </div>
+
+          <Reveal>
+            <p className="mt-14 text-center font-heading text-[11px] font-light tracking-wide text-[hsl(0,0%,10%)]/55">
+              3D icons from{' '}
+              <a
+                href="https://www.thiings.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-[hsl(0,0%,10%)]/25 underline-offset-4"
+              >
+                thiings.co
+              </a>
+            </p>
+          </Reveal>
+        </section>
+
+        {/* ══ HOW IT WORKS — Alif "You have the what" layout + copy ══ */}
+        <section id="how-it-works" className="scroll-mt-6 pt-16 md:pt-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center md:mx-0 md:max-w-3xl md:text-left">
+              <Eyebrow color={TEAL}>How it works</Eyebrow>
+              <h2 className="mt-4 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-[2.65rem]">
+                You have the &ldquo;what.&rdquo; You just need the &ldquo;how.&rdquo;
+              </h2>
+            </div>
+          </Reveal>
+
+          {/*
+            Wide layout: text column sets the row height; photo is absolutely
+            cropped to that height so the portrait's intrinsic size can't leave
+            an empty band under the copy.
+          */}
+          <div className="mt-8 grid gap-10 md:mt-12 md:grid-cols-2 md:items-stretch md:gap-14">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] shadow-[0_28px_70px_-28px_rgba(80,40,16,0.38)] ring-1 ring-[#1c100e]/10 md:aspect-auto md:min-h-0 md:h-full">
+              <img
+                src="https://d2mp3ttz3u5gci.cloudfront.net/build/about-me/4Q0A4211.jpg"
+                alt="Ahmed teaching entrepreneurship to a packed hall"
+                className="h-full w-full object-cover object-center md:absolute md:inset-0"
+              />
+            </div>
+
+            <div className="flex flex-col gap-8 md:justify-between md:gap-6 md:py-1">
+              {HOW_IT_WORKS.map((item, i) => (
+                <Reveal key={item.title} delay={i * 80}>
+                  <div>
+                    <h3 className="font-heading text-xl font-light tracking-tight md:text-[1.45rem]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
+                      {item.body}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+        </div>
+
         {/* ══ GUEST SESSIONS — cinematic, same family as Who runs it.
             These are real, confirmed guests (see GUESTS) — not placeholders.
             They run one session each on their own expertise; they do not
-            co-host the cohort, so keep the copy here free of "co-host". ══ */}
-        <section className="relative isolate overflow-hidden bg-[#120c10] text-[#F7E9D6]">
+            co-host the cohort, so keep the copy here free of "co-host".
+            Follows the cream "How it works" block, so it carries its own top
+            margin rather than butting straight into the copy above. ══ */}
+        <section className="relative isolate mt-16 overflow-hidden bg-[#120c10] text-[#F7E9D6] md:mt-24">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
@@ -1871,96 +1962,6 @@ const Build = () => {
             </ol>
           </div>
         </section>
-
-        <div className="mx-auto max-w-5xl px-4">
-
-        {/* ══ PROOF ══
-            Two vertical selfie testimonials. Videos stay on S3 and only
-            load after play — they are 50–90 MB HEVC phone files. */}
-        <section className="pt-16 md:pt-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={CYAN}>From the workshops this cohort is built on</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
-                They already did this.
-              </h2>
-              <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                Two students on video. The rest in writing, from the workshops this
-                cohort is built on.
-              </p>
-            </div>
-          </Reveal>
-          <ProofClips />
-        </section>
-
-        {/* ══ FIT ══ */}
-        <section className="pt-16 md:pt-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={AMBER}>Who this is for</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
-                You do not need an idea.
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
-                You have a job. You want something of your own. I take you through which thing, and
-                we start.
-              </p>
-            </div>
-          </Reveal>
-
-          <ol className="mt-12 grid gap-10 md:mt-16 md:grid-cols-3 md:gap-8">
-            {FIT_PATHS.map((p, i) => (
-              <Reveal key={p.n} delay={i * 80}>
-                <li className="text-center">
-                  <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#C4893A]">
-                    {p.n}
-                  </p>
-                  <h3 className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.85rem]">
-                    {p.t}
-                  </h3>
-                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/70 md:text-[15px]">
-                    {p.d}
-                  </p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
-
-          <Reveal>
-            <div className="mx-auto mt-14 max-w-2xl md:mt-16">
-              <div
-                className="overflow-hidden rounded-[28px] px-7 py-9 text-center shadow-[0_28px_70px_-28px_rgba(80,40,16,0.35)] ring-1 ring-[#1c100e]/12 md:px-12 md:py-11"
-                style={{
-                  background:
-                    'radial-gradient(ellipse 90% 80% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)',
-                }}
-              >
-                <p
-                  className="font-heading text-[11px] font-medium uppercase tracking-[0.22em]"
-                  style={{ color: CORAL }}
-                >
-                  Skip this if
-                </p>
-                <ul className="mt-6 space-y-4">
-                  {FIT_SKIP.map((f) => (
-                    <li
-                      key={f}
-                      className="flex items-start justify-center gap-3 font-heading text-lg font-light leading-snug text-[#F7E9D6] md:text-xl"
-                    >
-                      <span
-                        aria-hidden
-                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                        style={{ background: CORAL }}
-                      />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </Reveal>
-        </section>
-        </div>
 
         {/* ══ PRICE + GUARANTEE ══
             Full-bleed ivory so it breaks the cream sameness of Fit / Proof. */}
@@ -2098,11 +2099,10 @@ const Build = () => {
             ))}
           </div>
         </section>
+        </div>
 
         {/* ══ FINAL CTA ══
             Dark closer after the cream FAQ. Same family as Who runs it. */}
-      </div>
-
         <section className="relative mt-16 overflow-hidden text-[#F7E9D6] md:mt-24">
           <div
             aria-hidden
