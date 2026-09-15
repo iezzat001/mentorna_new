@@ -100,7 +100,12 @@ const APPLY_MESSAGE = `Hi Ahmed, I'd like to apply for the mid-October 0→1 coh
 
 3) Why now:`;
 
-const QUESTION_MESSAGE = 'Hi Ahmed, I have a question about the 0→1 cohort.';
+/**
+ * The low-friction path for people who are not ready to answer three
+ * questions yet: one word, so nobody has to compose anything. Ahmed replies
+ * with the doc — deliberately no call, which is the objection this removes.
+ */
+const DETAILS_MESSAGE = 'details';
 
 /* Instructor */
 const BIO =
@@ -2143,16 +2148,17 @@ const Build = () => {
                 </a>
               </div>
               <p className="mt-5 font-heading text-sm font-light text-[#F7E9D6]/45">
-                Or{' '}
+                Want the details first?{' '}
                 <a
-                  href={whatsappUrl(QUESTION_MESSAGE)}
+                  href={whatsappUrl(DETAILS_MESSAGE)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => track('footer_details')}
                   className="underline decoration-[#F7E9D6]/30 underline-offset-4 hover:decoration-[#F7E9D6]/60"
                 >
-                  ask a question first
-                </a>
-                .
+                  Reply &lsquo;details&rsquo;
+                </a>{' '}
+                and I&rsquo;ll send the doc. No call.
               </p>
             </Reveal>
           </div>
