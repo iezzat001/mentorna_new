@@ -495,17 +495,16 @@ const HERO_VIDEO_URL = 'https://d2mp3ttz3u5gci.cloudfront.net/0703.mp4';
 type HeroVariant = 'A' | 'B';
 const HERO_VARIANT_KEY = 'build_hero_variant';
 
+/* Each string is its own line in the hero — the break after the first is
+   deliberate, not a wrap. `note` is the third line, quieter than the subhead:
+   it answers the objection the headline raises. */
 const HERO_A = {
-  prefix: 'Build your',
-  // Animated cycle, in Ahmed's exact order; loops back to the start.
-  words: ['idea', 'side-project', 'business', 'startup'],
-  // Static word for reduced-motion + screen readers — deliberately DECOUPLED
-  // from the cycle order. The cycle opens on "idea" (weak standalone), so the
-  // non-motion anchor is a dedicated "business" instead of words[0].
-  staticWord: 'business',
-  connector: 'with',
-  gradient: 'a team of AI workers', // the fixed leverage hook carries the gradient
-  subhead: 'Live and designed for people with a full schedule.',
+  headline: ['You spent 15 years getting good at your job.', 'AI just changed the job.'],
+  subhead: [
+    'Six weeks. Turn what you know into a business.',
+    'A team of AI workers builds it with you.',
+  ],
+  note: 'You do not write code. You tell them what to build.',
 };
 
 // Variant B — a static statement headline (gradient on "first paying customer",
@@ -616,76 +615,6 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
     >
       {children}
     </div>
-  );
-};
-
-/*
- * TypewriterWord — cycles a list of words with a type → hold → erase → next
- * loop and a blinking caret. prefers-reduced-motion users get ONE static word
- * (staticWord, decoupled from the cycle order) with no animation and no caret;
- * the guard is read synchronously so there is no flash of the animated state.
- * The animated text is aria-hidden — the full, stable headline is provided once
- * as sr-only text in the hero, so screen readers and crawlers get real copy.
- */
-const TypewriterWord = ({
-  words,
-  staticWord,
-  cursorColor,
-}: {
-  words: string[];
-  staticWord?: string;
-  cursorColor?: string;
-}) => {
-  const [reduced] = useState(prefersReducedMotion);
-  const [display, setDisplay] = useState(() =>
-    prefersReducedMotion() ? staticWord ?? words[0] ?? '' : '',
-  );
-  const [wordIndex, setWordIndex] = useState(0);
-  const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    if (reduced || words.length === 0) return;
-    const current = words[wordIndex % words.length] ?? '';
-    let timer: number;
-    if (!deleting) {
-      // typing forward, then a hold once the word is complete
-      timer = window.setTimeout(
-        () =>
-          display.length < current.length
-            ? setDisplay(current.slice(0, display.length + 1))
-            : setDeleting(true),
-        display.length < current.length ? 95 : 1500,
-      );
-    } else {
-      // erasing back, then advance to the next word
-      timer = window.setTimeout(
-        () => {
-          if (display.length > 0) {
-            setDisplay(current.slice(0, display.length - 1));
-          } else {
-            setDeleting(false);
-            setWordIndex((i) => (i + 1) % words.length);
-          }
-        },
-        display.length > 0 ? 45 : 350,
-      );
-    }
-    return () => window.clearTimeout(timer);
-  }, [display, deleting, wordIndex, words, reduced]);
-
-  return (
-    <span className="whitespace-nowrap">
-      <span>{display || ' '}</span>
-      {!reduced && (
-        <span
-          aria-hidden="true"
-          className="build-hero-cursor ml-0.5 inline-block font-normal"
-          style={{ color: cursorColor }}
-        >
-          |
-        </span>
-      )}
-    </span>
   );
 };
 
@@ -1225,33 +1154,26 @@ const Build = () => {
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
-                Cohort 2 · Live · Fully remote · 6 weeks
+                Cohort 2 · Mid-October · Live · Remote · 6 weeks · {SEATS} seats
               </p>
 
               {variant === 'A' ? (
                 <>
-                  <style>{`
-                    @keyframes buildHeroCaret { 0%, 45% { opacity: 1 } 55%, 100% { opacity: 0 } }
-                    .build-hero-cursor { animation: buildHeroCaret 1.05s steps(1) infinite; }
-                    @media (prefers-reduced-motion: reduce) { .build-hero-cursor { animation: none } }
-                  `}</style>
                   <h1 className="mt-4 max-w-3xl font-heading text-[2.15rem] font-light leading-[1.08] tracking-tight md:text-5xl lg:text-[3.65rem]">
-                    <span className="sr-only">
-                      {HERO_A.prefix} {HERO_A.staticWord} {HERO_A.connector} {HERO_A.gradient}
-                    </span>
-                    <span aria-hidden="true">
-                      {HERO_A.prefix}{' '}
-                      <TypewriterWord
-                        words={HERO_A.words}
-                        staticWord={HERO_A.staticWord}
-                        cursorColor="rgba(255,255,255,0.75)"
-                      />
-                      <br />
-                      {HERO_A.connector} {HERO_A.gradient}
-                    </span>
+                    {HERO_A.headline[0]}
+                    <br />
+                    {HERO_A.headline[1]}
                   </h1>
                   <p className="mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-white/65 md:text-lg">
-                    {HERO_A.subhead}
+                    {HERO_A.subhead[0]}
+                    <br />
+                    {HERO_A.subhead[1]}
+                  </p>
+                  {/* Sits lower than the old headline did, over the bright
+                      middle of the hero photo — hierarchy comes from size
+                      here, not from dropping opacity into illegibility. */}
+                  <p className="mt-3 max-w-xl font-heading text-sm font-light leading-relaxed text-white/60 md:text-base">
+                    {HERO_A.note}
                   </p>
                 </>
               ) : (
@@ -1268,8 +1190,8 @@ const Build = () => {
               <div className="mt-7">
                 <ApplyButton where="hero" tone="hero" />
               </div>
-              <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/45">
-                {COHORT_STATUS}
+              <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/60">
+                Four questions. I read every one myself.
               </p>
             </div>
 
@@ -1367,6 +1289,45 @@ const Build = () => {
                 </li>
               ))}
             </ul>
+          </Reveal>
+        </section>
+
+        {/* ══ THE CEILING ══
+            The persona hook, sitting right under the proof bar: it names who
+            the reader is before the page asks them for anything. Prose is
+            left-aligned rather than centred — five paragraphs of argument read
+            badly ragged on both sides. ══ */}
+        <section className="pt-16 md:pt-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <Eyebrow color={TEAL}>Why now</Eyebrow>
+              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
+                Every job has a ceiling. AI just removed yours.
+              </h2>
+            </div>
+          </Reveal>
+
+          <Reveal delay={80}>
+            <div className="mx-auto mt-10 max-w-2xl space-y-5 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:mt-12 md:text-[17px]">
+              <p>
+                Andrew Ng noticed something. Tech has &ldquo;10x engineers.&rdquo; But nobody
+                talks about 10x accountants. Or 10x lawyers. Or 10x designers.
+              </p>
+              <p>
+                His reason: in most jobs, the gap between the best person and the average
+                person has a limit. You can only work so fast.
+              </p>
+              <p className="font-heading text-2xl font-light leading-snug tracking-tight text-[hsl(0,0%,10%)] md:text-[2rem]">
+                AI removes that limit.
+              </p>
+              <p>
+                The people who win are not the ones who learn the tools. They are the ones
+                who already know something deeply, and now have a team that can build.
+              </p>
+              <p className="text-[hsl(0,0%,10%)]">
+                That is you. That is what these six weeks are for.
+              </p>
+            </div>
           </Reveal>
         </section>
 
