@@ -1888,18 +1888,23 @@ const Build = () => {
               </p>
             </Reveal>
 
-            {/* The orbit sizes its radius off this container, so it fits a
-                phone as well as a desktop. It is still decoration: the list
-                underneath carries the same six weeks in full. */}
+            {/* Desktop gets the orbit, phones get the list below — the two
+                carry the same six weeks, so showing both was saying it twice.
+                A rotating orbit is also the weaker of the pair on a small
+                screen: the expanded card covers most of it, and the labels
+                shrink. Hidden here means display:none, so the orbit's
+                IntersectionObserver never fires on a phone and nothing
+                rotates. */}
             <RadialOrbitalTimeline
-              className="mt-2"
+              className="mt-2 hidden md:flex"
               timelineData={WEEK_TIMELINE}
               outcomeLabel="You leave with"
               relatedLabel="Either side"
             />
           </div>
 
-          <div className="mx-auto max-w-3xl px-4">
+          {/* Phones only — on desktop the orbit above already says all six. */}
+          <div className="mx-auto max-w-3xl px-4 md:hidden">
             <ol className="border-t border-[#1c100e]/10">
               {COHORT_WEEKS.map((w, i) => (
                 <li key={w.n} className="border-b border-[#1c100e]/10">
