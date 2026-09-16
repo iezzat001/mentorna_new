@@ -44,7 +44,7 @@ const PRICE = 425;
 const SEATS = 10;
 const COHORT_FULL = false;
 const COHORT_LABEL = 'mid-October';
-const CTA_LABEL = 'Apply for the mid-October cohort';
+const CTA_LABEL = 'Check if you are qualified for this cohort.';
 /** Alif-style status: name the closed round, then the open one. */
 const COHORT_STATUS =
   'Cohort 1 (September) has officially closed. Cohort 2 (mid-October) is open.';
@@ -89,16 +89,12 @@ const TRUST: TrustItem[] = [
 ];
 
 /**
- * Application happens over WhatsApp: the link opens with these three
- * questions pre-filled, so the first message is already a qualification.
+ * Application happens over WhatsApp. The visitor only asks to be considered;
+ * Ahmed sends the qualifying questions in reply, so nothing has to be
+ * composed or answered before the conversation has started.
  */
-const APPLY_MESSAGE = `Hi Ahmed, I'd like to apply for the mid-October 0→1 cohort (Cohort 2).
-
-1) Idea status (none / one I cannot start / too many to pick):
-
-2) What I do right now (job / background):
-
-3) Why now:`;
+const APPLY_MESSAGE =
+  "Hi Ahmed! I'd like to be considered for the October cohort. Please send me the qualifying questions.";
 
 /**
  * The low-friction path for people who are not ready to answer three
