@@ -114,8 +114,14 @@ const APPLY_MESSAGE =
 const DETAILS_MESSAGE = 'details';
 
 /* Instructor */
-const BIO =
-  "For 10 years, I've merged my expertise in entrepreneurship and AI into educational initiatives. I've helped students secure spots at top universities and launch innovative projects, and built startups worth over $5 million, raised $1.1M, and made two exits. I do not lecture. I build in the room with you.";
+/* Three beats, each its own paragraph: what was built, how he teaches, where
+   he has taught. The numbers repeat in STATS directly below — said once in
+   prose and once as figures, which is the point. */
+const BIO = [
+  'I have built startups worth over $5 million. Raised $1.1M. Exited twice. I have also failed enough times to know which parts actually matter.',
+  'I do not lecture. I open my laptop and build next to you.',
+  'Ten years teaching. Slush, Antler, Helsinki XR Center. Now ten people at a time.',
+];
 
 const STATS = [
   { v: '$5M+', l: 'Total valuation of startups I created' },
@@ -230,6 +236,11 @@ const FAILURES = [
     title: 'You wait for later',
     desc: 'You will start when work calms down. It will not.',
   },
+  {
+    n: '06',
+    title: 'You think you are too late',
+    desc: 'You are watching people half your age ship things. You think the window closed. It did not. They have the tools. You have the 15 years.',
+  },
 ];
 
 /* The 0→1 Framework — thiings.co 3D icons. Free downloads are personal-use
@@ -269,20 +280,28 @@ const STEPS = [
   },
 ];
 
-/* How it works — layout + spine copy from Alif Sessions "You have the what"
-   section, adapted to six weeks. */
+/* What changes in six weeks — the four shifts, stated as things the reader
+   stops or starts doing rather than things the cohort provides. */
 const HOW_IT_WORKS = [
   {
-    title: 'Come with an idea and an open mind.',
-    body: "You feel strongly about an idea. That is the starting point. We help you validate it: pressure-test the problem, sharpen who it is actually for, and make sure you are building the right version before you build too much of it.",
+    n: '01',
+    title: 'You stop guessing who it is for',
+    body: 'Week one you name one person and one problem. Not "small businesses." One person. That sharpness is what makes AI build the right thing.',
   },
   {
-    title: 'Leave with a real product, real users, and a real community.',
-    body: 'Over the six weeks you build your idea, get meaningful feedback from real users, and meet people on the same journey, then keep the key to Founders\' Club.',
+    n: '02',
+    title: 'You ship something real',
+    body: 'A live product at a real URL. Built in the room, in front of you, by AI workers you direct.',
   },
   {
-    title: 'Find your channel, without the guesswork.',
-    body: 'We help you identify where your customers actually live, and build a repeatable way to reach them every week.',
+    n: '03',
+    title: 'You learn where your buyers already are',
+    body: 'Nineteen channels exist. One is working for you right now. We find it and put your thing in front of it.',
+  },
+  {
+    n: '04',
+    title: 'You keep the room',
+    body: `Six weeks ends. The ${CLUB} does not.`,
   },
 ];
 
@@ -412,10 +431,14 @@ const WRITTEN_PROOF = [
 ];
 
 /* Fit — three ways in. An idea is not a ticket. */
+/* The trades the cohort is built for — named so a reader can find themselves
+   in the list rather than guess whether "domain expert" means them. */
+const FIT_FIELDS = ['Accounting', 'Law', 'HR', 'Design', 'Logistics', 'Operations'];
+
 const FIT_PATHS = [
   {
     n: '01',
-    t: 'No idea',
+    t: 'No idea yet',
     d: 'You walk in empty. We find the one worth building.',
   },
   {
@@ -425,7 +448,7 @@ const FIT_PATHS = [
   },
   {
     n: '03',
-    t: 'Too many',
+    t: 'Too many ideas',
     d: 'We test. We pick one. The rest wait.',
   },
 ];
@@ -1327,6 +1350,9 @@ const Build = () => {
               <p className="text-[hsl(0,0%,10%)]">
                 That is you. That is what these six weeks are for.
               </p>
+              <p className="border-t border-[#1c100e]/10 pt-4 font-heading text-[13px] font-light leading-relaxed text-[hsl(0,0%,10%)]/45 md:text-sm">
+                Andrew Ng, &ldquo;How AI Can Make You a 10x Professional,&rdquo; DeepLearning.AI
+              </p>
             </div>
           </Reveal>
         </section>
@@ -1451,7 +1477,7 @@ const Build = () => {
                 className="mt-12 text-center font-heading text-xl font-light tracking-tight md:text-2xl"
                 style={{ color: AMBER }}
               >
-                How many of these are you doing?
+                How many of these are you doing right now?
               </p>
             </Reveal>
           </div>
@@ -1464,11 +1490,23 @@ const Build = () => {
             <div className="mx-auto max-w-2xl text-center">
               <Eyebrow color={AMBER}>Who this is for</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
-                You do not need an idea.
+                You are a domain expert. That is the entry requirement.
               </h2>
+
+              <p className="mt-8 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+                Deep knowledge in
+              </p>
+              <p className="mx-auto mt-3 max-w-xl font-heading text-xl font-light leading-snug tracking-tight md:text-2xl">
+                {FIT_FIELDS.join('. ')}.
+              </p>
+
+              <p className="mx-auto mt-8 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
+                If you have spent 10 years or more getting good at something, you already have the
+                hardest part. Most founders do not. They have an idea and no ground under it.
+              </p>
               <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
-                You have a job. You want something of your own. I take you through which thing, and
-                we start.
+                You have the ground. You are missing two things: how a business works, and how to
+                build. Six weeks, you get both.
               </p>
             </div>
           </Reveal>
@@ -1571,9 +1609,11 @@ const Build = () => {
                   <p className="mt-4 font-heading text-xl font-light leading-snug text-[#F7E9D6]/80 md:text-2xl">
                     Founder | AI/ML Engineer | Entrepreneur | Mentorship
                   </p>
-                  <p className="mt-5 font-heading text-base font-light leading-relaxed text-[#F7E9D6]/55 md:text-[17px]">
-                    {BIO}
-                  </p>
+                  <div className="mt-5 space-y-4 font-heading text-base font-light leading-relaxed text-[#F7E9D6]/55 md:text-[17px]">
+                    {BIO.map((para) => (
+                      <p key={para}>{para}</p>
+                    ))}
+                  </div>
                 </div>
               </div>
             </Reveal>
@@ -1672,12 +1712,8 @@ const Build = () => {
             <div className="mx-auto max-w-2xl text-center">
               <Eyebrow color={CYAN}>From the workshops this cohort is built on</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
-                They already did this.
+                People who sat in the room
               </h2>
-              <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                Two students on video. The rest in writing, from the workshops this
-                cohort is built on.
-              </p>
             </div>
           </Reveal>
           <ProofClips />
@@ -1689,8 +1725,13 @@ const Build = () => {
             <div className="mx-auto max-w-2xl text-center">
               <Eyebrow color={PURPLE}>2. How does it work?</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                {FRAMEWORK}. Problem, promise, demand, build.
+                {FRAMEWORK}
               </h2>
+              <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
+                Problem. Promise. Demand. Build.
+                <br />
+                In that order. Build comes last for a reason.
+              </p>
             </div>
           </Reveal>
 
@@ -1781,46 +1822,37 @@ const Build = () => {
           </Reveal>
         </section>
 
-        {/* ══ HOW IT WORKS — Alif "You have the what" layout + copy ══ */}
+        {/* ══ WHAT CHANGES IN SIX WEEKS ══
+            Four shifts, two up two down. Framed as what the reader starts or
+            stops doing, so the section reads as their change rather than the
+            cohort's feature list. ══ */}
         <section id="how-it-works" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
-            <div className="mx-auto max-w-2xl text-center md:mx-0 md:max-w-3xl md:text-left">
-              <Eyebrow color={TEAL}>How it works</Eyebrow>
-              <h2 className="mt-4 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-[2.65rem]">
-                You have the &ldquo;what.&rdquo; You just need the &ldquo;how.&rdquo;
+            <div className="mx-auto max-w-2xl text-center">
+              <Eyebrow color={TEAL}>What changes in six weeks</Eyebrow>
+              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
+                You come in with a job. You leave with a business.
               </h2>
             </div>
           </Reveal>
 
-          {/*
-            Wide layout: text column sets the row height; photo is absolutely
-            cropped to that height so the portrait's intrinsic size can't leave
-            an empty band under the copy.
-          */}
-          <div className="mt-8 grid gap-10 md:mt-12 md:grid-cols-2 md:items-stretch md:gap-14">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] shadow-[0_28px_70px_-28px_rgba(80,40,16,0.38)] ring-1 ring-[#1c100e]/10 md:aspect-auto md:min-h-0 md:h-full">
-              <img
-                src="https://d2mp3ttz3u5gci.cloudfront.net/build/about-me/4Q0A4211.jpg"
-                alt="Ahmed teaching entrepreneurship to a packed hall"
-                className="h-full w-full object-cover object-center md:absolute md:inset-0"
-              />
-            </div>
-
-            <div className="flex flex-col gap-8 md:justify-between md:gap-6 md:py-1">
-              {HOW_IT_WORKS.map((item, i) => (
-                <Reveal key={item.title} delay={i * 80}>
-                  <div>
-                    <h3 className="font-heading text-xl font-light tracking-tight md:text-[1.45rem]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                      {item.body}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
+          <ol className="mt-12 grid gap-10 md:mt-16 md:grid-cols-2 md:gap-x-14 md:gap-y-12">
+            {HOW_IT_WORKS.map((item, i) => (
+              <Reveal key={item.n} delay={i * 80}>
+                <li>
+                  <p className="font-heading text-[11px] font-medium tracking-[0.22em] text-[#C4893A]">
+                    {item.n}
+                  </p>
+                  <h3 className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.75rem]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
+                    {item.body}
+                  </p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
         </section>
         </div>
 
