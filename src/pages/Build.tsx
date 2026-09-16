@@ -330,12 +330,6 @@ const WEEK_TIMELINE: OrbitalTimelineItem[] = COHORT_WEEKS.map((w, i) => ({
   ),
 }));
 
-const WEEK_STATS = [
-  { value: '6', label: 'Weeks, live' },
-  { value: '3', label: 'Hours a week' },
-  { value: `${SEATS}`, label: 'Seats in the room' },
-];
-
 /* Guest lineup — all three confirmed (sources: slush.org/about-us,
    ilabventures.tech, greenstep.fi/tilitoimisto-turku). */
 const GUESTS = [
@@ -1903,21 +1897,6 @@ const Build = () => {
               outcomeLabel="You leave with"
               relatedLabel="Either side"
             />
-
-            <Reveal>
-              <ul className="mx-auto flex max-w-lg justify-center gap-10 md:gap-16">
-                {WEEK_STATS.map((s) => (
-                  <li key={s.label} className="text-center">
-                    <p className="font-heading text-[2.6rem] font-light leading-none tracking-tight tabular-nums md:text-5xl">
-                      {s.value}
-                    </p>
-                    <p className="mt-2 font-heading text-[11px] font-medium uppercase tracking-[0.18em] text-[hsl(0,0%,10%)]/45">
-                      {s.label}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
           </div>
 
           <div className="mx-auto max-w-3xl px-4">
