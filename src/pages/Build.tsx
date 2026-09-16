@@ -52,9 +52,8 @@ const FRAMEWORK = 'The 0→1 Framework';
 const CLUB = "Founders' Club";
 const PRICE = 425;
 const SEATS = 10;
-const COHORT_FULL = false;
 const COHORT_LABEL = 'mid-October';
-const CTA_LABEL = 'Check if you are qualified for this cohort.';
+const CTA_LABEL = "See if I'd take you";
 /** Alif-style status: name the closed round, then the open one. */
 const COHORT_STATUS =
   'Cohort 1 (September) has officially closed. Cohort 2 (mid-October) is open.';
@@ -99,12 +98,27 @@ const TRUST: TrustItem[] = [
 ];
 
 /**
- * Application happens over WhatsApp. The visitor only asks to be considered;
- * Ahmed sends the qualifying questions in reply, so nothing has to be
- * composed or answered before the conversation has started.
+ * Application happens over WhatsApp. The four questions arrive pre-filled and
+ * unanswered, so the first message is already the qualification — and the
+ * gate section above the FAQ shows the same four before anyone taps.
  */
-const APPLY_MESSAGE =
-  "Hi Ahmed! I'd like to be considered for the October cohort. Please send me the qualifying questions.";
+const APPLY_MESSAGE = `Hi Ahmed — I want to be considered for the October cohort.
+
+1) What I do, and for how many years:
+
+2) The one thing in my work that is broken:
+
+3) What I have tried with AI, and where it stopped helping:
+
+4) Why now, and not January:`;
+
+/** Shown in full in the gate section, and pre-filled into APPLY_MESSAGE. */
+const GATE_QUESTIONS = [
+  'What do you do, and for how many years?',
+  'What is the one thing in your work that is broken — the thing you would fix if you could build software?',
+  'What have you already tried with AI? Where did it stop being useful?',
+  'Why now, and not in January?',
+];
 
 /**
  * The low-friction path for people who are not ready to answer three
@@ -307,13 +321,13 @@ const HOW_IT_WORKS = [
 
 /* What is included */
 const INCLUDED = [
-  '6 live sessions · 3 hours · 10 people',
-  'Every recording · yours forever',
-  `${FRAMEWORK} · the canvases`,
-  'The prompts · the tools · the slides',
-  'Three guest sessions: Slush marketing, a VC, a growth operator',
-  `${CLUB} · for life`,
-  'You can still message me',
+  '6 live sessions · 3 hours each · 10 people',
+  'Every recording, yours forever',
+  `${FRAMEWORK} and all the canvases`,
+  'The prompts, the tools, the slides',
+  'Three guest sessions: marketing, funding, growth',
+  `${CLUB}, for life`,
+  'You can message me directly',
   'Week 6: you show the room',
 ];
 
@@ -474,33 +488,47 @@ const FIT_SKIP = [
 const FAQS = [
   {
     q: 'I am not technical. Is this for me?',
-    a: 'Yes. You talk in plain words. AI does the building.',
+    a: 'Yes. That is the point. You talk in plain words. The AI workers build.',
   },
   {
     q: 'Can I do this with a full-time job?',
-    a: 'Three hours a week. Outside work. That is the plan.',
+    a: 'Three hours a week, outside work hours. That is the whole design.',
   },
   {
     q: 'What if I have no idea?',
-    a: 'Come anyway. No idea, one idea, or too many. We pick which.',
+    a: 'Come anyway. No idea, one idea, or too many. Week one we pick.',
   },
   {
     q: 'What if I miss a session?',
-    a: 'It is recorded. Yours forever. Message me between.',
+    a: 'Every session is recorded and yours forever. Message me between.',
   },
   {
     q: 'What happens when the six weeks end?',
-    a: `The cohort ends. The ${CLUB} does not.`,
+    a: `The cohort ends. ${CLUB} does not. You keep the key.`,
   },
   {
     q: 'What if it is not for me?',
-    a: 'Come twice. If it is wrong, every dollar comes back.',
+    a: 'Come to the first two. If it is wrong, every dollar comes back.',
   },
   {
     q: 'How do I get in?',
-    a: COHORT_FULL
-      ? `This cohort is full. Join the ${COHORT_LABEL} waitlist on WhatsApp. I read every message.`
-      : 'WhatsApp. Three questions. Ten seats. Some are gone. I read every one.',
+    a: 'Send me four answers on WhatsApp. I read every one. Most answers are no. If it is no, I tell you why and send you the recorded workshop and a 90-day plan.',
+  },
+  {
+    q: 'Do I give up equity?',
+    a: 'No. You own everything you build. I take nothing.',
+  },
+  {
+    q: 'Will I get funding?',
+    a: 'Not from me. Week six you meet a VC who has seen 1,500 startups. What happens after that is between you and him.',
+  },
+  {
+    q: 'I am 45. Am I too old?',
+    a: 'The opposite. The 25-year-olds have tools. You have judgment. Tools are cheap now. Judgment is not.',
+  },
+  {
+    q: 'Can I use this at my current job?',
+    a: 'Yes. Most people do both. You learn to run AI workers. That works on your own business and on Monday morning.',
   },
 ];
 
@@ -2134,9 +2162,12 @@ const Build = () => {
             <div className="grid items-start gap-12 md:grid-cols-[0.95fr_1.05fr] md:gap-16">
               <Reveal>
                 <div className="text-center md:text-left">
-                  <Eyebrow color={PURPLE}>3. How much does it cost?</Eyebrow>
-                  <h2
-                    className="mt-3 font-heading text-[clamp(4.5rem,18vw,7.5rem)] font-light leading-none tracking-[-0.04em]"
+                  <Eyebrow color={PURPLE}>The offer</Eyebrow>
+                  <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
+                    3. How much does it cost?
+                  </h2>
+                  <p
+                    className="mt-5 font-heading text-[clamp(4.5rem,18vw,7.5rem)] font-light leading-none tracking-[-0.04em]"
                     style={{
                       background: `linear-gradient(120deg, ${AMBER} 10%, #C4893A 45%, ${CORAL} 90%)`,
                       WebkitBackgroundClip: 'text',
@@ -2145,12 +2176,15 @@ const Build = () => {
                     }}
                   >
                     ${PRICE}
-                  </h2>
-                  <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-2xl">
-                    One seat. Six weeks. {SEATS} people.
                   </p>
-                  <p className="mt-3 font-heading text-sm font-light text-[hsl(0,0%,10%)]/55 md:text-[15px]">
-                    Live · fully remote · Cohort 2 · {COHORT_LABEL}
+                  <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-2xl">
+                    One seat. Six weeks. Ten people.
+                    <br />
+                    Live, fully remote, {COHORT_LABEL}.
+                  </p>
+                  <p className="mt-5 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/65 md:text-[17px]">
+                    Come to the first two sessions. If it is wrong for you, every dollar comes
+                    back. No conversation needed.
                   </p>
 
                   <div className="mt-8 hidden md:block">
@@ -2186,11 +2220,6 @@ const Build = () => {
                       </li>
                     ))}
                   </ul>
-                  <div className="border-t border-[#1c100e]/8 bg-[#16110f] px-6 py-5 md:px-8">
-                    <p className="font-heading text-sm font-light leading-relaxed text-[#F7E9D6]/85 md:text-[15px]">
-                      Come twice. If it is not for you, you get every dollar back.
-                    </p>
-                  </div>
                 </div>
               </Reveal>
             </div>
@@ -2201,6 +2230,78 @@ const Build = () => {
                 <p className="mt-4 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/60">
                   {COHORT_STATUS}
                 </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ══ THE QUALIFICATION GATE ══
+            The four questions are shown here in full before anyone taps, so
+            the button is not a leap — it opens WhatsApp with these same four
+            pre-filled (APPLY_MESSAGE). Dark band: it is the last thing between
+            the reader and applying, and it should not read like more page. ══ */}
+        <section id="gate" className="relative mt-16 scroll-mt-6 overflow-hidden text-[#F7E9D6] md:mt-24">
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse 80% 60% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)',
+            }}
+          />
+          <div className="relative mx-auto max-w-3xl px-4 py-20 md:py-28">
+            <Reveal>
+              <div className="text-center">
+                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/45">
+                  How you get in
+                </p>
+                <h2 className="mt-4 font-heading text-3xl font-light leading-[1.12] tracking-tight md:text-[2.65rem]">
+                  I am looking for ten experts.
+                  <br />
+                  You are probably not one of them.
+                </h2>
+              </div>
+            </Reveal>
+
+            <Reveal delay={80}>
+              <p className="mx-auto mt-8 max-w-xl text-center font-heading text-base font-light leading-relaxed text-[#F7E9D6]/65 md:text-[17px]">
+                I am not filling seats. I am choosing nine people to spend six weeks with. I read
+                every message myself.
+              </p>
+            </Reveal>
+
+            <Reveal delay={140}>
+              <p className="mt-12 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
+                Send me four answers on WhatsApp
+              </p>
+              <ol className="mt-6 space-y-6">
+                {GATE_QUESTIONS.map((q, i) => (
+                  <li key={q} className="flex gap-4">
+                    <span className="mt-1 shrink-0 font-heading text-sm font-light tabular-nums text-[#F7E9D6]/40">
+                      {i + 1}.
+                    </span>
+                    <span className="font-heading text-lg font-light leading-snug text-[#F7E9D6]/90 md:text-xl">
+                      {q}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <div className="mt-12 space-y-4 border-t border-[#F7E9D6]/15 pt-8 font-heading text-base font-light leading-relaxed text-[#F7E9D6]/65 md:text-[17px]">
+                <p>Usually I answer within a day.</p>
+                <p>If it is a yes, I send you the details and you decide. No call. No pitch.</p>
+                <p>
+                  If it is a no, I tell you why, and I send you the recorded workshop and a 90-day
+                  plan so you are not stuck.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={260}>
+              <div className="mt-10 text-center">
+                <ApplyButton where="gate" tone="hero" />
               </div>
             </Reveal>
           </div>
@@ -2268,14 +2369,15 @@ const Build = () => {
           />
           <div className="relative mx-auto max-w-3xl px-4 py-20 text-center md:py-28">
             <Reveal>
-              <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
-                Cohort 2 · {COHORT_LABEL}
-              </p>
-              <h2 className="mt-5 font-heading text-[clamp(2.4rem,7vw,4.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#F7E9D6]">
-                The idea has waited long enough.
+              {/* The headline carries the cohort and the date, so the kicker
+                  that used to sit above it would only say them twice. */}
+              <h2 className="font-heading text-[clamp(2.4rem,7vw,4.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#F7E9D6]">
+                Ten seats. {COHORT_LABEL.charAt(0).toUpperCase() + COHORT_LABEL.slice(1)}.
               </h2>
               <p className="mx-auto mt-5 max-w-lg font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60 md:text-lg">
-                {COHORT_STATUS} Six weeks. Ten seats. A product at the end, not notes.
+                Six weeks. A live product at the end, not notes.
+                <br />
+                Cohort 1 is closed. Cohort 2 is open.
               </p>
               <div className="mt-9">
                 <a
@@ -2289,7 +2391,7 @@ const Build = () => {
                 </a>
               </div>
               <p className="mt-5 font-heading text-sm font-light text-[#F7E9D6]/45">
-                Want the details first?{' '}
+                Want to read it first?{' '}
                 <a
                   href={whatsappUrl(DETAILS_MESSAGE)}
                   target="_blank"
@@ -2299,7 +2401,7 @@ const Build = () => {
                 >
                   Reply &lsquo;details&rsquo;
                 </a>{' '}
-                and I&rsquo;ll send the doc. No call.
+                and I send the doc. No call.
               </p>
             </Reveal>
           </div>
