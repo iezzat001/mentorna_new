@@ -166,12 +166,12 @@ export const defaultSEO: SEOProps = {
     '0 to 1 cohort, AI entrepreneurship, private mentorship, build with AI, startup cohort, Ahmed Ezzat, Mentorna, domain experts, founder mentorship',
   ogTitle: 'Mentorna® · 0→1 Cohort & Private Mentorship',
   ogDescription:
-    'Build a business with AI teammates in four weeks, or work 1:1 mentorship with Ahmed Ezzat.',
+    'Build a business with AI teammates in six weeks, or work 1:1 mentorship with Ahmed Ezzat.',
   ogImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-og-image.jpg',
   ogUrl: 'https://www.mentorna.com',
   twitterTitle: 'Mentorna® · 0→1 Cohort & Private Mentorship',
   twitterDescription:
-    'Build a business with AI teammates in four weeks, or work 1:1 mentorship with Ahmed Ezzat.',
+    'Build a business with AI teammates in six weeks, or work 1:1 mentorship with Ahmed Ezzat.',
   twitterImage: 'https://d2mp3ttz3u5gci.cloudfront.net/mentorna-twitter-card.jpg',
   canonical: 'https://www.mentorna.com/',
   noindex: false,
