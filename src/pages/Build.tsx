@@ -311,7 +311,7 @@ const INCLUDED = [
   'Every recording · yours forever',
   `${FRAMEWORK} · the canvases`,
   'The prompts · the tools · the slides',
-  'Guest sessions: marketing, funding, an investor',
+  'Three guest sessions: Slush marketing, a VC, a growth operator',
   `${CLUB} · for life`,
   'You can still message me',
   'Week 6: you show the room',
@@ -394,14 +394,26 @@ const CLUB_BEATS = [
   {
     n: '02',
     t: 'Direct',
-    d: 'Ahmed still answers. After week six. After that too.',
+    d: 'I still answer. After week six. After that too.',
   },
   {
     n: '03',
-    t: 'Already in',
-    d: 'People who hit the same wall. They stayed.',
+    t: 'People who hit the same wall',
+    d: 'They stayed. So can you.',
   },
 ];
+
+/* The fourth beat runs long and does different work from the other three —
+   it explains the ten-seat cap and says plainly which of the club's benefits
+   exist today. It gets its own full-width block rather than a grid cell. */
+const CLUB_DOOR = {
+  n: '04',
+  t: 'The door out',
+  body: [
+    'This is why I only take ten. A room worth being in has to be a room that is hard to get into. I am building this club so the people inside it can meet investors, get credits from AI platforms, and hear about grants before they close.',
+    'Some of that exists now. Some I am still building. I will tell you exactly which is which before you pay.',
+  ],
+};
 
 const PROOF_CLIPS = [
   {
@@ -2022,11 +2034,10 @@ const Build = () => {
                   {CLUB}
                 </h2>
                 <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/80 md:text-2xl">
-                  The cohort ends. You do not leave.
+                  Six weeks is enough to ship. A company needs a room after that.
                 </p>
                 <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                  Six weeks is enough to ship. A company needs a room after that. Everyone who
-                  finishes walks in and keeps the key.
+                  Everyone who finishes walks in and keeps the key. For life.
                 </p>
               </div>
             </Reveal>
@@ -2079,6 +2090,22 @@ const Build = () => {
                 </Reveal>
               ))}
             </ol>
+
+            <Reveal delay={80}>
+              <div className="mt-12 rounded-[28px] bg-[#FFFCFA] px-7 py-9 ring-1 ring-[#1c100e]/10 md:mt-16 md:px-12 md:py-11">
+                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#C4893A]">
+                  {CLUB_DOOR.n}
+                </p>
+                <p className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.85rem]">
+                  {CLUB_DOOR.t}
+                </p>
+                <div className="mt-4 max-w-2xl space-y-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/70 md:text-[17px]">
+                  {CLUB_DOOR.body.map((para) => (
+                    <p key={para}>{para}</p>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
           </div>
         </section>
 
