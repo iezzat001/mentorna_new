@@ -10,7 +10,9 @@ import { useSEO } from '@/hooks/useSEO';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import Footer from '@/components/Footer';
 import CardFanCarousel from '@/components/ui/card-fan-carousel';
+import CommunityOrbit, { type OrbitItem, type OrbitStat } from '@/components/ui/builders-community-hero';
 import { whatsappUrl } from '@/lib/whatsapp';
+import { COHORT_WEEKS, type CohortWeek } from '@/data/cohortWeeks';
 import {
   testimonials,
   workshopVideoPoster,
@@ -286,6 +288,44 @@ const INCLUDED = [
   `${CLUB} · for life`,
   'You can still message me',
   'Week 6: you show the room',
+];
+
+/* ────────────────────────────────────────────────────────────
+   The six weeks — orbit badges + the framework colour each week inherits
+   ──────────────────────────────────────────────────────────── */
+
+/** Ties a week's card back to the framework step it belongs to. */
+const STEP_COLOR: Record<CohortWeek['step'], string> = {
+  Problem: AMBER,
+  Promise: PURPLE,
+  Build: TEAL,
+  Demand: CYAN,
+};
+
+/* All six weeks ride the outer ring so the arc reads as one line rather than
+   a zigzag between rings. Spacing is deliberately uneven: horizontal distance
+   along the arc is r·sin(θ) per degree, so the same angular step buys far less
+   room near the ends than at the top. These angles are mirrored around 90° and
+   widen towards the edges to keep ~170px between neighbours either way. */
+const WEEK_ORBIT_ANGLES = [150, 122, 100, 80, 58, 30];
+
+const WEEK_ORBIT_ITEMS: OrbitItem[] = COHORT_WEEKS.map((w, i) => ({
+  kind: 'pill',
+  ring: 'outer',
+  angle: WEEK_ORBIT_ANGLES[i],
+  icon: (
+    <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[hsl(0,0%,10%)] text-[10px] font-semibold text-white">
+      {w.n}
+    </span>
+  ),
+  // Badges stay short — the clause after the comma lives in the list below.
+  label: w.title.split(',')[0],
+}));
+
+const WEEK_ORBIT_STATS: OrbitStat[] = [
+  { value: '6', label: 'Weeks, live' },
+  { value: '3', label: 'Hours a week' },
+  { value: `${SEATS}`, label: 'Seats in the room' },
 ];
 
 /* Guest lineup — all three confirmed (sources: slush.org/about-us,
@@ -1820,6 +1860,79 @@ const Build = () => {
           </div>
         </section>
         </div>
+
+        {/* ══ THE SIX WEEKS ══
+            The arc is decoration — it carries the titles and the shape of the
+            commitment, nothing a reader needs. The ordered list beneath it is
+            the real schedule: every week is legible without hovering,
+            clicking, or waiting for an animation to finish, which is also
+            what search engines and screen readers get. ══ */}
+        <section id="weeks" className="scroll-mt-6 pt-16 md:pt-24">
+          <div className="mx-auto max-w-5xl px-4">
+            <Reveal>
+              <div className="mx-auto max-w-2xl text-center">
+                <Eyebrow color={CORAL}>Week by week</Eyebrow>
+                <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
+                  Six weeks. One move each.
+                </h2>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Desktop only. The stage is 1200px wide and the component floors
+              its scale at 0.6, so below ~720px of viewport the outer weeks are
+              clipped off both edges. That threshold is md, and the list below
+              is the real schedule anyway — phones lose nothing but decoration,
+              and skip animating a 1200px stage they cannot see. */}
+          <CommunityOrbit
+            className="mt-8 hidden text-[hsl(0,0%,10%)] md:mt-12 md:block"
+            items={WEEK_ORBIT_ITEMS}
+            stats={WEEK_ORBIT_STATS}
+            headlineAs="p"
+            headline={<>Every week ends with something that did not exist on Monday.</>}
+          />
+
+          <div className="mx-auto max-w-3xl px-4">
+            <ol className="border-t border-[#1c100e]/10">
+              {COHORT_WEEKS.map((w, i) => (
+                <li key={w.n} className="border-b border-[#1c100e]/10">
+                  <Reveal delay={i * 60}>
+                    <div className="grid gap-2 py-7 md:grid-cols-[8rem_1fr] md:gap-8 md:py-9">
+                      <div>
+                        <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
+                          Week {w.n}
+                        </p>
+                        <p
+                          className="mt-1.5 inline-flex items-center gap-1.5 font-heading text-[11px] font-medium uppercase tracking-[0.16em]"
+                          style={{ color: STEP_COLOR[w.step] }}
+                        >
+                          <span
+                            aria-hidden
+                            className="inline-block h-1.5 w-1.5 rounded-full"
+                            style={{ background: STEP_COLOR[w.step] }}
+                          />
+                          {w.step}
+                        </p>
+                      </div>
+                      <div>
+                        <h3 className="font-heading text-2xl font-light leading-tight tracking-tight md:text-[1.85rem]">
+                          {w.title}
+                        </h3>
+                        <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
+                          {w.brief}
+                        </p>
+                        <p className="mt-3 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/55">
+                          <span className="text-[hsl(0,0%,10%)]/75">You leave with:</span>{' '}
+                          {w.outcome}
+                        </p>
+                      </div>
+                    </div>
+                  </Reveal>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
 
         {/* ══ GUEST SESSIONS — cinematic, same family as Who runs it.
             These are real, confirmed guests (see GUESTS) — not placeholders.
