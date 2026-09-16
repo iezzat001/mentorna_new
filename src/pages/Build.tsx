@@ -1,16 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ChevronDown,
+  Code2,
+  Compass,
   ExternalLink,
+  Megaphone,
   MessageCircle,
   Play,
+  Presentation,
+  Radar,
+  Send,
   Star,
 } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import Footer from '@/components/Footer';
 import CardFanCarousel from '@/components/ui/card-fan-carousel';
-import CommunityOrbit, { type OrbitItem, type OrbitStat } from '@/components/ui/builders-community-hero';
+import RadialOrbitalTimeline, {
+  type OrbitalTimelineItem,
+} from '@/components/ui/radial-orbital-timeline';
 import { whatsappUrl } from '@/lib/whatsapp';
 import { COHORT_WEEKS, type CohortWeek } from '@/data/cohortWeeks';
 import {
@@ -302,27 +310,27 @@ const STEP_COLOR: Record<CohortWeek['step'], string> = {
   Demand: CYAN,
 };
 
-/* All six weeks ride the outer ring so the arc reads as one line rather than
-   a zigzag between rings. Spacing is deliberately uneven: horizontal distance
-   along the arc is r·sin(θ) per degree, so the same angular step buys far less
-   room near the ends than at the top. These angles are mirrored around 90° and
-   widen towards the edges to keep ~170px between neighbours either way. */
-const WEEK_ORBIT_ANGLES = [150, 122, 100, 80, 58, 30];
+/* One icon per week, in order. */
+const WEEK_ICONS = [Compass, Megaphone, Code2, Radar, Send, Presentation];
 
-const WEEK_ORBIT_ITEMS: OrbitItem[] = COHORT_WEEKS.map((w, i) => ({
-  kind: 'pill',
-  ring: 'outer',
-  angle: WEEK_ORBIT_ANGLES[i],
-  icon: (
-    <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[hsl(0,0%,10%)] text-[10px] font-semibold text-white">
-      {w.n}
-    </span>
+/* Each week orbits as a node. `relatedIds` are the weeks either side, so the
+   expanded card doubles as a way to walk the schedule in order. Node labels
+   drop the clause after the comma — the full title is in the list below. */
+const WEEK_TIMELINE: OrbitalTimelineItem[] = COHORT_WEEKS.map((w, i) => ({
+  id: w.n,
+  title: w.title.split(',')[0],
+  date: `Week ${w.n}`,
+  content: w.brief,
+  category: w.step,
+  accent: STEP_COLOR[w.step],
+  outcome: w.outcome,
+  icon: WEEK_ICONS[i],
+  relatedIds: [COHORT_WEEKS[i - 1]?.n, COHORT_WEEKS[i + 1]?.n].filter(
+    (n): n is number => typeof n === 'number',
   ),
-  // Badges stay short — the clause after the comma lives in the list below.
-  label: w.title.split(',')[0],
 }));
 
-const WEEK_ORBIT_STATS: OrbitStat[] = [
+const WEEK_STATS = [
   { value: '6', label: 'Weeks, live' },
   { value: '3', label: 'Hours a week' },
   { value: `${SEATS}`, label: 'Seats in the room' },
@@ -1879,18 +1887,38 @@ const Build = () => {
             </Reveal>
           </div>
 
-          {/* Desktop only. The stage is 1200px wide and the component floors
-              its scale at 0.6, so below ~720px of viewport the outer weeks are
-              clipped off both edges. That threshold is md, and the list below
-              is the real schedule anyway — phones lose nothing but decoration,
-              and skip animating a 1200px stage they cannot see. */}
-          <CommunityOrbit
-            className="mt-8 hidden text-[hsl(0,0%,10%)] md:mt-12 md:block"
-            items={WEEK_ORBIT_ITEMS}
-            stats={WEEK_ORBIT_STATS}
-            headlineAs="p"
-            headline={<>Every week ends with something that did not exist on Monday.</>}
-          />
+          <div className="mx-auto max-w-5xl px-4">
+            <Reveal delay={60}>
+              <p className="mx-auto mt-4 max-w-xl text-center font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/65 md:text-lg">
+                Every week ends with something that did not exist on Monday.
+              </p>
+            </Reveal>
+
+            {/* The orbit sizes its radius off this container, so it fits a
+                phone as well as a desktop. It is still decoration: the list
+                underneath carries the same six weeks in full. */}
+            <RadialOrbitalTimeline
+              className="mt-2"
+              timelineData={WEEK_TIMELINE}
+              outcomeLabel="You leave with"
+              relatedLabel="Either side"
+            />
+
+            <Reveal>
+              <ul className="mx-auto flex max-w-lg justify-center gap-10 md:gap-16">
+                {WEEK_STATS.map((s) => (
+                  <li key={s.label} className="text-center">
+                    <p className="font-heading text-[2.6rem] font-light leading-none tracking-tight tabular-nums md:text-5xl">
+                      {s.value}
+                    </p>
+                    <p className="mt-2 font-heading text-[11px] font-medium uppercase tracking-[0.18em] text-[hsl(0,0%,10%)]/45">
+                      {s.label}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
 
           <div className="mx-auto max-w-3xl px-4">
             <ol className="border-t border-[#1c100e]/10">
