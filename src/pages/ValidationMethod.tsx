@@ -340,10 +340,6 @@ const ValidationMethod = () => {
               {submitting ? 'Opening…' : CTA_LABEL}
             </button>
           </form>
-
-          <p className="mt-5 text-center font-heading text-sm font-light text-[#F7E9D6]/40">
-            No call, no pitch. Unsubscribe whenever.
-          </p>
         </div>
       </div>
     );
