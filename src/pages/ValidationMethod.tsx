@@ -37,6 +37,58 @@ const UNLOCK_KEY = 'validation_method_unlocked';
 const CTA_LABEL = 'Get the Validation Method';
 
 /* ────────────────────────────────────────────────────────────
+   Closing cohort band — lifted verbatim from /community, including
+   its copy. Everything below is that page's, not this one's: if the
+   cohort facts change, /community is the source to edit and this is
+   the copy that has to follow.
+   ──────────────────────────────────────────────────────────── */
+const PRISMA_BG_VIDEO =
+  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4';
+const PRISMA_BG_POSTER = '/hero/prisma-bg.jpg';
+
+const SEATS_LEFT = 6;
+const COHORT_STATUS =
+  'Cohort 1 (September) has officially closed. Cohort 2 (mid-October) is open.';
+
+const CTA_AI_TOOLS = [
+  {
+    name: 'Cursor',
+    src: '/ai-tools/cursor.svg',
+    className: 'left-[4%] top-[18%] lg:left-[8%]',
+    float: 'hero-tool-float',
+  },
+  {
+    name: 'Claude',
+    src: '/ai-tools/claude.svg',
+    className: 'right-[4%] top-[16%] lg:right-[8%]',
+    float: 'hero-tool-float hero-tool-float-late',
+  },
+  {
+    name: 'Codex',
+    src: '/ai-tools/codex.svg',
+    className: 'left-[6%] bottom-[18%] lg:left-[10%]',
+    float: 'hero-tool-float hero-tool-float-mid',
+  },
+  {
+    name: 'Grokbot',
+    src: '/ai-tools/grokbot.svg',
+    className: 'right-[5%] bottom-[16%] lg:right-[9%]',
+    float: 'hero-tool-float hero-tool-float-last',
+  },
+] as const;
+
+/* /build pins the scroll position on mount; without this the cohort page
+   opens part-way down. Same helper Community.tsx uses. */
+const scrollBuildToTop = () => {
+  const toTop = () => {
+    window.scrollTo(0, 0);
+    document.getElementById('root')?.scrollTo(0, 0);
+  };
+  toTop();
+  requestAnimationFrame(() => requestAnimationFrame(toTop));
+};
+
+/* ────────────────────────────────────────────────────────────
    Shared primitives — mirrored from /build rather than imported,
    which is how Community.tsx does it too. Build.tsx keeps these
    module-private, so extracting them is a refactor of its own.
@@ -556,37 +608,97 @@ const ValidationMethod = () => {
         )}
 
         {/* ══ COHORT CTA ══
-            Same closing band as /community: dark, floating tool marks, one
-            link into /build. */}
-        <section className="relative mt-16 overflow-hidden text-[#F7E9D6] md:mt-24">
+            Mini /build hero: Prisma atmosphere, floating AI workers, centered
+            light type and a white pill CTA. Full-bleed so it reads as the next
+            chapter, not a card ad. */}
+        <section className="relative isolate mt-8 overflow-hidden text-white md:mt-12">
+          <div aria-hidden className="absolute inset-0 overflow-hidden">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster={PRISMA_BG_POSTER}
+              className="absolute inset-0 h-full w-full scale-110 object-cover"
+              src={PRISMA_BG_VIDEO}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(58,36,24,0.55) 0%, rgba(26,16,16,0.4) 42%, rgba(12,10,11,0.82) 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-0 mix-blend-soft-light"
+              style={{
+                background:
+                  "radial-gradient(ellipse 80% 55% at 50% 18%, rgba(232,168,90,0.45), transparent 62%)",
+              }}
+            />
+            <div className="noise-overlay absolute inset-0 opacity-[0.28] mix-blend-overlay" />
+          </div>
+
           <div
             aria-hidden
-            className="absolute inset-0"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[38%]"
             style={{
               background:
-                'radial-gradient(ellipse 90% 70% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)',
+                "linear-gradient(to top, #0c0a0b 0%, rgba(28,16,14,0.75) 40%, transparent 100%)",
+              filter: "blur(1.5px)",
             }}
           />
-          <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center md:py-28">
-            <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
-              Cohort 2 · Mid-October · Live · Remote · 6 weeks · 10 seats
+
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-[5] hidden md:block"
+          >
+            {CTA_AI_TOOLS.map((tool) => (
+              <div
+                key={tool.name}
+                className={`${tool.float} absolute ${tool.className}`}
+              >
+                <div className="flex h-16 w-16 items-center justify-center rounded-[1.15rem] bg-white/[0.08] shadow-[0_20px_60px_-18px_rgba(0,0,0,0.75)] ring-1 ring-white/20 backdrop-blur-md lg:h-[4.5rem] lg:w-[4.5rem]">
+                  <img
+                    src={tool.src}
+                    alt=""
+                    className="h-8 w-8 lg:h-9 lg:w-9"
+                  />
+                </div>
+                <p className="mt-2 text-center font-heading text-[10px] font-medium tracking-[0.14em] text-white/50">
+                  {tool.name}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="relative z-20 mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center md:py-28">
+            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
+              Cohort 2 · Live · Fully remote · 4 weeks · {SEATS_LEFT} of 10 seats left
             </p>
-            <h2 className="mt-5 font-heading text-[clamp(2.2rem,6vw,3.6rem)] font-light leading-[1.05] tracking-[-0.03em]">
-              Or run it with me for six weeks.
+            <h2 className="mt-4 max-w-2xl font-heading text-[2.15rem] font-light leading-[1.08] tracking-tight text-white md:text-5xl lg:text-[3.25rem]">
+              Go from idea to{" "}
+              <span style={{ color: AMBER }}>reality.</span>
             </h2>
-            <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60 md:text-lg">
-              This method is one week of the 0→1 cohort. The other five take you from the evidence
-              to a live product and the people who might pay for it.
+            <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-white/65 md:text-lg">
+              Live and designed for people with a full schedule. Four weeks with AI
+              teammates, to a product people pay for.
             </p>
-            <div className="mt-9">
+
+            <div className="mt-8">
               <Link
                 to="/build"
-                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#F7E9D6] px-8 text-sm font-medium tracking-wide text-[#0c0a0b] transition-transform hover:scale-[1.03] md:min-h-[3.25rem] md:px-9 md:text-base"
+                onClick={scrollBuildToTop}
+                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-sm font-medium tracking-wide text-[hsl(0,0%,8%)] transition-colors hover:bg-white/90 md:min-h-[3.25rem] md:px-9 md:text-base"
               >
-                See the cohort
+                Apply for the mid-October cohort
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
+            <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/45">
+              {COHORT_STATUS}{" "}
+              <span style={{ color: AMBER }}>{SEATS_LEFT} seats left.</span>
+            </p>
           </div>
         </section>
       </main>
