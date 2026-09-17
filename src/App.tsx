@@ -15,6 +15,7 @@ import SkillsIn2026 from "./pages/SkillsIn2026";
 import ProblemFinder from "./pages/ProblemFinder";
 import OneFeature from "./pages/OneFeature";
 import Validation from "./pages/Validation";
+import ValidationMethod from "./pages/ValidationMethod";
 import Startup30 from "./pages/Startup30";
 import MohamedOffer from "./pages/MohamedOffer";
 import JassimOffer from "./pages/JassimOffer";
@@ -106,6 +107,11 @@ const App = () => {
 
                   {/* Idea validation — Episode 3 (Arabic RTL). Comment word: "validation" */}
                   <Route path="/validation" element={<Validation />} />
+
+                  {/* Validation Method lead magnet — email gate opens the survey
+                      set in place. Distinct from /validation above, which is the
+                      Arabic funnel episode. */}
+                  <Route path="/validate" element={<ValidationMethod />} />
 
                   {/* Startup valuation calculator lead magnet */}
                   <Route path="/valuation" element={<Valuation />} />
