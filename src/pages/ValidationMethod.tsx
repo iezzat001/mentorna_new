@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Check, Lock } from 'lucide-react';
+import { ArrowUpRight, Check } from 'lucide-react';
 import Footer from '@/components/Footer';
 import { useSEO } from '@/hooks/useSEO';
 import { supabase } from '@/integrations/supabase/client';
@@ -97,6 +97,32 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+/* ────────────────────────────────────────────────────────────
+   Contact validation. Both fields are the price of the method, so
+   both are checked before anything is written — a typo here is a
+   lead that cannot be reached.
+   ──────────────────────────────────────────────────────────── */
+
+/** Deliberately permissive: one @, a dot in the domain, no spaces. Anything
+ *  stricter starts rejecting real addresses (plus tags, new TLDs, unicode). */
+export const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
+
+/** Keeps a leading + and digits, drops the spaces, dashes and brackets people
+ *  type out of habit. */
+export const normaliseWhatsApp = (value: string) => {
+  const trimmed = value.trim().replace(/[\s()\-.]/g, '');
+  const plus = trimmed.startsWith('+');
+  const digits = trimmed.replace(/\D/g, '');
+  return plus ? `+${digits}` : digits;
+};
+
+/** E.164 allows at most 15 digits; below 8 is not a reachable number anywhere.
+ *  The country code is required because Ahmed has to be able to message it. */
+export const isValidWhatsApp = (value: string) => {
+  const digits = normaliseWhatsApp(value).replace(/\D/g, '');
+  return digits.length >= 8 && digits.length <= 15;
+};
+
 const Eyebrow = ({ children, color }: { children: React.ReactNode; color: string }) => (
   <p className="flex items-center justify-center gap-2 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/55">
     <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
@@ -156,12 +182,15 @@ const ValidationMethod = () => {
   });
 
   const { toast } = useToast();
-  const gateRef = useRef<HTMLDivElement>(null);
 
   const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [errors, setErrors] = useState<{ email?: string; whatsapp?: string }>({});
   const [submitting, setSubmitting] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
+  /** Null until localStorage has been read, so the gate never flashes for a
+   *  returning reader who has already unlocked. */
+  const [checked, setChecked] = useState(false);
 
   // A returning visitor who already gave an email should not hit the wall again.
   useEffect(() => {
@@ -170,28 +199,28 @@ const ValidationMethod = () => {
     } catch {
       /* private mode — the gate simply shows again */
     }
+    setChecked(true);
   }, []);
-
-  const scrollToGate = () => {
-    gateRef.current?.scrollIntoView({
-      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-      block: 'start',
-    });
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const value = email.trim();
-    if (!value || submitting) return;
+    if (submitting) return;
+
+    const nextErrors: { email?: string; whatsapp?: string } = {};
+    if (!isValidEmail(email)) nextErrors.email = 'That does not look like an email address.';
+    if (!isValidWhatsApp(whatsapp))
+      nextErrors.whatsapp = 'Include your country code, e.g. +358 41 481 9241.';
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
 
     setSubmitting(true);
     try {
       const { error } = await supabase.from('magnet_leads').insert([
         {
-          email: value,
-          whatsapp: null,
+          email: email.trim(),
+          whatsapp: normaliseWhatsApp(whatsapp),
           source: LEAD_SOURCE,
-          metadata: firstName.trim() ? { first_name: firstName.trim() } : {},
+          metadata: {},
         },
       ]);
       if (error) throw error;
@@ -204,7 +233,7 @@ const ValidationMethod = () => {
       }
       toast({
         title: 'Unlocked',
-        description: 'The survey set, the principles and the checklist are below.',
+        description: 'The full method is open below.',
       });
     } catch (err) {
       console.error('Error saving lead:', err);
@@ -218,12 +247,111 @@ const ValidationMethod = () => {
     }
   };
 
+  const field =
+    'mt-2 w-full rounded-full border bg-white/[0.04] px-5 py-3 font-heading text-base font-light text-[#F7E9D6] outline-none transition-colors placeholder:text-[#F7E9D6]/30 focus:border-[#D4A574]';
+  const label =
+    'font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/45';
+
+  /* ══ THE GATE ══
+     The whole method sits behind this. One screen, two fields, nothing to
+     read around them — the reader either wants it or does not, and a wall of
+     argument in front of a form only gets in the way of the ones who do.
+     Rendering is held until localStorage has been read so a returning reader
+     never sees the gate flash before their unlocked page. */
+  if (!checked) return <div className="min-h-screen" style={{ background: PAGE_BG }} />;
+
+  if (!unlocked) {
+    return (
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-16 font-body text-[#F7E9D6]">
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse 90% 70% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)',
+          }}
+        />
+        <div className="relative w-full max-w-md">
+          <p className={`${label} text-center`}>The Validation Method</p>
+          <h1 className="mt-4 text-center font-heading text-[2rem] font-light leading-[1.1] tracking-tight md:text-[2.6rem]">
+            Validate the problem before you build.
+          </h1>
+          <p className="mx-auto mt-4 max-w-sm text-center font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60">
+            The full framework, the survey set, and the worksheets. Free.
+          </p>
+
+          <form onSubmit={handleSubmit} noValidate className="mt-10">
+            <label htmlFor="vm-email" className={label}>
+              Email
+            </label>
+            <input
+              id="vm-email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              value={email}
+              onChange={(ev) => {
+                setEmail(ev.target.value);
+                if (errors.email) setErrors((p) => ({ ...p, email: undefined }));
+              }}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? 'vm-email-error' : undefined}
+              className={`${field} ${errors.email ? 'border-[#E8794B]' : 'border-[#F7E9D6]/20'}`}
+              placeholder="you@work.com"
+            />
+            {errors.email && (
+              <p id="vm-email-error" className="mt-2 font-heading text-sm font-light text-[#E8794B]">
+                {errors.email}
+              </p>
+            )}
+
+            <label htmlFor="vm-whatsapp" className={`${label} mt-6 block`}>
+              WhatsApp
+            </label>
+            <input
+              id="vm-whatsapp"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              value={whatsapp}
+              onChange={(ev) => {
+                setWhatsapp(ev.target.value);
+                if (errors.whatsapp) setErrors((p) => ({ ...p, whatsapp: undefined }));
+              }}
+              aria-invalid={!!errors.whatsapp}
+              aria-describedby={errors.whatsapp ? 'vm-whatsapp-error' : undefined}
+              className={`${field} ${errors.whatsapp ? 'border-[#E8794B]' : 'border-[#F7E9D6]/20'}`}
+              placeholder="+358 41 481 9241"
+            />
+            {errors.whatsapp && (
+              <p
+                id="vm-whatsapp-error"
+                className="mt-2 font-heading text-sm font-light text-[#E8794B]"
+              >
+                {errors.whatsapp}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#F7E9D6] px-8 text-sm font-medium tracking-wide text-[#0c0a0b] transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 md:min-h-[3.25rem] md:text-base"
+            >
+              {submitting ? 'Opening…' : CTA_LABEL}
+            </button>
+          </form>
+
+          <p className="mt-5 text-center font-heading text-sm font-light text-[#F7E9D6]/40">
+            No call, no pitch. Unsubscribe whenever.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen font-body text-[hsl(0,0%,10%)]" style={{ background: PAGE_BG }}>
-      {/* ══ HERO ══
-          Dark band, same family as the /build hero but without the scroll
-          choreography — this page has one job and the button should be the
-          first thing the eye lands on after the headline. */}
+      {/* ══ HEADER ══ Short, because the reader has already paid to be here. */}
       <section className="relative overflow-hidden text-[#F7E9D6]">
         <div
           aria-hidden
@@ -233,31 +361,15 @@ const ValidationMethod = () => {
               'radial-gradient(ellipse 90% 70% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)',
           }}
         />
-        <div className="relative mx-auto max-w-3xl px-4 py-24 text-center md:py-32">
+        <div className="relative mx-auto max-w-3xl px-4 py-20 text-center md:py-24">
           <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/45">
             The Validation Method
           </p>
-          <h1 className="mt-5 font-heading text-[2.15rem] font-light leading-[1.08] tracking-tight md:text-5xl lg:text-[3.4rem]">
-            Validate the problem before
-            <br />
-            you build the product.
+          <h1 className="mt-5 font-heading text-[2.15rem] font-light leading-[1.08] tracking-tight md:text-5xl">
+            Validate the problem before you build.
           </h1>
-          <p className="mx-auto mt-6 max-w-xl font-heading text-base font-light leading-relaxed text-[#F7E9D6]/65 md:text-lg">
-            A practical framework for understanding real customer pain, turning that evidence into
-            an offer, testing it with the same people, and using the first sale as a concrete
-            signal.
-          </p>
-          <div className="mt-9">
-            <button
-              type="button"
-              onClick={scrollToGate}
-              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#F7E9D6] px-8 text-sm font-medium tracking-wide text-[#0c0a0b] transition-transform hover:scale-[1.03] md:min-h-[3.25rem] md:px-9 md:text-base"
-            >
-              {CTA_LABEL}
-            </button>
-          </div>
-          <p className="mt-5 font-heading text-sm font-light text-[#F7E9D6]/45">
-            Free access · Practical framework · Built around customer evidence
+          <p className="mx-auto mt-5 max-w-lg font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60 md:text-lg">
+            Problem, evidence, offer, response, first sale. Here is the whole thing.
           </p>
         </div>
       </section>
@@ -443,92 +555,30 @@ const ValidationMethod = () => {
           </div>
         </section>
 
-        {/* ══ THE GATE ══
-            Everything above makes the method tangible. This is where the
-            email buys the parts you would otherwise have to rebuild yourself:
-            the question set, the principles behind it, and the checklist. */}
-        <section ref={gateRef} id="get-the-method" className="scroll-mt-6 pt-16 md:pt-24">
+        {/* ══ WHAT IS IN IT ══
+            The form has already been answered by the time anyone reads this,
+            so the list is an inventory rather than a sales pitch. */}
+        <section className="pt-16 md:pt-24">
           <div className="mx-auto max-w-5xl px-4">
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
-                <Eyebrow color={AMBER}>Get the method</Eyebrow>
+                <Eyebrow color={AMBER}>What you have</Eyebrow>
                 <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                  The survey set, the principles, the checklist.
+                  The whole method, in order.
                 </h2>
-                <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
-                  One email. No call, no pitch. The full question set opens on this page.
-                </p>
               </div>
             </Reveal>
 
-            {!unlocked && (
-              <Reveal delay={80}>
-                <form
-                  onSubmit={handleSubmit}
-                  className="mx-auto mt-10 max-w-xl rounded-[28px] bg-[#FFFCFA] p-6 shadow-[0_28px_70px_-36px_rgba(80,40,16,0.35)] ring-1 ring-[#1c100e]/10 md:mt-12 md:p-8"
-                >
-                  <label
-                    htmlFor="vm-first-name"
-                    className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45"
-                  >
-                    First name <span className="normal-case tracking-normal">(optional)</span>
-                  </label>
-                  <input
-                    id="vm-first-name"
-                    type="text"
-                    autoComplete="given-name"
-                    value={firstName}
-                    onChange={(ev) => setFirstName(ev.target.value)}
-                    className="mt-2 w-full rounded-full border border-[#1c100e]/15 bg-white px-5 py-3 font-heading text-base font-light text-[hsl(0,0%,10%)] outline-none transition-colors placeholder:text-[hsl(0,0%,10%)]/35 focus:border-[#C4893A]"
-                    placeholder="Ahmed"
-                  />
-
-                  <label
-                    htmlFor="vm-email"
-                    className="mt-6 block font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="vm-email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    value={email}
-                    onChange={(ev) => setEmail(ev.target.value)}
-                    className="mt-2 w-full rounded-full border border-[#1c100e]/15 bg-white px-5 py-3 font-heading text-base font-light text-[hsl(0,0%,10%)] outline-none transition-colors placeholder:text-[hsl(0,0%,10%)]/35 focus:border-[#C4893A]"
-                    placeholder="you@work.com"
-                  />
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[hsl(0,0%,10%)] px-8 text-sm font-medium tracking-wide text-[#F7E9D6] transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 md:min-h-[3.25rem] md:text-base"
-                  >
-                    {submitting ? 'Opening…' : CTA_LABEL}
-                  </button>
-                  <p className="mt-4 text-center font-heading text-sm font-light text-[hsl(0,0%,10%)]/55">
-                    Your email, and nothing else. Unsubscribe whenever.
-                  </p>
-                </form>
-              </Reveal>
-            )}
-
-            {/* The asset list stays visible either way — before the gate it says
-                what is coming, after it says what you now have. */}
-            <Reveal delay={120}>
-              <div className="mx-auto mt-12 max-w-3xl md:mt-16">
-                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                  What the method includes
-                </p>
-                <ul className="mt-5 grid gap-x-10 gap-y-3 md:grid-cols-2">
+            <Reveal delay={80}>
+              <div className="mx-auto mt-10 max-w-3xl md:mt-12">
+                <ul className="grid gap-x-10 gap-y-3 md:grid-cols-2">
                   {METHOD_ASSETS.map((a) => (
                     <li
                       key={a}
                       className="flex items-start gap-3 font-heading text-base font-light leading-snug text-[hsl(0,0%,10%)]/75"
                     >
                       <span aria-hidden className="mt-0.5 shrink-0 text-[#C4893A]">
-                        {unlocked ? <Check className="h-4 w-4" /> : <Lock className="h-3.5 w-3.5" />}
+                        <Check className="h-4 w-4" />
                       </span>
                       <span>{a}</span>
                     </li>
@@ -539,9 +589,8 @@ const ValidationMethod = () => {
           </div>
         </section>
 
-        {/* ══ UNLOCKED: THE SURVEY SET ══ */}
-        {unlocked && (
-          <section className="pt-16 md:pt-24">
+        {/* ══ THE SURVEY SET ══ */}
+        <section className="pt-16 md:pt-24">
             <div className="mx-auto max-w-5xl px-4">
               <Reveal>
                 <div className="mx-auto max-w-2xl text-center">
@@ -604,8 +653,7 @@ const ValidationMethod = () => {
                 </div>
               </Reveal>
             </div>
-          </section>
-        )}
+        </section>
 
         {/* ══ COHORT CTA ══
             Mini /build hero: Prisma atmosphere, floating AI workers, centered
