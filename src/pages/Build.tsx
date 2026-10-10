@@ -64,12 +64,12 @@ const FRAMEWORK = 'The 0→1 Framework';
 const CLUB = "Founders' Club";
 const PRICE = 425;
 const SEATS = 10;
-const COHORT_LABEL = 'mid-October';
+const COHORT_LABEL = '1 November';
 const CTA_LABEL = 'Check if I qualify';
 /** Sits under every inline CTA; the one place the guarantee is repeated by design. */
 const MONEY_BACK_LINE = 'Money back after 2 sessions if it is not for you.';
 /** Alif-style status: name the closed round, then the open one. */
-const COHORT_STATUS = 'Cohort 1 is closed. Cohort 2 is open.';
+const COHORT_STATUS = 'Cohort 2 is full. Cohort 3 is open.';
 
 /** Four proofs under the hero. Short enough to read without thinking.
  *  Icons: thiings.co (warranty, infinity-loop, money, handshake).
@@ -115,7 +115,7 @@ const TRUST: TrustItem[] = [
  * unanswered, so the first message is already the qualification — and the
  * closing section shows the same four before anyone taps.
  */
-const APPLY_MESSAGE = `Hi Ahmed, I want to apply for Cohort 2 (mid-October).
+const APPLY_MESSAGE = `Hi Ahmed, I want to apply for Cohort 3 (1 November).
 
 1) What I do, and for how many years:
 
@@ -1146,7 +1146,7 @@ const Build = () => {
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
-                Cohort 2 · Starts mid-October · Live online · 6 weeks · {SEATS} seats
+                Cohort 3 · Starts 1 November · Live online · 6 weeks · {SEATS} seats
               </p>
 
               {variant === 'A' ? (
