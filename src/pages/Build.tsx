@@ -72,11 +72,6 @@ const CARD =
   'rounded-[22px] bg-white p-6 ring-1 ring-[#1c100e]/10 shadow-[0_18px_40px_-28px_rgba(60,30,10,0.35)] md:p-7';
 const CARD_ON_DARK = 'rounded-[22px] bg-white/[0.06] p-6 ring-1 ring-white/12 md:p-7';
 
-const DOTS = {
-  backgroundImage: 'radial-gradient(rgba(0,0,0,.18) 1.3px, transparent 1.3px)',
-  backgroundSize: '18px 18px',
-};
-
 /* ────────────────────────────────────────────────────────────
    Offer
    ──────────────────────────────────────────────────────────── */
@@ -133,23 +128,23 @@ const TRUST: TrustItem[] = [
 /**
  * Application happens over WhatsApp. The four questions arrive pre-filled and
  * unanswered, so the first message is already the qualification — and the
- * gate section above the FAQ shows the same four before anyone taps.
+ * closing section shows the same four before anyone taps.
  */
-const APPLY_MESSAGE = `Hi Ahmed — I want to be considered for the October cohort.
+const APPLY_MESSAGE = `Hi Ahmed, I want to apply for Cohort 2 (mid-October).
 
 1) What I do, and for how many years:
 
-2) The one thing in my work that is broken:
+2) One problem in my work I would fix with software:
 
 3) What I have tried with AI, and where it stopped helping:
 
 4) Why now, and not January:`;
 
-/** Shown in full in the gate section, and pre-filled into APPLY_MESSAGE. */
+/** Shown in full in the closing section, and pre-filled into APPLY_MESSAGE. */
 const GATE_QUESTIONS = [
   'What do you do, and for how many years?',
-  'What is the one thing in your work that is broken — the thing you would fix if you could build software?',
-  'What have you already tried with AI? Where did it stop being useful?',
+  'What is one problem in your work that you would fix with software?',
+  'What have you tried with AI, and where did it stop helping?',
   'Why now, and not in January?',
 ];
 
@@ -283,80 +278,54 @@ const FAILURES = [
 const STEPS = [
   {
     n: '01',
-    title: 'Validate the problem',
-    desc: 'One person. One pain. Named so sharp the agents know what to build.',
+    step: 'Problem',
+    name: 'Find the problem',
+    weeks: [1],
+    outcome: 'One problem, in one sentence.',
     img: '/method/compass.webp',
     alt: 'Compass',
-    float: 'method-float',
   },
   {
     n: '02',
-    title: 'Validate the promise',
-    desc: 'One offer a stranger would buy. You write it. They do not.',
+    step: 'Promise',
+    name: 'Write the offer',
+    weeks: [2],
+    outcome: 'An offer you have tested on strangers.',
     img: '/method/megaphone.webp',
     alt: 'Megaphone',
-    float: 'method-float method-float-late',
   },
   {
     n: '03',
-    title: 'Validate the demand',
-    desc: 'Live. Real people. The market answers, not your friends.',
+    step: 'Demand',
+    name: 'Test with real buyers',
+    weeks: [3, 4, 5],
+    outcome: 'Proof that people want it, and a way to reach them.',
     img: '/method/rocket.webp',
     alt: 'Rocket',
-    float: 'method-float method-float-last',
   },
   {
     n: '04',
-    title: 'Build',
-    desc: 'You direct. AI teammates ship version one, live, in the room. Not a deck.',
+    step: 'Build',
+    name: 'Build and launch',
+    weeks: [6],
+    outcome: `A live first version, and your place in ${CLUB}.`,
     img: '/weeks/laptop.webp',
     alt: 'Laptop',
-    float: 'method-float',
   },
-];
-
-/* What changes in six weeks — the four shifts, stated as things the reader
-   stops or starts doing rather than things the cohort provides. */
-const HOW_IT_WORKS = [
-  {
-    n: '01',
-    title: 'You stop guessing who it is for',
-    body: 'Week one you name one person and one problem. Not "small businesses." One person. That sharpness is what makes AI build the right thing.',
-  },
-  {
-    n: '02',
-    title: 'You ship something real',
-    body: 'A live product at a real URL. Built in the room, in front of you, by AI workers you direct.',
-  },
-  {
-    n: '03',
-    title: 'You learn where your buyers already are',
-    body: 'Nineteen channels exist. One is working for you right now. We find it and put your thing in front of it.',
-  },
-  {
-    n: '04',
-    title: 'You keep the room',
-    body: `Six weeks ends. The ${CLUB} does not.`,
-  },
-];
+] as const;
 
 /* What is included */
 const INCLUDED = [
-  '6 live sessions · 3 hours each · 10 people',
-  'Every recording, yours forever',
-  `${FRAMEWORK} and all the canvases`,
-  'The prompts, the tools, the slides',
-  'Three guest sessions: marketing, funding, growth',
-  `${CLUB}, for life`,
-  'You can message me directly',
-  'Week 6: you show the room',
+  '6 live sessions, 3 hours each, with 10 people',
+  'Recordings of every session, yours to keep',
+  `${FRAMEWORK} and all its templates`,
+  'The prompts, tools and slides we use',
+  '3 guest sessions: marketing, funding and growth',
+  `Lifetime access to ${CLUB}`,
+  'Direct messages with me',
 ];
 
-/* ────────────────────────────────────────────────────────────
-   The six weeks — orbit badges + the framework colour each week inherits
-   ──────────────────────────────────────────────────────────── */
-
-/** Ties a week's card back to the framework step it belongs to. */
+/** Ties a step's card back to its colour; decorative bars and dots only. */
 const STEP_COLOR: Record<CohortWeek['step'], string> = {
   Problem: AMBER,
   Promise: PURPLE,
@@ -364,54 +333,41 @@ const STEP_COLOR: Record<CohortWeek['step'], string> = {
   Demand: CYAN,
 };
 
-/* One icon per week, in order. */
-const WEEK_ICONS = [Compass, Megaphone, Code2, Radar, Send, Presentation];
-
-/* Each week orbits as a node. `relatedIds` are the weeks either side, so the
-   expanded card doubles as a way to walk the schedule in order. Node labels
-   drop the clause after the comma — the full title is in the list below. */
-const WEEK_TIMELINE: OrbitalTimelineItem[] = COHORT_WEEKS.map((w, i) => ({
-  id: w.n,
-  title: w.title.split(',')[0],
-  date: `Week ${w.n}`,
-  content: w.brief,
-  category: w.step,
-  accent: STEP_COLOR[w.step],
-  outcome: w.outcome,
-  icon: WEEK_ICONS[i],
-  relatedIds: [COHORT_WEEKS[i - 1]?.n, COHORT_WEEKS[i + 1]?.n].filter(
-    (n): n is number => typeof n === 'number',
-  ),
-}));
-
 /* Guest lineup — all three confirmed (sources: slush.org/about-us,
-   ilabventures.tech, greenstep.fi/tilitoimisto-turku). */
-const GUESTS = [
+   ilabventures.tech, greenstep.fi/tilitoimisto-turku). `week` is left unset
+   until the dates are fixed; when set, the card shows a "Week N" pill. */
+const GUESTS: {
+  topic: string;
+  name: string;
+  credential: string;
+  punch: string;
+  photo: string;
+  week?: number;
+}[] = [
   {
     topic: 'Marketing',
     name: 'Marina Yurchenko',
-    credential: 'Slush · Head of Marketing',
-    punch: 'She grew the world’s loudest startup event. She will show you how attention turns into buyers.',
+    credential: 'Head of Marketing, Slush',
+    punch:
+      'She runs marketing for one of the world’s biggest startup events. She shows you how to turn attention into buyers.',
     photo:
       'https://cdn.prod.website-files.com/680cd45512772b4040d78def/69ef1877c33ad7be773c3089_Marina%20(1).JPG',
-    status: 'confirmed',
   },
   {
     topic: 'Funding',
     name: 'Petri Saarinen',
-    credential: 'iLab Ventures · Co-Founder',
-    punch: '1,500 startups through his programs. He will tell you why most pitches die in the first line.',
+    credential: 'Co-founder, iLab Ventures',
+    punch: 'He has worked with 1,500 startups. He shows you what investors want to hear first.',
     photo: 'https://ilabventures.tech/assets/team-petri-C62XuPhi.jpg',
-    status: 'confirmed',
   },
   {
     topic: 'Growth',
     name: 'Anton Suomalainen',
-    credential: 'Greenstep · Area Growth Manager',
-    punch: 'He will keep the money side boring, so you can stay obsessed with the build.',
+    credential: 'Area Growth Manager, Greenstep',
+    punch:
+      'He shows you how to keep your money and accounting simple, so you can focus on building.',
     photo:
       'https://greenstep.fi/wp-content/uploads/sites/2/2026/09/anton.suomalainen.jpg?v=1788494412',
-    status: 'confirmed',
   },
 ];
 
@@ -421,33 +377,16 @@ const CLUB_PHOTO = {
 };
 
 const CLUB_BEATS = [
-  {
-    n: '01',
-    t: 'Private',
-    d: 'Not the free community. Only people who finished.',
-  },
-  {
-    n: '02',
-    t: 'Direct',
-    d: 'I still answer. After week six. After that too.',
-  },
-  {
-    n: '03',
-    t: 'People who hit the same wall',
-    d: 'They stayed. So can you.',
-  },
+  { t: 'Private', d: 'Only for people who finished the program.' },
+  { t: 'Direct access', d: 'You can still message me after week 6.' },
+  { t: 'Peers', d: 'People who are building the same way you are.' },
 ];
 
-/* The fourth beat runs long and does different work from the other three —
-   it explains the ten-seat cap and says plainly which of the club's benefits
-   exist today. It gets its own full-width block rather than a grid cell. */
+/* Does different work from the three beats: it explains the seat cap and says
+   plainly which of the club's benefits exist today. Full-width, not a grid cell. */
 const CLUB_DOOR = {
-  n: '04',
-  t: 'The door out',
-  body: [
-    'This is why I only take ten. A room worth being in has to be a room that is hard to get into. I am building this club so the people inside it can meet investors, get credits from AI platforms, and hear about grants before they close.',
-    'Some of that exists now. Some I am still building. I will tell you exactly which is which before you pay.',
-  ],
+  t: `Why only ${SEATS} seats`,
+  body: 'A small group is easier to trust. I am building this club so members can meet investors, get free AI credits, and hear about grants early. Some of it exists today, and some I am still building. Before you pay, I will tell you which is which.',
 };
 
 /* Quote cards shown on /build; the full set stays on /testimonials. */
@@ -500,48 +439,28 @@ const FIT_SKIP = [
 
 const FAQS = [
   {
-    q: 'I am not technical. Is this for me?',
-    a: 'Yes. That is the point. You talk in plain words. The AI workers build.',
+    q: 'I am not technical. Can I do this?',
+    a: 'Yes. You explain what you want in plain words. AI writes the code.',
   },
   {
     q: 'Can I do this with a full-time job?',
-    a: 'Three hours a week, outside work hours. That is the whole design.',
+    a: 'Yes. It is 3 hours a week, outside work hours.',
   },
   {
-    q: 'What if I have no idea?',
-    a: 'Come anyway. No idea, one idea, or too many. Week one we pick.',
-  },
-  {
-    q: 'What if I miss a session?',
-    a: 'Every session is recorded and yours forever. Message me between.',
-  },
-  {
-    q: 'What happens when the six weeks end?',
-    a: `The cohort ends. ${CLUB} does not. You keep the key.`,
-  },
-  {
-    q: 'What if it is not for me?',
-    a: 'Come to the first two. If it is wrong, every dollar comes back.',
-  },
-  {
-    q: 'How do I get in?',
-    a: 'Send me four answers on WhatsApp. I read every one. Most answers are no. If it is no, I tell you why and send you the recorded workshop and a 90-day plan.',
-  },
-  {
-    q: 'Do I give up equity?',
-    a: 'No. You own everything you build. I take nothing.',
+    q: 'Do I give up any ownership?',
+    a: 'No. You own everything you build.',
   },
   {
     q: 'Will I get funding?',
-    a: 'Not from me. Week six you meet a VC who has seen 1,500 startups. What happens after that is between you and him.',
+    a: 'Not from me. In week 6 you meet an investor who has worked with 1,500 startups.',
   },
   {
     q: 'I am 45. Am I too old?',
-    a: 'The opposite. The 25-year-olds have tools. You have judgment. Tools are cheap now. Judgment is not.',
+    a: 'No. Tools are easy to learn. Experience is not, and you have it.',
   },
   {
-    q: 'Can I use this at my current job?',
-    a: 'Yes. Most people do both. You learn to run AI workers. That works on your own business and on Monday morning.',
+    q: 'Can I use this in my current job?',
+    a: 'Yes. Working with AI helps in your own business and in your job.',
   },
 ];
 
@@ -1709,259 +1628,119 @@ const Build = () => {
           <CtaRow where="proof" tone="light" />
         </section>
 
-        {/* ══ THE FRAMEWORK ══ */}
-        <section id="framework" className="scroll-mt-6 pt-16 md:pt-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow>2. How does it work?</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                {FRAMEWORK}
-              </h2>
-              <p className="mx-auto mt-4 max-w-md font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                Problem. Promise. Demand. Build.
-                <br />
-                In that order. Build comes last for a reason.
-              </p>
-            </div>
-          </Reveal>
+        </div>
 
-          <div className="relative mx-auto mt-14 max-w-3xl md:mt-20">
-            {/* Center spine — stays in the gutter so it never crosses copy. */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute bottom-8 left-1/2 top-8 hidden w-px -translate-x-1/2 md:block"
-              style={{
-                backgroundImage:
-                  'repeating-linear-gradient(to bottom, hsl(0 0% 10% / 0.22) 0 7px, transparent 7px 16px)',
-              }}
-            />
+        {/* ══ HOW THE 6 WEEKS WORK ══
+            The 4-step framework and the 6-week schedule are one story, so they
+            are one grid: each step lists the weeks that belong to it. Static on
+            every viewport — all six weeks readable without a click or hover. */}
+        <section
+          id="how-it-works"
+          className="relative mt-16 scroll-mt-6 overflow-hidden text-[#F7E9D6] md:mt-24"
+          style={{ background: SIGNATURE_BG }}
+        >
+          <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-8 md:py-28">
+            <Reveal>
+              <div className="mx-auto max-w-2xl text-center">
+                <Eyebrow tone="dark">{FRAMEWORK}</Eyebrow>
+                <h2 className={`mt-3 ${H2}`}>
+                  How the <Highlight tone="dark">6 weeks</Highlight> work
+                </h2>
+                <p className={`mt-4 ${BODY} ${ON_DARK} md:text-lg`}>
+                  4 steps, in this order. You test with buyers before you build, so you do not
+                  waste money.
+                </p>
+              </div>
+            </Reveal>
 
-            <ol className="relative space-y-14 md:space-y-0">
-              {STEPS.map((s, i) => {
-                const textLeft = i % 2 === 1;
-                const copy = (
-                  <div className={`max-w-xs ${textLeft ? 'md:text-right' : 'md:text-left'} text-center`}>
-                    <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
+            <div className="mt-12 grid gap-4 md:mt-16 md:grid-cols-2 lg:grid-cols-4">
+              {STEPS.map((s, i) => (
+                <Reveal key={s.n} delay={i * 80}>
+                  <article className={`${CARD_ON_DARK} relative flex h-full flex-col overflow-hidden`}>
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-0 top-0 h-1"
+                      style={{ background: STEP_COLOR[s.step] }}
+                    />
+                    <img
+                      src={s.img}
+                      alt={s.alt}
+                      width={80}
+                      height={80}
+                      className="mt-2 h-20 w-20 object-contain"
+                      style={{ filter: 'drop-shadow(0 16px 22px rgba(0, 0, 0, 0.3))' }}
+                    />
+                    <p className={`mt-4 font-heading text-[11px] font-medium uppercase tracking-[0.22em] ${ON_DARK_MUTED}`}>
                       {s.n}
                     </p>
-                    <h3 className="mt-2 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
-                      {s.title}
-                    </h3>
-                    <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[15px]">
-                      {s.desc}
-                    </p>
-                  </div>
-                );
-                const icon = (
-                  <img
-                    src={s.img}
-                    alt={s.alt}
-                    width={176}
-                    height={176}
-                    className={`${s.float} h-36 w-36 object-contain md:h-44 md:w-44`}
-                    style={{ filter: 'drop-shadow(0 22px 28px rgba(80, 40, 16, 0.18))' }}
-                  />
-                );
-                return (
-                  <Reveal key={s.n} delay={i * 90}>
-                    <li className="relative">
-                      {/* Desktop roadmap: icon | spine node | copy (alternating sides) */}
-                      <div className="hidden items-center md:grid md:grid-cols-[1fr_3.25rem_1fr] md:py-10">
-                        <div className="flex justify-end pr-10">
-                          {textLeft ? copy : icon}
-                        </div>
-                        <div className="relative z-10 mx-auto flex h-5 w-5 items-center justify-center">
-                          <span
-                            className="absolute h-5 w-5 rounded-full"
-                            style={{ background: `${PURPLE}28` }}
-                          />
-                          <span
-                            className="relative h-2.5 w-2.5 rounded-full"
-                            style={{ background: PURPLE }}
-                          />
-                        </div>
-                        <div className="flex justify-start pl-10">
-                          {textLeft ? icon : copy}
-                        </div>
-                      </div>
+                    <h3 className={`mt-1 ${H3}`}>{s.name}</h3>
 
-                      {/* Mobile: stacked, no spine */}
-                      <div className="flex flex-col items-center gap-4 md:hidden">
-                        {icon}
-                        {copy}
-                      </div>
-                    </li>
-                  </Reveal>
-                );
-              })}
-            </ol>
-          </div>
+                    <div className="mt-4 space-y-4">
+                      {COHORT_WEEKS.filter((w) => (s.weeks as readonly number[]).includes(w.n)).map(
+                        (w) => (
+                          <div key={w.n}>
+                            <span className="inline-flex rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium">
+                              Week {w.n}
+                            </span>
+                            {w.title && (
+                              <p className="mt-2 font-heading font-semibold leading-snug">{w.title}</p>
+                            )}
+                            <p className={`mt-1 font-heading text-[15px] font-normal leading-relaxed ${ON_DARK}`}>
+                              {w.brief}
+                            </p>
+                          </div>
+                        ),
+                      )}
+                    </div>
 
-          <Reveal>
-            <p className="mt-14 text-center font-heading text-[11px] font-light tracking-wide text-[hsl(0,0%,10%)]/55">
+                    <div className="mt-auto border-t border-white/10 pt-4">
+                      <p className={`mt-4 font-heading text-xs font-medium ${ON_DARK_MUTED}`}>
+                        You leave with:
+                      </p>
+                      <p className="mt-1 font-heading text-[15px] font-medium leading-snug">
+                        {s.outcome}
+                      </p>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+
+            <p className={`mt-10 text-center font-heading text-[11px] font-normal tracking-wide ${ON_DARK_MUTED}`}>
               3D icons from{' '}
               <a
                 href="https://www.thiings.co"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline decoration-[hsl(0,0%,10%)]/25 underline-offset-4"
+                className="underline decoration-[#F7E9D6]/30 underline-offset-4"
               >
                 thiings.co
               </a>
             </p>
-          </Reveal>
+            <CtaRow where="framework" tone="dark" />
+          </div>
         </section>
 
-        {/* ══ WHAT CHANGES IN SIX WEEKS ══
-            Four shifts, two up two down. Framed as what the reader starts or
-            stops doing, so the section reads as their change rather than the
-            cohort's feature list. ══ */}
-        <section id="how-it-works" className="scroll-mt-6 pt-16 md:pt-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow>What changes in six weeks</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                You come in with a job. You leave with a business.
-              </h2>
-            </div>
-          </Reveal>
-
-          <ol className="mt-12 grid gap-10 md:mt-16 md:grid-cols-2 md:gap-x-14 md:gap-y-12">
-            {HOW_IT_WORKS.map((item, i) => (
-              <Reveal key={item.n} delay={i * 80}>
-                <li>
-                  <p className="font-heading text-[11px] font-medium tracking-[0.22em] text-[#C4893A]">
-                    {item.n}
-                  </p>
-                  <h3 className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.75rem]">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                    {item.body}
-                  </p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
-        </section>
-        </div>
-
-        {/* ══ THE SIX WEEKS ══
-            The arc is decoration — it carries the titles and the shape of the
-            commitment, nothing a reader needs. The ordered list beneath it is
-            the real schedule: every week is legible without hovering,
-            clicking, or waiting for an animation to finish, which is also
-            what search engines and screen readers get. ══ */}
-        <section id="weeks" className="scroll-mt-6 pt-16 md:pt-24">
-          <div className="mx-auto max-w-5xl px-4">
+        {/* ══ GUEST EXPERTS ══
+            Real, confirmed guests (see GUESTS). They run one session each on
+            their own expertise; they do not co-host the cohort, so keep the
+            copy here free of "co-host". */}
+        <div className="mx-auto max-w-6xl px-4 md:px-8">
+          <section id="guests" className="scroll-mt-6 pt-16 md:pt-24">
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
-                <Eyebrow>Week by week</Eyebrow>
-                <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                  Six weeks. One move each.
+                <Eyebrow>Guest experts</Eyebrow>
+                <h2 className={`mt-3 ${H2}`}>
+                  3 experts, <Highlight>1 live session</Highlight> each
                 </h2>
               </div>
-            </Reveal>
-          </div>
-
-          <div className="mx-auto max-w-5xl px-4">
-            <Reveal delay={60}>
-              <p className="mx-auto mt-4 max-w-xl text-center font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/65 md:text-lg">
-                Every week ends with something that did not exist on Monday.
-              </p>
-            </Reveal>
-
-            {/* Desktop gets the orbit, phones get the list below — the two
-                carry the same six weeks, so showing both was saying it twice.
-                A rotating orbit is also the weaker of the pair on a small
-                screen: the expanded card covers most of it, and the labels
-                shrink. Hidden here means display:none, so the orbit's
-                IntersectionObserver never fires on a phone and nothing
-                rotates. */}
-            <RadialOrbitalTimeline
-              className="mt-2 hidden md:flex"
-              timelineData={WEEK_TIMELINE}
-              outcomeLabel="You leave with"
-              relatedLabel="Either side"
-            />
-          </div>
-
-          {/* Phones only — on desktop the orbit above already says all six. */}
-          <div className="mx-auto max-w-3xl px-4 md:hidden">
-            <ol className="border-t border-[#1c100e]/10">
-              {COHORT_WEEKS.map((w, i) => (
-                <li key={w.n} className="border-b border-[#1c100e]/10">
-                  <Reveal delay={i * 60}>
-                    <div className="grid gap-2 py-7 md:grid-cols-[8rem_1fr] md:gap-8 md:py-9">
-                      <div>
-                        <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                          Week {w.n}
-                        </p>
-                        <p
-                          className="mt-1.5 inline-flex items-center gap-1.5 font-heading text-[11px] font-medium uppercase tracking-[0.16em]"
-                          style={{ color: STEP_COLOR[w.step] }}
-                        >
-                          <span
-                            aria-hidden
-                            className="inline-block h-1.5 w-1.5 rounded-full"
-                            style={{ background: STEP_COLOR[w.step] }}
-                          />
-                          {w.step}
-                        </p>
-                      </div>
-                      <div>
-                        <h3 className="font-heading text-2xl font-light leading-tight tracking-tight md:text-[1.85rem]">
-                          {w.title}
-                        </h3>
-                        <p className="mt-3 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                          {w.brief}
-                        </p>
-                        <p className="mt-3 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/55">
-                          <span className="text-[hsl(0,0%,10%)]/75">You leave with:</span>{' '}
-                          {w.outcome}
-                        </p>
-                      </div>
-                    </div>
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        {/* ══ GUEST SESSIONS — cinematic, same family as Who runs it.
-            These are real, confirmed guests (see GUESTS) — not placeholders.
-            They run one session each on their own expertise; they do not
-            co-host the cohort, so keep the copy here free of "co-host".
-            Follows the cream "How it works" block, so it carries its own top
-            margin rather than butting straight into the copy above. ══ */}
-        <section className="relative isolate mt-16 overflow-hidden bg-[#120c10] text-[#F7E9D6] md:mt-24">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(ellipse 70% 50% at 50% -10%, rgba(124,58,237,0.22), transparent 55%), radial-gradient(ellipse 40% 40% at 90% 80%, rgba(212,165,116,0.12), transparent 50%)',
-            }}
-          />
-          <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.04]" style={DOTS} />
-
-          <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-8 md:py-28">
-            <Reveal>
-              <p className="text-center text-[11px] font-heading font-light uppercase tracking-[0.28em] text-[#F7E9D6]/45">
-                Guest experts joining the cohort
-              </p>
-              <p className="mx-auto mt-4 max-w-2xl text-center font-heading text-lg font-light leading-snug text-[#F7E9D6]/70 md:text-xl">
-                Each one runs a live session on what they do best — marketing,
-                funding, and growth.
-              </p>
             </Reveal>
 
             <div className="mt-10 grid gap-5 md:mt-14 md:grid-cols-3 md:gap-6">
               {GUESTS.map((g, i) => (
                 <Reveal key={g.name} delay={i * 90}>
                   <article>
-                    <div className="relative aspect-[3/4] overflow-hidden rounded-[28px] shadow-[0_28px_80px_-28px_rgba(0,0,0,0.7)] ring-1 ring-white/10">
+                    <div className="relative aspect-[3/4] overflow-hidden rounded-[28px] shadow-[0_28px_80px_-28px_rgba(0,0,0,0.5)] ring-1 ring-[#1c100e]/10">
                       <img
                         src={g.photo}
                         alt={g.name}
@@ -1972,58 +1751,52 @@ const Build = () => {
                         aria-hidden
                         className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent"
                       />
-                      {g.status === 'confirmed' && (
-                        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-[#F7E9D6] px-3 py-1 font-heading text-[10px] font-medium uppercase tracking-[0.18em] text-[#0c0a0b]">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#B4691E]" />
-                          Confirmed
+                      {g.week && (
+                        <span className="absolute left-4 top-4 inline-flex items-center rounded-full bg-[#F7E9D6] px-3 py-1 font-heading text-[10px] font-medium uppercase tracking-[0.18em] text-[#0c0a0b]">
+                          Week {g.week}
                         </span>
                       )}
                       <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
-                        <p className="text-[10px] font-heading font-light uppercase tracking-[0.28em] text-[#D4A574]">
+                        <p className="font-heading text-[10px] font-medium uppercase tracking-[0.28em] text-[#D4A574]">
                           {g.topic}
                         </p>
-                        <h3 className="mt-2 font-heading text-[1.85rem] font-light leading-[1.05] tracking-[-0.03em] text-white md:text-[2.1rem]">
+                        <h3 className="mt-2 font-heading text-[1.85rem] font-semibold leading-[1.05] tracking-[-0.02em] text-white md:text-[2.1rem]">
                           {g.name}
                         </h3>
                       </div>
                     </div>
-                    <p className="mt-4 font-heading text-sm font-light text-[#F7E9D6]/50">
+                    <p className={`mt-4 font-heading text-sm font-medium ${ON_LIGHT_MUTED}`}>
                       {g.credential}
                     </p>
-                    <p className="mt-2 font-heading text-lg font-light leading-snug text-[#F7E9D6]/85">
-                      {g.punch}
-                    </p>
+                    <p className={`mt-2 ${BODY} ${ON_LIGHT}`}>{g.punch}</p>
                   </article>
                 </Reveal>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
 
         {/* ══ FOUNDERS' CLUB ══
-            Cream breath after the two dark bands. The photo is the room you
-            keep — landscape portal, membership stamp, three quiet beats. */}
-        <section className="relative pt-20 md:pt-28">
-          <div className="mx-auto max-w-5xl px-4">
+            The photo is the group you keep: landscape portal, membership stamp,
+            three quiet beats and one wide card on why the group is small. */}
+        <section
+          id="club"
+          className="relative mt-16 scroll-mt-6 overflow-hidden text-[#F7E9D6] md:mt-24"
+          style={{ background: INK_FOREST }}
+        >
+          <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-8 md:py-28">
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
-                <Eyebrow>What happens after</Eyebrow>
-                <h2 className="mt-3 font-heading text-4xl font-light leading-[1.05] tracking-tight md:text-6xl">
-                  {CLUB}
-                </h2>
-                <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/80 md:text-2xl">
-                  Six weeks is enough to ship. A company needs a room after that.
-                </p>
-                <p className="mx-auto mt-5 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                  Everyone who finishes walks in and keeps the key. For life.
+                <Eyebrow tone="dark">After the 6 weeks</Eyebrow>
+                <h2 className={`mt-3 ${H2}`}>{CLUB}</h2>
+                <p className={`mt-4 ${BODY} ${ON_DARK} md:text-lg`}>
+                  When the program ends, you stay in a private group. For life.
                 </p>
               </div>
             </Reveal>
-          </div>
 
-          <div className="mx-auto mt-12 max-w-6xl px-4 md:mt-16">
             <Reveal>
-              <div className="relative overflow-hidden rounded-[28px] shadow-[0_40px_80px_-28px_rgba(60,30,10,0.45)] ring-1 ring-[#D4A574]/30">
+              <div className="relative mt-12 overflow-hidden rounded-[28px] shadow-[0_40px_80px_-28px_rgba(0,0,0,0.6)] ring-1 ring-[#D4A574]/30 md:mt-16">
                 <img
                   src={CLUB_PHOTO.src}
                   alt={CLUB_PHOTO.alt}
@@ -2033,113 +1806,79 @@ const Build = () => {
                   aria-hidden
                   className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"
                 />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 md:p-10">
-                  <div>
-                    <p className="text-[10px] font-heading font-light uppercase tracking-[0.28em] text-[#D4A574]">
-                      Member
-                    </p>
-                    <p className="mt-2 font-heading text-3xl font-light leading-none tracking-[-0.03em] text-[#F7E9D6] md:text-5xl">
-                      Lifetime
-                    </p>
-                  </div>
-                  <p className="hidden max-w-[12rem] text-right font-heading text-sm font-light leading-snug text-[#F7E9D6]/70 md:block">
-                    The room stays open after week six.
-                  </p>
-                </div>
+                <p className="absolute bottom-0 left-0 p-6 font-heading text-3xl font-semibold leading-none tracking-tight text-[#F7E9D6] md:p-10 md:text-5xl">
+                  Lifetime member
+                </p>
               </div>
             </Reveal>
-          </div>
 
-          <div className="mx-auto mt-12 max-w-5xl px-4 md:mt-16">
-            <ol className="grid gap-8 md:grid-cols-3 md:gap-10">
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
               {CLUB_BEATS.map((b, i) => (
-                <Reveal key={b.n} delay={i * 80}>
-                  <li>
-                    <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#C4893A]">
-                      {b.n}
-                    </p>
-                    <p className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight">
-                      {b.t}
-                    </p>
-                    <p className="mt-2 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/70">
-                      {b.d}
-                    </p>
-                  </li>
+                <Reveal key={b.t} delay={i * 80}>
+                  <article className={`${CARD_ON_DARK} h-full`}>
+                    <h3 className={H3}>{b.t}</h3>
+                    <p className={`mt-2 ${BODY} ${ON_DARK}`}>{b.d}</p>
+                  </article>
                 </Reveal>
               ))}
-            </ol>
+            </div>
 
             <Reveal delay={80}>
-              <div className="mt-12 rounded-[28px] bg-[#FFFCFA] px-7 py-9 ring-1 ring-[#1c100e]/10 md:mt-16 md:px-12 md:py-11">
-                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#C4893A]">
-                  {CLUB_DOOR.n}
-                </p>
-                <p className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.85rem]">
-                  {CLUB_DOOR.t}
-                </p>
-                <div className="mt-4 max-w-2xl space-y-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/70 md:text-[17px]">
-                  {CLUB_DOOR.body.map((para) => (
-                    <p key={para}>{para}</p>
-                  ))}
-                </div>
-              </div>
+              <article className={`${CARD_ON_DARK} mt-4`}>
+                <h3 className={H3}>{CLUB_DOOR.t}</h3>
+                <p className={`mt-3 max-w-2xl ${BODY} ${ON_DARK}`}>{CLUB_DOOR.body}</p>
+              </article>
             </Reveal>
           </div>
         </section>
 
-        {/* ══ PRICE + GUARANTEE ══
-            Full-bleed ivory so it breaks the cream sameness of Fit / Proof. */}
+        {/* ══ PRICE + GUARANTEE ══ */}
         <section
-          id="apply"
-          className="relative mt-16 scroll-mt-6 overflow-hidden md:mt-24"
-          style={{ background: '#FFFCFA' }}
+          id="price"
+          className="relative mt-16 scroll-mt-6 overflow-hidden text-[#F7E9D6] md:mt-24"
+          style={{ background: SIGNATURE_BG }}
         >
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[#1c100e]/10"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[#1c100e]/10"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full blur-3xl"
-            style={{ background: 'rgba(232,168,90,0.18)' }}
-          />
-
-          <div className="relative mx-auto max-w-5xl px-4 py-16 md:py-24">
+          <div className="relative mx-auto max-w-5xl px-4 py-20 md:py-28">
             <div className="grid items-start gap-12 md:grid-cols-[0.95fr_1.05fr] md:gap-16">
               <Reveal>
                 <div className="text-center md:text-left">
-                  <Eyebrow>The offer</Eyebrow>
-                  <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                    3. How much does it cost?
-                  </h2>
-                  <p
-                    className="mt-5 font-heading text-[clamp(4.5rem,18vw,7.5rem)] font-light leading-none tracking-[-0.04em]"
-                    style={{
-                      background: `linear-gradient(120deg, ${AMBER} 10%, #C4893A 45%, ${CORAL} 90%)`,
-                      WebkitBackgroundClip: 'text',
-                      backgroundClip: 'text',
-                      color: 'transparent',
-                    }}
+                  <h2
+                    className={`inline-flex items-center gap-2.5 font-heading text-[11px] font-medium uppercase tracking-[0.22em] ${ON_DARK_MUTED}`}
                   >
+                    <span
+                      aria-hidden
+                      className="h-[7px] w-[7px] shrink-0 rounded-full"
+                      style={{ background: AMBER, boxShadow: `0 0 0 3px ${AMBER}22` }}
+                    />
+                    Price
+                  </h2>
+                  <p className="mt-3 font-heading text-[clamp(4.5rem,18vw,7.5rem)] font-semibold leading-none tracking-[-0.04em] text-[#F7E9D6]">
                     ${PRICE}
                   </p>
-                  <p className="mt-4 font-heading text-xl font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-2xl">
-                    One seat. Six weeks. Ten people.
-                    <br />
-                    Live, fully remote, {COHORT_LABEL}.
-                  </p>
-                  <p className="mt-5 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/65 md:text-[17px]">
-                    Come to the first two sessions. If it is wrong for you, every dollar comes
-                    back. No conversation needed.
+                  <p className={`mt-4 font-heading text-xl font-normal leading-snug md:text-2xl ${ON_DARK}`}>
+                    One seat. 6 live online weeks. Starts {COHORT_LABEL}.
                   </p>
 
-                  <div className="mt-8 hidden md:block">
-                    <ApplyButton where="pricing" tone="page" />
-                    <p className="mt-4 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/60">
+                  <div className="mt-6 flex items-start gap-4 rounded-2xl bg-[#F7E9D6] p-5 text-left text-[#1a1a1a]">
+                    <img
+                      src="/method/guarantee.webp"
+                      alt=""
+                      width={48}
+                      height={48}
+                      className="h-12 w-12 shrink-0 object-contain"
+                    />
+                    <div>
+                      <p className="font-heading font-semibold">Money-back guarantee</p>
+                      <p className="mt-1 font-heading text-[15px] font-normal leading-relaxed">
+                        Join the first 2 sessions. If it is not for you, you get every dollar back.
+                        No questions.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-8">
+                    <ApplyButton where="pricing" tone="hero" />
+                    <p className={`mt-4 font-heading text-sm font-normal ${ON_DARK_MUTED}`}>
                       {COHORT_STATUS}
                     </p>
                   </div>
@@ -2147,9 +1886,9 @@ const Build = () => {
               </Reveal>
 
               <Reveal delay={80}>
-                <div className="overflow-hidden rounded-[28px] border border-[#1c100e]/10 bg-white shadow-[0_28px_70px_-36px_rgba(80,40,16,0.35)]">
+                <div className="overflow-hidden rounded-[28px] border border-[#1c100e]/10 bg-white text-[hsl(0,0%,10%)] shadow-[0_28px_70px_-36px_rgba(0,0,0,0.5)]">
                   <div className="border-b border-[#1c100e]/8 bg-[#F7E9D6]/45 px-6 py-4 md:px-8">
-                    <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/55">
+                    <p className={`font-heading text-[11px] font-medium uppercase tracking-[0.22em] ${ON_LIGHT_MUTED}`}>
                       What you get
                     </p>
                   </div>
@@ -2160,11 +1899,12 @@ const Build = () => {
                         className="flex items-start gap-4 px-6 py-4 md:px-8 md:py-[1.15rem]"
                       >
                         <span
-                          className="mt-0.5 font-heading text-[11px] font-medium tabular-nums tracking-[0.14em] text-[#B4691E]"
+                          className="mt-0.5 font-heading text-[11px] font-medium tabular-nums tracking-[0.14em]"
+                          style={{ color: AMBER_INK }}
                         >
                           {String(i + 1).padStart(2, '0')}
                         </span>
-                        <span className="font-heading text-base font-light leading-snug text-[hsl(0,0%,10%)]/80 md:text-[17px]">
+                        <span className={`font-heading text-base font-normal leading-snug md:text-[17px] ${ON_LIGHT}`}>
                           {item}
                         </span>
                       </li>
@@ -2173,122 +1913,32 @@ const Build = () => {
                 </div>
               </Reveal>
             </div>
-
-            <Reveal>
-              <div className="mt-10 text-center md:hidden">
-                <ApplyButton where="pricing" tone="page" />
-                <p className="mt-4 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/60">
-                  {COHORT_STATUS}
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ══ THE QUALIFICATION GATE ══
-            The four questions are shown here in full before anyone taps, so
-            the button is not a leap — it opens WhatsApp with these same four
-            pre-filled (APPLY_MESSAGE). Dark band: it is the last thing between
-            the reader and applying, and it should not read like more page. ══ */}
-        <section id="gate" className="relative mt-16 scroll-mt-6 overflow-hidden text-[#F7E9D6] md:mt-24">
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(ellipse 80% 60% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)',
-            }}
-          />
-          <div className="relative mx-auto max-w-3xl px-4 py-20 md:py-28">
-            <Reveal>
-              <div className="text-center">
-                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/45">
-                  How you get in
-                </p>
-                <h2 className="mt-4 font-heading text-3xl font-light leading-[1.12] tracking-tight md:text-[2.65rem]">
-                  I am looking for ten experts.
-                  <br />
-                  You are probably not one of them.
-                </h2>
-              </div>
-            </Reveal>
-
-            <Reveal delay={80}>
-              <p className="mx-auto mt-8 max-w-xl text-center font-heading text-base font-light leading-relaxed text-[#F7E9D6]/65 md:text-[17px]">
-                I am not filling seats. I am choosing nine people to spend six weeks with. I read
-                every message myself.
-              </p>
-            </Reveal>
-
-            <Reveal delay={140}>
-              <p className="mt-12 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#D4A574]">
-                Send me four answers on WhatsApp
-              </p>
-              <ol className="mt-6 space-y-6">
-                {GATE_QUESTIONS.map((q, i) => (
-                  <li key={q} className="flex gap-4">
-                    <span className="mt-1 shrink-0 font-heading text-sm font-light tabular-nums text-[#F7E9D6]/40">
-                      {i + 1}.
-                    </span>
-                    <span className="font-heading text-lg font-light leading-snug text-[#F7E9D6]/90 md:text-xl">
-                      {q}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </Reveal>
-
-            <Reveal delay={200}>
-              <div className="mt-12 space-y-4 border-t border-[#F7E9D6]/15 pt-8 font-heading text-base font-light leading-relaxed text-[#F7E9D6]/65 md:text-[17px]">
-                <p>Usually I answer within a day.</p>
-                <p>If it is a yes, I send you the details and you decide. No call. No pitch.</p>
-                <p>
-                  If it is a no, I tell you why, and I send you the recorded workshop and a 90-day
-                  plan so you are not stuck.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={260}>
-              <div className="mt-10 text-center">
-                <ApplyButton where="gate" tone="hero" />
-              </div>
-            </Reveal>
           </div>
         </section>
 
         <div className="mx-auto max-w-5xl px-4">
         {/* ══ FAQ ══
-            Fora pattern: soft chip, quiet headline, rounded accordion rows
-            with a circular chevron — no brutal boxes. */}
+            Only the objections the rest of the page does not already answer. */}
         <section id="faq" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl">
-              <p className="inline-flex rounded-full bg-[hsl(0,0%,10%)]/[0.06] px-3.5 py-1 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/75">
-                FAQ
-              </p>
-              <h2 className="mt-5 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
-                Answers to the questions that come up most.
-              </h2>
-              <p className="mt-4 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-[17px]">
-                Who it is for. What happens in the room. What you keep after.
-              </p>
+              <h2 className={H2}>Questions</h2>
             </div>
           </Reveal>
 
           <div className="mx-auto mt-10 max-w-2xl space-y-3 md:mt-12">
             {FAQS.map((f, i) => (
               <Reveal key={f.q} delay={i * 40}>
-                <details className="group overflow-hidden rounded-[22px] border border-[#1c100e]/10 bg-[#FFFDF7] open:border-[#1c100e]/16 open:bg-white open:shadow-[0_18px_40px_-28px_rgba(60,30,10,0.4)]">
+                <details className="group overflow-hidden rounded-[22px] border border-[#1c100e]/10 bg-white open:border-[#1c100e]/16 open:shadow-[0_18px_40px_-28px_rgba(60,30,10,0.4)]">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 md:px-6 md:py-5 [&::-webkit-details-marker]:hidden">
-                    <span className="font-heading text-base font-light leading-snug tracking-tight text-[hsl(0,0%,10%)] md:text-lg">
+                    <span className="font-heading text-base font-semibold leading-snug tracking-tight text-[hsl(0,0%,10%)] md:text-lg">
                       {f.q}
                     </span>
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[hsl(0,0%,10%)]/[0.06] text-[hsl(0,0%,10%)]/70 transition-transform duration-300 group-open:rotate-180">
                       <ChevronDown className="h-4 w-4" strokeWidth={1.75} />
                     </span>
                   </summary>
-                  <p className="px-5 pb-5 font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:px-6 md:pb-6 md:text-[15px]">
+                  <p className={`px-5 pb-5 font-heading text-[15px] font-normal leading-relaxed md:px-6 md:pb-6 ${ON_LIGHT}`}>
                     {f.a}
                   </p>
                 </details>
@@ -2298,61 +1948,72 @@ const Build = () => {
         </section>
         </div>
 
-        {/* ══ FINAL CTA ══
-            Dark closer after the cream FAQ. Same family as Who runs it. */}
-        <section className="relative mt-16 overflow-hidden text-[#F7E9D6] md:mt-24">
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(ellipse 90% 50% at 50% 0%, #3a2418 0%, #16110f 46%, #0c0a0b 78%)',
-            }}
-          />
-          <div
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-[42%] blur-3xl"
-            style={{
-              background:
-                'radial-gradient(ellipse at 50% 0%, rgba(232,168,90,0.28), transparent 68%)',
-            }}
-          />
-          <div className="relative mx-auto max-w-3xl px-4 py-20 text-center md:py-28">
+        {/* ══ HOW TO APPLY ══
+            The four questions are shown here in full before anyone taps, so the
+            button is not a leap — it opens WhatsApp with these same four
+            pre-filled (APPLY_MESSAGE). Last section before the footer. */}
+        <section
+          id="apply"
+          className="relative mt-16 scroll-mt-6 overflow-hidden text-[#F7E9D6] md:mt-24"
+          style={{ background: INK_GATE }}
+        >
+          <div className="relative mx-auto max-w-3xl px-4 py-20 md:py-28">
             <Reveal>
-              {/* The headline carries the cohort and the date, so the kicker
-                  that used to sit above it would only say them twice. */}
-              <h2 className="font-heading text-[clamp(2.4rem,7vw,4.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#F7E9D6]">
-                Ten seats. {COHORT_LABEL.charAt(0).toUpperCase() + COHORT_LABEL.slice(1)}.
-              </h2>
-              <p className="mx-auto mt-5 max-w-lg font-heading text-base font-light leading-relaxed text-[#F7E9D6]/60 md:text-lg">
-                Six weeks. A live product at the end, not notes.
-                <br />
-                Cohort 1 is closed. Cohort 2 is open.
-              </p>
-              <div className="mt-9">
-                <a
-                  href={applyHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => track('footer')}
-                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#F7E9D6] px-8 text-sm font-medium tracking-wide text-[#0c0a0b] transition-transform hover:scale-[1.03] md:min-h-[3.25rem] md:px-9 md:text-base"
-                >
-                  {CTA_LABEL}
-                </a>
+              <div className="text-center">
+                <Eyebrow tone="dark">How to apply</Eyebrow>
+                <h2 className={`mt-4 ${H2}`}>
+                  I choose {SEATS} people.{' '}
+                  <Highlight tone="dark">Most who apply are not a fit yet.</Highlight>
+                </h2>
+                <p className={`mx-auto mt-6 max-w-xl ${BODY} ${ON_DARK} md:text-lg`}>
+                  I read every message myself. Send me 4 answers on WhatsApp:
+                </p>
               </div>
-              <p className="mt-5 font-heading text-sm font-light text-[#F7E9D6]/45">
-                Want to read it first?{' '}
-                <a
-                  href={whatsappUrl(DETAILS_MESSAGE)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => track('footer_details')}
-                  className="underline decoration-[#F7E9D6]/30 underline-offset-4 hover:decoration-[#F7E9D6]/60"
-                >
-                  Reply &lsquo;details&rsquo;
-                </a>{' '}
-                and I send the doc. No call.
-              </p>
+            </Reveal>
+
+            <Reveal delay={80}>
+              <ol className="mt-10 space-y-6">
+                {GATE_QUESTIONS.map((q, i) => (
+                  <li key={q} className="flex gap-4">
+                    <span className={`mt-1 shrink-0 font-heading text-sm font-medium tabular-nums ${ON_DARK_MUTED}`}>
+                      {i + 1}.
+                    </span>
+                    <span className="font-heading text-lg font-normal leading-snug text-[#F7E9D6]/90 md:text-xl">
+                      {q}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </Reveal>
+
+            <Reveal delay={140}>
+              <div className={`mt-12 space-y-4 border-t border-[#F7E9D6]/15 pt-8 ${BODY} ${ON_DARK}`}>
+                <p>I reply within a day.</p>
+                <p>If it is a yes, I send you the details and you decide. No sales call.</p>
+                <p>
+                  If it is a no, I tell you why. I also send you the workshop recording and a
+                  90-day plan.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <div className="mt-10 text-center">
+                <ApplyButton where="gate" tone="hero" />
+                <p className={`mt-5 font-heading text-sm font-normal ${ON_DARK_MUTED}`}>
+                  Not ready? Send{' '}
+                  <a
+                    href={whatsappUrl(DETAILS_MESSAGE)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => track('gate_details')}
+                    className="underline decoration-[#F7E9D6]/30 underline-offset-4 hover:decoration-[#F7E9D6]/60"
+                  >
+                    &ldquo;details&rdquo;
+                  </a>{' '}
+                  on WhatsApp for the full program.
+                </p>
+              </div>
             </Reveal>
           </div>
         </section>
