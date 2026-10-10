@@ -1,24 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  ChevronDown,
-  Code2,
-  Compass,
-  ExternalLink,
-  Megaphone,
-  MessageCircle,
-  Play,
-  Presentation,
-  Radar,
-  Send,
-  Star,
-} from 'lucide-react';
+import { ChevronDown, ExternalLink, MessageCircle, Play, Star } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import Footer from '@/components/Footer';
 import CardFanCarousel from '@/components/ui/card-fan-carousel';
-import RadialOrbitalTimeline, {
-  type OrbitalTimelineItem,
-} from '@/components/ui/radial-orbital-timeline';
 import { whatsappUrl } from '@/lib/whatsapp';
 import { COHORT_WEEKS, type CohortWeek } from '@/data/cohortWeeks';
 import {
@@ -966,7 +951,7 @@ const Build = () => {
     trackEvent('cohort_apply_click', {
       page_path: window.location.pathname,
       placement,
-      variant: 'build_v3',
+      variant: 'build_v4',
       hero_variant: variant,
     });
     // A/B metric event, consent-gated.
