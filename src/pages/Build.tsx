@@ -89,8 +89,7 @@ const CTA_LABEL = 'Check if I qualify';
 /** Sits under every inline CTA; the one place the guarantee is repeated by design. */
 const MONEY_BACK_LINE = 'Money back after 2 sessions if it is not for you.';
 /** Alif-style status: name the closed round, then the open one. */
-const COHORT_STATUS =
-  'Cohort 1 (September) has officially closed. Cohort 2 (mid-October) is open.';
+const COHORT_STATUS = 'Cohort 1 is closed. Cohort 2 is open.';
 
 /** Four proofs under the hero. Short enough to read without thinking.
  *  Icons: thiings.co (warranty, infinity-loop, money, handshake).
@@ -105,29 +104,29 @@ type TrustItem = {
 
 const TRUST: TrustItem[] = [
   {
-    k: 'Money-back',
-    v: 'Come twice. If it is not for you, every dollar comes back.',
-    img: '/method/guarantee.webp',
-    alt: 'Guarantee',
-  },
-  {
-    k: 'Yours forever',
-    v: 'The plan, the tools, and the club. You keep them.',
-    img: '/method/infinity.webp',
-    alt: 'Infinity',
-  },
-  {
     k: '$10,000+',
-    v: 'Made by ',
+    v: 'Earned by a past student, ',
     link: { label: '@_therealsigma', url: 'https://www.instagram.com/_therealsigma/' },
     img: '/method/money.webp',
     alt: 'Money',
   },
   {
+    k: 'Money back',
+    v: 'Try 2 sessions. Not for you? Full refund.',
+    img: '/method/guarantee.webp',
+    alt: 'Guarantee',
+  },
+  {
     k: 'Hands-on',
-    v: 'Not theory. Building together.',
+    v: 'You build in every session, with me.',
     img: '/method/handshake.webp',
     alt: 'Handshake',
+  },
+  {
+    k: 'Lifetime club',
+    v: 'Keep learning with the group after week 6.',
+    img: '/method/infinity.webp',
+    alt: 'Infinity',
   },
 ];
 
@@ -162,19 +161,18 @@ const GATE_QUESTIONS = [
 const DETAILS_MESSAGE = 'details';
 
 /* Instructor */
-/* Three beats, each its own paragraph: what was built, how he teaches, where
-   he has taught. The numbers repeat in STATS directly below — said once in
-   prose and once as figures, which is the point. */
+/* Two paragraphs. The numbers and the org list live in STATS and the marquee,
+   so the prose does not repeat them. */
 const BIO = [
-  'I have built startups worth over $5 million. Raised $1.1M. Exited twice. I have also failed enough times to know which parts actually matter.',
+  'I have built and sold startups. I have also failed many times, so I know which steps matter.',
   'I do not lecture. I open my laptop and build next to you.',
-  'Ten years teaching. Slush, Antler, Helsinki XR Center. Now ten people at a time.',
 ];
 
+/* STATS[0] renders as the badge on the photo; the stats row shows [1..2]. */
 const STATS = [
-  { v: '$5M+', l: 'Total valuation of startups I created' },
-  { v: '$1.1M', l: 'Raised' },
-  { v: '2', l: 'Startup exits' },
+  { v: '$5M+', l: 'Value of startups I built' },
+  { v: '$1.1M', l: 'Money raised' },
+  { v: '2', l: 'Startups sold' },
 ];
 
 /* Companies in the marquee. `url` is the official site the chip links out to —
@@ -193,16 +191,10 @@ const ORGS = [
 const ORG_CHIP =
   'mx-1.5 inline-flex shrink-0 items-center gap-3 rounded-2xl bg-white/[0.07] px-5 py-3 ring-1 ring-white/10 md:gap-3.5 md:px-7 md:py-3.5';
 
-const AHMED_PHOTOS = [
-  {
-    src: 'https://d2mp3ttz3u5gci.cloudfront.net/ahmed_ezzat_ai_entrepreneur.png',
-    alt: 'Ahmed Ezzat',
-  },
-  { src: '/workshop-helsinki/photo-174214.webp', alt: 'Ahmed Ezzat on stage teaching the room' },
-  { src: '/workshop-helsinki/photo-185329.webp', alt: 'Ahmed leading the workshop floor' },
-  { src: '/workshop-helsinki/photo-211945.webp', alt: 'Ahmed with the cohort after the session' },
-  { src: '/workshop-helsinki/photo-unprompted.webp', alt: 'Ahmed coaching builders at the table' },
-];
+const AHMED_PHOTO = {
+  src: 'https://d2mp3ttz3u5gci.cloudfront.net/ahmed_ezzat_ai_entrepreneur.png',
+  alt: 'Ahmed Ezzat',
+};
 
 /* Event photos for the fan carousel in "Who runs it" — curated set from
    Desktop/Feedback/About Me (Canon workshop / stage album). Feedback chat
@@ -261,33 +253,28 @@ const HERO_AI_TOOLS = [
 const FAILURES = [
   {
     n: '01',
-    title: 'You start with the tool',
-    desc: 'You pick the stack first. Nobody asked for the thing yet.',
+    title: 'You start with the tech',
+    desc: 'You choose tools before anyone wants the product.',
   },
   {
     n: '02',
-    title: 'You keep it a secret',
-    desc: 'You hide it so nobody steals it. Then nobody can tell you it is wrong.',
+    title: 'You keep it secret',
+    desc: 'You hide it, so nobody can tell you it is wrong.',
   },
   {
     n: '03',
-    title: 'You add too much',
-    desc: 'More features. Harder to explain. Nobody buys what they cannot say in one line.',
+    title: 'You build for everyone',
+    desc: 'A product for everyone sells to no one.',
   },
   {
     n: '04',
-    title: 'You build for everyone',
-    desc: '"Anyone who needs this" is nobody. Pick one person.',
+    title: 'You wait for a quiet month',
+    desc: 'You plan to start when work is calmer. It never is.',
   },
   {
     n: '05',
-    title: 'You wait for later',
-    desc: 'You will start when work calms down. It will not.',
-  },
-  {
-    n: '06',
     title: 'You think you are too late',
-    desc: 'You are watching people half your age ship things. You think the window closed. It did not. They have the tools. You have the 15 years.',
+    desc: 'Tools take weeks to learn. Your experience took years.',
   },
 ];
 
@@ -463,6 +450,9 @@ const CLUB_DOOR = {
   ],
 };
 
+/* Quote cards shown on /build; the full set stays on /testimonials. */
+const PROOF_QUOTE_IDS = [1, 3, 4];
+
 const PROOF_CLIPS = [
   {
     id: 'mo',
@@ -476,6 +466,12 @@ const PROOF_CLIPS = [
     src: 'https://mentorna-testimonials.s3.amazonaws.com/testimonials/karla.mp4',
     poster: '/proof/karla.jpg',
   },
+  {
+    id: 'class',
+    name: 'Inside a class (90 seconds)',
+    src: workshopVideoUrl,
+    poster: workshopVideoPoster,
+  },
 ];
 
 /* Written feedback screenshots from /testimonials (Helsinki workshop). */
@@ -484,39 +480,22 @@ const WRITTEN_PROOF = [
   { src: '/workshop-helsinki/photo-IMG_9533.webp', alt: 'Workshop feedback message' },
   { src: '/workshop-helsinki/photo-IMG_9535.webp', alt: 'Workshop feedback message' },
   { src: '/workshop-helsinki/photo-IMG_9558.webp', alt: 'Workshop feedback message' },
-  { src: '/workshop-helsinki/photo-IMG_9559.webp', alt: 'Workshop feedback message' },
-  { src: '/workshop-helsinki/photo-IMG_9702.webp', alt: 'Workshop feedback message' },
-  { src: '/workshop-helsinki/photo-IMG_9711.webp', alt: 'LinkedIn post about the workshop' },
-  { src: '/workshop-helsinki/photo-IMG_9712.webp', alt: 'LinkedIn post about the workshop' },
 ];
 
-/* Fit — three ways in. An idea is not a ticket. */
-/* The trades the cohort is built for — named so a reader can find themselves
-   in the list rather than guess whether "domain expert" means them. */
+/* Who the program is for. The trades are named so a reader can find
+   themselves in the list instead of guessing whether "expert" means them. */
 const FIT_FIELDS = ['Accounting', 'Law', 'HR', 'Design', 'Logistics', 'Operations'];
 
 const FIT_PATHS = [
-  {
-    n: '01',
-    t: 'No idea yet',
-    d: 'You walk in empty. We find the one worth building.',
-  },
-  {
-    n: '02',
-    t: 'One idea',
-    d: 'You have it. You do not know the first move.',
-  },
-  {
-    n: '03',
-    t: 'Too many ideas',
-    d: 'We test. We pick one. The rest wait.',
-  },
+  { t: 'No idea yet', d: 'We help you find one worth building.' },
+  { t: 'One idea', d: 'We help you take the first step.' },
+  { t: 'Too many ideas', d: 'We test them and keep the best one.' },
 ];
 
 const FIT_SKIP = [
-  'You want to watch, not build',
-  'You want someone else to build it',
-  'You cannot keep three hours a week',
+  'You want to watch, not build.',
+  'You want someone to build it for you.',
+  'You cannot give 3 hours a week.',
 ];
 
 const FAQS = [
@@ -597,11 +576,8 @@ const HERO_VARIANT_KEY = 'build_hero_variant';
    it answers the objection the headline raises. */
 const HERO_A = {
   headline: ['You spent 15 years getting good at your job.', 'AI just changed the job.'],
-  subhead: [
-    'Six weeks. Turn what you know into a business.',
-    'A team of AI workers builds it with you.',
-  ],
-  note: 'You do not write code. You tell them what to build.',
+  subhead: 'In 6 weeks, turn what you know into a product, and test it with real buyers.',
+  note: 'AI writes the code. You tell it what to build.',
 };
 
 // Variant B — a static statement headline (gradient on "first paying customer",
@@ -896,7 +872,7 @@ const SelfieClip = ({
 }) => {
   const playing = active === clip.id;
   return (
-    <article className="w-[47%] max-w-[280px]">
+    <article className="w-[31%] max-w-[240px]">
       <div className="overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.45)] ring-1 ring-black/10">
         {playing ? (
           <video
@@ -913,7 +889,7 @@ const SelfieClip = ({
           <button
             type="button"
             onClick={() => onPlay(clip.id)}
-            aria-label={`Play ${clip.name}'s testimonial`}
+            aria-label={`Play ${clip.name}`}
             className="group relative block aspect-[9/16] w-full overflow-hidden"
           >
             <img
@@ -930,7 +906,9 @@ const SelfieClip = ({
           </button>
         )}
       </div>
-      <p className="mt-4 text-center font-heading text-lg font-light tracking-tight">{clip.name}</p>
+      <p className="mt-3 text-center font-heading text-sm font-medium leading-snug tracking-tight md:text-base">
+        {clip.name}
+      </p>
     </article>
   );
 };
@@ -945,7 +923,7 @@ const ProofClips = () => {
         ))}
       </div>
 
-      <div className="mt-8 grid grid-cols-2 items-start gap-3 sm:grid-cols-3 md:mt-10 md:gap-4">
+      <div className="mt-8 grid grid-cols-2 items-start gap-3 md:mt-10 md:grid-cols-4 md:gap-4">
         {WRITTEN_PROOF.map((shot) => (
           <div
             key={shot.src}
@@ -961,14 +939,11 @@ const ProofClips = () => {
         ))}
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 md:mt-10 md:grid-cols-2 md:gap-5">
-        {testimonials.map((t) => (
-          <article
-            key={t.id}
-            className={`rounded-[22px] bg-white/70 p-5 shadow-[0_18px_40px_-28px_rgba(60,30,10,0.35)] ring-1 ring-[#1c100e]/10 md:p-6 ${
-              t.highlight ? 'md:col-span-2' : ''
-            }`}
-          >
+      <div className="mt-8 grid grid-cols-1 gap-4 md:mt-10 md:grid-cols-3 md:gap-5">
+        {testimonials
+          .filter((t) => PROOF_QUOTE_IDS.includes(t.id))
+          .map((t) => (
+          <article key={t.id} className={CARD}>
             <div className="mb-3 flex gap-1">
               {Array.from({ length: t.rating }).map((_, i) => (
                 <Star
@@ -977,7 +952,7 @@ const ProofClips = () => {
                 />
               ))}
             </div>
-            <blockquote className="font-heading text-base font-normal leading-relaxed text-[hsl(0,0%,10%)]/90 md:text-lg">
+            <blockquote className={`${BODY} ${ON_LIGHT}`}>
               &ldquo;{t.quote}&rdquo;
             </blockquote>
             <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
@@ -997,11 +972,11 @@ const ProofClips = () => {
                     {t.name}
                   </p>
                 )}
-                <p className="mt-0.5 font-heading text-sm font-light text-[hsl(0,0%,10%)]/55">
+                <p className={`mt-0.5 font-heading text-sm font-normal ${ON_LIGHT_MUTED}`}>
                   {t.role}
                 </p>
               </div>
-              <span className="rounded-full bg-[hsl(0,0%,10%)]/8 px-3 py-1 font-heading text-[10px] font-medium uppercase tracking-[0.16em] text-[hsl(0,0%,10%)]/65">
+              <span className="rounded-full bg-[hsl(0,0%,10%)]/8 px-3 py-1 font-heading text-[10px] font-medium uppercase tracking-[0.16em] text-[hsl(0,0%,10%)]/70">
                 {t.source}
               </span>
             </div>
@@ -1226,22 +1201,22 @@ const Build = () => {
               </a>
               <div className="flex items-center gap-4 md:gap-7">
                 <a
-                  href="#framework"
-                  className="hidden text-[11px] font-medium tracking-wide text-white/55 transition-colors hover:text-white md:inline md:text-xs"
-                >
-                  Framework
-                </a>
-                <a
                   href="#how-it-works"
-                  className="hidden text-[11px] font-medium tracking-wide text-white/55 transition-colors hover:text-white sm:inline md:text-xs"
+                  className="hidden text-[11px] font-medium tracking-wide text-white/55 transition-colors hover:text-white md:inline md:text-xs"
                 >
                   How it works
                 </a>
                 <a
                   href="#who-runs-it"
+                  className="hidden text-[11px] font-medium tracking-wide text-white/55 transition-colors hover:text-white sm:inline md:text-xs"
+                >
+                  Your teacher
+                </a>
+                <a
+                  href="#price"
                   className="hidden text-[11px] font-medium tracking-wide text-white/55 transition-colors hover:text-white md:inline md:text-xs"
                 >
-                  Who runs it
+                  Price
                 </a>
                 <a
                   href="#faq"
@@ -1267,20 +1242,18 @@ const Build = () => {
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/55">
-                Cohort 2 · Mid-October · Live · Remote · 6 weeks · {SEATS} seats
+                Cohort 2 · Starts mid-October · Live online · 6 weeks · {SEATS} seats
               </p>
 
               {variant === 'A' ? (
                 <>
-                  <h1 className="mt-4 max-w-3xl font-heading text-[2.15rem] font-light leading-[1.08] tracking-tight md:text-5xl lg:text-[3.65rem]">
+                  <h1 className="mt-4 max-w-3xl font-heading text-[2.15rem] font-normal leading-[1.08] tracking-tight md:text-5xl lg:text-[3.65rem]">
                     {HERO_A.headline[0]}
                     <br />
-                    {HERO_A.headline[1]}
+                    <Highlight tone="dark">{HERO_A.headline[1]}</Highlight>
                   </h1>
                   <p className="mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-white/65 md:text-lg">
-                    {HERO_A.subhead[0]}
-                    <br />
-                    {HERO_A.subhead[1]}
+                    {HERO_A.subhead}
                   </p>
                   {/* Sits lower than the old headline did, over the bright
                       middle of the hero photo — hierarchy comes from size
@@ -1304,7 +1277,7 @@ const Build = () => {
                 <ApplyButton where="hero" tone="hero" />
               </div>
               <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/60">
-                Four questions. I read every one myself.
+                Opens WhatsApp. 4 short questions.
               </p>
             </div>
 
@@ -1364,17 +1337,12 @@ const Build = () => {
         style={{ background: PAGE_BG }}
       >
         <div className="mx-auto max-w-5xl px-4">
-        {/* ══ TRUST RIBBON ══ */}
+        {/* ══ TRUST STRIP ══ */}
         <section className="pt-2 md:pt-4">
           <Reveal>
-            <ul className="grid grid-cols-2 gap-y-10 md:grid-cols-4 md:gap-y-8">
-              {TRUST.map((item, i) => (
-                <li
-                  key={item.k}
-                  className={`px-2 text-center md:px-6 ${
-                    i > 0 ? 'md:border-l md:border-[hsl(0,0%,10%)]/10' : ''
-                  }`}
-                >
+            <ul className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+              {TRUST.map((item) => (
+                <li key={item.k} className={`${CARD} px-4 text-center md:px-5`}>
                   <img
                     src={item.img}
                     alt={item.alt}
@@ -1383,10 +1351,10 @@ const Build = () => {
                     className="mx-auto h-16 w-16 object-contain md:h-[4.5rem] md:w-[4.5rem]"
                     style={{ filter: 'drop-shadow(0 14px 20px rgba(80, 40, 16, 0.16))' }}
                   />
-                  <p className="mt-3 font-heading text-[1.45rem] font-light leading-none tracking-tight md:text-[1.75rem]">
+                  <p className="mt-3 font-heading text-[1.3rem] font-semibold leading-none tracking-tight md:text-[1.5rem]">
                     {item.k}
                   </p>
-                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-snug text-[hsl(0,0%,10%)]/75 md:text-[15px]">
+                  <p className={`mt-2 font-heading text-sm font-normal leading-snug md:text-[15px] ${ON_LIGHT}`}>
                     {item.v}
                     {item.link && (
                       <a
@@ -1405,107 +1373,62 @@ const Build = () => {
           </Reveal>
         </section>
 
-        {/* ══ THE CEILING ══
-            The persona hook, sitting right under the proof bar: it names who
-            the reader is before the page asks them for anything. Prose is
-            left-aligned rather than centred — five paragraphs of argument read
-            badly ragged on both sides. ══ */}
-        <section className="pt-16 md:pt-24">
+        {/* ══ WHY NOW + VIDEO ══
+            The persona hook and the explainer are one argument, so they share a
+            section. Prose is left-aligned: it reads badly ragged when centred. */}
+        <section id="why-now" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
               <Eyebrow>Why now</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
-                Every job has a ceiling. AI just removed yours.
+              <h2 className={`mt-3 ${H2}`}>
+                One expert with AI can now do the work of a <Highlight>whole team</Highlight>.
               </h2>
             </div>
           </Reveal>
 
           <Reveal delay={80}>
-            <div className="mx-auto mt-10 max-w-2xl space-y-5 font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:mt-12 md:text-[17px]">
+            <div className={`mx-auto mt-10 max-w-2xl space-y-5 md:mt-12 ${BODY} ${ON_LIGHT}`}>
               <p>
-                Andrew Ng noticed something. Tech has &ldquo;10x engineers.&rdquo; But nobody
-                talks about 10x accountants. Or 10x lawyers. Or 10x designers.
+                Andrew Ng, a leading AI teacher, asks why we have &ldquo;10x engineers&rdquo; but
+                no &ldquo;10x accountants.&rdquo; His answer: in most jobs, one person can only
+                work so fast.
               </p>
-              <p>
-                His reason: in most jobs, the gap between the best person and the average
-                person has a limit. You can only work so fast.
-              </p>
-              <p className="font-heading text-2xl font-light leading-snug tracking-tight text-[hsl(0,0%,10%)] md:text-[2rem]">
+              <p className="font-heading text-2xl font-semibold leading-snug tracking-tight text-[hsl(0,0%,10%)] md:text-[2rem]">
                 AI removes that limit.
               </p>
-              <p>
-                The people who win are not the ones who learn the tools. They are the ones
-                who already know something deeply, and now have a team that can build.
-              </p>
-              <p className="text-[hsl(0,0%,10%)]">
-                That is you. That is what these six weeks are for.
-              </p>
-              <p className="border-t border-[#1c100e]/10 pt-4 font-heading text-[13px] font-light leading-relaxed text-[hsl(0,0%,10%)]/45 md:text-sm">
-                Andrew Ng, &ldquo;How AI Can Make You a 10x Professional,&rdquo; DeepLearning.AI
+              <p>The winners will be people who know one field deeply. That is you.</p>
+              <p className={`border-t border-[#1c100e]/10 pt-4 font-heading text-[13px] font-normal leading-relaxed ${ON_LIGHT_MUTED}`}>
+                Source: Andrew Ng, &ldquo;How AI Can Make You a 10x Professional,&rdquo;
+                DeepLearning.AI
               </p>
             </div>
           </Reveal>
-        </section>
 
-        {/* ══ MAIN VSL ══ */}
-        <section className="pt-14 md:pt-20">
-          <Reveal>
-            <div className="mx-auto max-w-[720px] text-center">
-              <Eyebrow>Watch this first</Eyebrow>
-              <p className="mt-3 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
-                How the 0→1 Framework works.
-              </p>
-              <div className="mt-8 overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.4)] ring-1 ring-black/10">
+          <Reveal delay={120}>
+            <div className="mx-auto mt-10 max-w-[720px] text-center md:mt-12">
+              <div className="overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.4)] ring-1 ring-black/10">
                 <VideoPlayer
                   src={VSL_URL}
                   poster={VSL_POSTER}
                   alt="Ahmed explaining the 0→1 Framework"
                 />
               </div>
-              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/70">
-                Two and a half minutes. See if this is for you.
-              </p>
-            </div>
-          </Reveal>
-        </section>
-
-        {/* ══ SEE THE CLASS ══ */}
-        <section className="pt-14 md:pt-20">
-          <Reveal>
-            <div className="mx-auto max-w-[720px] text-center">
-              <Eyebrow>See the class</Eyebrow>
-              <p className="mt-3 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
-                This is what it looks like.
-              </p>
-              <div className="mx-auto mt-8 w-full max-w-[min(100%,22rem)] overflow-hidden rounded-[22px] bg-black shadow-[0_30px_70px_-24px_rgba(0,0,0,0.4)] ring-1 ring-black/10">
-                <VideoPlayer
-                  src={workshopVideoUrl}
-                  poster={workshopVideoPoster}
-                  alt="Inside the cohort"
-                  portrait
-                />
-              </div>
-              <p className="mt-4 font-heading text-sm font-light text-[hsl(0,0%,10%)]/70">
-                90 seconds. Real people. A real room.
+              <p className={`mt-4 font-heading text-sm font-normal ${ON_LIGHT_MUTED}`}>
+                How the program works · 2½ minutes
               </p>
             </div>
           </Reveal>
         </section>
         </div>
 
-        {/* ══ THE 5 FAILURES ══
+        {/* ══ COMMON MISTAKES ══
             Full-bleed ember chamber. Cream above is calm facts; this is the
-            confrontation. Warm dark + cream type so it is neither the page
-            body nor the black framework block that follows. */}
-        <section className="relative mt-16 overflow-hidden text-[#F7E9D6] md:mt-24">
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(ellipse 90% 55% at 50% 0%, #6B2A16 0%, #2A110C 44%, #140807 78%)',
-            }}
-          />
+            confrontation. */}
+        <section
+          id="mistakes"
+          className="relative mt-16 overflow-hidden text-[#F7E9D6] md:mt-24"
+          style={{ background: INK_EMBER }}
+        >
           <div
             aria-hidden
             className="absolute inset-x-0 top-0 h-[42%] blur-3xl"
@@ -1526,14 +1449,12 @@ const Build = () => {
           <div className="relative mx-auto max-w-5xl px-4 py-20 md:py-28">
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
-                <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/45">
-                  1. Can I help you?
-                </p>
-                <h2 className="mt-4 font-heading text-4xl font-light leading-[1.1] tracking-tight md:text-5xl">
-                  Why the idea is still an idea
+                <Eyebrow tone="dark">Common mistakes</Eyebrow>
+                <h2 className={`mt-4 ${H2}`}>
+                  Why most good ideas <Highlight tone="dark">never launch</Highlight>
                 </h2>
-                <p className="mt-5 font-heading text-base font-light leading-relaxed text-[#F7E9D6]/55 md:text-lg">
-                  Five places people get stuck. You will see yourself in at least one.
+                <p className={`mt-5 ${BODY} ${ON_DARK} md:text-lg`}>
+                  5 mistakes. Most people make at least one.
                 </p>
               </div>
             </Reveal>
@@ -1545,18 +1466,14 @@ const Build = () => {
                     className="flex gap-5 border-t border-[#F7E9D6]/12 py-8 last:border-b md:gap-10 md:py-10"
                   >
                     <span
-                      className="w-12 shrink-0 font-heading text-3xl font-light tabular-nums leading-none md:w-16 md:text-4xl"
+                      className="w-12 shrink-0 font-heading text-3xl font-semibold tabular-nums leading-none md:w-16 md:text-4xl"
                       style={{ color: AMBER }}
                     >
                       {f.n}
                     </span>
                     <div>
-                      <h3 className="font-heading text-2xl font-light leading-tight tracking-tight md:text-[2rem]">
-                        {f.title}
-                      </h3>
-                      <p className="mt-2 font-heading text-sm font-light leading-relaxed text-[#F7E9D6]/55 md:text-base">
-                        {f.desc}
-                      </p>
+                      <h3 className={H3}>{f.title}</h3>
+                      <p className={`mt-2 ${BODY} ${ON_DARK}`}>{f.desc}</p>
                     </div>
                   </li>
                 ))}
@@ -1564,81 +1481,69 @@ const Build = () => {
             </Reveal>
             <Reveal>
               <p
-                className="mt-12 text-center font-heading text-xl font-light tracking-tight md:text-2xl"
+                className="mt-12 text-center font-heading text-xl font-semibold tracking-tight md:text-2xl"
                 style={{ color: AMBER }}
               >
-                How many of these are you doing right now?
+                How many of these are you making right now?
               </p>
+              <CtaRow where="mistakes" tone="dark" />
             </Reveal>
           </div>
         </section>
 
         <div className="mx-auto max-w-5xl px-4">
-        {/* ══ FIT ══ */}
-        <section className="pt-16 md:pt-24">
+        {/* ══ WHO THIS IS FOR ══ */}
+        <section id="who" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
               <Eyebrow>Who this is for</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
-                You are a domain expert. That is the entry requirement.
+              <h2 className={`mt-3 ${H2}`}>
+                Professionals with <Highlight>10+ years</Highlight> in one field
               </h2>
 
-              <p className="mt-8 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/45">
-                Deep knowledge in
-              </p>
-              <p className="mx-auto mt-3 max-w-xl font-heading text-xl font-light leading-snug tracking-tight md:text-2xl">
-                {FIT_FIELDS.join('. ')}.
-              </p>
+              <ul className="mt-8 flex flex-wrap justify-center gap-2.5">
+                {FIT_FIELDS.map((f) => (
+                  <li
+                    key={f}
+                    className="rounded-full bg-white px-4 py-2 font-heading text-sm font-medium ring-1 ring-[#1c100e]/15"
+                  >
+                    {f}
+                  </li>
+                ))}
+              </ul>
 
-              <p className="mx-auto mt-8 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
-                If you have spent 10 years or more getting good at something, you already have the
-                hardest part. Most founders do not. They have an idea and no ground under it.
-              </p>
-              <p className="mx-auto mt-4 max-w-xl font-heading text-base font-light leading-relaxed text-[hsl(0,0%,10%)]/75 md:text-lg">
-                You have the ground. You are missing two things: how a business works, and how to
-                build. Six weeks, you get both.
+              <p className={`mx-auto mt-8 max-w-xl ${BODY} ${ON_LIGHT} md:text-lg`}>
+                You already know your field. That is the hard part. We teach the rest: how to
+                sell, and how to build with AI.
               </p>
             </div>
           </Reveal>
 
-          <ol className="mt-12 grid gap-10 md:mt-16 md:grid-cols-3 md:gap-8">
+          <ul className="mt-12 grid gap-4 md:mt-14 md:grid-cols-3 md:gap-5">
             {FIT_PATHS.map((p, i) => (
-              <Reveal key={p.n} delay={i * 80}>
-                <li className="text-center">
-                  <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#C4893A]">
-                    {p.n}
-                  </p>
-                  <h3 className="mt-3 font-heading text-2xl font-light leading-snug tracking-tight md:text-[1.85rem]">
-                    {p.t}
-                  </h3>
-                  <p className="mx-auto mt-2 max-w-[16rem] font-heading text-sm font-light leading-relaxed text-[hsl(0,0%,10%)]/70 md:text-[15px]">
-                    {p.d}
-                  </p>
+              <Reveal key={p.t} delay={i * 80}>
+                <li className={`${CARD} h-full`}>
+                  <h3 className={H3}>{p.t}</h3>
+                  <p className={`mt-2 ${BODY} ${ON_LIGHT}`}>{p.d}</p>
                 </li>
               </Reveal>
             ))}
-          </ol>
+          </ul>
 
           <Reveal>
-            <div className="mx-auto mt-14 max-w-2xl md:mt-16">
-              <div
-                className="overflow-hidden rounded-[28px] px-7 py-9 text-center shadow-[0_28px_70px_-28px_rgba(80,40,16,0.35)] ring-1 ring-[#1c100e]/12 md:px-12 md:py-11"
-                style={{
-                  background:
-                    'radial-gradient(ellipse 90% 80% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)',
-                }}
-              >
+            <div className="mx-auto mt-10 max-w-2xl md:mt-12">
+              <div className="rounded-[28px] bg-[#16110F] px-7 py-9 text-center shadow-[0_28px_70px_-28px_rgba(80,40,16,0.35)] ring-1 ring-[#1c100e]/12 md:px-12 md:py-11">
                 <p
                   className="font-heading text-[11px] font-medium uppercase tracking-[0.22em]"
                   style={{ color: CORAL }}
                 >
-                  Skip this if
+                  Not for you if
                 </p>
                 <ul className="mt-6 space-y-4">
                   {FIT_SKIP.map((f) => (
                     <li
                       key={f}
-                      className="flex items-start justify-center gap-3 font-heading text-lg font-light leading-snug text-[#F7E9D6] md:text-xl"
+                      className="flex items-start justify-center gap-3 font-heading text-lg font-normal leading-snug text-[#F7E9D6] md:text-xl"
                     >
                       <span
                         aria-hidden
@@ -1655,21 +1560,14 @@ const Build = () => {
         </section>
         </div>
 
-        {/* ══ INSTRUCTOR ══
-            Celebrity drop: photos from Mentorna workshops. Fan sits in-flow
-            with Who runs it and parallax-rotates as the section scrolls. */}
+        {/* ══ YOUR TEACHER ══
+            Photos from Mentorna workshops. The fan sits in-flow and
+            parallax-rotates as the section scrolls. */}
         <section
           id="who-runs-it"
           className="relative mt-16 scroll-mt-6 overflow-hidden text-[#F7E9D6] md:mt-24"
+          style={{ background: INK_SMOKE }}
         >
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(ellipse 90% 50% at 50% 0%, #3a2418 0%, #16110f 46%, #0c0a0b 78%)',
-            }}
-          />
           <div
             aria-hidden
             className="absolute inset-x-0 top-0 h-[38%] blur-3xl"
@@ -1679,27 +1577,29 @@ const Build = () => {
             }}
           />
 
-          <div className="relative mx-auto max-w-5xl px-4 py-16 md:py-24">
+          <div className="relative mx-auto max-w-5xl px-4 py-20 md:py-28">
             <Reveal>
               <div className="grid items-center gap-10 md:grid-cols-[1.05fr_0.95fr] md:gap-14">
-                <div className="overflow-hidden rounded-[28px] shadow-[0_40px_80px_-28px_rgba(0,0,0,0.65)] ring-1 ring-white/10">
+                <div className="relative overflow-hidden rounded-[28px] shadow-[0_40px_80px_-28px_rgba(0,0,0,0.65)] ring-1 ring-white/10">
                   <img
-                    src={AHMED_PHOTOS[0].src}
-                    alt={AHMED_PHOTOS[0].alt}
-                    className="aspect-[4/5] w-full object-cover object-[center_18%] md:aspect-[4/5]"
+                    src={AHMED_PHOTO.src}
+                    alt={AHMED_PHOTO.alt}
+                    className="aspect-[4/5] w-full object-cover object-[center_18%]"
                   />
+                  <div className="absolute bottom-4 left-4 rounded-2xl bg-[#F7E9D6] px-5 py-3 text-[#0c0a0b]">
+                    <p className="font-heading text-3xl font-semibold leading-none tracking-tight">
+                      {STATS[0].v}
+                    </p>
+                    <p className="mt-1 font-heading text-xs font-medium">{STATS[0].l}</p>
+                  </div>
                 </div>
                 <div className="text-left">
-                  <p className="font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/45">
-                    Who runs it
+                  <Eyebrow tone="dark">Your teacher</Eyebrow>
+                  <h2 className={`mt-3 ${H2}`}>Ahmed Ezzat</h2>
+                  <p className={`mt-4 font-heading text-xl font-normal leading-snug md:text-2xl ${ON_DARK}`}>
+                    Founder, AI engineer and teacher
                   </p>
-                  <h2 className="mt-3 font-heading text-4xl font-light leading-[1.05] tracking-tight md:text-6xl">
-                    Ahmed Ezzat
-                  </h2>
-                  <p className="mt-4 font-heading text-xl font-light leading-snug text-[#F7E9D6]/80 md:text-2xl">
-                    Founder | AI/ML Engineer | Entrepreneur | Mentorship
-                  </p>
-                  <div className="mt-5 space-y-4 font-heading text-base font-light leading-relaxed text-[#F7E9D6]/55 md:text-[17px]">
+                  <div className={`mt-5 space-y-4 ${BODY} ${ON_DARK}`}>
                     {BIO.map((para) => (
                       <p key={para}>{para}</p>
                     ))}
@@ -1712,21 +1612,16 @@ const Build = () => {
               <CardFanCarousel cards={EVENT_PHOTOS} scrollLinked />
             </div>
 
-            <div className="mt-12 grid grid-cols-1 gap-y-8 sm:grid-cols-3">
-              {STATS.map((s, i) => (
+            <div className="mx-auto mt-12 grid max-w-md grid-cols-2 gap-y-8">
+              {STATS.slice(1).map((s, i) => (
                 <div
                   key={s.l}
-                  className={`px-2 text-center ${
-                    i > 0 ? 'md:border-l md:border-white/10' : ''
-                  }`}
+                  className={`px-2 text-center ${i > 0 ? 'border-l border-white/10' : ''}`}
                 >
-                  <p
-                    className="font-heading text-[1.85rem] font-light leading-none tracking-tight md:text-[2.1rem]"
-                    style={{ color: i === 0 ? AMBER : '#F7E9D6' }}
-                  >
+                  <p className="font-heading text-[1.85rem] font-semibold leading-none tracking-tight text-[#F7E9D6] md:text-[2.1rem]">
                     {s.v}
                   </p>
-                  <p className="mx-auto mt-2 max-w-[9rem] font-heading text-xs font-light leading-snug text-[#F7E9D6]/50 md:text-[13px]">
+                  <p className={`mx-auto mt-2 max-w-[9rem] font-heading text-xs font-normal leading-snug md:text-[13px] ${ON_DARK}`}>
                     {s.l}
                   </p>
                 </div>
@@ -1735,8 +1630,8 @@ const Build = () => {
           </div>
 
           <div className="relative border-t border-white/10 bg-[#0c0a0b] py-6 md:py-8">
-            <p className="mb-5 text-center font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[#F7E9D6]/40">
-              Companies I worked with
+            <p className={`mb-5 text-center font-heading text-[11px] font-medium uppercase tracking-[0.22em] ${ON_DARK_MUTED}`}>
+              Where I have worked and taught
             </p>
             <div className="overflow-hidden">
               {/* Single row. The list is rendered twice so the loop is seamless —
@@ -1794,19 +1689,24 @@ const Build = () => {
         </section>
 
         <div className="mx-auto max-w-5xl px-4">
-        {/* ══ PROOF ══
-            Two vertical selfie testimonials. Videos stay on S3 and only
-            load after play — they are 50–90 MB HEVC phone files. */}
-        <section className="pt-16 md:pt-24">
+        {/* ══ WHAT PEOPLE SAY ══
+            Three vertical clips, three quotes, four chat screenshots. Videos
+            stay on S3 and only load after play — they are 50–90 MB HEVC phone
+            files. */}
+        <section id="proof" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow>From the workshops this cohort is built on</Eyebrow>
-              <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
-                People who sat in the room
+              <Eyebrow>From past workshops</Eyebrow>
+              <h2 className={`mt-3 ${H2}`}>
+                What <Highlight>people say</Highlight>
               </h2>
+              <p className={`mt-4 ${BODY} ${ON_LIGHT} md:text-lg`}>
+                This program is built on the same method as these workshops.
+              </p>
             </div>
           </Reveal>
           <ProofClips />
+          <CtaRow where="proof" tone="light" />
         </section>
 
         {/* ══ THE FRAMEWORK ══ */}
