@@ -1821,7 +1821,7 @@ const Build = () => {
         {/* ══ PRICE + GUARANTEE ══ */}
         <section
           id="price"
-          className="relative mt-16 scroll-mt-6 overflow-hidden text-[#F7E9D6] md:mt-24"
+          className="relative scroll-mt-6 overflow-hidden text-[#F7E9D6]"
           style={{ background: SIGNATURE_BG }}
         >
           <div className="relative mx-auto max-w-5xl px-4 py-20 md:py-28">
