@@ -36,9 +36,41 @@ const CYAN = 'hsl(196,85%,52%)';
 const TEAL = 'hsl(160,70%,45%)';
 const CORAL = 'hsl(18,80%,63%)';
 
+/* Accent text on light surfaces. The bright accents above are 1.5–3.8:1 on
+   cream and disappear as text; these are the same hues darkened to ≥4.5:1. */
+const AMBER_INK = '#8B5904'; // 4.60:1 on #F3E0CB
+const PURPLE_INK = '#7A40DD'; // 4.52:1
+const CYAN_INK = '#0B6B8E'; // 4.67:1
+const TEAL_INK = '#147152'; // 4.67:1
+const CORAL_INK = '#AE4213'; // 4.54:1
+
 const PAGE_BG = 'linear-gradient(180deg,#F7E9D6 0%,#F3E0CB 25%,#F6E5D2 55%,#EFDAC2 100%)';
-const brutal = 'border-4 border-[hsl(0,0%,10%)] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]';
-const SECTION_ACCENTS = [AMBER, PURPLE, CYAN, TEAL, CORAL];
+
+/* One surface per dark band, never shared between sections. The lightest stop
+   of SIGNATURE_BG is #4B2A8C; a lighter stop under text drops cream/65 below
+   4.5:1. Set these on the <section> itself so contrast tooling can read them. */
+const SIGNATURE_BG =
+  'radial-gradient(ellipse 90% 60% at 50% 0%, #4B2A8C 0%, #3F2378 55%, #35206A 100%)';
+const INK_EMBER = 'radial-gradient(ellipse 90% 55% at 50% 0%, #6B2A16 0%, #2A110C 44%, #140807 78%)';
+const INK_SMOKE = 'radial-gradient(ellipse 90% 50% at 50% 0%, #3a2418 0%, #16110f 46%, #0c0a0b 78%)';
+const INK_GATE = 'radial-gradient(ellipse 80% 60% at 50% 0%, #3a1c14 0%, #16110f 55%, #0c0a0b 100%)';
+const INK_FOREST = 'radial-gradient(ellipse 90% 60% at 50% 0%, #1F3A2E 0%, #0F1A15 55%, #0A0F0C 100%)';
+
+/* Type. Headings were weight 300 everywhere, which is most of why the page
+   read as pale; 600 matches the weight the reference page uses. */
+const H2 = 'font-heading text-[1.85rem] font-semibold leading-[1.12] tracking-tight md:text-[2.6rem]';
+const H3 = 'font-heading text-xl font-semibold leading-snug tracking-tight md:text-2xl';
+const BODY = 'font-heading text-base font-normal leading-relaxed md:text-[17px]';
+/* Text colours by surface. Floors are the AA minimums, not suggestions. */
+const ON_LIGHT = 'text-[hsl(0,0%,10%)]/85'; // 9.1:1 on cream
+const ON_LIGHT_MUTED = 'text-[hsl(0,0%,10%)]/70'; // 5.7:1 (labels, captions; never lower)
+const ON_DARK = 'text-[#F7E9D6]/75'; // ≥5.6:1 on every dark surface
+const ON_DARK_MUTED = 'text-[#F7E9D6]/65'; // ≥4.6:1 (labels; never lower)
+/* Cards. White on cream is how the reference page gets figure/ground on a
+   light page; translucent white melts into the cream, so keep it solid. */
+const CARD =
+  'rounded-[22px] bg-white p-6 ring-1 ring-[#1c100e]/10 shadow-[0_18px_40px_-28px_rgba(60,30,10,0.35)] md:p-7';
+const CARD_ON_DARK = 'rounded-[22px] bg-white/[0.06] p-6 ring-1 ring-white/12 md:p-7';
 
 const DOTS = {
   backgroundImage: 'radial-gradient(rgba(0,0,0,.18) 1.3px, transparent 1.3px)',
@@ -53,7 +85,9 @@ const CLUB = "Founders' Club";
 const PRICE = 425;
 const SEATS = 10;
 const COHORT_LABEL = 'mid-October';
-const CTA_LABEL = "See if I'd take you";
+const CTA_LABEL = 'Check if I qualify';
+/** Sits under every inline CTA; the one place the guarantee is repeated by design. */
+const MONEY_BACK_LINE = 'Money back after 2 sessions if it is not for you.';
 /** Alif-style status: name the closed round, then the open one. */
 const COHORT_STATUS =
   'Cohort 1 (September) has officially closed. Cohort 2 (mid-October) is open.';
@@ -611,28 +645,39 @@ const analyticsConsentGranted = (): boolean => {
     return false;
   }
 };
-/*
- * Eyebrow — section label with a small accent dot, Fora-style. The dot is the
- * page's vividness rhythm: each cream section gets the next color from
- * SECTION_ACCENTS so the long run reads as chapters, not one flat slab.
- * Accent is optional; pass `color` to override the cycle.
- */
+/* Section label with a small accent dot, Fora-style. The dot is decorative, so
+   it keeps the bright AMBER on both tones; the label takes the muted floor for
+   its surface. */
 const Eyebrow = ({
   children,
-  color,
+  tone = 'light',
 }: {
   children: React.ReactNode;
-  color?: string;
+  tone?: 'light' | 'dark';
 }) => (
-  <p className="inline-flex items-center gap-2.5 font-heading text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(0,0%,10%)]/60">
+  <p
+    className={`inline-flex items-center gap-2.5 font-heading text-[11px] font-medium uppercase tracking-[0.22em] ${
+      tone === 'light' ? ON_LIGHT_MUTED : ON_DARK_MUTED
+    }`}
+  >
     <span
       aria-hidden
       className="h-[7px] w-[7px] shrink-0 rounded-full"
-      style={{ background: color ?? AMBER, boxShadow: `0 0 0 3px ${color ?? AMBER}22` }}
+      style={{ background: AMBER, boxShadow: `0 0 0 3px ${AMBER}22` }}
     />
     {children}
   </p>
 );
+
+/* The one accent word in a heading. Bright amber only reads on dark and purple
+   surfaces; on cream it needs the ink variant. */
+const Highlight = ({
+  children,
+  tone = 'light',
+}: {
+  children: React.ReactNode;
+  tone?: 'light' | 'dark';
+}) => <span style={{ color: tone === 'light' ? AMBER_INK : AMBER }}>{children}</span>;
 
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -1045,16 +1090,16 @@ const Build = () => {
   const groundP = phase(p, 0.32, 0.9); // dunes tuck under film bottom
   // No cream seal inside sticky — cream <main> slides up over the hero (Fora).
 
+  /* 'hero' is the light pill, used on every dark and purple surface; 'page' is
+     the ink pill, used on cream. */
   const ApplyButton = ({
     where,
     label = CTA_LABEL,
-    dark = true,
-    tone = 'brutal',
+    tone = 'hero',
   }: {
     where: string;
     label?: string;
-    dark?: boolean;
-    tone?: 'brutal' | 'hero' | 'page';
+    tone?: 'hero' | 'page';
   }) => (
     <a
       href={applyHref}
@@ -1064,18 +1109,23 @@ const Build = () => {
       className={
         tone === 'hero'
           ? 'inline-flex min-h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-medium tracking-wide text-[hsl(0,0%,8%)] transition-colors hover:bg-white/90 md:min-h-[3.25rem] md:px-9 md:text-base'
-          : tone === 'page'
-            ? 'inline-flex min-h-12 items-center justify-center rounded-full bg-[hsl(0,0%,10%)] px-8 text-sm font-medium tracking-wide text-[#F7E9D6] transition-transform hover:scale-[1.03] md:min-h-[3.25rem] md:px-9 md:text-base'
-            : `${brutal} inline-flex min-h-16 items-center justify-center gap-2 px-8 text-base font-extrabold uppercase transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-none md:text-lg ${
-                dark ? 'bg-[hsl(0,0%,10%)] text-white' : 'bg-white'
-              }`
+          : 'inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[hsl(0,0%,10%)] px-8 text-sm font-medium tracking-wide text-[#F7E9D6] transition-transform hover:scale-[1.03] md:min-h-[3.25rem] md:px-9 md:text-base'
       }
     >
-      {tone !== 'hero' && (
-        <MessageCircle className="h-5 w-5" style={{ color: dark ? TEAL : undefined }} />
-      )}
+      {tone === 'page' && <MessageCircle className="h-5 w-5" style={{ color: TEAL }} />}
       {label}
     </a>
+  );
+
+  /* The page had no button between the hero and the price — ~15,000px on
+     desktop. This is the inline answer to that (no sticky bar, by decision). */
+  const CtaRow = ({ where, tone }: { where: string; tone: 'light' | 'dark' }) => (
+    <div className="mt-12 flex flex-col items-center gap-3 text-center md:mt-14">
+      <ApplyButton where={where} tone={tone === 'light' ? 'page' : 'hero'} />
+      <p className={`font-heading text-sm ${tone === 'light' ? ON_LIGHT_MUTED : ON_DARK_MUTED}`}>
+        {MONEY_BACK_LINE}
+      </p>
+    </div>
   );
 
   return (
@@ -1363,7 +1413,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={TEAL}>Why now</Eyebrow>
+              <Eyebrow>Why now</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 Every job has a ceiling. AI just removed yours.
               </h2>
@@ -1401,7 +1451,7 @@ const Build = () => {
         <section className="pt-14 md:pt-20">
           <Reveal>
             <div className="mx-auto max-w-[720px] text-center">
-              <Eyebrow color={AMBER}>Watch this first</Eyebrow>
+              <Eyebrow>Watch this first</Eyebrow>
               <p className="mt-3 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
                 How the 0→1 Framework works.
               </p>
@@ -1423,7 +1473,7 @@ const Build = () => {
         <section className="pt-14 md:pt-20">
           <Reveal>
             <div className="mx-auto max-w-[720px] text-center">
-              <Eyebrow color={CYAN}>See the class</Eyebrow>
+              <Eyebrow>See the class</Eyebrow>
               <p className="mt-3 font-heading text-2xl font-light tracking-tight md:text-[1.85rem]">
                 This is what it looks like.
               </p>
@@ -1528,7 +1578,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={AMBER}>Who this is for</Eyebrow>
+              <Eyebrow>Who this is for</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 You are a domain expert. That is the entry requirement.
               </h2>
@@ -1750,7 +1800,7 @@ const Build = () => {
         <section className="pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={CYAN}>From the workshops this cohort is built on</Eyebrow>
+              <Eyebrow>From the workshops this cohort is built on</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-5xl">
                 People who sat in the room
               </h2>
@@ -1763,7 +1813,7 @@ const Build = () => {
         <section id="framework" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={PURPLE}>2. How does it work?</Eyebrow>
+              <Eyebrow>2. How does it work?</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 {FRAMEWORK}
               </h2>
@@ -1869,7 +1919,7 @@ const Build = () => {
         <section id="how-it-works" className="scroll-mt-6 pt-16 md:pt-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <Eyebrow color={TEAL}>What changes in six weeks</Eyebrow>
+              <Eyebrow>What changes in six weeks</Eyebrow>
               <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                 You come in with a job. You leave with a business.
               </h2>
@@ -1906,7 +1956,7 @@ const Build = () => {
           <div className="mx-auto max-w-5xl px-4">
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
-                <Eyebrow color={CORAL}>Week by week</Eyebrow>
+                <Eyebrow>Week by week</Eyebrow>
                 <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                   Six weeks. One move each.
                 </h2>
@@ -2057,7 +2107,7 @@ const Build = () => {
           <div className="mx-auto max-w-5xl px-4">
             <Reveal>
               <div className="mx-auto max-w-2xl text-center">
-                <Eyebrow color={AMBER}>What happens after</Eyebrow>
+                <Eyebrow>What happens after</Eyebrow>
                 <h2 className="mt-3 font-heading text-4xl font-light leading-[1.05] tracking-tight md:text-6xl">
                   {CLUB}
                 </h2>
@@ -2162,7 +2212,7 @@ const Build = () => {
             <div className="grid items-start gap-12 md:grid-cols-[0.95fr_1.05fr] md:gap-16">
               <Reveal>
                 <div className="text-center md:text-left">
-                  <Eyebrow color={PURPLE}>The offer</Eyebrow>
+                  <Eyebrow>The offer</Eyebrow>
                   <h2 className="mt-3 font-heading text-3xl font-light leading-[1.15] tracking-tight md:text-4xl">
                     3. How much does it cost?
                   </h2>
