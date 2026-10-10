@@ -1270,6 +1270,7 @@ const Build = () => {
                         {item.link.label}
                       </a>
                     )}
+                    {item.link && '.'}
                   </p>
                 </li>
               ))}
